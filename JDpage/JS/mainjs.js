@@ -28,7 +28,7 @@ var aSliderList = oSliderNav.getElementsByTagName('li');
 function getClass (oParent,sClass) {
 	var aResult = [];
 	var re = new RegExp('\\b'+sClass+'\\b','i');
-	
+
 	if (oParent.getElementsByClassName) {
 		return	oParent.getElementsByClassName(sClass);
 	} else{
@@ -97,7 +97,7 @@ function doMove (iIndex) {
 			aSliderImage[i].className = aSliderList[i].className = '';
 			//move工具函数
 			move(aSliderImage[i] , 0 ,'opacity');
-		};	
+		};
 	};
 	aSliderImage[iIndex].className = aSliderList[iIndex].className = 'currentSlider';
 	//move工具函数
@@ -205,7 +205,7 @@ function focus () {
 	var oBtnNext = getClass(oSliderBtn , 'btn_next')[0];
 	var iNow = 1;
 	var playTimer = null;
-	var timer = null;  
+	var timer = null;
 	// 自动播放
 	playTimer = setInterval(function  () {
 		// doMove工具函数
@@ -253,7 +253,7 @@ function focus () {
 					doMove (that.index);
 					iNow = that.index;
 				},400);
-			}	
+			}
 		};
 	}
 }
@@ -291,4 +291,3 @@ function toolbar () {
 	};
 }
 /*右边工具栏显示与隐藏*/
-
