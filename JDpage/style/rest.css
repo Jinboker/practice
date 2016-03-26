@@ -1,0 +1,20 @@
+body,ul,ol,dl,dd,h1,h2,h3,h4,h5,h6,p,input,select,textarea,form{margin: 0; padding: 0;}
+body{font:12px/1.5 "微软雅黑";color: #666;}
+img{border:none;}
+ul,ol{list-style:none;}
+input,select,textarea{outline:none;border:none;}
+textarea{resize:none;}
+a{text-decoration:none;color: #666;}
+.fl{float: left;}
+.fr{float: right;}
+i{font-style: normal;font-size: 9px;font-family: consolas;}
+a:hover{color:#c81623;}
+
+
+
+.abc{
+	height: 500px;
+	background-color: white;
+	position: relative;
+
+}
