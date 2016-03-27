@@ -905,7 +905,7 @@
 .foot-server dl{
 	float: left;
 	width: 199px;
-	padding-top: 20px;
+	margin-top: 20px;
 	text-align: left;
 }
 .foot-server dt{
@@ -918,13 +918,34 @@
 	width: 199px;
 	height: 20px;
 }
+.foot-server .foce1{
+	width: 100px;
+}
+.foot-server .cover{
+	float: right;
+	padding-left: 99px;
+	background: url('../image/cover.png') no-repeat 80px -131px;
+}
+.foot-server .cover a{
+	display: block;
+	margin-bottom: 50px;
+	text-align: right;
+}
 #footer .comWidth i{
 	color: #956695;
 	padding: 0 10px;
 }
 .foot-link{
-	margin-top: 36px;
+	margin-top: 20px;
 	padding-top: 22px;
 	padding-bottom: 13px;
 	border-top: 1px solid #e5e5e5;
 }
+.authentication{
+	padding: 10px 0 35px 0;
+}
+.authentication a{
+	display: inline-block;
+	padding-right: 10px;
+}
+/*页脚结束*/
