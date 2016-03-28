@@ -7,6 +7,7 @@ window.onload = function(){
 	hideLayers ();
 	visbleCategory();
 	toolbar ();
+	recommend();
 }
 
 //一些公用的对象及数组
@@ -291,3 +292,10 @@ function toolbar () {
 	};
 }
 /*右边工具栏显示与隐藏*/
+/*推荐栏商品左右滑动*/
+function recommend() {
+	var oRecommend = document.getElementById('recommend');
+	var aUl = oRecommend.getElementsByTagName('ul');
+	var aLi = oRecommend.getElementsByTagName('li');
+	aUl[0].style.width = 250*aLi.length + 'px';
+}
