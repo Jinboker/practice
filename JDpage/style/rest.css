@@ -9,3 +9,5 @@ a{text-decoration:none;color: #666;}
 .fr{float: right;}
 i{font-style: normal;font-size: 9px;font-family: consolas;}
 a:hover{color:#c81623;}
+.clearfix:after{content: "";width: 0;display: table;clear: both;}
+h2,h3{font-family: "microsoft yahei";font-weight: 400;}
