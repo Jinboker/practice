@@ -26,7 +26,7 @@ function id (sId) {
 
 /**
  * 获取样式的函数，主要是为了兼容IE
- * @param {string} attr 想要获取的样式
+ * @param {string} value 想要获取的样式
  */
 function getStyle (oEle , value) {
     return oEle.currentStyle ? oEle.currentStyle[value] : getComputedStyle(oEle, null)[value];
@@ -123,7 +123,6 @@ function showHide(obj) {
  */
 function move (oEle , iTarget , value) {
     clearInterval(oEle.timer);
-
     oEle.timer = setInterval(function  () {
         var iSpeed = null;
         var iCur = null;
@@ -153,144 +152,132 @@ function move (oEle , iTarget , value) {
 /*--------------------------------- 工具包函数结束 -------------------------------------*/
 
 
-
-/*------------------------------- 焦点图共用函数开始 -----------------------------------*/
-// focus(oFocusPic1 , 100 , true);
-
-function focus(oEle , iTarget , boole) {
-
-    var aFocusChild = getChild(oEle);
-    var aSliderImage = aFocusChild[0].getElementsByTagName('li');
-    var aSliderList = aFocusChild[1].getElementsByTagName('li');
-
-    var iNow = 1;
-    var playTimer = null;
-    var timer = null;
-    
-
-    playTimer = chooseMove(aSliderImage , boole , iNow);
-
-    myAddEvent(oEle , 'mouseover' , function () {
-        clearInterval(playTimer);
-    });
-    myAddEvent(oEle , 'mouseout' , function () {
-        playTimer = chooseMove(aSliderImage , boole , iNow);
-    });
+/*--------------------------------- 焦点图函数开始 -------------------------------------*/
+/**
+ * 焦点图函数（注：HTML跟CSS必须按照相应的规则来写）
+ * @param {object} oEle    焦点图的主体元素
+ * @param {bool} boole     ture代表按照淡入淡出来切换图片，false代表横向移动切换图片
+ */
+function Focus() {
+    this.initialize.apply(this , arguments);
 }
-function chooseMove(aSliderImage , boole , iNow) {
-    var timerFn = null;
-    timerFn = setInterval(function () {
+Focus.prototype =
+{
+    initialize : function ( oEle , boole )
+    {
+        var that = this;
+        this.timer = null;
+        this.navTimer = null;
+        that.iNow = 1;
+        this.oFocus = id(oEle);
+        this.oFocusChild = getChild(this.oFocus);
+        // 获取图片
+        this.aSliderImg = this.oFocusChild[0].getElementsByTagName('li');
+        // 获取nav
+        this.aSliderNav = this.oFocusChild[1].getElementsByTagName('li');
+        // 获取按钮
+        this.oSliderBtn = this.oFocusChild[2];
+        this.prevBtn = this.oSliderBtn.getElementsByTagName('a')[0];
+        this.nextBtn = this.oSliderBtn.getElementsByTagName('a')[1];
+        // 详细商品栏右边的焦点图初始化
         if (boole) {
-            opacityMove (iNow);
-        } else {
-            positionMove (iNow);
+            this.aSliderImg[0].style.opacity = 1;
+            this.aSliderImg[0].style.filter = 'alpha(opacity:100)';
         }
-        if (iNow < (aSliderImage.length-1)) {iNow = iNow+1;} else{iNow = 0;}
-    },3000);
+        // 开启自动播放
+        this.autoPlay.apply(this);
+        // 鼠标移入后自动播放暂停
+        myAddEvent (this.oFocus , 'mouseover' ,function () {
+            clearInterval(that.timer);
+        });
+        // 鼠标移出后开始自动播放
+        myAddEvent (this.oFocus , 'mouseout' ,function () {
+            that.autoPlay.apply(that);
+        });
+        // 鼠标移入移出时按钮的显示与隐藏
+        this.showHideBtn.apply(this);
+        // 前后按钮点击时候图片的轮换
+        myAddEvent (this.prevBtn , 'click' , function () {
+            that.iNow > 1 ? that.iNow -- : that.iNow = (that.aSliderImg.length-1);
+            that.opacityMove.apply(that);
+        });
+        myAddEvent (this.nextBtn , 'click' , function () {
+            that.iNow < (that.aSliderImg.length-1) ? that.iNow ++ : that.iNow = 0;
+            that.opacityMove.apply(that);  //这里要加上apply来绑定啊~~~
+        });
+        // 鼠标移入nav的时候图片切换
+        this.navChange.apply(this);
+    },
 
-    return timerFn;
-}
-/**
- * 焦点图淡入淡出的运动,nav背景颜色的变化是通过切换class来实现的
- * @param ｛number｝iIndex 索引值，具体让第几张图片显示
- */
-function opacityMove (aSliderImage , aSliderList , iIndex) {
-    for (var i = 0; i < aSliderImage.length; i++) {
-
-        if (aSliderImage[i].className == 'currentSlider') {
-            aSliderImage[i].className = aSliderList[i].className = null;
-            //move工具函数
-            
-            move(aSliderImage[i] , 0 ,'opacity');
+    // 按钮的显示与隐藏
+    showHideBtn : function ()
+    {
+        var that = this;
+        for (var i = 0; i < this.aSliderImg.length; i++) {
+            this.oSliderBtn.onmouseover = this.aSliderImg[i].onmouseover = function  () {
+                showHide(that.oSliderBtn);
+            };
+            this.oSliderBtn.onmouseout = this.aSliderImg[i].onmouseout = function  () {
+                showHide(that.oSliderBtn);
+            };
         }
+    },
+
+    // 自动播放
+    autoPlay : function ()
+    {
+        var that = this;
+        this.timer = setInterval( function () {
+            that.opacityMove.apply(that);
+            that.iNow < (that.aSliderImg.length-1) ? that.iNow ++ : that.iNow = 0;
+        } , 3500);
+    },
+
+    // 鼠标移入nav图片切换
+    navChange : function ()
+    {
+        var that = this;
+        for (var i = 0; i < this.aSliderNav.length; i++) {
+            this.aSliderNav[i].index = i;
+            myAddEvent (this.aSliderNav[i] , 'mouseover' , function () {
+                if(this.className != 'currentSlider'){       //不要全部都是that啊，这里用this的
+                    var _this = this;
+                    that.navTimer = setTimeout( function () {
+                        that.iNow = _this.index;
+                        that.opacityMove.apply(that);
+                    } , 300);
+                }
+            });
+            myAddEvent ( this.aSliderNav[i] , 'mouseout' , function () {
+                clearTimeout(that.navTimer)
+            } );
+        }
+    },
+
+    // 图片的隐藏与显示
+    opacityMove : function ()
+    {
+        for (var i = 0; i < this.aSliderImg.length; i++) {
+            // 将当前正在显示的图片变为隐藏
+            if (this.aSliderImg[i].className == 'currentSlider') {
+                this.aSliderImg[i].className = this.aSliderNav[i].className = null;
+                move(this.aSliderImg[i] , 0 ,'opacity');
+            }
+        }
+        // 将索引值为iNow的图片显示出来
+        this.aSliderImg[this.iNow].className = this.aSliderNav[this.iNow].className = 'currentSlider';
+        move (this.aSliderImg[this.iNow] , 100 , 'opacity');
     }
-    aSliderImage[iIndex].className = aSliderList[iIndex].className = 'currentSlider';
-    //move工具函数
-    move (aSliderImage[iIndex] , 100 , 'opacity');
-}
-// var oFocusPic = document.getElementById('FocusPic');
-// var oSliderBtn = document.getElementById('slider_btn');
-// function focus () {
-//  var oBtnPrev = getClass(oSliderBtn , 'btn_prev')[0];
-//  var oBtnNext = getClass(oSliderBtn , 'btn_next')[0];
-//  var iNow = 1;
-//  var playTimer = null;
-//  var timer = null;
-//  // 自动播放
-//  playTimer = setInterval(function  () {
-//      // doMove工具函数
-//      doMove (iNow);
-//      if (iNow < (aSliderList.length-1)) {iNow = iNow+1;} else{iNow = 0;}
-//  },3500);
-//  //鼠标移入焦点图的区域自动播放暂停
-//  oFocusPic.onmouseover = function  () {
-//      clearInterval(playTimer);
-//  };
-
-//  // 鼠标移出后开启自动播放
-//  oFocusPic.onmouseout = function  () {
-//      playTimer = setInterval(function  () {
-//          doMove (iNow);
-//          if (iNow < (aSliderList.length-1)) {iNow = iNow+1;} else{iNow = 0;}
-//      },3500);
-//  };
-
-//  //前后按钮
-//  for (var i = 0; i < aSliderImage.length; i++) {
-//      //按钮显示
-//      oSliderBtn.onmouseover = aSliderImage[i].onmouseover = function  () {
-//          oSliderBtn.style.display='block';
-//      };
-//      oSliderBtn.onmouseout = aSliderImage[i].onmouseout = function  () {
-//          oSliderBtn.style.display='none';
-//      };
-//      // 点击按钮时图片切换
-//      oBtnPrev.onclick = function  () {
-//          if (iNow > 1) {iNow = iNow-1;} else{iNow = (aSliderList.length-1);}
-//          doMove (iNow);
-//      };
-//      oBtnNext.onclick = function  () {
-//          if (iNow < (aSliderList.length-1)) {iNow = iNow+1;} else{iNow = 0;}
-//          doMove (iNow);
-//      };
-//  }
-//  //轮播图上的list鼠标移入切换图片
-//  for (var i = 0; i < aSliderList.length; i++) {
-//      aSliderList[i].index = i;
-//      aSliderList[i].onmouseover = function  () {
-//          var that = this;
-//          clearTimeout(timer);
-//          if (this.style.backgroundColor != '#C81623') {
-//              timer = setTimeout(function  () {
-//                  doMove (that.index);
-//                  iNow = that.index;
-//              },400);
-//          }
-//      };
-//  }
-// }
-
-/**
- * 焦点图横向滚动的运动
- * @param ｛number｝iIndex 索引值，具体让第几张图片显示
- */
-function positionMove(iIndex) {
-
-    }
-
-
-
-/*------------------------------- 焦点图共用函数结束 -----------------------------------*/
+};
+/*--------------------------------- 焦点图函数结束 -------------------------------------*/
 
 
 /*---------------------------------- 页面流程开始 --------------------------------------*/
-
 /**
  * top栏及购物车的隐藏
  */
 myReady(function () {
     var i = null;
-
     // top栏部分
     var oTop = id('top');
     var aTopDropdown = getClass(oTop,'top_dropdown');
@@ -386,11 +373,11 @@ myReady(function () {
 
         myAddEvent(aHideLayers[i] , 'mouseover' , function () {
             showHide(this);
-            // aVisbleCategory[this.index].className = 'unvisble_category';
+            aVisbleCategory[this.index].className = 'unvisble_category';
         });
         myAddEvent(aHideLayers[i] , 'mouseout' , function () {
             showHide(this);
-            // aVisbleCategory[this.index].className = 'visble_category';
+            aVisbleCategory[this.index].className = 'visble_category';
         });
     }
 });
@@ -400,13 +387,7 @@ myReady(function () {
  * 详细商品栏右边的焦点图
  */
 myReady(function () {
-    var oFocusPic1 = id('FocusPic1');
-    var aSliderImage = getChild(oFocusPic1)[0].getElementsByTagName('li');
-    // 焦点图初始化
-    aSliderImage[0].style.opacity = 1;
-    aSliderImage[0].style.filter = 'alpha(opacity:100)';
-
-    // focus(oFocusPic1 , 100 , true);
+    new Focus ('FocusPic1' , true);
 });
 
 /**
@@ -468,93 +449,4 @@ myReady(function () {
     });
 });
 /* 综合推荐结束 */
-
 /*------------------------------------- 页面流程结束 -----------------------------------------*/
-
-
-
-
-
-
-//  playTimer = setInterval(function  () {
-//      // doMove工具函数
-//      doMove (iNow);
-//      if (iNow < (aSliderList.length-1)) {iNow = iNow+1;} else{iNow = 0;}
-//  },3500);
-//  //鼠标移入焦点图的区域自动播放暂停
-//  oFocusPic.onmouseover = function  () {
-//      clearInterval(playTimer);
-//  };
-
-//  // 鼠标移出后开启自动播放
-//  oFocusPic.onmouseout = function  () {
-//      playTimer = setInterval(function  () {
-//          doMove (iNow);
-//          if (iNow < (aSliderList.length-1)) {iNow = iNow+1;} else{iNow = 0;}
-//      },3500);
-//  };
-
-
-
-
-// var oFocusPic = document.getElementById('FocusPic');
-// var oSliderBtn = document.getElementById('slider_btn');
-// function focus () {
-//  var oBtnPrev = getClass(oSliderBtn , 'btn_prev')[0];
-//  var oBtnNext = getClass(oSliderBtn , 'btn_next')[0];
-//  var iNow = 1;
-//  var playTimer = null;
-//  var timer = null;
-//  // 自动播放
-//  playTimer = setInterval(function  () {
-//      // doMove工具函数
-//      doMove (iNow);
-//      if (iNow < (aSliderList.length-1)) {iNow = iNow+1;} else{iNow = 0;}
-//  },3500);
-//  //鼠标移入焦点图的区域自动播放暂停
-//  oFocusPic.onmouseover = function  () {
-//      clearInterval(playTimer);
-//  };
-
-//  // 鼠标移出后开启自动播放
-//  oFocusPic.onmouseout = function  () {
-//      playTimer = setInterval(function  () {
-//          doMove (iNow);
-//          if (iNow < (aSliderList.length-1)) {iNow = iNow+1;} else{iNow = 0;}
-//      },3500);
-//  };
-
-//  //前后按钮
-//  for (var i = 0; i < aSliderImage.length; i++) {
-//      //按钮显示
-//      oSliderBtn.onmouseover = aSliderImage[i].onmouseover = function  () {
-//          oSliderBtn.style.display='block';
-//      };
-//      oSliderBtn.onmouseout = aSliderImage[i].onmouseout = function  () {
-//          oSliderBtn.style.display='none';
-//      };
-//      // 点击按钮时图片切换
-//      oBtnPrev.onclick = function  () {
-//          if (iNow > 1) {iNow = iNow-1;} else{iNow = (aSliderList.length-1);}
-//          doMove (iNow);
-//      };
-//      oBtnNext.onclick = function  () {
-//          if (iNow < (aSliderList.length-1)) {iNow = iNow+1;} else{iNow = 0;}
-//          doMove (iNow);
-//      };
-//  }
-//  //轮播图上的list鼠标移入切换图片
-//  for (var i = 0; i < aSliderList.length; i++) {
-//      aSliderList[i].index = i;
-//      aSliderList[i].onmouseover = function  () {
-//          var that = this;
-//          clearTimeout(timer);
-//          if (this.style.backgroundColor != '#C81623') {
-//              timer = setTimeout(function  () {
-//                  doMove (that.index);
-//                  iNow = that.index;
-//              },400);
-//          }
-//      };
-//  }
-// }
