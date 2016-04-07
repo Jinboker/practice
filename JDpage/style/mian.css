@@ -230,7 +230,7 @@
 	#searchBar{
 		position: relative;
 		height: 36px;
-		width: 538px;
+		width: 550px;
 		margin-top: 25px;
 		z-index: 2;
 	}
@@ -424,12 +424,14 @@
 		height: 31px;
 		width: 199px;
 		padding-left: 10px;
+		background-color: #C81623;
 		line-height: 31px;
 		cursor: default;
 	}
 	#category a{
 		display: block;
 		padding-right: 20px;
+		color: white;
 		font-size: 14px;
 		font-weight: 400;
 	}
@@ -439,12 +441,6 @@
 		left: 190px;
 		color: white;
 		cursor: pointer;
-	}
-	#category .visble_category{
-		background-color: #C81623;
-	}
-	#category .visble_category a{
-		color: white;
 	}
 	/*nav*/
 	/*详细商品栏*/
@@ -666,7 +662,7 @@
 	#news_content{
 		height: 120px;
 		padding:5px 0px 4px 17px;
-		border-width:0 1px 0 1px;
+		border-width:0 1px 1px 1px;
 		border-style: solid;
 		border-color: #e8e8e7;
 	}
@@ -686,75 +682,129 @@
 	/*焦点图及生活服务栏*/
 	/*生活服务*/
 	.extra_box{
-		height: 207px;
-		border: 1px solid #e8e8e7;
+		height: 208px;
+		border-width: 0 1px 1px 1px;
+		border-style: solid;
+		border-color: #e8e8e7;
 		overflow: hidden;
 	}
 	#life_server{
-		width: 260px;
-	}
-	#life_server li{
-		float: left;
-		height: 68px;
-		width: 61px;
-		border-width: 0px 1px 1px 0px;
-		border-style: solid;
-		border-color: #e8e8e7;
 		position: relative;
+		top: 0px;
+		width: 260px;
+		height: 250px;
 	}
-	#life_server li a{
-		display: block;
-		height: 28px;
-		width: 61px;
-		padding-top: 40px;
-		line-height: 28px;
-		text-align: center;
-	}
-	#life_server i{
-		display: block;
-		position: absolute;
-		top: 13px;
-		left: 18px;
-		width: 25px;
-		height: 25px;
+	.life_box li{
+		float: left;
+		height: 69px;
+		width: 62px;
+		border-right: 1px solid #e8e8e7;
+		border-bottom: 1px solid #e8e8e7;
 		overflow: hidden;
 	}
-	#life_server .force1{
+	.life_box a{
+		float: left;
+		position: relative;
+		display: block;
+		height: 69px;
+		width: 62px;
+		text-align: center;
+	}
+	.life_box i{
+		position: relative;
+		z-index: -1;
+		display: block;
+		margin: 14px auto 0 auto;
+		height: 25px;
+		width: 25px;
+	}
+	.life_box span{
+		position: relative;
+		z-index: -1;
+		display: block;
+		width: 62px;
+		height: 30px;
+		line-height: 30px;
+	}
+	.life_box .force1{
 		background: url('../image/lifeIcon.png') no-repeat 0 0;
 	}
-	#life_server .force2{
+	.life_box .force2{
 		background: url('../image/lifeIcon.png') no-repeat 0 -25px;
 	}
-	#life_server .force3{
+	.life_box .force3{
 		background: url('../image/lifeIcon.png') no-repeat 0 -50px;
 	}
-	#life_server .force4{
+	.life_box .force4{
 		background: url('../image/lifeIcon.png') no-repeat 0 -75px;
 	}
-	#life_server .force5{
+	.life_box .force5{
 		background: url('../image/lifeIcon.png') no-repeat 0 -100px;
 	}
-	#life_server .force6{
+	.life_box .force6{
 		background: url('../image/lifeIcon.png') no-repeat 0 -125px;
 	}
-	#life_server .force7{
+	.life_box .force7{
 		background: url('../image/lifeIcon.png') no-repeat 0 -150px;
 	}
-	#life_server .force8{
+	.life_box .force8{
 		background: url('../image/lifeIcon.png') no-repeat 0 -175px;
 	}
-	#life_server .force9{
+	.life_box .force9{
 		background: url('../image/lifeIcon.png') no-repeat 0 -250px;
 	}
-	#life_server .force10{
+	.life_box .force10{
 		background: url('../image/lifeIcon.png') no-repeat 0 -200px;
 	}
-	#life_server .force11{
+	.life_box .force11{
 		background: url('../image/lifeIcon.png') no-repeat 0 -275px;
 	}
-	#life_server .force12{
+	.life_box .force12{
 		background: url('../image/lifeIcon.png') no-repeat 0 -225px;
 	}
+	/*话费机票电影票鼠标移上后的反应*/
+	.life_box .lsh_border{
+		border-bottom-color: white;
+	}
+	.life_box .lsh_border span{
+		border-top: solid 2px #C81623;
+	}
+	/*鼠标移入后出现的*/
+	#ls_hide{
+		position: relative;
+		top: 208px;
+		width: 247px;
+		height: 177px;
+		background: white;
+	}
+	#ls_hide .foce1,
+	#ls_hide .foce2,
+	#ls_hide .foce3,
+	#ls_hide .foce4{
+		display: none;
+		position: absolute;
+		top: 0;
+		width: 100%;
+		height: 100%;
+	}
+	#ls_hide .close{
+		position: absolute;;
+		right: 0;
+		height: 20px;
+		width: 20px;
+		text-align: center;
+		line-height: 20px;
+		cursor: pointer;
+	}
+	#ls_hide .change{
+		background-color: #CCCCCC;
+		color: white;
+	}
+
+
+
+
+
 	#extra_adver{
 		display: block;
 		height: 75px;
@@ -778,20 +828,20 @@
 		position: absolute;
 		top: 40%;
 		right: 0px;
+		width: 35px;
 	}
 	.toolbar-footer {
 		position: absolute;
 		bottom: 0;
 		right: 0;
+		width: 35px;
 	}
 	#gobal-toolbar .toolbar-head li{
 		position: relative;
-		right: -65px;
 		width: 100px;
 	}
 	#gobal-toolbar .toolbar-footer li{
 		position: relative;
-		right: -45px;
 		width: 80px;
 	}
 	#gobal-toolbar li{
@@ -862,16 +912,13 @@
 	}
 
 /*综合推荐*/
-#comprehensiveRecommend{
-	overflow: hidden;
+/*今日推荐*/
+#recommend{
+	position: relative;
+	height: 164px;
+	margin-top: 10px;
+	margin-bottom: 20px;
 }
-	/*今日推荐*/
-	#recommend{
-		position: relative;
-		height: 164px;
-		margin-top: 10px;
-		margin-bottom: 20px;
-	}
 	/*今日推荐*/
 	/*时钟*/
 	.clock i{
@@ -883,10 +930,18 @@
 	}
 	/*今日推荐*/
 	/*滑动图*/
-	#recommend ul{
+	.goods_recommend{
 		position: absolute;
+		top: 0;
 		left: 210px;
 		height: 164px;
+		width: 1000px;
+		overflow: hidden;
+	}
+	.goods_recommend ul{
+		position: relative;
+		top: 0;
+		left: 0;
 	}
 	#recommend li{
 		display: block;
@@ -901,7 +956,7 @@
 	/*今日推荐*/
 	/*前后按钮*/
 	#recommend .slider_btn{
-		/*display: none;*/
+		display: none;
 		cursor: pointer;
 	}
 	#recommend .btn_prev{
@@ -1017,7 +1072,186 @@
 		color: #b51d1a;
 		font-size: 18px;
 	}
-
+	/*品质生活*/
+	#quality_life{
+		padding-top: 25px;
+	}
+	#quality_life h2{
+		color: #333;
+		font-size: 20px;
+		line-height: 36px;
+	}
+	.ql_content{
+		height: 405px;
+		border: 1px solid #ededed;
+		overflow: hidden;
+	}
+	.ql_content .w{
+		width: 1220px;
+		height: 405px;
+	}
+	/*前三个内容*/
+	.ct_top{
+		margin: 0 20px;
+		border-bottom: 1px dashed #e0e0e0;
+		font: 700 15px/40px 'Microsoft Yahei';
+		color: #333;
+		text-align: center;
+	}
+	.ql_ct1,
+	.ql_ct3{
+		width: 404px;
+		height: 100%;
+		overflow: hidden;
+		background-color: #f7f7f7;
+	}
+	.ql_ct2{
+		height: 100%;
+		width: 229px;
+	}
+	.ql_ct4{
+		height: 100%;
+		width: 171px;
+	}
+	.ql_ct1 > a,
+	.ql_ct2 > a,
+	.ql_ct3 > a{
+		position: relative;
+	}
+	.ct_move{
+		position: relative;
+		left: 0;
+	}
+	.ct_item_big,
+	.middle_ctit_top{
+		display: block;
+		height: 246px;
+		border-width: 0 1px 1px 0;
+		border-color: #ededed;
+		border-style: solid;
+	}
+	.middle_ctit_bottom{
+		display: block;
+	}
+	.ct_item_small{
+		display: block;
+		float: left;
+		width: 202px;
+		height: 158px;
+	}
+	.ct_item_small img{
+		border-right: 1px solid #ededed;
+	}
+	.ql_content dl{
+		position: absolute;
+		z-index: 1;
+		color: #333;
+	}
+	.ct_item_big dl{
+		top: 109px;
+		left: 45px;
+	}
+	.middle_ctit_top dl{
+		top: 109px;
+		left: 10px;
+	}
+	.ct_item_small dl,
+	.middle_ctit_bottom dl{
+		top: 48px;
+		left: 10px;
+	}
+	.ql_content dt{
+		margin-bottom: 12px;
+		font-weight: 700;
+		font-size: 16px;
+	}
+	.ql_content .promote{
+		color: #c81623;
+	}
+	/*第四个内容*/
+	.banners_left,
+	.banners_right{
+		width: 85px;
+		height: 381px;
+		margin: 13px 0;
+	}
+	.banners_left{
+		border-right: 1px dashed #e0e0e0;
+	}
+	.banners_left ul,
+	.banners_right ul{
+		margin-top: -13px;
+		height: 405px;
+		width: 85px;
+		overflow: hidden;
+	}
+	.banners_left li{
+		float: right;
+	}
+	.banners_right li{
+		float: left;
+	}
+	.banners_left li,
+	.banners_right li{
+		position: relative;
+		width: 74px;
+		height: 57px;
+		border-bottom: 1px dashed #e0e0e0;
+	}
+	.banners_left .ql_hidden,
+	.banners_right .ql_hidden{
+		border-bottom: none;
+	}
+	.banners_left a{
+		position: relative;
+		left: -11px;
+	}
+	.banners_left a,
+	.banners_right a{
+		display: block;
+		width: 85px;
+		height: 57px;
+		background: url('../image/quatily_life/ql4.jpg') no-repeat;
+	}
+	.banners_left .force2{
+		background-position: -85px 0;
+	}
+	.banners_left .force3{
+		background-position: -170px 0;
+	}
+	.banners_left .force4{
+		background-position: -255px 0;
+	}
+	.banners_left .force5{
+		background-position: -340px 0;
+	}
+	.banners_left .force6{
+		background-position: -425px 0;
+	}
+	.banners_left .force7{
+		background-position: -510px 0;
+	}
+	.banners_right .force1{
+		background-position: 0 -57px;
+	}
+	.banners_right .force2{
+		background-position: -85px -57px;
+	}
+	.banners_right .force3{
+		background-position: -170px -57px;
+	}
+	.banners_right .force4{
+		background-position: -255px -57px;
+	}
+	.banners_right .force5{
+		background-position: -340px -57px;
+	}
+	.banners_right .force6{
+		background-position: -425px -57px;
+	}
+	.banners_right .force7{
+		background-position: -510px -57px;
+	}
 /*页脚*/
 #footer{
 	text-align: center;

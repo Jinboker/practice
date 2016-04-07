@@ -245,7 +245,7 @@
 		<a href="javascript:;" alt="LogoImage"></a>
 		<div id="searchBar" class="fl">
 			<input type="text" class="searchTex fl">
-			<input type="button" value="搜索" class="searchBut fr">
+			<input type="button" value="搜索" class="searchBut fl">
 		</div>
 		<div id="buyCar" class="fr buyCar1">
 			<i class="buyIcronLef fl"></i>
@@ -289,24 +289,24 @@
 			</ul>
 			<!-- 详细商品栏 -->
 			<ul id="category">
-				<li class="visble_category"><a href="javascript:;">家用电器</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">手机、数码、京东通信</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">电脑、办公</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">家居、家具、家装、厨具</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">男装、女装、内衣、珠宝</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">个护化妆、清洁用品</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">鞋靴、箱包、钟表、奢侈品</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">运动户外</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">汽车、汽车用品</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">母婴、玩具乐器</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">食品、酒类、生鲜、特产</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">营养保健</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">图书、音像、电子书</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">彩票、旅行、充值、票务</a><i>></i></li>
-				<li class="visble_category"><a href="javascript:;">理财、众筹、白条、保险</a><i>></i></li>
+				<li><a href="javascript:;">家用电器</a><i>></i></li>
+				<li><a href="javascript:;">手机、数码、京东通信</a><i>></i></li>
+				<li><a href="javascript:;">电脑、办公</a><i>></i></li>
+				<li><a href="javascript:;">家居、家具、家装、厨具</a><i>></i></li>
+				<li><a href="javascript:;">男装、女装、内衣、珠宝</a><i>></i></li>
+				<li><a href="javascript:;">个护化妆、清洁用品</a><i>></i></li>
+				<li><a href="javascript:;">鞋靴、箱包、钟表、奢侈品</a><i>></i></li>
+				<li><a href="javascript:;">运动户外</a><i>></i></li>
+				<li><a href="javascript:;">汽车、汽车用品</a><i>></i></li>
+				<li><a href="javascript:;">母婴、玩具乐器</a><i>></i></li>
+				<li><a href="javascript:;">食品、酒类、生鲜、特产</a><i>></i></li>
+				<li><a href="javascript:;">营养保健</a><i>></i></li>
+				<li><a href="javascript:;">图书、音像、电子书</a><i>></i></li>
+				<li><a href="javascript:;">彩票、旅行、充值、票务</a><i>></i></li>
+				<li><a href="javascript:;">理财、众筹、白条、保险</a><i>></i></li>
 			</ul>
 			<!-- 隐藏的详细商品栏 -->
-			<div class="hidemenu">
+			<div id="hidemenu">
 				<div class="hide_layers">
 					<div class="hide_top">
 						<a href="javascript:;"><span>品牌日</span><i>></i></a>
@@ -2029,44 +2029,68 @@
 				<li><a href="javascript:;"><span>[特惠]</span>打白条满100减50，女人节专享</a></li>
 			</ul>
 			<div class="extra_box">
-				<ul id="life_server">
-					<li>
-						<a href="javascript:;"><i class='force1'></i><span>话费</span></a>
-					</li>
-					<li>
-						<a href="javascript:;"><i class='force2'></i><span>机票</span></a>
-					</li>
-					<li>
-						<a href="javascript:;"><i class='force3'></i><span>电影票</span></a>
-					</li>
-					<li>
-						<a href="javascript:;"><i class='force4'></i><span>游戏</span></a>
-					</li>
-					<li>
-						<a href="javascript:;"><i class='force5'></i><span>彩票</span></a>
-					</li>
-					<li>
-						<a href="javascript:;"><i class='force6'></i><span>团购</span></a>
-					</li>
-					<li>
-						<a href="javascript:;"><i class='force7'></i><span>酒店</span></a>
-					</li>
-					<li>
-						<a href="javascript:;"><i class='force8'></i><span>火车票</span></a>
-					</li>
-					<li>
-						<a href="javascript:;"><i class='force9'></i><span>众筹</span></a>
-					</li>
-					<li>
-						<a href="javascript:;"><i class='force10'></i><span>理财</span></a>
-					</li>
-					<li>
-						<a href="javascript:;"><i class='force11'></i><span>礼品卡</span></a>
-					</li>
-					<li>
-						<a href="javascript:;"><i class='force12'></i><span>白条</span></a>
-					</li>
-				</ul>
+				<div id="life_server">
+					<ul class="life_box fl">
+						<li>
+							<a href="javascript:;">
+								<i class='force1'></i>
+								<span>话费</span>
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;"><i class='force2'></i><span>机票</span></a>
+						</li>
+						<li>
+							<a href="javascript:;"><i class='force3'></i><span>电影票</span></a>
+						</li>
+						<li>
+							<a href="javascript:;"><i class='force4'></i><span>游戏</span></a>
+						</li>
+						<li>
+							<a href="javascript:;"><i class='force5'></i><span>彩票</span></a>
+						</li>
+						<li>
+							<a href="javascript:;"><i class='force6'></i><span>团购</span></a>
+						</li>
+						<li>
+							<a href="javascript:;"><i class='force7'></i><span>酒店</span></a>
+						</li>
+						<li>
+							<a href="javascript:;"><i class='force8'></i><span>火车票</span></a>
+						</li>
+						<li>
+							<a href="javascript:;"><i class='force9'></i><span>众筹</span></a>
+						</li>
+						<li>
+							<a href="javascript:;"><i class='force10'></i><span>理财</span></a>
+						</li>
+						<li>
+							<a href="javascript:;"><i class='force11'></i><span>礼品卡</span></a>
+						</li>
+						<li>
+							<a href="javascript:;"><i class='force12'></i><span>白条</span></a>
+						</li>
+					</ul>
+					<!-- 话费机票电影票隐藏 -->
+					<ul id="ls_hide">
+						<li class="foce1">
+							<p class="close">×</p>
+							1
+						</li>
+						<li class="foce2">
+							<p class="close">×</p>
+							2
+						</li>
+						<li class="foce3">
+							<p class="close">×</p>
+							3
+						</li>
+						<li class="foce4">
+							<p class="close">×</p>
+							4
+						</li>
+					</ul>
+				</div>
 			</div>
 			<a href="javascript:;" id="extra_adver"></a>
 		</div>
@@ -2119,16 +2143,18 @@
 				<i></i>
 			</div>
 			<!-- 商品推荐 -->
-			<ul>
-				<li><a href="javascript:;"><img src="image/recommend/1.jpg"/></a></li>
-				<li><a href="javascript:;"><img src="image/recommend/2.jpg"/></a></li>
-				<li><a href="javascript:;"><img src="image/recommend/3.jpg"/></a></li>
-				<li><a href="javascript:;"><img src="image/recommend/4.jpg"/></a></li>
-				<li><a href="javascript:;"><img src="image/recommend/5.jpg"/></a</li>
-				<li><a href="javascript:;"><img src="image/recommend/6.jpg"/></a></li>
-				<li><a href="javascript:;"><img src="image/recommend/7.jpg"/></a></li>
-				<li><a href="javascript:;"><img src="image/recommend/8.jpg"/></a></li>
-			</ul>
+			<div class="goods_recommend">
+				<ul>
+					<li><a href="javascript:;"><img src="image/recommend/1.jpg"/></a></li>
+					<li><a href="javascript:;"><img src="image/recommend/2.jpg"/></a></li>
+					<li><a href="javascript:;"><img src="image/recommend/3.jpg"/></a></li>
+					<li><a href="javascript:;"><img src="image/recommend/4.jpg"/></a></li>
+					<li><a href="javascript:;"><img src="image/recommend/5.jpg"/></a</li>
+					<li><a href="javascript:;"><img src="image/recommend/6.jpg"/></a></li>
+					<li><a href="javascript:;"><img src="image/recommend/7.jpg"/></a></li>
+					<li><a href="javascript:;"><img src="image/recommend/8.jpg"/></a></li>
+				</ul>
+			</div>
 			<div class="slider_btn">
 				<a href="javascript:;" class="btn_prev"><</a>
 				<a href="javascript:;" class="btn_next">></a>
@@ -2254,7 +2280,140 @@
 				</li>
 			</ul>
 		</div>
-
+		<!-- 品质生活 -->
+		<div id="quality_life">
+			<h2>京东 · 品质生活</h2>
+			<div class="ql_content">
+				<div class="w">
+					<div class="ql_ct1 fl">
+						<a href="javascript:;" class="ct_item_big">
+							<p class="ct_top">新发现</p>
+							<dl>
+								<dt>尚新品</dt>
+								<dd class="adver">乐事新品来袭</dd>
+								<dd class="promote">片片香浓满99件40</dd>
+							</dl>
+							<img src="image/quatily_life/ql1/1.jpg" class="
+							ct_move" />
+						</a>
+						<a href="javascript:;" class="ct_item_small">
+							<dl>
+								<dt>新趋势</dt>
+								<dd class="adver">乐视行车记录仪</dd>
+								<dd class="promote">晒单赢免单</dd>
+							</dl>
+							<img src="image/quatily_life/ql1/2.jpg" />
+						</a>
+						<a href="javascript:;" class="ct_item_small">
+							<dl>
+								<dt>新先购</dt>
+								<dd class="adver">飞利浦微晶嫩敷</dd>
+								<dd class="promote">电动洗脸仪</dd>
+							</dl>
+							<img src="image/quatily_life/ql1/3.jpg" />
+						</a>
+					</div>
+					<div class="ql_ct2 fl">
+						<a href="javascript:;" class="middle_ctit_top">
+							<p class="ct_top">好物100</p>
+							<dl>
+								<dt>清明美食</dt>
+								<dd class="adver">艾草青团</dd>
+								<dd class="promote">舌尖上的温柔乡</dd>
+							</dl>
+							<img src="image/quatily_life/ql2/1.jpg" />
+						</a>
+						<a href="javascript:;" class="middle_ctit_bottom">
+							<dl>
+								<dt>潮有范</dt>
+								<dd class="adver">Dickies字母风暴</dd>
+								<dd class="promote">头文字“D”</dd>
+							</dl>
+							<img src="image/quatily_life/ql2/2.jpg" />
+						</a>
+					</div>
+					<div class="ql_ct3 fl">
+						<a href="javascript:;" class="ct_item_big">
+							<p class="ct_top">品牌街</p>
+							<dl>
+								<dt>品质出游</dt>
+								<dd class="adver">春日踏青</dd>
+								<dd class="promote">相机低至479元</dd>
+							</dl>
+							<img src="image/quatily_life/ql3/1.jpg" class="ct_move" />
+						</a>
+						<a href="javascript:;" class="ct_item_small">
+							<dl>
+								<dt>国际服饰</dt>
+								<dd class="adver">Rapido大牌精选</dd>
+								<dd class="promote">满599减50</dd>
+							</dl>
+							<img src="image/quatily_life/ql3/2.jpg" />
+						</a>
+						<a href="javascript:;" class="ct_item_small">
+							<dl>
+								<dt>科技精品</dt>
+								<dd class="adver">玩科技</dd>
+								<dd class="promote">折叠电动车</dd>
+							</dl>
+							<img src="image/quatily_life/ql3/3.jpg" />
+						</a>
+					</div>
+					<div class="ql_ct4 fl">
+						<div class="w">
+							<div class="banners_left fl">
+								<ul>
+									<li>
+										<a href="javascript:;" class="force1"></a>
+									<li>
+										<a href="javascript:;" class="force2"></a>
+									</li>
+									<li>
+										<a href="javascript:;" class="force3"></a>
+									</li>
+									<li>
+										<a href="javascript:;" class="force4"></a>
+									</li>
+									<li>
+										<a href="javascript:;" class="force5"></a>
+									</li>
+									<li>
+										<a href="javascript:;" class="force6"></a>
+									</li>
+									<li class="ql_hidden">
+										<a href="javascript:;" class="force7"></a>
+									</li>
+								</ul>
+							</div>
+							<div class="banners_right fl">
+								<ul>
+									<li>
+										<a href="javascript:;" class="force1"></a>
+									<li>
+										<a href="javascript:;" class="force2"></a>
+									</li>
+									<li>
+										<a href="javascript:;" class="force3"></a>
+									</li>
+									<li>
+										<a href="javascript:;" class="force4"></a>
+									</li>
+									<li>
+										<a href="javascript:;" class="force5"></a>
+									</li>
+									<li>
+										<a href="javascript:;" class="force6"></a>
+									</li>
+									<li class="ql_hidden">
+										<a href="javascript:;" class="force7"></a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<!-- 综合推荐结束 -->
 	<!-- 页脚 -->

@@ -25,11 +25,19 @@ function id (sId) {
 }
 
 /**
- * 获取样式的函数，主要是为了兼容IE
- * @param {string} value 想要获取的样式
+ *获取实际样式函数
+ * @param   {Object} obj  需要获取样式的对象
+ * @param   {String} attr 获取的样式名
+ * @returns {String} 获取到的样式值
  */
-function getStyle (oEle , value) {
-    return oEle.currentStyle ? oEle.currentStyle[value] : getComputedStyle(oEle, null)[value];
+function getStyle(obj, attr) {
+    //IE写法
+    if (obj.currentStyle) {
+        return obj.currentStyle[attr];
+    //标准
+    } else {
+        return getComputedStyle(obj, false)[attr];
+    }
 }
 
 /**
@@ -116,38 +124,49 @@ function showHide(obj) {
 }
 
 /**
- * 任意值的运动框架
- * @param {object} oEle    想要运动的那个对象
- * @param {number} iTarget 运动的目标值
- * @param {string｝value   想要去运动的样式
+ * 任意值的缓冲运动框架
+ * @param {object}   oEle         想要运动的那个对象
+ * @param {json}     json         运动的目标
+ * @param {number}   iCtrSpeed    可选，用来控制运动速度，默认为25
+ * @param {function｝fn           可选，链式运动函数
  */
-function move (oEle , iTarget , value) {
+function move (oEle , json , iCtrSpeed , fn) {
     clearInterval(oEle.timer);
+    if (!iCtrSpeed) {iCtrSpeed = 30;}
     oEle.timer = setInterval(function  () {
-        var iSpeed = null;
-        var iCur = null;
-        // 获取透明度IE8以前的写法
-        if (value == 'opacity') {
-            iCur = parseInt( parseFloat(getStyle(oEle , value))*100 );
-        // 标准写法
-        } else{
-            iCur = parseInt(getStyle(oEle , value));
-        }
-        // 缓冲运动速度值
-        iSpeed = (iTarget - iCur)/8;
-        iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed);
-        // 检测是否运动到目标，如果没有继续运动
-        if (iCur == iTarget) {
-            clearInterval(oEle.timer);
-        } else{
-            if (value == 'opacity') {
+        var bStop = true;
+        for (var attr in json) {
+            var iSpeed = null;
+            var iCur = null;
+            // 获取透明度IE8以前的写法
+            if (attr == 'opacity') {
+                iCur = parseInt( parseFloat(getStyle(oEle , attr))*100 );
+            // 标准写法
+            } else{
+                iCur = parseInt(getStyle(oEle , attr));
+            }
+            // 缓冲运动速度值
+            iSpeed = (json[attr] - iCur)/8;
+            iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed);
+            // 检测是否运动到目标，如果没有继续运动
+            if (iCur != json[attr]) {
+                bStop = false;
+            }
+            if (attr == 'opacity') {
                 oEle.style.opacity = (iCur + iSpeed)/100;
                 oEle.style.filter = 'alpha(opacity:'+ (iCur + iSpeed) +')';
             } else{
-                oEle.style[value] = iCur + iSpeed + 'px';
+                oEle.style[attr] = iCur + iSpeed + 'px';
             }
         }
-    },10);
+        if (bStop) {
+            clearInterval(oEle.timer);
+            // fn && fn();
+            if (fn) {
+                fn();
+            }
+        }
+    },iCtrSpeed);
 }
 /*--------------------------------- 工具包函数结束 -------------------------------------*/
 
@@ -158,7 +177,7 @@ function move (oEle , iTarget , value) {
  * @param {object} oEle    焦点图的主体元素
  * @param {bool} boole     ture代表按照淡入淡出来切换图片，false代表横向移动切换图片
  */
-function Focus() {
+function Focus( oEle , boole ) {
     this.initialize.apply(this , arguments);
 }
 Focus.prototype =
@@ -168,7 +187,9 @@ Focus.prototype =
         var that = this;
         this.timer = null;
         this.navTimer = null;
-        that.iNow = 1;
+        this.btnTimer = null;
+        this.stop = true;
+        this.iNow = 1;
         this.oFocus = id(oEle);
         this.oFocusChild = getChild(this.oFocus);
         // 获取图片
@@ -198,12 +219,24 @@ Focus.prototype =
         this.showHideBtn.apply(this);
         // 前后按钮点击时候图片的轮换
         myAddEvent (this.prevBtn , 'click' , function () {
-            that.iNow > 1 ? that.iNow -- : that.iNow = (that.aSliderImg.length-1);
-            that.opacityMove.apply(that);
+            if (that.stop) {
+                that.stop = false;
+                that.iNow > 1 ? that.iNow -- : that.iNow = (that.aSliderImg.length-1);
+                that.opacityMove.apply(that);
+                that.btnTimer = setTimeout( function () {
+                    that.stop = true;
+                } ,500);
+            }
         });
         myAddEvent (this.nextBtn , 'click' , function () {
-            that.iNow < (that.aSliderImg.length-1) ? that.iNow ++ : that.iNow = 0;
-            that.opacityMove.apply(that);  //这里要加上apply来绑定啊~~~
+            if (that.stop) {
+                that.stop = false;
+                that.iNow < (that.aSliderImg.length-1) ? that.iNow ++ : that.iNow = 0;
+                that.opacityMove.apply(that);
+                that.btnTimer = setTimeout( function () {
+                    that.stop = true;
+                } ,500);
+            }
         });
         // 鼠标移入nav的时候图片切换
         this.navChange.apply(this);
@@ -249,7 +282,7 @@ Focus.prototype =
                 }
             });
             myAddEvent ( this.aSliderNav[i] , 'mouseout' , function () {
-                clearTimeout(that.navTimer)
+                clearTimeout(that.navTimer);
             } );
         }
     },
@@ -261,12 +294,16 @@ Focus.prototype =
             // 将当前正在显示的图片变为隐藏
             if (this.aSliderImg[i].className == 'currentSlider') {
                 this.aSliderImg[i].className = this.aSliderNav[i].className = null;
-                move(this.aSliderImg[i] , 0 ,'opacity');
+                move(this.aSliderImg[i] , {
+                    opacity: 0
+                });
             }
         }
         // 将索引值为iNow的图片显示出来
         this.aSliderImg[this.iNow].className = this.aSliderNav[this.iNow].className = 'currentSlider';
-        move (this.aSliderImg[this.iNow] , 100 , 'opacity');
+        move (this.aSliderImg[this.iNow] , {
+            opacity: 100
+        });
     }
 };
 /*--------------------------------- 焦点图函数结束 -------------------------------------*/
@@ -348,35 +385,36 @@ myReady(function () {
  */
 myReady(function () {
     var i = null;
-
     var oCategory = id('category');
-    var aVisbleCategory = getClass(oCategory,'visble_category');
+    var aVisbleCategory = oCategory.getElementsByTagName('li');
+    var oHideMenu = id('hidemenu');
+    var aHideLayers = getClass(oHideMenu , 'hide_layers');
+    var timer1 = null;
 
     for (i = 0; i < aVisbleCategory.length; i++) {
         aVisbleCategory[i].index = i;
-
-        myAddEvent(aVisbleCategory[i] , 'mouseover' , function () {
-            this.className = 'unvisble_category';
-            showHide(aHideLayers[this.index]);
-        });
-        myAddEvent(aVisbleCategory[i] , 'mouseout' , function () {
-            this.className = 'visble_category';
-            showHide(aHideLayers[this.index]);
-        });
-    }
-
-    var oNav = id('nav');
-    var aHideLayers = getClass(oNav,'hide_layers');
-
-    for (i = 0; i < aHideLayers.length; i++) {
         aHideLayers[i].index = i;
 
+        myAddEvent(aVisbleCategory[i] , 'mouseover' , function () {
+            for (var i = 0; i < aVisbleCategory.length; i++) {
+                if (aVisbleCategory[i].backgroundColor === '#f7f7f7') {
+                    aVisbleCategory[i].className = null;
+                }
+            }
+            this.className = 'unvisble_category';
+            aHideLayers[this.index].style.display = 'block';
+        });
+        myAddEvent(aVisbleCategory[i] , 'mouseout' , function () {
+            this.className = null;
+            aHideLayers[this.index].style.display = 'none';
+        });
+
         myAddEvent(aHideLayers[i] , 'mouseover' , function () {
-            showHide(this);
+            this.style.display = 'block';
             aVisbleCategory[this.index].className = 'unvisble_category';
         });
         myAddEvent(aHideLayers[i] , 'mouseout' , function () {
-            showHide(this);
+            this.style.display = 'none';
             aVisbleCategory[this.index].className = 'visble_category';
         });
     }
@@ -388,6 +426,105 @@ myReady(function () {
  */
 myReady(function () {
     new Focus ('FocusPic1' , true);
+});
+/**
+ * 详细商品栏右边的生活服务
+ */
+myReady(function () {
+    /**
+    * 内部函数，使隐藏着的块显示
+    * @param {object｝ obj  就是话费、机票、电影票和游戏这四个对象中的一个
+    */
+    function lifeServerMove(obj) {
+        var iPosition1 = getStyle(oLsHide , 'top');
+        var iPosition2 = getStyle(oLifeServer , 'top');
+        // 如果是点击×关闭后，隐藏模块会运动到209px，此时进行判断，如果为真，那么重置top值后开始运动
+        if (iPosition1 === '209px') {
+            oLsHide.style.top = '208px';
+            iPosition1 = '208px';
+        }
+        // 判断是否有过运动，如果没有则开始运动
+        if (iPosition1 === '208px') {
+            showHide(aMoveBottom[obj.index]);
+            // 将隐藏的box从隐藏处运动出来
+            move (oLsHide , {
+                top : 70
+            } , 5 , function () {
+                // 将生活服务图标的box整体向上运动39px，因为隐藏的box是相对这个定位的，所以也会跟着向上运动
+                move(oLifeServer , {
+                    top : -39
+                } , 5 ,function () {
+                    // 运动完成之后出现红色的border
+                    obj.className = 'lsh_border';
+                });
+            });  
+        }
+        // 判断运动是否已经完成
+        if (iPosition2 === '-39px') {
+            // 改变相应的选项卡
+            if (obj.className != 'lsh_border') {
+                for (var i = 0; i < 4; i++) {
+                    if (aMoveTop[i].className === 'lsh_border') {
+                        aMoveTop[i].className = null;
+                        aMoveBottom[i].style.display = 'none';
+                    }
+                }
+                obj.className = 'lsh_border';
+                aMoveBottom[obj.index].style.display = 'block';
+            }
+        }    
+    }
+    /*---------------------------内部函数结束----------------------------*/
+
+    var i = null;
+    // 取话费机票电影票四个li
+    var oLifeServer = id('life_server');
+    var aMoveTop = oLifeServer.getElementsByTagName('li');
+    // 取话费机票电影票四个隐藏着的li
+    var oLsHide = id('ls_hide');
+    var aMoveBottom = oLsHide.getElementsByTagName('li');
+    var timer = null;
+    // 隐藏着的块出现
+    for (i = 0; i < 4; i++) {
+        aMoveTop[i].index = i;
+        aMoveTop[i].onmouseover = function () {
+            var that = this;
+            timer = setTimeout(function () {
+                lifeServerMove(that);
+            }  , 50);
+        };
+        aMoveTop[i].onmouseout = function () {
+            clearTimeout(timer);
+        };
+    } 
+    // 关闭按钮鼠标移入移出时候的颜色及背景变化
+    var aClose = oLsHide.getElementsByTagName('p');
+    for (i = 0; i < aClose.length; i++) {
+        myAddEvent(aClose[i] , 'mouseover' , function () {
+            this.className = 'close change';
+        });
+        myAddEvent(aClose[i] , 'mouseout' , function () {
+            this.className = 'close';
+        });
+    }
+    // 隐藏着的块回到隐藏状态
+    for (i = 0; i < aClose.length; i++) {
+        aClose[i].index = i;
+        myAddEvent(aClose[i] , 'click' , function () {
+            var that = this;
+            aMoveTop[this.index].className = null;
+            move(oLifeServer , {
+                top : 0
+            } , 5 ,function () {
+                move (oLsHide , {
+                    // 为了避免点击×以后鼠标不动会再次触发运动，因此多运动1px
+                    top : 209
+                } , 5 , function () {
+                    showHide(aMoveBottom[that.index]);
+                });
+            });
+        });
+    }
 });
 
 /**
@@ -410,17 +547,22 @@ myReady(function () {
             this.timer = setTimeout(function  () {
                 //工具栏上面的五个隐藏着的工具要比下面五个宽20px；
                 if (that.index < 5) {
-                    move(aText[that.index] , 65 , 'right');
+                    move(aText[that.index] , {
+                        right : 65
+                    });
                 } else{
-                    move(aText[that.index] , 45 , 'right');
+                    move(aText[that.index] , {
+                        right : 45
+                    });
                 }
             },200);
         });
-
         myAddEvent(aLi[i] , 'mouseout' , function () {
             clearTimeout(this.timer);
             aIcon[this.index].style.backgroundColor = '#7a6e6e';
-            move(aText[this.index] , 0 , 'right');
+            move(aText[this.index] , {
+                right : 0
+            });
         });
     }
 });
@@ -432,21 +574,106 @@ myReady(function () {
 myReady(function () {
     // 今日推荐
     var oRecommend = id('recommend');
+    var oGoodsRem = getClass(oRecommend , 'goods_recommend')[0];
     var aUl = oRecommend.getElementsByTagName('ul');
     var aLi = oRecommend.getElementsByTagName('li');
+    // 将ul复制一遍，这样图片循环时不会出现断档
+    aUl[0].innerHTML += aUl[0].innerHTML;
+    // 让ul的宽度动态的等于所有图片宽度之和，这样能够使全部的图片都在一行
     aUl[0].style.width = 250*aLi.length + 'px';
+    // 今日推荐的按钮显示与隐藏
+    var oSliderBtn = getClass (oRecommend , 'slider_btn')[0];
+    var prevBtn = oSliderBtn.getElementsByTagName('a')[0];
+    var nextBtn = oSliderBtn.getElementsByTagName('a')[1];
+    oSliderBtn.onmouseover = oGoodsRem.onmouseover = function () {
+        showHide(oSliderBtn);
+    };
+    oSliderBtn.onmouseout = oGoodsRem.onmouseout = function () {
+        showHide(oSliderBtn);
+    };
+    // 今日推荐的图片轮播
+    var bStop = true;
+    var iPosition = 0;
+    // 确定图片改变left值的距离
+    var iChangeLen = parseInt(getStyle(aUl[0] , 'width')) / 2;
+    aUl[0].style.left = 0;
+    // 点击向前
+    myAddEvent(prevBtn , 'click' , function () {
+        // 取当前的left的值，将这个值对ul的宽度取余，如果不为零那么表明运动还未结束
+        // 如果用户在运动未结束时再次点击按钮，那么运动不会触发
+        var iJudge = parseInt(getStyle(aUl[0] , 'left')); 
+        if (iJudge%1000  === 0) {
+            // 如果图片运动到iChangeLen处，将图片拉回来到0px处重新开始运动
+            if (aUl[0].style.left === ('-'+iChangeLen+'px')) {
+                aUl[0].style.left = '0';
+                iPosition = 0;
+            }
+            // 每点击一次向前的按钮，left的值需要减少1000px
+            iPosition -= 1000;
+            move(aUl[0] , {
+                left : iPosition
+            } , 15);
+        }
+    });
+    // 点击向后
+    myAddEvent(nextBtn , 'click' , function () {
+        var iJudge = parseInt(getStyle(aUl[0] , 'left')); 
+        if (iJudge%1000  === 0) {
+            // 如果图片的位置在0px，那么将图片拉至iChangeLen再开始运动
+            if (aUl[0].style.left === '0px') {
+                aUl[0].style.left = ('-'+iChangeLen+'px');
+                iPosition = -iChangeLen;
+            }
+            iPosition += 1000;
+            move(aUl[0] , {
+                left : iPosition
+            } , 15); 
+        } 
+    });
 
     // 猜你喜欢
     var oGuessLike = id('guess-like');
     var oGuessLikeChange = getClass(oGuessLike , 'guess-like-top')[0].getElementsByTagName('a')[0];
     var aGuessLikeContent = getClass(oGuessLike , 'guess-like-content');
-    console.log(aGuessLikeContent);
-
+    // 猜你喜欢的商品栏切换
     myAddEvent(oGuessLikeChange , 'click' , function () {
         for (var i = 0; i < aGuessLikeContent.length; i++) {
             showHide(aGuessLikeContent[i]);
         }
     });
+    // 猜你喜欢的图标横向移动
+    var timer = null;
+    var oSpacer = getClass(oGuessLike , 'spacer')[0];
+    myAddEvent(oGuessLike , 'mouseover' , function () {
+        timer = setTimeout ( function () {
+            oSpacer.style.right = '1210px';
+            move (oSpacer , {
+                right : 0
+            } , 15);
+        } , 600);
+    });
+    myAddEvent(oGuessLike , 'mouseout' , function () {
+        clearTimeout(timer);
+    });
+
+    // 品质生活
+    var oQualityClife = id('quality_life');
+    var aItemPic = getClass(oQualityClife , 'ct_item_big');
+    var aItemMove = getClass(oQualityClife , 'ct_move');
+    for (var i = 0; i < aItemPic.length; i++) {
+        aItemPic[i].index = i;
+        // 鼠标移入后图片向左移动8px
+        myAddEvent(aItemPic[i] , 'mouseover' , function () {
+            move(aItemMove[this.index] , {
+                left : -8
+            });
+        });
+        myAddEvent(aItemPic[i] , 'mouseout' , function () {
+            move(aItemMove[this.index] , {
+                left : 0
+            });
+        });
+    }
 });
 /* 综合推荐结束 */
 /*------------------------------------- 页面流程结束 -----------------------------------------*/
