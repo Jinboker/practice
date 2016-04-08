@@ -389,13 +389,12 @@ myReady(function () {
     var aVisbleCategory = oCategory.getElementsByTagName('li');
     var oHideMenu = id('hidemenu');
     var aHideLayers = getClass(oHideMenu , 'hide_layers');
-    var timer1 = null;
-
     for (i = 0; i < aVisbleCategory.length; i++) {
         aVisbleCategory[i].index = i;
         aHideLayers[i].index = i;
-
+        // 详细商品栏鼠标移入移出
         myAddEvent(aVisbleCategory[i] , 'mouseover' , function () {
+            // 对每一行的详细商品栏的背景色进行判断，如果颜色不对则改变
             for (var i = 0; i < aVisbleCategory.length; i++) {
                 if (aVisbleCategory[i].backgroundColor === '#f7f7f7') {
                     aVisbleCategory[i].className = null;
@@ -408,7 +407,7 @@ myReady(function () {
             this.className = null;
             aHideLayers[this.index].style.display = 'none';
         });
-
+        // 隐藏的商品栏鼠标的移入移出
         myAddEvent(aHideLayers[i] , 'mouseover' , function () {
             this.style.display = 'block';
             aVisbleCategory[this.index].className = 'unvisble_category';
@@ -431,18 +430,14 @@ myReady(function () {
  * 详细商品栏右边的生活服务
  */
 myReady(function () {
+    /*---------------------------内部函数开始----------------------------*/
     /**
-    * 内部函数，使隐藏着的块显示
-    * @param {object｝ obj  就是话费、机票、电影票和游戏这四个对象中的一个
+    * 使隐藏着的块显示
+    * @param {object｝ obj             就是话费、机票、电影票和游戏这四个对象中的一个
+    * @param {number｝ iPosition1      iPosition1 = getStyle(oLsHide , 'top');
+    * @param {number｝ iPosition2      getStyle(oLifeServer , 'top');
     */
-    function lifeServerMove(obj) {
-        var iPosition1 = getStyle(oLsHide , 'top');
-        var iPosition2 = getStyle(oLifeServer , 'top');
-        // 如果是点击×关闭后，隐藏模块会运动到209px，此时进行判断，如果为真，那么重置top值后开始运动
-        if (iPosition1 === '209px') {
-            oLsHide.style.top = '208px';
-            iPosition1 = '208px';
-        }
+    function lifeServerMove(obj , iPosition1 , iPosition2) {
         // 判断是否有过运动，如果没有则开始运动
         if (iPosition1 === '208px') {
             showHide(aMoveBottom[obj.index]);
@@ -476,25 +471,36 @@ myReady(function () {
     }
     /*---------------------------内部函数结束----------------------------*/
 
+
+    // 隐藏着的块的显示与消失
     var i = null;
+    var bStop = true;
     // 取话费机票电影票四个li
     var oLifeServer = id('life_server');
     var aMoveTop = oLifeServer.getElementsByTagName('li');
     // 取话费机票电影票四个隐藏着的li
     var oLsHide = id('ls_hide');
-    var aMoveBottom = oLsHide.getElementsByTagName('li');
+    var aMoveBottom = getClass(oLsHide , 'hide');
+    // var aMoveBottom = oLsHide.getElementsByTagName('li');
     var timer = null;
     // 隐藏着的块出现
     for (i = 0; i < 4; i++) {
         aMoveTop[i].index = i;
         aMoveTop[i].onmouseover = function () {
             var that = this;
-            timer = setTimeout(function () {
-                lifeServerMove(that);
-            }  , 50);
+            var iPosition1 = getStyle(oLsHide , 'top');
+            var iPosition2 = getStyle(oLifeServer , 'top');
+            // 如果bStop为假那么不会触发事件，设置为假在运动回隐藏的事件中触发
+            if (bStop) {
+                timer = setTimeout(function () {
+                    lifeServerMove(that , iPosition1 , iPosition2);
+                }  , 100);
+            }
         };
         aMoveTop[i].onmouseout = function () {
             clearTimeout(timer);
+            // 鼠标从话费、机票、电影票和游戏四个对象中移出时候让bStop为真，这样就能再次触发运动
+            (!bStop)&&(bStop = true);
         };
     } 
     // 关闭按钮鼠标移入移出时候的颜色及背景变化
@@ -511,18 +517,34 @@ myReady(function () {
     for (i = 0; i < aClose.length; i++) {
         aClose[i].index = i;
         myAddEvent(aClose[i] , 'click' , function () {
+            // 设置一个布尔值，当这个值为假的时候，鼠标移入话费、机票、电影票和游戏四个对象不会触发事件
+            bStop = false;
             var that = this;
             aMoveTop[this.index].className = null;
             move(oLifeServer , {
                 top : 0
-            } , 5 ,function () {
+            } , 4 ,function () {
                 move (oLsHide , {
-                    // 为了避免点击×以后鼠标不动会再次触发运动，因此多运动1px
-                    top : 209
+                    top : 208
                 } , 5 , function () {
                     showHide(aMoveBottom[that.index]);
                 });
             });
+        });
+    }
+
+    // 隐藏着的块内部的切换
+    var aNavList = getClass(oLsHide , 'nav_list');
+    var aContentWrap = getClass(oLsHide , 'content_wrap');
+
+    for (i = 0; i < aNavList.length; i++) {
+        myAddEvent(aNavList[i] , 'mouseover' , function () {
+            for (var i = 0; i < aNavList.length; i++) {
+                if (aNavList[i].className === 'nav_list change') {
+                    aNavList[i].className = 'nav_list';
+                }
+            }
+            this.className = 'nav_list change';
         });
     }
 });
@@ -549,20 +571,20 @@ myReady(function () {
                 if (that.index < 5) {
                     move(aText[that.index] , {
                         right : 65
-                    });
+                    } , 15);
                 } else{
                     move(aText[that.index] , {
                         right : 45
-                    });
+                    } , 15);
                 }
-            },200);
+            },300);
         });
         myAddEvent(aLi[i] , 'mouseout' , function () {
             clearTimeout(this.timer);
             aIcon[this.index].style.backgroundColor = '#7a6e6e';
             move(aText[this.index] , {
                 right : 0
-            });
+            } , 15);
         });
     }
 });

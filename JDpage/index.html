@@ -2073,21 +2073,178 @@
 					</ul>
 					<!-- 话费机票电影票隐藏 -->
 					<ul id="ls_hide">
-						<li class="foce1">
+						<!-- 话费 -->
+						<li class="foce1 hide">
 							<p class="close">×</p>
-							1
+							<div id="tele_bill">
+								<div class='nav'>
+									<a href="javascript:;" class="nav_list change">话费充值</a>
+									<a href="javascript:;" class="nav_list">流量充值</a>
+									<a href="javascript:;" class="nav_list">套餐变更</a>
+								</div>
+								<div class="content">
+									<!-- 话费充值 -->
+									<div class="content_wrap" style="display:none;">
+										<div class="form_top form_wrap">
+											<i>号码</i>
+											<input type="text" name="name" placeholder="移动、联通、电信">
+										</div>
+										<div class="form_bottom form_wrap">
+											<i>面值</i>
+											<select class="tele_bill_number">
+												<option value="10">10</option>
+												<option value="20">20</option>
+												<option value="30">30</option>
+											</select>
+											<div class="tb_select_price">
+												<div style="display:block;">￥9.8-￥11.0</div>
+											</div>
+										</div>
+										<a href="javascript:;" class="quick_recharge">快速充值</a>
+										<a href="javascript:;" class="hot"><i></i>移动流量充1G送1G</a>
+									</div>
+									<!-- 流量充值 -->
+									<div class="content_wrap"  style="display:none;">
+										<div class="form_top form_wrap">
+											<i>号码</i>
+											<input type="text" name="name" placeholder="移动、联通、电信">
+										</div>
+										<div class="form_bottom form_wrap">
+											<i>流量</i>
+											<select class="data_recharge_position">
+												<option value="全国">全国</option>
+												<option value="省内">省内</option>
+											</select>
+											<select class="data_recharge_large">
+												<option value="50M">50M</option>
+												<option value="100M">100M</option>
+											</select>
+											<div class="data_recharge_price">
+												<div style="display:block;">￥7.5-￥10.0</div>
+											</div>
+										</div>
+										<a href="javascript:;" class="quick_recharge">快速充值</a>
+										<a href="javascript:;" class="hot"><i></i>送京豆 流量翻倍享</a>
+									</div>
+									<!-- 套餐变更 -->
+									<div class="content_wrap" style="display:none;">
+										<div class="form_top form_wrap">
+											<i>号码</i>
+											<input type="text" name="name" placeholder="支持部分地区移动">
+										</div>
+										<div class="form_bottom form_wrap">
+											<i>流量</i>
+											<select class="package_change_price">
+												<option value="38元">38元</option>
+												<option value="48元">48元</option>
+												<option value="58元">58元</option>
+											</select>
+											<div class="package_change_content">
+												<div style="display:block;">50分钟，300M流量</div>
+											</div>
+										</div>
+										<a href="javascript:;" class="quick_recharge">办理变更</a>
+									</div>
+								</div>
+							</div>
 						</li>
-						<li class="foce2">
+						<!-- 机票 -->
+						<li class="foce2 hide">
 							<p class="close">×</p>
-							2
+							<div id="air_ticket">
+								<div class='nav'>
+									<a href="javascript:;" class="nav_list">国内</a>
+									<a href="javascript:;" class="nav_list">国际</a>
+								</div>
+								<div class="content">
+									<!-- 国内 -->
+									<div class="content_wrap">
+										<div class="ticket_go">
+											<i>出发</i>
+											<select>
+												<option value="B北京">B北京</option>
+												<option value="S上海">S上海</option>
+												<option value="S深圳">S深圳</option>
+											</select>
+											<i>到达</i>
+											<select>
+												<option value="C重庆">C重庆</option>
+												<option value="T天津">T天津</option>
+												<option value="X香港">X香港</option>
+											</select>
+										</div>
+										<div class="ticket_date">
+											<i>日期</i>
+											<select>
+												<option value="2016">2016</option>
+												<option value="2017">2017</option>
+											</select>
+											<i>年</i>
+											<select>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+											</select>
+											<i>月</i>
+											<select>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+											</select>
+											<i>日</i>
+										</div>
+										<div class="ticket_comeback">
+											<i>返程</i>
+											<select>
+												<option value="2016">2016</option>
+												<option value="2017">2017</option>
+											</select>
+											<i>年</i>
+											<select>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+											</select>
+											<i>月</i>
+											<select>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+											</select>
+											<i>日</i>
+										</div>
+										<div class="extra_box_ticket">
+											<a href="javascript:;" class="quick_recharge">机票查询</a>
+											<input type="checkbox" name="name" value="往返">
+											<a href="javascript:;">更多></a>
+										</div>
+									</div>
+									<!-- 国际 -->
+									<div class="content_wrap"  style="display:none;">
+
+									</div>
+								</div>
+							</div>
 						</li>
-						<li class="foce3">
+						<!-- 电影票 -->
+						<li class="foce3 hide">
 							<p class="close">×</p>
-							3
+							<div id="film_ticket">
+								<div class='nav'>
+									<a href="javascript:;" class="nav_list">正在热映</a>
+									<a href="javascript:;" class="nav_list">即将上映</a>
+								</div>
+							</div>
 						</li>
-						<li class="foce4">
+						<!-- 游戏 -->
+						<li class="foce4 hide">
 							<p class="close">×</p>
-							4
+							<div id="games">
+								<div class='nav'>
+									<a href="javascript:;" class="nav_list">点卡</a>
+									<a href="javascript:;" class="nav_list">QQ</a>
+								</div>
+							</div>
 						</li>
 					</ul>
 				</div>

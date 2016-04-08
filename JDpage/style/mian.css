@@ -704,7 +704,6 @@
 	}
 	.life_box a{
 		float: left;
-		position: relative;
 		display: block;
 		height: 69px;
 		width: 62px;
@@ -787,6 +786,7 @@
 		width: 100%;
 		height: 100%;
 	}
+	/*关闭的×*/
 	#ls_hide .close{
 		position: absolute;;
 		right: 0;
@@ -800,10 +800,129 @@
 		background-color: #CCCCCC;
 		color: white;
 	}
-
-
-
-
+	/*具体服务选择*/
+	#ls_hide .nav{
+		height: 19px;
+		width: 100%;
+		padding: 15px 0 0 10px;
+	}
+	#ls_hide .nav a{
+		float: left;
+		display: block;
+		height: 19px;
+		line-height: 16px;
+		margin-right: 10px;
+		padding: 0 2px;
+	}
+	#ls_hide .change{
+		color: white;
+		background: url('../image/iframe-si.png') center 0 no-repeat;
+	}
+	#ls_hide select{
+		height: 20px;
+		border: 1px solid #e8e8e7;
+		color: #666;
+	}
+	#tele_bill .form_wrap{
+		position: relative;
+		width: 100%;
+		height: 21px;
+		line-height: 21px;
+		padding: 10px 0 0 10px;
+	}
+	.tb_recharge .form_wrap i{
+		padding-right: 5px;
+		cursor: default;
+	}
+	#tele_bill .form_top input{
+		height: 20px;
+		width: 110px;
+		border: 1px solid #e8e8e7;
+	}
+	.quick_recharge{
+		display: block;
+		height: 26px;
+		width: 67px;
+		margin: 10px 0 20px 10px;
+		border: 1px solid #C81623;
+		line-height: 26px;
+		text-align: center;
+		background-color: #C81623;
+		color: white;
+		-moz-border-radius: 2px; 
+  		-webkit-border-radius: 2px;
+  		border-radius: 2px; 		
+	}
+	.quick_recharge:hover{
+		color: white;
+	}
+	#tele_bill .hot{
+		display: block;
+		margin-left: 10px;
+		color: #005EA7;
+	}
+	.hot i{
+		float: left;
+		display: block;
+		width: 22px;
+		height: 10px;
+		margin-top: 4px;
+		margin-right: 7px;
+		background: url('../image/hot.png') no-repeat 0 0;
+	}
+	/*不同*/
+	/*话费充值*/
+	.tele_bill_number{
+		width: 112px;
+	}
+	.tb_select_price{
+		position: absolute;
+		top: 10px;
+		left: 160px;
+		color: #C81623;
+	}
+	/*流量充值*/
+	.data_recharge_position{
+		width: 52px;
+		margin-right: 5px;
+	}
+	.data_recharge_large{
+		width: 52px;
+	}
+	.data_recharge_price{
+		position: absolute;
+		top: 10px;
+		left: 160px;
+		color: #C81623;
+	}
+	/*套餐变更*/
+	.package_change_price{
+		width: 62px;
+	}
+	.package_change_content{
+		position: absolute;
+		top: 10px;
+		left: 110px;
+		color: #C81623;
+	}
+	/*机票总*/
+	.ticket_go,
+	.ticket_date,
+	.ticket_comeback{
+		padding: 10px 0 0 10px;
+	}
+	.ticket_go select,
+	.ticket_date select,
+	.ticket_comeback select{
+		margin: 0 3px;
+	}
+	.ticket_go select{
+		width: 73px;
+	}
+	.extra_box_ticket a,
+	.extra_box_ticket input{
+		float: left;
+	}
 
 	#extra_adver{
 		display: block;
