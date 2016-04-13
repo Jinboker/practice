@@ -785,6 +785,7 @@
 		top: 0;
 		width: 100%;
 		height: 100%;
+		background-color: white;
 	}
 	/*关闭的×*/
 	#ls_hide .close{
@@ -849,14 +850,14 @@
 		text-align: center;
 		background-color: #C81623;
 		color: white;
-		-moz-border-radius: 2px; 
+		-moz-border-radius: 2px;
   		-webkit-border-radius: 2px;
-  		border-radius: 2px; 		
+  		border-radius: 2px;
 	}
 	.quick_recharge:hover{
 		color: white;
 	}
-	#tele_bill .hot{
+	#ls_hide .hot{
 		display: block;
 		margin-left: 10px;
 		color: #005EA7;
@@ -917,12 +918,32 @@
 		margin: 0 3px;
 	}
 	.ticket_go select{
-		width: 73px;
+		width: 80px;
 	}
-	.extra_box_ticket a,
-	.extra_box_ticket input{
+	.extra_box_ticket{
+		width: 100%;
+		height: 47px;
+	}
+	.extra_box_ticket .quick_recharge{
 		float: left;
 	}
+	.extra_box_ticket .more{
+		float: right;
+		padding: 15px 10px 0 0;
+	}
+	.extra_box_ticket .go_back{
+		float: left;
+		margin: 19px 0 0 15px;
+	}
+	.extra_box_ticket i{
+		float: left;
+		display: block;
+		width: 24px;
+		height: 18px;
+		padding: 16px 0 0 5px;
+		line-height: 18px;
+	}
+
 
 	#extra_adver{
 		display: block;
@@ -1370,6 +1391,255 @@
 	}
 	.banners_right .force7{
 		background-position: -510px -57px;
+	}
+
+/*楼层索引*/
+#elevator{
+	position: fixed;
+	top: 80px;
+	left: 311.5px;
+	z-index: 1;
+	width: 30px;
+}
+	#elevator li{
+		width: 18px;
+		height: 30px;
+		margin: 0 auto;
+		border-bottom: 1px dotted #c2c2c2;
+	}
+	#elevator .force4{
+		border-bottom: none;
+	}
+	#elevator a{
+		display: block;
+		width: 30px;
+		height: 30px;
+		margin-left: -6px;
+		line-height: 30px;
+		text-align: center;
+		font-size: 14px;
+	}
+	#elevator .title{
+		display: none;
+	}
+
+/*主要内容*/
+/*1楼服装箱包*/
+#mian_content .floor_banner1{
+	padding: 30px 5px 30px 5px;
+	width: 1200px;
+	height: 125px;
+}
+	.floor_banner1 .force1,
+	.floor_banner1 .force2,
+	.floor_banner1 .force3{
+		float: left;
+		display: block;
+		width: 400px;
+		height: 125px;
+		background: url('../image/fuzhuang_top.jpg') no-repeat;
+	}
+	.floor_banner1 .force2{
+		background-position: -400px 0;
+	}
+	.floor_banner1 .force3{
+		background-position: -800px 0;
+	}
+	#clothes{
+		position: relative;
+	}
+	/*服装箱包的内容*/
+	/*服装箱包的top栏*/
+	/*左边*/
+	#clothes .nav_list{
+		position: relative;
+		height: 35px;
+		width: 100%;
+		border-bottom: 1px solid #c81623;
+	}
+	.main_theme{
+		height: 30px;
+		line-height: 30px;
+		color: #333;
+		font-size: 20px;
+	}
+	.main_theme i{
+		float: left;
+		display: block;
+		height: 25px;
+		width: 21px;
+		padding-right: 10px;
+		padding-top: 2px;
+		margin-right: 10px;
+		text-align: center;
+		line-height: 25px;
+		font-size: 14px;
+		color: white;
+		background: url(../image/floor_mark.gif) no-repeat 0 -25px;
+	}
+	/*右边*/
+	.nav_list .w{
+		height: 35px;
+		border-left: 1px solid #ededed;
+		border-right: 1px solid #ededed;
+	}
+	.main_nav li{
+		position: relative;
+		float: left;
+		height: 35px;
+		border-left: solid 1px transparent;
+		border-right: solid 1px transparent;
+		margin-left: -1px;
+	}
+	.main_nav a{
+		position: relative;
+		display: block;
+		height: 34px;
+		line-height: 34px;
+		padding: 2px 16px 0 16px;
+		border-top: 1px solid #ededed;
+	}
+	.main_nav i{
+		position: absolute;
+		top: 0;
+		right: -1px;
+		display: block;
+		width: 1px;
+		height: 14px;
+		margin-top: 12px;
+		background: #cccccc;
+	}
+	/*top栏选中时候的样式*/
+	.main_nav .current{
+		border-color: #c81623; 
+	}
+	.main_nav .current a{
+		padding: 0 16px;
+		border-top: 3px solid #c81623;
+		background-color: white;
+	}
+	.main_nav .current i{
+		display: none;
+	}
+	/*内容*/
+	.mc .w{
+		width: 1220px;
+	} 
+	/*内容左边*/
+	#clothes .side{
+		width: 330px;
+	} 
+	#clothes .side_top .banner{
+		height: 474px;
+		overflow: hidden;
+	}
+	#clothes .side_extra{
+		width: 330px;
+		height: 158px;
+		overflow: hidden;
+	}
+	#clothes .side_extra a{
+		display: block;
+		border-width: 1px 1px 1px 1px;
+		border-style: solid;
+		border-color: white #ededed #ededed #f7f5ee;
+		overflow: hidden;
+	}
+	/*内容右边*/
+	#clothes .mian1{
+		position: relative;
+		width: 880px;
+		height: 632px;
+		/*overflow: hidden;*/
+	}
+	#clothes .main_left{
+		width: 660px;
+		height: 632px;
+		overflow: hidden;
+	}
+	#clothes .main_left .restrict_w{
+		width: 670px;
+	}
+	.main_left a,
+	.main_right a{
+		display: block;
+		border-right: 1px solid #ededed;
+		border-bottom: 1px solid #ededed;
+		overflow: hidden;
+	}
+	#clothes .main_left .force1{
+		width: 440px;
+		height: 158px;
+		overflow: hidden;
+	}
+	#clothes .main_left .force2{
+		width: 440px;
+		height: 475px;
+		overflow: hidden;
+	}
+	#clothes .main_left .force2 a{
+		padding-top: 316px;
+	}
+	#clothes .main_left .force3,
+	#clothes .main_left .force4,
+	#clothes .main_left .force5,
+	#clothes .main_left .force6{
+		width: 220px;
+		height: 158px;
+		overflow: hidden;
+	}
+	/*右*/
+	#clothes .main_right{
+		width: 220px;
+		overflow: hidden;
+	}
+	#clothes .main_right .force1,
+	#clothes .main_right .force2{
+		width: 220px;
+		height: 158px;
+		overflow: hidden;
+	}
+	#clothes .main_right .force3{
+		width: 220px;
+		height: 317px;
+		overflow: hidden;
+	}
+	/*右边内容*/
+	/*服装箱包的轮播图*/
+	#clothes_FocusPic{
+		position: absolute;
+		top: 158px;
+		left: 0px;
+		width: 440px;
+		height: 316px;
+	}
+	#clothes_FocusPic .pic_wrap{
+		width: 439px;
+		height: 315px;
+		border-bottom: 1px solid #ededed;
+		overflow: hidden;
+	}
+	#clothes_FocusPic .slider{
+		float: left;
+		width: 2000px;
+	}
+	#clothes_FocusPic .slider li{
+		float: left;
+	}
+	#clothes_FocusPic .slider_nav{
+		position: absolute;
+		top: 295px;
+		left: 190px;
+	}
+	#clothes_FocusPic .slider_nav li{
+		float: left;
+		height: 9px;
+		width: 9px;
+		margin-right: 7px;
+		-moz-border-radius: 50%;
+		-webkit-border-radius: 50%;
+		border-radius: 50%;
+		background: #3e3e3e;
 	}
 /*页脚*/
 #footer{

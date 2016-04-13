@@ -444,11 +444,11 @@ myReady(function () {
             // 将隐藏的box从隐藏处运动出来
             move (oLsHide , {
                 top : 70
-            } , 5 , function () {
+            } , 8 , function () {
                 // 将生活服务图标的box整体向上运动39px，因为隐藏的box是相对这个定位的，所以也会跟着向上运动
                 move(oLifeServer , {
                     top : -39
-                } , 5 ,function () {
+                } , 8 ,function () {
                     // 运动完成之后出现红色的border
                     obj.className = 'lsh_border';
                 });
@@ -470,7 +470,6 @@ myReady(function () {
         }    
     }
     /*---------------------------内部函数结束----------------------------*/
-
 
     // 隐藏着的块的显示与消失
     var i = null;

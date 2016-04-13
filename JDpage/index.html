@@ -4,8 +4,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<title>仿写的京东首页</title>
-	<link rel="stylesheet" href="style/mian.css">
 	<link rel="stylesheet" type="text/css" href="style/rest.css">
+	<link rel="stylesheet" href="style/mian.css">
 </head>
 <body>
 	<!-- 最顶上的top栏开始 -->
@@ -2215,13 +2215,73 @@
 										</div>
 										<div class="extra_box_ticket">
 											<a href="javascript:;" class="quick_recharge">机票查询</a>
-											<input type="checkbox" name="name" value="往返">
-											<a href="javascript:;">更多></a>
+											<input type="checkbox" name="name" value="往返" class="go_back">
+											<i>往返</i>
+											<a href="javascript:;" class="more">更多></a>
 										</div>
 									</div>
 									<!-- 国际 -->
 									<div class="content_wrap"  style="display:none;">
-
+										<div class="ticket_go">
+											<i>出发</i>
+											<select>
+												<option value="B北京">B北京</option>
+												<option value="S上海">S上海</option>
+												<option value="S深圳">S深圳</option>
+											</select>
+											<i>到达</i>
+											<select>
+												<option value="L伦敦">L伦敦</option>
+												<option value="B巴黎">B巴黎</option>
+												<option value="N纽约">N纽约</option>
+											</select>
+										</div>
+										<div class="ticket_date">
+											<i>日期</i>
+											<select>
+												<option value="2016">2016</option>
+												<option value="2017">2017</option>
+											</select>
+											<i>年</i>
+											<select>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+											</select>
+											<i>月</i>
+											<select>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+											</select>
+											<i>日</i>
+										</div>
+										<div class="ticket_comeback">
+											<i>返程</i>
+											<select>
+												<option value="2016">2016</option>
+												<option value="2017">2017</option>
+											</select>
+											<i>年</i>
+											<select>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+											</select>
+											<i>月</i>
+											<select>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+											</select>
+											<i>日</i>
+										</div>
+										<div class="extra_box_ticket">
+											<a href="javascript:;" class="quick_recharge">机票查询</a>
+											<input type="checkbox" name="name" value="往返" class="go_back">
+											<i>往返</i>
+											<a href="javascript:;" class="more">更多></a>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -2243,6 +2303,52 @@
 								<div class='nav'>
 									<a href="javascript:;" class="nav_list">点卡</a>
 									<a href="javascript:;" class="nav_list">QQ</a>
+								</div>
+								<div class="content">
+									<!-- 点卡 -->
+									<div class="content_wrap" style="display:none;">
+										<div class="ticket_go">
+											<i>游戏</i>
+											<select>
+												<option value="M-魔兽世界">M-魔兽世界</option>
+												<option value="D-DOTA2">D-DOTA2</option>
+											</select>
+											<i>面值</i>
+											<select>
+												<option value="15">15</option>
+												<option value="30">30</option>
+											</select>
+										</div>
+										<div class="">
+											<input type="radio" name="name" value="" id="zhizhong">
+											<label for="zhizhong">直充</label>
+											<input type="radio" name="name" value="" id="kami">
+											<label for="kami">卡密</label>
+											<span>￥29.65</span>
+										</div>
+										<a href="javascript:;" class="hot"><i></i>《天谕》时装礼包免费领！</a>
+									</div>
+									<!-- QQ -->
+									<div class="content_wrap">
+										<div class="ticket_go">
+											<i>QQ</i>
+											<select>
+												<option value="Q币">Q币</option>
+												<option value="Q点">Q点</option>
+											</select>
+											<i>面值</i>
+											<select>
+												<option value="1元">1元</option>
+												<option value="5元">5元</option>
+											</select>
+										</div>
+										<div class="">
+											<input type="radio" name="name" value="" id="zhizhong">
+											<label for="zhizhong">直充</label>
+											<span>￥0.96</span>
+										</div>
+										<a href="javascript:;" class="hot"><i></i>《火影忍者》礼包免费领！</a>
+									</div>
 								</div>
 							</div>
 						</li>
@@ -2291,6 +2397,28 @@
 		</ul>
 	</div>
 	<!-- 全局工具栏结束 -->
+	<!-- 楼层索引 -->
+	<div id="elevator">
+		<ul>
+			<li class="force1">
+				<a href="javascript:;">1F</a>
+				<a href="javascript:;" class="title">服饰</a>
+			</li>
+			<li class="force2">
+				<a href="javascript:;">2F</a>
+				<a href="javascript:;" class="title">美妆</a>
+			</li>
+			<li class="force3">
+				<a href="javascript:;">3F</a>
+				<a href="javascript:;" class="title">手机</a>
+			</li>
+			<li class="force4">
+				<a href="javascript:;">4F</a>
+				<a href="javascript:;" class="title">家电</a>
+			</li>
+		</ul>
+	</div>
+	<!-- 楼层索引结束 -->
 	<!-- 综合推荐 -->
 	<div id="comprehensiveRecommend" class="comWidth clearfix">
 		<!-- 今日推荐 -->
@@ -2573,6 +2701,110 @@
 		</div>
 	</div>
 	<!-- 综合推荐结束 -->
+	<!-- 主要内容 -->
+	<div id="mian_content" class="comWidth clearfix">
+		<div class="floor_banner1">
+			<a href="javascript:;" class="force1"></a>
+			<a href="javascript:;" class="force2"></a>
+			<a href="javascript:;" class="force3"></a>
+		</div>
+		<!-- 服装箱包 -->
+		<div id="clothes">
+			<!--顶部选项卡-->
+			<div class="nav_list">
+				<h2 class="fl main_theme">
+					<i>1F</i>服装鞋包
+				</h2>
+				<div class="w fr">
+					<ul class="main_nav">
+						<li class="current">
+							<a href="javascript:;">大牌</a><i></i></li>
+						<li>
+							<a href="javascript:;">箱包</a><i></i>
+						</li>
+						<li>
+							<a href="javascript:;">男装</a><i></i>
+						</li>
+						<li>
+							<a href="javascript:;">女装</a><i></i>
+						</li>
+						<li>
+							<a href="javascript:;">鞋靴</a><i></i>
+						</li>
+						<li>
+							<a href="javascript:;">内衣配饰</a><i></i>
+						</li>
+						<li>
+							<a href="javascript:;">珠宝首饰</a><i></i>
+						</li>
+						<li>
+							<a href="javascript:;">奢品礼品</a><i></i>
+						</li>
+						<li>
+							<a href="javascript:;">奢华腕表</a>
+						</li>
+					</ul>
+				</div>
+				
+			</div>
+			<!--主要内容-->
+			<div class="mc">
+				<div class="w">
+					<div class="side fl">
+						<div class="side_top">
+							<div class="banner">
+								<a href="javascipt:;">
+									<img src="image/clothes/sider_top.jpg"/>
+								</a>
+							</div>
+						</div>
+						<div class="side_extra">
+							<a href="javascript:;"><img src="image/clothes/sider_extra.jpg"/></a>
+						</div>
+					</div>
+					<div class="mian1 fl">
+						<div class="main_left fl">
+							<ul class="restrict_w">
+								<li class="force1 fl"><a href="javascript:;"><img src="image/clothes/sider_banner1/1.jpg"/></a></li>
+								<li class="force2 fl"><a href="javascript:;"><img src="image/clothes/sider_banner1/2.jpg"/></a></li>
+								<li class="force3"><a href="javascript:;"><img src="image/clothes/sider_banner1/3.jpg"/></a></li>
+								<li class="force4"><a href="javascript:;"><img src="image/clothes/sider_banner1/4.jpg"/></a></li>
+								<li class="force5"><a href="javascript:;"><img src="image/clothes/sider_banner1/5.jpg"/></a></li>
+								<li class="force6"><a href="javascript:;"><img src="image/clothes/sider_banner1/6.jpg"/></a></li>
+							</ul>
+						</div>
+						<ul class="main_right fr">
+							<li class="force1"><a href="javascript:;"><img src="image/clothes/sider_banner1/7.jpg"/></a></li>
+							<li class="force2"><a href="javascript:;"><img src="image/clothes/sider_banner1/8.jpg"/></a></li>
+							<li class="force3"><a href="javascript:;"><img src="image/clothes/sider_banner1/9.jpg"/></a></li>
+						</ul>
+						<!--轮播图-->
+						<div id="clothes_FocusPic">
+							<div class="pic_wrap">
+								<ul class="slider">
+									<li class="currentSlider"><a href="javascript:;"><img src="image/clothes/sider_banner1/lunbo/1.jpg"></a></li>
+									<li><a href="javascript:;"><img src="image/clothes/sider_banner1/lunbo/2.jpg"></a></li>
+									<li><a href="javascript:;"><img src="image/clothes/sider_banner1/lunbo/3.jpg"></a></li>
+									<li><a href="javascript:;"><img src="image/clothes/sider_banner1/lunbo/4.jpg"></a></li>
+								</ul>
+							</div>
+							<ul class="slider_nav">
+								<li class="currentSlider"></li>
+								<li></li>
+								<li></li>
+								<li></li>
+							</ul>
+							<div class="slider_btn">
+								<a href="javascript:;" class="btn_prev"><</a>
+								<a href="javascript:;" class="btn_next">></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 主要内容结束 -->
 	<!-- 页脚 -->
 	<div id="footer">
 		<div class="footer-wrap">
@@ -2655,7 +2887,7 @@
 				<a href="javascript:;">Contact US</a>
 			</div>
 			<ul class="copyright">
-				<li><a href="javascript:;"><img src="image/jc.png"/>京公网安备 11000002000088号</a><i>|</i>京ICP证070359号<i>|</i><a href="javascript:;"> 互联网药品信息服务资格证编号(京)-经营性-2014-0008</a><i>|</i>新出发京零 字第大120007号</li>
+				<li><a href="javascript:;"><img src="image/jc.jpg"/>京公网安备 11000002000088号</a><i>|</i>京ICP证070359号<i>|</i><a href="javascript:;"> 互联网药品信息服务资格证编号(京)-经营性-2014-0008</a><i>|</i>新出发京零 字第大120007号</li>
 				<li><a href="javascript:;">音像制品经营许可证苏宿批005号</a><i>|</i>出版物经营许可证编号新出发(苏)批字第N-012号<i>|</i>互联网出版许可证编号新出网证(京)字150号</li>
 				<li><a href="javascript:;">网络文化经营许可证京网文[2014]2148-348号</a>违法和不良信息举报电话：4006561155  Copyright © 2004-2016  京东JD.com 版权所有</li>
 				<li>京东旗下网站：<a href="javascript:;">京东钱包</a></li>
