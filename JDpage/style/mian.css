@@ -797,7 +797,7 @@
 		line-height: 20px;
 		cursor: pointer;
 	}
-	#ls_hide .change{
+	#ls_hide .close_change{
 		background-color: #CCCCCC;
 		color: white;
 	}
@@ -943,8 +943,70 @@
 		padding: 16px 0 0 5px;
 		line-height: 18px;
 	}
-
-
+	/*电影票*/
+	.on_now li,
+	.will_on_now li{
+		float: left;
+		width: 65px;
+		margin: 0 5px;
+	}
+	.on_now .force1,
+	.on_now .force2,
+	.on_now .force3,
+	.will_on_now .force1,
+	.will_on_now .force2,
+	.will_on_now .force3{
+		display: block;
+		width: 65px;
+		height: 90px;
+		background: url('../image/film.jpg') no-repeat;
+	}
+	.on_now .force1{
+		background-position: 0 0;
+	}
+	.on_now .force2{
+		background-position: -65px 0;
+	}
+	.on_now .force3{
+		background-position: -130px 0;
+	}
+	.will_on_now .force1{
+		background-position: -195px 0;
+	}
+	.will_on_now .force2{
+		background-position: -260px 0;
+	}
+	.will_on_now .force3{
+		background-position: -325px 0;
+	}
+	.btn_1,
+	.btn_2{
+		display: block;
+		width: 57px;
+		height: 20px;
+		margin: 5px 4px;
+		border-radius: 3px;
+		text-align: center;
+		line-height: 20px;
+		color: white;
+	}
+	.btn_1{
+		background-color: #c81623;
+	}
+	.btn_2{
+		background-color: #2ba5eb;
+	}
+	.btn_1:hover,
+	.btn_2:hover{
+		color: white;
+	}
+	/*游戏*/
+	.fufei{
+		padding-top: 10px;
+		padding-left: 8px;
+    	height: 22px;
+    	line-height: 22px;
+	}
 	#extra_adver{
 		display: block;
 		height: 75px;
@@ -1489,6 +1551,7 @@
 		height: 35px;
 		border-left: solid 1px transparent;
 		border-right: solid 1px transparent;
+		border-color: none;
 		margin-left: -1px;
 	}
 	.main_nav a{
@@ -1516,6 +1579,7 @@
 	.main_nav .current a{
 		padding: 0 16px;
 		border-top: 3px solid #c81623;
+		color: #c81623;
 		background-color: white;
 	}
 	.main_nav .current i{
@@ -1529,9 +1593,79 @@
 	#clothes .side{
 		width: 330px;
 	} 
+	#clothes .side_top{
+		position: relative;
+	}
 	#clothes .side_top .banner{
 		height: 474px;
 		overflow: hidden;
+	}
+	#clothes .choose_list{
+		position: absolute;
+		top: 254px;
+		height: 92px;
+		width: 305px;
+		padding-left: 25px;
+		background: rgba(255,255,255,.5);
+	}
+	.choose_list li{
+		float: left;
+		width: 100px;
+		height: 26px;
+		padding: 10px 0;
+	}
+	.choose_list i{
+		float: left;
+		display: block;
+		height: 26px;
+		width: 26px;
+	}
+	.choose_list span{
+		float: left;
+		display: block;
+		height: 26px;
+		padding-left: 5px;
+		line-height: 26px;
+	}
+	#clothes .banner_words{
+		position: absolute;
+		top: 346px;
+		height: 128px;
+		width: 330px;
+		background: rgba(255,255,255,.7);
+	}
+	#clothes .banner_words li{
+		float: left;
+		height: 96px;
+		width: 135px;
+		padding-top: 16px;
+		padding-left: 25px;
+	}
+	.banner_words a{
+		float: left;
+		margin-right: 10px;
+		line-height: 24px;
+	}
+	#clothes .choose_list i{
+		background: url('../image/clothes/clothesicon.png') no-repeat;
+	}
+	#clothes .choose_list .force1 i{
+		background-position: 0 0;
+	}
+	#clothes .choose_list .force2 i{
+		background-position: 0 -26px;
+	}
+	#clothes .choose_list .force3 i{
+		background-position: 0 -52px;
+	}
+	#clothes .choose_list .force4 i{
+		background-position: 0 -78px;
+	}
+	#clothes .choose_list .force5 i{
+		background-position: 0 -104px;
+	}
+	#clothes .choose_list .force6 i{
+		background-position: 0 -130px;
 	}
 	#clothes .side_extra{
 		width: 330px;
@@ -1540,24 +1674,26 @@
 	}
 	#clothes .side_extra a{
 		display: block;
-		border-width: 1px 1px 1px 1px;
+		border-width: 0 1px 1px 1px;
 		border-style: solid;
 		border-color: white #ededed #ededed #f7f5ee;
 		overflow: hidden;
 	}
 	/*内容右边*/
-	#clothes .mian1{
+	/*第一页*/
+	#clothes .main1,
+	#clothes .main2{
 		position: relative;
 		width: 880px;
-		height: 632px;
-		/*overflow: hidden;*/
+		height: 633px;
+		overflow: hidden;
 	}
 	#clothes .main_left{
 		width: 660px;
-		height: 632px;
+		height: 633px;
 		overflow: hidden;
 	}
-	#clothes .main_left .restrict_w{
+	#clothes .main1 .restrict_w{
 		width: 670px;
 	}
 	.main_left a,
@@ -1640,6 +1776,72 @@
 		-webkit-border-radius: 50%;
 		border-radius: 50%;
 		background: #3e3e3e;
+	}
+	#clothes_FocusPic .btn_prev{
+		position: absolute;
+		top: 50%;
+		left: 0;
+	}
+	#clothes_FocusPic .btn_next{
+		position: absolute;
+		top: 50%;
+		right: 0;
+	}
+	#clothes_FocusPic .btn_prev,
+	#clothes_FocusPic .btn_next{
+		margin-top: -31px;
+		display: block;
+		height: 62px;
+		width: 30px;
+		line-height: 63px;
+		text-align: center;
+		color: white;
+		background: rgba(0,0,0,.2);
+		font-size: 22px;
+    	font-weight: 400;
+    	font-family: 'simsun';		
+	}
+	/*其他页*/
+	#clothes .main2 .restrict_w{
+		width: 900px;
+	}
+	#clothes .main2 .force1{
+		float: left;
+		height: 237px;
+		width: 220px;
+	}
+	#clothes .main2 .wrap{
+		height: 236px;
+		width: 219px;
+		border-right: 1px solid #ededed;
+		border-bottom: 1px solid #ededed;
+		overflow: hidden;
+	}
+	#clothes .main2_img a{
+		display: block;
+		margin: 20px 45px 10px 45px;
+	}
+	#clothes .main2_name{
+		height: 3em;
+		margin: 0 17px 3px 17px;
+	}
+	#clothes .main2_price{
+		margin: 0 17px;
+		font-size: 15px;
+    	font-family: Verdana;
+		color: #e8393c;
+	}
+	#clothes .main2 .force2{
+		float: left;
+		width: 220px;
+		height: 159px;
+	}
+	#clothes .main2 .force2 a{
+		display: block;
+		border-top: 1px solid #f8f6f7;
+		border-right: 1px solid #ededed;
+		border-bottom: 1px solid #ededed;
+		overflow: hidden;
 	}
 /*页脚*/
 #footer{

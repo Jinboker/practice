@@ -161,10 +161,7 @@ function move (oEle , json , iCtrSpeed , fn) {
         }
         if (bStop) {
             clearInterval(oEle.timer);
-            // fn && fn();
-            if (fn) {
-                fn();
-            }
+            fn && fn();
         }
     },iCtrSpeed);
 }
@@ -444,11 +441,11 @@ myReady(function () {
             // 将隐藏的box从隐藏处运动出来
             move (oLsHide , {
                 top : 70
-            } , 8 , function () {
+            } , 5 , function () {
                 // 将生活服务图标的box整体向上运动39px，因为隐藏的box是相对这个定位的，所以也会跟着向上运动
                 move(oLifeServer , {
                     top : -39
-                } , 8 ,function () {
+                } , 5 ,function () {
                     // 运动完成之后出现红色的border
                     obj.className = 'lsh_border';
                 });
@@ -506,7 +503,7 @@ myReady(function () {
     var aClose = oLsHide.getElementsByTagName('p');
     for (i = 0; i < aClose.length; i++) {
         myAddEvent(aClose[i] , 'mouseover' , function () {
-            this.className = 'close change';
+            this.className = 'close close_change';
         });
         myAddEvent(aClose[i] , 'mouseout' , function () {
             this.className = 'close';
@@ -533,19 +530,49 @@ myReady(function () {
     }
 
     // 隐藏着的块内部的切换
-    var aNavList = getClass(oLsHide , 'nav_list');
-    var aContentWrap = getClass(oLsHide , 'content_wrap');
-
-    for (i = 0; i < aNavList.length; i++) {
-        myAddEvent(aNavList[i] , 'mouseover' , function () {
-            for (var i = 0; i < aNavList.length; i++) {
-                if (aNavList[i].className === 'nav_list change') {
-                    aNavList[i].className = 'nav_list';
+    // 
+    /*---------------------------内部函数开始----------------------------*/
+    /**
+    * 隐藏着的块内部的切换
+    * @param {object｝ obj   就是话费、机票、电影票和游戏这四个对象中的一个
+    */
+    function showChange(obj) {
+        var aNavList = getClass(obj , 'nav_list');
+        var aContentWrap = getClass(obj , 'content_wrap');
+        // 切换背景及显示
+        for (i = 0; i < aNavList.length; i++) {
+            aNavList[i].index = i;
+            myAddEvent(aNavList[i] , 'mouseover' , function () {
+                for (var i = 0; i < aNavList.length; i++) {
+                    if (aNavList[i].className === 'nav_list change') {
+                        aNavList[i].className = 'nav_list';
+                        aContentWrap[i].style.display = 'none';
+                    }
                 }
-            }
-            this.className = 'nav_list change';
+                this.className = 'nav_list change';
+                aContentWrap[this.index].style.display = 'block';
+            });
+        }
+    }
+    /*---------------------------内部函数结束----------------------------*/
+    // 话费
+    showChange(id('tele_bill'));
+    // 机票
+    var oAirTicket = id('air_ticket');
+    showChange(oAirTicket);
+    // 机票内的点击往返后弹出
+    var aGoBack = getClass(oAirTicket , 'go_back');
+    var aTicketComeback = getClass(oAirTicket , 'ticket_comeback');
+    for (i = 0; i < aGoBack.length; i++) {
+        aGoBack[i].index = i;
+        myAddEvent(aGoBack[i] , 'click' , function () {
+            showHide(aTicketComeback[this.index]);
         });
     }
+    // 电影票
+    showChange(id('film_ticket'));
+    // 游戏
+    showChange(id('games'));
 });
 
 /**
@@ -651,7 +678,6 @@ myReady(function () {
             } , 15); 
         } 
     });
-
     // 猜你喜欢
     var oGuessLike = id('guess-like');
     var oGuessLikeChange = getClass(oGuessLike , 'guess-like-top')[0].getElementsByTagName('a')[0];
@@ -676,7 +702,6 @@ myReady(function () {
     myAddEvent(oGuessLike , 'mouseout' , function () {
         clearTimeout(timer);
     });
-
     // 品质生活
     var oQualityClife = id('quality_life');
     var aItemPic = getClass(oQualityClife , 'ct_item_big');
@@ -697,4 +722,41 @@ myReady(function () {
     }
 });
 /* 综合推荐结束 */
+
+/**
+ * 内容
+ */
+myReady(function () {
+    function showChange (obj) {
+        obj.timer = null;
+        var oMainNav = getClass(obj , 'main_nav')[0];
+        var aLi = oMainNav.getElementsByTagName('li');
+        var aHide = getClass(obj , 'mc_hide');
+        for (var i = 0; i < aLi.length; i++) {
+            aLi[i].index = i;
+            myAddEvent(aLi[i] , 'mouseover' , function () {
+                var that = this;
+                if (this.className != 'current') {
+                   obj.timer = setTimeout( function () {
+                        for (var i = 0; i < aLi.length; i++) {
+                            if (aLi[i].className === 'current') {
+                                aLi[i].className = null;
+                                showHide(aHide[i]);
+                            }
+                        }
+                        that.className = 'current';
+                        showHide(aHide[that.index]);
+                    } , 50); 
+                }
+            });
+            myAddEvent(aLi[i] , 'mouseout' , function () {
+                clearTimeout(obj.timer);
+            });
+        } 
+    }
+    // 服装箱包
+    var oClothes = id('clothes');
+    showChange(oClothes);
+});
+/* 内容结束 */
 /*------------------------------------- 页面流程结束 -----------------------------------------*/
