@@ -12,3 +12,5 @@ a:hover{color:#c81623;}
 .clearfix:after{content: "";width: 0;display: table;clear: both;}
 h2,h3{font-family: "microsoft yahei";font-weight: 400;}
 .style_red{color: #C81623;}
+.comWidth {position: relative;width: 1210px;margin: 0 auto;}
+.comHide {display: none;}

@@ -127,7 +127,7 @@ function showHide(obj) {
  * 任意值的缓冲运动框架
  * @param {object}   oEle         想要运动的那个对象
  * @param {json}     json         运动的目标
- * @param {number}   iCtrSpeed    可选，用来控制运动速度，默认为25
+ * @param {number}   iCtrSpeed    可选，用来控制运动速度，默认为30
  * @param {function｝fn           可选，链式运动函数
  */
 function move (oEle , json , iCtrSpeed , fn) {
@@ -322,7 +322,7 @@ myReady(function () {
         aTopDropdown[i].index = i;
 
         myAddEvent(aTopDropdown[i] , 'mouseover' , function () {
-            this.className = 'top_dropdownchange top_bar';
+            this.className = 'js_dropdownchange top_bar';
             showHide(aTopBlock[this.index]);
             showHide(aDropLayer[this.index]);
         });
@@ -367,7 +367,7 @@ myReady(function () {
     oHideBuyCar.onmouseover = obuyCar.onmouseover = function  () {
         showHide(aBuyCarBlock[0]);
         showHide(oHideBuyCar);
-        obuyCar.className = 'fr hidebuyCarClass';
+        obuyCar.className = 'fr js_hidebuyCar';
     };
     oHideBuyCar.onmouseout = obuyCar.onmouseout = function  () {
         showHide(aBuyCarBlock[0]);
@@ -731,7 +731,7 @@ myReady(function () {
         obj.timer = null;
         var oMainNav = getClass(obj , 'main_nav')[0];
         var aLi = oMainNav.getElementsByTagName('li');
-        var aHide = getClass(obj , 'mc_hide');
+        var aHide = getClass(obj , 'js_mc_hide');
         for (var i = 0; i < aLi.length; i++) {
             aLi[i].index = i;
             myAddEvent(aLi[i] , 'mouseover' , function () {
@@ -757,6 +757,40 @@ myReady(function () {
     // 服装箱包
     var oClothes = id('clothes');
     showChange(oClothes);
+    // 个护美妆
+    var oCosmetic = id('cosmetic');
+    showChange(oCosmetic);
+    // 手机通讯
+    var oMbiles = id('mobiles');
+    showChange(oMbiles);
+    // 运动健身
+    var oSports = id('sports');
+    showChange(oSports);
 });
 /* 内容结束 */
+
+/**
+ * 页脚上面的天天低价及热门晒单
+ */
+myReady(function () {
+    var oExtraContent = id('extra_content');
+    // 天天低价鼠标划过图片运动
+    var oLowPrice = getClass(oExtraContent , 'low_price')[0];
+    var aLowPriLi = oLowPrice.getElementsByTagName('li');
+    var aLowPriImg = getClass(oLowPrice , 'lp_img');
+    for (var i = 0; i < aLowPriLi.length; i++) {
+        aLowPriLi[i].index = i;
+        myAddEvent(aLowPriLi[i] , 'mouseover' , function () {
+            move(aLowPriImg[this.index] , {
+                left : -10
+            });
+        });
+        myAddEvent(aLowPriLi[i] , 'mouseout' , function () {
+            move(aLowPriImg[this.index] , {
+                left : 0
+            });
+        });
+    }
+    // 热门晒单的自动播放
+});
 /*------------------------------------- 页面流程结束 -----------------------------------------*/
