@@ -138,12 +138,18 @@ function move (oEle , json , iCtrSpeed , fn) {
         for (var attr in json) {
             var iSpeed = null;
             var iCur = null;
-            // 获取透明度IE8以前的写法
-            if (attr == 'opacity') {
-                iCur = parseInt( parseFloat(getStyle(oEle , attr))*100 );
-            // 标准写法
-            } else{
-                iCur = parseInt(getStyle(oEle , attr));
+            switch (attr) {
+                // 获取透明度IE8以前的写法
+                case 'opacity' :
+                    iCur = parseInt( parseFloat(getStyle(oEle , attr))*100 );
+                    break;
+                // 获取scrollTop
+                case 'scrollTop' :
+                    iCur = document.documentElement.scrollTop || document.body.scrollTop;
+                    break;
+                // 标准
+                default :
+                    iCur = parseInt(getStyle(oEle , attr));
             }
             // 缓冲运动速度值
             iSpeed = (json[attr] - iCur)/8;
@@ -152,11 +158,16 @@ function move (oEle , json , iCtrSpeed , fn) {
             if (iCur != json[attr]) {
                 bStop = false;
             }
-            if (attr == 'opacity') {
-                oEle.style.opacity = (iCur + iSpeed)/100;
-                oEle.style.filter = 'alpha(opacity:'+ (iCur + iSpeed) +')';
-            } else{
-                oEle.style[attr] = iCur + iSpeed + 'px';
+            switch (attr) {
+                case 'opacity' :
+                    oEle.style.opacity = (iCur + iSpeed)/100;
+                    oEle.style.filter = 'alpha(opacity:'+ (iCur + iSpeed) +')';
+                    break;
+                case 'scrollTop' :
+                    document.documentElement.scrollTop = document.body.scrollTop = iCur + iSpeed;
+                    break;
+                default :
+                    oEle.style[attr] = iCur + iSpeed + 'px';
             }
         }
         if (bStop) {
@@ -167,8 +178,7 @@ function move (oEle , json , iCtrSpeed , fn) {
 }
 /*--------------------------------- 工具包函数结束 -------------------------------------*/
 
-
-/*--------------------------------- 焦点图函数开始 -------------------------------------*/
+/*--------------------------------- 焦点图模块开始 -------------------------------------*/
 /**
  * 焦点图函数（注：HTML跟CSS必须按照相应的规则来写）
  * @param {object} oEle    焦点图的主体元素
@@ -245,10 +255,10 @@ Focus.prototype =
         var that = this;
         for (var i = 0; i < this.aSliderImg.length; i++) {
             this.oSliderBtn.onmouseover = this.aSliderImg[i].onmouseover = function  () {
-                showHide(that.oSliderBtn);
+                that.oSliderBtn.style.display = 'block';
             };
             this.oSliderBtn.onmouseout = this.aSliderImg[i].onmouseout = function  () {
-                showHide(that.oSliderBtn);
+                that.oSliderBtn.style.display = 'none';
             };
         }
     },
@@ -291,19 +301,15 @@ Focus.prototype =
             // 将当前正在显示的图片变为隐藏
             if (this.aSliderImg[i].className == 'currentSlider') {
                 this.aSliderImg[i].className = this.aSliderNav[i].className = null;
-                move(this.aSliderImg[i] , {
-                    opacity: 0
-                });
+                move(this.aSliderImg[i] , {opacity: 0});
             }
         }
         // 将索引值为iNow的图片显示出来
         this.aSliderImg[this.iNow].className = this.aSliderNav[this.iNow].className = 'currentSlider';
-        move (this.aSliderImg[this.iNow] , {
-            opacity: 100
-        });
+        move (this.aSliderImg[this.iNow] , {opacity: 100});
     }
 };
-/*--------------------------------- 焦点图函数结束 -------------------------------------*/
+/*--------------------------------- 焦点图模块结束 -------------------------------------*/
 
 
 /*---------------------------------- 页面流程开始 --------------------------------------*/
@@ -439,13 +445,9 @@ myReady(function () {
         if (iPosition1 === '208px') {
             showHide(aMoveBottom[obj.index]);
             // 将隐藏的box从隐藏处运动出来
-            move (oLsHide , {
-                top : 70
-            } , 5 , function () {
+            move (oLsHide , {top : 70} , 5 , function () {
                 // 将生活服务图标的box整体向上运动39px，因为隐藏的box是相对这个定位的，所以也会跟着向上运动
-                move(oLifeServer , {
-                    top : -39
-                } , 5 ,function () {
+                move(oLifeServer , {top : -39} , 5 ,function () {
                     // 运动完成之后出现红色的border
                     obj.className = 'lsh_border';
                 });
@@ -517,12 +519,8 @@ myReady(function () {
             bStop = false;
             var that = this;
             aMoveTop[this.index].className = null;
-            move(oLifeServer , {
-                top : 0
-            } , 4 ,function () {
-                move (oLsHide , {
-                    top : 208
-                } , 5 , function () {
+            move(oLifeServer , {top : 0} , 4 ,function () {
+                move (oLsHide , {top : 208} , 5 , function () {
                     showHide(aMoveBottom[that.index]);
                 });
             });
@@ -574,6 +572,7 @@ myReady(function () {
     // 游戏
     showChange(id('games'));
 });
+/* 详细商品栏右边的生活服务结束 */
 
 /**
  * 右边工具栏显示与隐藏
@@ -584,6 +583,7 @@ myReady(function () {
     var aText = oToolbar.getElementsByTagName('p');
     var aIcon = oToolbar.getElementsByTagName('i');
 
+    var bStop = true;
     for (var i = 0; i < aLi.length; i++) {
         aLi[i].index = i;
         aLi[i].timer = null;
@@ -595,26 +595,103 @@ myReady(function () {
             this.timer = setTimeout(function  () {
                 //工具栏上面的五个隐藏着的工具要比下面五个宽20px；
                 if (that.index < 5) {
-                    move(aText[that.index] , {
-                        right : 65
-                    } , 15);
+                    move(aText[that.index] , {right : 65} , 15);
                 } else{
-                    move(aText[that.index] , {
-                        right : 45
-                    } , 15);
+                    move(aText[that.index] , {right : 45} , 15);
                 }
             },300);
         });
         myAddEvent(aLi[i] , 'mouseout' , function () {
             clearTimeout(this.timer);
             aIcon[this.index].style.backgroundColor = '#7a6e6e';
-            move(aText[this.index] , {
-                right : 0
-            } , 15);
+            move(aText[this.index] , {right : 0} , 15);
         });
     }
+    myAddEvent(aLi[5] , 'click' , function () {
+        document.documentElement.scrollTop = document.body.scrollTop = 0;
+    });
 });
 /* 右边工具栏显示与隐藏结束 */
+
+/**
+ * 楼层索引
+ */
+myReady(function () {
+    /**
+    * 检查楼层索引的位置决定是否显示
+    */
+    function elevatorUpDown (aTitle , aMc) {
+        var iScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        switch (true) {
+            case iScrollTop > 815 && iScrollTop <= 2131:
+                aLichange (aTitle , aMc , 0);
+                break;
+            case iScrollTop > 2131 && iScrollTop <= 2902 :
+                aLichange (aTitle , aMc , 1);
+                break;
+            case iScrollTop > 2902 && iScrollTop <= 3519 :
+                aLichange (aTitle , aMc , 2);
+                break;
+            case iScrollTop > 3519 && iScrollTop <= 4535 :
+                aLichange (aTitle , aMc , 3);
+                break;
+            default :
+                oElevator.style.display = 'none';
+        }
+    }
+    /**
+    * 检查楼层索引的位置决定是否显示
+    */
+    function aLichange (aTitle , aMc , index) {
+        oElevator.style.display = 'block';
+        if (aTitle[index].className != 'title current') {
+            for (var i = 0; i < aTitle.length; i++) {
+                if (aTitle[i].className === 'title current') {
+                    aTitle[i].className = 'title';
+                    aMc[i].className = 'js_com';
+                }
+            }
+            aTitle[index].className = 'title current';
+            aMc[index].className = 'js_com current';
+            aMc[index].style.top = '-27px';
+            move(aMc[index] , {top : 0});
+        }
+    }
+    var oElevator = id('elevator');
+    // 位置初始化
+    oElevator.style.left = (document.body.clientWidth - 1280)/2 + 'px';
+    var oMianContent = id('mian_content');
+    var aMc = getClass(oMianContent , 'js_com');
+    var aTitle = getClass(oElevator , 'title');
+    // 防止页面滑下后刷新页面时索引不显示
+    elevatorUpDown (aTitle , aMc);
+    document.onscroll = function () {
+        elevatorUpDown (aTitle , aMc);
+    };
+    for (var i = 0; i < aTitle.length; i++) {
+        aTitle[i].index = i;
+        myAddEvent(aTitle[i] , 'click' , function () {
+            switch (this.index) {
+                case 0 :
+                    move(this , {scrollTop : 1756} , 10);
+                    break;
+                case 1 :
+                    move(this , {scrollTop : 2531} , 10);
+                    break;
+                case 2 :
+                    move(this , {scrollTop : 3302} , 10);
+                    break;
+                default :
+                    move(this , {scrollTop : 3919} , 10);
+            }
+        });
+    }
+    window.onresize = function () {
+        var iClientWidth = document.body.clientWidth;
+        oElevator.style.left = (iClientWidth - 1280)/2 + 'px';
+    };
+});
+/* 楼层索引结束 */
 
 /**
  * 综合推荐
@@ -658,9 +735,7 @@ myReady(function () {
             }
             // 每点击一次向前的按钮，left的值需要减少1000px
             iPosition -= 1000;
-            move(aUl[0] , {
-                left : iPosition
-            } , 15);
+            move(aUl[0] , {left : iPosition} , 15);
         }
     });
     // 点击向后
@@ -673,9 +748,7 @@ myReady(function () {
                 iPosition = -iChangeLen;
             }
             iPosition += 1000;
-            move(aUl[0] , {
-                left : iPosition
-            } , 15); 
+            move(aUl[0] , {left : iPosition} , 15); 
         } 
     });
     // 猜你喜欢
@@ -694,9 +767,7 @@ myReady(function () {
     myAddEvent(oGuessLike , 'mouseover' , function () {
         timer = setTimeout ( function () {
             oSpacer.style.right = '1210px';
-            move (oSpacer , {
-                right : 0
-            } , 15);
+            move (oSpacer , {right : 0} , 15);
         } , 600);
     });
     myAddEvent(oGuessLike , 'mouseout' , function () {
@@ -710,14 +781,10 @@ myReady(function () {
         aItemPic[i].index = i;
         // 鼠标移入后图片向左移动8px
         myAddEvent(aItemPic[i] , 'mouseover' , function () {
-            move(aItemMove[this.index] , {
-                left : -8
-            });
+            move(aItemMove[this.index] , {left : -8});
         });
         myAddEvent(aItemPic[i] , 'mouseout' , function () {
-            move(aItemMove[this.index] , {
-                left : 0
-            });
+            move(aItemMove[this.index] , {left : 0});
         });
     }
 });
@@ -781,14 +848,10 @@ myReady(function () {
     for (var i = 0; i < aLowPriLi.length; i++) {
         aLowPriLi[i].index = i;
         myAddEvent(aLowPriLi[i] , 'mouseover' , function () {
-            move(aLowPriImg[this.index] , {
-                left : -10
-            });
+            move(aLowPriImg[this.index] , {left : -10});
         });
         myAddEvent(aLowPriLi[i] , 'mouseout' , function () {
-            move(aLowPriImg[this.index] , {
-                left : 0
-            });
+            move(aLowPriImg[this.index] , {left : 0});
         });
     }
     // 热门晒单的自动播放

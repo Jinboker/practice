@@ -991,7 +991,7 @@
 		}
 /*----------------------------- 焦点图及生活服务栏结束 ---------------------------------*/
 
-/*--------------------------------- 全剧工具栏开始 -------------------------------------*/
+/*--------------------------------- 全局工具栏开始 -------------------------------------*/
 #gobal-toolbar {
 	position: fixed;
 	top: 0;
@@ -1087,7 +1087,7 @@
 		background: url('../image/toolbar.png') no-repeat 0 -213px;
 		background-color: #7a6e6e;
 	}
-/*--------------------------------- 全剧工具栏结束 -------------------------------------*/
+/*--------------------------------- 全局工具栏结束 -------------------------------------*/
 
 /*--------------------------------- 今日推荐开始 -------------------------------------*/
 /*综合推荐*/
@@ -1433,12 +1433,13 @@
 /*楼层索引*/
 #elevator {
 	position: fixed;
-	top: 80px;
+	top: 50%;
 	left: 311.5px;
 	z-index: 1;
 	width: 30px;
 }
 	#elevator li {
+		position: relative;
 		width: 18px;
 		height: 30px;
 		margin: 0 auto;
@@ -1449,15 +1450,29 @@
 	}
 	#elevator a {
 		display: block;
+		position: absolute;
+		top: 0;
 		width: 30px;
 		height: 30px;
 		margin-left: -6px;
 		line-height: 30px;
+		background-color: white;
 		text-align: center;
 		font-size: 14px;
 	}
 	#elevator .title {
-		display: none;
+		background-color: transparent;
+		color: transparent;
+		font-size: 12px;
+	}
+	#elevator .current {
+		background-color: white;
+		color: #c81623;
+		font-size: 12px;
+	}
+	#elevator .title:hover {
+		background-color: #c81623;
+		color: white;
 	}
 /*--------------------------------- 楼层索引开始 -------------------------------------*/
 
@@ -1505,6 +1520,7 @@
 	height: 35px;
 	width: 100%;
 	border-bottom: 1px solid #c81623;
+	/*overflow: hidden;*/
 }
 	/*top栏左侧*/
 	.main_theme {
@@ -1515,6 +1531,7 @@
 	}
 	.main_theme i {
 		float: left;
+		position: relative;
 		display: block;
 		height: 25px;
 		width: 21px;
@@ -1525,7 +1542,10 @@
 		line-height: 25px;
 		font-size: 14px;
 		color: white;
-		background: url(../image/floor_mark.gif) no-repeat 0 -25px;
+		background: url(../image/floor_mark.gif) no-repeat 0 0;
+	}
+	.main_theme .current {
+		background-position: 0 -27px;
 	}
 	/*top栏右侧*/
 	#mian_content .nav_list .w {
