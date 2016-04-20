@@ -579,9 +579,8 @@
 		background-color: #C81623;
 	}
 	/*前后两个按钮*/
-	#FocusPic1 .slider_btn {
+	.slider_btn {
 		display: none;
-		cursor: pointer;
 	}
 	#FocusPic1 .slider_btn .btn_prev {
 		position: absolute;
@@ -1130,9 +1129,8 @@
 		margin-right: 1px;
 	}
 	/*前后按钮*/
-	#recommend .slider_btn {
+	.slider_btn {
 		display: none;
-		cursor: pointer;
 	}
 	#recommend .btn_prev {
 		position: absolute;
@@ -1474,7 +1472,7 @@
 		background-color: #c81623;
 		color: white;
 	}
-/*--------------------------------- 楼层索引开始 -------------------------------------*/
+/*--------------------------------- 楼层索引结束 -------------------------------------*/
 
 /*--------------------------------- 主要内容开始 -------------------------------------*/
 .content_com {

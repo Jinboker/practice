@@ -124,6 +124,19 @@ function showHide(obj) {
 }
 
 /**
+ * 原型继承时的属性拷贝函数
+ * @param {object} Child 子类
+ * @param {object} Parent 父类
+ */
+function extend (Child, Parent) {
+    var p = Parent.prototype;
+    var c = Child.prototype;
+    for (var i in p) {
+        c[i] = p[i];
+    }
+}
+
+/**
  * 任意值的缓冲运动框架
  * @param {object}   oEle         想要运动的那个对象
  * @param {json}     json         运动的目标
@@ -164,7 +177,15 @@ function move (oEle , json , iCtrSpeed , fn) {
                     oEle.style.filter = 'alpha(opacity:'+ (iCur + iSpeed) +')';
                     break;
                 case 'scrollTop' :
-                    document.documentElement.scrollTop = document.body.scrollTop = iCur + iSpeed;
+                    // if (Math.abs(document.body.scrollTop - json[attr]) < 10) {
+                    //     document.documentElement.scrollTop = document.body.scrollTop = json[attr];
+
+                        
+                    //     console.log(document.body.scrollTop);
+                    //     console.log(json[attr] + 'px');
+                    // } else {
+                        document.documentElement.scrollTop = document.body.scrollTop = iCur + iSpeed;
+                    // }
                     break;
                 default :
                     oEle.style[attr] = iCur + iSpeed + 'px';
@@ -178,138 +199,7 @@ function move (oEle , json , iCtrSpeed , fn) {
 }
 /*--------------------------------- 工具包函数结束 -------------------------------------*/
 
-/*--------------------------------- 焦点图模块开始 -------------------------------------*/
-/**
- * 焦点图函数（注：HTML跟CSS必须按照相应的规则来写）
- * @param {object} oEle    焦点图的主体元素
- * @param {bool} boole     ture代表按照淡入淡出来切换图片，false代表横向移动切换图片
- */
-function Focus( oEle , boole ) {
-    this.initialize.apply(this , arguments);
-}
-Focus.prototype =
-{
-    initialize : function ( oEle , boole )
-    {
-        var that = this;
-        this.timer = null;
-        this.navTimer = null;
-        this.btnTimer = null;
-        this.stop = true;
-        this.iNow = 1;
-        this.oFocus = id(oEle);
-        this.oFocusChild = getChild(this.oFocus);
-        // 获取图片
-        this.aSliderImg = this.oFocusChild[0].getElementsByTagName('li');
-        // 获取nav
-        this.aSliderNav = this.oFocusChild[1].getElementsByTagName('li');
-        // 获取按钮
-        this.oSliderBtn = this.oFocusChild[2];
-        this.prevBtn = this.oSliderBtn.getElementsByTagName('a')[0];
-        this.nextBtn = this.oSliderBtn.getElementsByTagName('a')[1];
-        // 详细商品栏右边的焦点图初始化
-        if (boole) {
-            this.aSliderImg[0].style.opacity = 1;
-            this.aSliderImg[0].style.filter = 'alpha(opacity:100)';
-        }
-        // 开启自动播放
-        this.autoPlay.apply(this);
-        // 鼠标移入后自动播放暂停
-        myAddEvent (this.oFocus , 'mouseover' ,function () {
-            clearInterval(that.timer);
-        });
-        // 鼠标移出后开始自动播放
-        myAddEvent (this.oFocus , 'mouseout' ,function () {
-            that.autoPlay.apply(that);
-        });
-        // 鼠标移入移出时按钮的显示与隐藏
-        this.showHideBtn.apply(this);
-        // 前后按钮点击时候图片的轮换
-        myAddEvent (this.prevBtn , 'click' , function () {
-            if (that.stop) {
-                that.stop = false;
-                that.iNow > 1 ? that.iNow -- : that.iNow = (that.aSliderImg.length-1);
-                that.opacityMove.apply(that);
-                that.btnTimer = setTimeout( function () {
-                    that.stop = true;
-                } ,500);
-            }
-        });
-        myAddEvent (this.nextBtn , 'click' , function () {
-            if (that.stop) {
-                that.stop = false;
-                that.iNow < (that.aSliderImg.length-1) ? that.iNow ++ : that.iNow = 0;
-                that.opacityMove.apply(that);
-                that.btnTimer = setTimeout( function () {
-                    that.stop = true;
-                } ,500);
-            }
-        });
-        // 鼠标移入nav的时候图片切换
-        this.navChange.apply(this);
-    },
 
-    // 按钮的显示与隐藏
-    showHideBtn : function ()
-    {
-        var that = this;
-        for (var i = 0; i < this.aSliderImg.length; i++) {
-            this.oSliderBtn.onmouseover = this.aSliderImg[i].onmouseover = function  () {
-                that.oSliderBtn.style.display = 'block';
-            };
-            this.oSliderBtn.onmouseout = this.aSliderImg[i].onmouseout = function  () {
-                that.oSliderBtn.style.display = 'none';
-            };
-        }
-    },
-
-    // 自动播放
-    autoPlay : function ()
-    {
-        var that = this;
-        this.timer = setInterval( function () {
-            that.opacityMove.apply(that);
-            that.iNow < (that.aSliderImg.length-1) ? that.iNow ++ : that.iNow = 0;
-        } , 3500);
-    },
-
-    // 鼠标移入nav图片切换
-    navChange : function ()
-    {
-        var that = this;
-        for (var i = 0; i < this.aSliderNav.length; i++) {
-            this.aSliderNav[i].index = i;
-            myAddEvent (this.aSliderNav[i] , 'mouseover' , function () {
-                if(this.className != 'currentSlider'){       //不要全部都是that啊，这里用this的
-                    var _this = this;
-                    that.navTimer = setTimeout( function () {
-                        that.iNow = _this.index;
-                        that.opacityMove.apply(that);
-                    } , 300);
-                }
-            });
-            myAddEvent ( this.aSliderNav[i] , 'mouseout' , function () {
-                clearTimeout(that.navTimer);
-            } );
-        }
-    },
-
-    // 图片的隐藏与显示
-    opacityMove : function ()
-    {
-        for (var i = 0; i < this.aSliderImg.length; i++) {
-            // 将当前正在显示的图片变为隐藏
-            if (this.aSliderImg[i].className == 'currentSlider') {
-                this.aSliderImg[i].className = this.aSliderNav[i].className = null;
-                move(this.aSliderImg[i] , {opacity: 0});
-            }
-        }
-        // 将索引值为iNow的图片显示出来
-        this.aSliderImg[this.iNow].className = this.aSliderNav[this.iNow].className = 'currentSlider';
-        move (this.aSliderImg[this.iNow] , {opacity: 100});
-    }
-};
-/*--------------------------------- 焦点图模块结束 -------------------------------------*/
 
 
 /*---------------------------------- 页面流程开始 --------------------------------------*/
@@ -423,12 +313,174 @@ myReady(function () {
 });
 /* 详细商品栏的显示与隐藏结束 */
 
+
+
+
+
+/*--------------------------------- 焦点图模块开始 -------------------------------------*/
+
+function TopFocus( oEle , boole ) {
+    this.initialize.apply(this , arguments);
+}
+TopFocus.prototype =
+{
+    initialize : function ( oEle , boole )
+    {
+        var that = this;
+        this.timer = null;
+        this.navTimer = null;
+        this.btnTimer = null;
+        this.stop = true;
+        this.iNow = 1;
+        this.oFocus = id(oEle);
+        this.aFocusChild = getChild(this.oFocus);
+        // 获取图片
+        this.aSliderImg = this.aFocusChild[0].getElementsByTagName('li');
+        // 获取nav
+        this.aSliderNav = this.aFocusChild[1].getElementsByTagName('li');
+        // 获取按钮
+        this.oSliderBtn = this.aFocusChild[2];
+        this.prevBtn = this.oSliderBtn.getElementsByTagName('a')[0];
+        this.nextBtn = this.oSliderBtn.getElementsByTagName('a')[1];
+        // 详细商品栏右边的焦点图初始化
+        if (boole) {
+            this.aSliderImg[0].style.opacity = 1;
+            this.aSliderImg[0].style.filter = 'alpha(opacity:100)';
+        }
+        // 开启自动播放
+        this.autoPlay.apply(this);
+        // 鼠标移入后自动播放暂停
+        myAddEvent (this.oFocus , 'mouseover' ,function () {
+            clearInterval(that.timer);
+        });
+        // 鼠标移出后开始自动播放
+        myAddEvent (this.oFocus , 'mouseout' ,function () {
+            that.autoPlay.apply(that);
+        });
+        // 鼠标移入移出时按钮的显示与隐藏
+        this.showHideBtn.apply(this);
+        // 前后按钮点击时候图片的轮换
+        myAddEvent (this.prevBtn , 'click' , function () {
+            if (that.stop) {
+                that.stop = false;
+                that.iNow > 1 ? that.iNow -- : that.iNow = (that.aSliderImg.length-1);
+                that.opacityMove.apply(that);
+                that.btnTimer = setTimeout( function () {
+                    that.stop = true;
+                } ,500);
+            }
+        });
+        myAddEvent (this.nextBtn , 'click' , function () {
+            if (that.stop) {
+                that.stop = false;
+                that.iNow < (that.aSliderImg.length-1) ? that.iNow ++ : that.iNow = 0;
+                that.opacityMove.apply(that);
+                that.btnTimer = setTimeout( function () {
+                    that.stop = true;
+                } ,500);
+            }
+        });
+        // 鼠标移入nav的时候图片切换
+        this.navChange.apply(this);
+    },
+
+    // 按钮的显示与隐藏
+    showHideBtn : function ()
+    {
+        var that = this;
+        for (var i = 0; i < this.aSliderImg.length; i++) {
+            this.oSliderBtn.onmouseover = this.aSliderImg[i].onmouseover = function  () {
+                that.oSliderBtn.style.display = 'block';
+            };
+            this.oSliderBtn.onmouseout = this.aSliderImg[i].onmouseout = function  () {
+                that.oSliderBtn.style.display = 'none';
+            };
+        }
+    },
+
+    // 自动播放
+    autoPlay : function ()
+    {
+        var that = this;
+        this.timer = setInterval( function () {
+            that.opacityMove.apply(that);
+            that.iNow < (that.aSliderImg.length-1) ? that.iNow ++ : that.iNow = 0;
+        } , 3500);
+    },
+
+    // 鼠标移入nav图片切换
+    navChange : function ()
+    {
+        var that = this;
+        for (var i = 0; i < this.aSliderNav.length; i++) {
+            this.aSliderNav[i].index = i;
+            myAddEvent (this.aSliderNav[i] , 'mouseover' , function () {
+                if(this.className != 'currentSlider'){       //不要全部都是that啊，这里用this的
+                    var that = this;
+                    that.navTimer = setTimeout( function () {
+                        that.iNow = that.index;
+                        that.opacityMove.apply(that);
+                    } , 300);
+                }
+            });
+            myAddEvent ( this.aSliderNav[i] , 'mouseout' , function () {
+                clearTimeout(that.navTimer);
+            } );
+        }
+    },
+
+    // 图片的隐藏与显示
+    opacityMove : function ()
+    {
+        for (var i = 0; i < this.aSliderImg.length; i++) {
+            // 将当前正在显示的图片变为隐藏
+            if (this.aSliderImg[i].className == 'currentSlider') {
+                this.aSliderImg[i].className = this.aSliderNav[i].className = null;
+                move(this.aSliderImg[i] , {opacity: 0});
+            }
+        }
+        // 将索引值为iNow的图片显示出来
+        this.aSliderImg[this.iNow].className = this.aSliderNav[this.iNow].className = 'currentSlider';
+        move (this.aSliderImg[this.iNow] , {opacity: 100});
+    }
+};
+/*--------------------------------- 焦点图模块结束 -------------------------------------*/
+// function MainFocus ( oEle , boole ) {
+//     TopFocus.apply(this , arguments);
+// }
+// extend(MainFocus , TopFocus);
+// MainFocus.prototype = {
+//     opacityMove : function ()
+//     {
+//         for (var i = 0; i < this.aSliderImg.length; i++) {
+//             // 将当前正在显示的图片变为隐藏
+//             if (this.aSliderImg[i].className == 'currentSlider') {
+//                 this.aSliderImg[i].className = this.aSliderNav[i].className = null;
+//                 move(this.aSliderImg[i] , {opacity: 0});
+//             }
+//         }
+//         // 将索引值为iNow的图片显示出来
+//         this.aSliderImg[this.iNow].className = this.aSliderNav[this.iNow].className = 'currentSlider';
+//         move (this.aSliderImg[this.iNow] , {opacity: 100});
+//     }
+// };
+
+
+
+
 /**
  * 详细商品栏右边的焦点图
  */
 myReady(function () {
-    new Focus ('FocusPic1' , true);
+
+    new TopFocus ('FocusPic1' , true);
+    // new MainFocus ('clothes_FocusPic' , false);
+    // new MainFocus ('cosmetic_FocusPic' , false);
+    // new MainFocus ('mobiles_FocusPic' , false);
+    // new MainFocus ('sports_FocusPic' , false);
 });
+
+
 /**
  * 详细商品栏右边的生活服务
  */
@@ -527,13 +579,12 @@ myReady(function () {
         });
     }
 
-    // 隐藏着的块内部的切换
-    // 
     /*---------------------------内部函数开始----------------------------*/
     /**
     * 隐藏着的块内部的切换
     * @param {object｝ obj   就是话费、机票、电影票和游戏这四个对象中的一个
     */
+   // 隐藏着的块内部的切换
     function showChange(obj) {
         var aNavList = getClass(obj , 'nav_list');
         var aContentWrap = getClass(obj , 'content_wrap');
@@ -624,23 +675,27 @@ myReady(function () {
         var iScrollTop = document.documentElement.scrollTop || document.body.scrollTop;
         switch (true) {
             case iScrollTop > 815 && iScrollTop <= 2131:
+                if (aTitle[0].className === 'title current') {return ;}
                 aLichange (aTitle , aMc , 0);
-                break;
+            break;
             case iScrollTop > 2131 && iScrollTop <= 2902 :
+                if (aTitle[1].className === 'title current') {return ;}
                 aLichange (aTitle , aMc , 1);
-                break;
+            break;
             case iScrollTop > 2902 && iScrollTop <= 3519 :
+                if (aTitle[2].className === 'title current') {return ;}
                 aLichange (aTitle , aMc , 2);
-                break;
+            break;
             case iScrollTop > 3519 && iScrollTop <= 4535 :
+                if (aTitle[3].className === 'title current') {return ;}
                 aLichange (aTitle , aMc , 3);
-                break;
+            break;
             default :
                 oElevator.style.display = 'none';
         }
     }
     /**
-    * 检查楼层索引的位置决定是否显示
+    * 楼层索引的颜色改变
     */
     function aLichange (aTitle , aMc , index) {
         oElevator.style.display = 'block';
@@ -652,43 +707,83 @@ myReady(function () {
                 }
             }
             aTitle[index].className = 'title current';
-            aMc[index].className = 'js_com current';
-            aMc[index].style.top = '-27px';
-            move(aMc[index] , {top : 0});
+            aMcchange (aMc , index);
         }
     }
+    /**
+    * 每个内容的top栏改变
+    */
+    function aMcchange (aMc , index) {
+        aMc[index].className = 'js_com current';
+        aMc[index].style.top = '-27px';
+        move(aMc[index] , {top : 0});
+    }
+
     var oElevator = id('elevator');
     // 位置初始化
     oElevator.style.left = (document.body.clientWidth - 1280)/2 + 'px';
     var oMianContent = id('mian_content');
     var aMc = getClass(oMianContent , 'js_com');
     var aTitle = getClass(oElevator , 'title');
+
+    var bStop = true;
     // 防止页面滑下后刷新页面时索引不显示
     elevatorUpDown (aTitle , aMc);
+
+    // 页面滚动时候触发的事件
     document.onscroll = function () {
-        elevatorUpDown (aTitle , aMc);
+        bStop && elevatorUpDown(aTitle , aMc);
     };
+
+    // 点击楼层索引后运动至相应的楼层
     for (var i = 0; i < aTitle.length; i++) {
         aTitle[i].index = i;
         myAddEvent(aTitle[i] , 'click' , function () {
+            // 重复点击无效
+            if (this.className === 'title current') {return ;}
+            var that = this;
+            // 点击事件触发后onscroll事件不会触发
+            bStop = false;
+            if (aTitle[this.index].className != 'title current') {
+                for (var i = 0; i < aTitle.length; i++) {
+                    if (aTitle[i].className === 'title current') {
+                        aTitle[i].className = 'title';
+                        aMc[i].className = 'js_com';
+                    }
+                }
+                aTitle[this.index].className = 'title current';
+            }
             switch (this.index) {
                 case 0 :
-                    move(this , {scrollTop : 1756} , 10);
-                    break;
+                    move(this , {scrollTop : 1756} , 10 , function () {
+                        bStop = true;
+                        aMcchange (aMc , that.index);
+                    });
+                break;
                 case 1 :
-                    move(this , {scrollTop : 2531} , 10);
-                    break;
+                    move(this , {scrollTop : 2531} , 10 , function () {
+                        bStop = true;
+                        aMcchange (aMc , that.index);
+                    });
+                break;
                 case 2 :
-                    move(this , {scrollTop : 3302} , 10);
-                    break;
+                    move(this , {scrollTop : 3302} , 10 , function () {
+                        bStop = true;
+                        aMcchange (aMc , that.index);
+                    });
+                break;
                 default :
-                    move(this , {scrollTop : 3919} , 10);
+                    move(this , {scrollTop : 3919} , 10 , function () {
+                        bStop = true;
+                        aMcchange (aMc , that.index);
+                    });
             }
         });
     }
+    // 页面放大缩小后楼层索引的重新定位
     window.onresize = function () {
         var iClientWidth = document.body.clientWidth;
-        oElevator.style.left = (iClientWidth - 1280)/2 + 'px';
+        oElevator.style.left = parseInt((iClientWidth - 1280)/2) + 'px';
     };
 });
 /* 楼层索引结束 */
@@ -855,5 +950,20 @@ myReady(function () {
         });
     }
     // 热门晒单的自动播放
+    var oHotSheet = getClass(oExtraContent , 'hot_sheet')[0];
+    var oHotUl = oHotSheet.getElementsByTagName('ul')[0];
+    var aHotLi = oHotSheet.getElementsByTagName('li');
+    var len = aHotLi.length-1;
+    setInterval(function () {
+        var oRemoveLi = aHotLi[len];
+        oRemoveLi.style.opacity = 0;
+        oRemoveLi.style.height = 0;
+        oHotUl.removeChild(oRemoveLi);
+        oHotUl.insertBefore(oRemoveLi , aHotLi[0]);
+        aHotLi = oHotSheet.getElementsByTagName('li');
+        move(aHotLi[0] , {height : 100} , 15 , function () {
+            move(aHotLi[0] , {opacity : 100} , 40);
+        });
+    },4000);
 });
 /*------------------------------------- 页面流程结束 -----------------------------------------*/
