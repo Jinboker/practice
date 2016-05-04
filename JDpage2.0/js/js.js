@@ -222,7 +222,17 @@ myReady(function () {
 });
 
 
-
+// 主要内容
+myReady(function () {
+    var oDoc = document,
+        oClothesUl = oDoc.querySelector('#clothes .main-tab'),
+        aClothesLi = oClothesUl.getElementsByTagName('li');
+    for (var i = 0; i < aClothesLi.length; i++) {
+        classHover(aClothesLi[i] , function () {
+            toggleClass(this , 'is-current');
+        });
+    }
+});
 
 
 
