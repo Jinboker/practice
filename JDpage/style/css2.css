@@ -1680,30 +1680,27 @@ a:hover{color:#c81623;}
 			overflow: hidden;
 		}
 	/* 右侧其他页内容 */
-	/* .wrap-width-spec1 {
-		width: 900px;
-	} */
-		.wrap-width-spec2 {
-			width: 1100px;
-		}
-		.item-width-spec1 {
-			float: left;
-			height: 237px;
-			width: 220px;
-			box-sizing: border-box;
-			border-right: 1px solid #ededed;
-			border-bottom: 1px solid #ededed;
-			overflow: hidden;
-		}
-		.item-width-spec1 .mc-img a {
+	.item-width-spec1 {
+		float: left;
+		height: 237px;
+		width: 220px;
+		box-sizing: border-box;
+		border-right: 1px solid #ededed;
+		border-bottom: 1px solid #ededed;
+		overflow: hidden;
+	}
+		.item-width-spec1 .mc-img a,
+		.item-width-spec3 .mc-img a {
 			display: block;
 			margin: 20px 45px 10px 45px;
 		}
-		.item-width-spec1 .mc-name {
+		.item-width-spec1 .mc-name,
+		.item-width-spec3 .mc-name{
 			margin: 0 17px 3px 17px;
 			height: 3em;
 		}
-		.item-width-spec1 p {
+		.item-width-spec1 p,
+		.item-width-spec3 p{
 			margin: 0 17px;
 			font-size: 15px;
 	    	font-family: Verdana;
@@ -1719,6 +1716,18 @@ a:hover{color:#c81623;}
 			border-bottom: 1px solid #ededed;
 			overflow: hidden;
 		}
+		.item-width-spec3 {
+			float: left;
+			width: 200px;
+			height: 237px;
+			box-sizing: border-box;
+			border-top: 1px solid #f8f6f7;
+			border-right: 1px solid #ededed;
+			border-bottom: 1px solid #ededed;
+			overflow: hidden;
+		}
+
+
 	/* 焦点图 */
 	.visible-content .slider-list {
 		bottom: 24px;
