@@ -2046,7 +2046,7 @@
 				<li><a href="javascript:;"><span>[特惠]</span>打白条满100减50，女人节专享</a></li>
 			</ul>
 			<div id="life-server">
-				<div class="wrap">
+				<div class="js-move-box wrap">
 					<!-- 显示 -->
 					<ul class="server-box">
 						<li>
@@ -2086,12 +2086,313 @@
 							<a href="javascript:;"><i class='fore12'></i><span>白条</span></a>
 						</li>
 					</ul>
-					<!-- 隐藏 -->
+					<!-- 话费、机票、电影票及游戏隐藏 -->
 					<ul class="server-box-hide">
-						
+						<!-- 话费 -->
+						<li id="tele-bill" class="hide">
+							<a class="close">×</a>
+							<!-- 导航栏 -->
+							<div class="top-tab">
+								<a href="javascript:;" class="main-tab">话费充值</a>
+								<a href="javascript:;" class="main-tab">流量充值</a>
+								<a href="javascript:;" class="main-tab">套餐变更</a>
+							</div>
+							<!-- 话费充值 -->
+							<div class="main-content hide">
+								<div class="ls-form ls-form-top">
+									<i>号码</i>
+									<input type="text" name="name" placeholder="移动、联通、电信">
+								</div>
+								<div class="ls-form ls-form-bottom">
+									<i class="fl">面值</i>
+									<select class="ls-select input-width1 fl">
+										<option value="10">10</option>
+										<option value="20">20</option>
+										<option value="30">30</option>
+									</select>
+									<div class="style-red fl">￥9.8-￥11.0</div>
+								</div>
+								<a href="javascript:;" class="mc-submit">快速充值</a>
+								<a href="javascript:;" class="hot-sale"><i></i>移动流量充1G送1G</a>
+							</div>
+							<!-- 流量充值 -->
+							<div class="main-content hide">
+								<div class="ls-form">
+									<i>号码</i>
+									<input type="text" name="name" placeholder="移动、联通、电信" class="input-width2">
+								</div>
+								<div class="ls-form">
+									<i class="fl">流量</i>
+									<select class="fl">
+										<option value="全国">全国</option>
+										<option value="省内">省内</option>
+									</select>
+									<select class="fl">
+										<option value="50M">50M</option>
+										<option value="100M">100M</option>
+									</select>
+									<div class="style-red fl">￥7.5-￥10.0</div>
+								</div>
+								<a href="javascript:;" class="mc-submit">快速充值</a>
+								<a href="javascript:;" class="hot-sale"><i></i>送京豆 流量翻倍享</a>
+							</div>
+							<!-- 套餐变更 -->
+							<div class="main-content">
+								<div class="ls-form">
+									<i>号码</i>
+									<input type="text" name="name" placeholder="支持部分地区移动">
+								</div>
+								<div class="ls-form">
+									<i class="fl">流量</i>
+									<select class="fl">
+										<option value="38元">38元</option>
+										<option value="48元">48元</option>
+										<option value="58元">58元</option>
+									</select>
+									<div class="style-red fl">50分钟，300M流量</div>
+								</div>
+								<a href="javascript:;" class="mc-submit">办理变更</a>
+							</div>
+						</li>
+						<!-- 机票 -->
+						<li id="air-ticket" class="hide">
+							<a class="close">×</a>
+							<!-- 导航栏 -->
+							<div class="top-tab">
+								<a href="javascript:;" class="main-tab">国内</a>
+								<a href="javascript:;" class="main-tab">国际</a>
+							</div>
+							<!-- 国内 -->
+							<div class="main-content">
+								<div class="ticket-set-out">
+									<i>出发</i>
+									<select>
+										<option value="B北京">B北京</option>
+										<option value="S上海">S上海</option>
+										<option value="S深圳">S深圳</option>
+									</select>
+									<i>到达</i>
+									<select>
+										<option value="C重庆">C重庆</option>
+										<option value="T天津">T天津</option>
+										<option value="X香港">X香港</option>
+									</select>
+								</div>
+								<div class="ticket-date">
+									<i>日期</i>
+									<select>
+										<option value="2016">2016</option>
+										<option value="2017">2017</option>
+									</select>
+									<i>年</i>
+									<select>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+									</select>
+									<i>月</i>
+									<select>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+									</select>
+									<i>日</i>
+								</div>
+								<div class="ticket-back">
+									<i>返程</i>
+									<select>
+										<option value="2016">2016</option>
+										<option value="2017">2017</option>
+									</select>
+									<i>年</i>
+									<select>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+									</select>
+									<i>月</i>
+									<select>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+									</select>
+									<i>日</i>
+								</div>
+								<div class="choose-box">
+									<a href="javascript:;" class="mc-submit fl">机票查询</a>
+									<input type="checkbox" name="name" value="往返" class="go-back-btn">
+									<i>往返</i>
+									<a href="javascript:;" class="be-more">更多></a>
+								</div>
+							</div>
+							<!-- 国际 -->
+							<div class="main-content">
+								<div class="ticket-set-out">
+									<i>出发</i>
+									<select>
+										<option value="B北京">B北京</option>
+										<option value="S上海">S上海</option>
+										<option value="S深圳">S深圳</option>
+									</select>
+									<i>到达</i>
+									<select>
+										<option value="L伦敦">L伦敦</option>
+										<option value="B巴黎">B巴黎</option>
+										<option value="N纽约">N纽约</option>
+									</select>
+								</div>
+								<div class="ticket-date">
+									<i>日期</i>
+									<select>
+										<option value="2016">2016</option>
+										<option value="2017">2017</option>
+									</select>
+									<i>年</i>
+									<select>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+									</select>
+									<i>月</i>
+									<select>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+									</select>
+									<i>日</i>
+								</div>
+								<div class="ticket-back">
+									<i>返程</i>
+									<select>
+										<option value="2016">2016</option>
+										<option value="2017">2017</option>
+									</select>
+									<i>年</i>
+									<select>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+									</select>
+									<i>月</i>
+									<select>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+									</select>
+									<i>日</i>
+								</div>
+								<div class="choose-box">
+									<a href="javascript:;" class="mc-submit fl">机票查询</a>
+									<input type="checkbox" name="name" value="往返" class="go-back-btn">
+									<i>往返</i>
+									<a href="javascript:;" class="be-more">更多></a>
+								</div>
+							</div>
+						</li>
+						<!-- 电影票 -->
+						<li id="film-ticket" class="hide">
+							<a class="close">×</a>
+							<!-- 导航栏 -->
+							<div class="top-tab">
+								<a href="javascript:;" class="main-tab">正在热映</a>
+								<a href="javascript:;" class="main-tab">即将上映</a>
+							</div>
+							<!-- 即将上映 -->
+							<div class="main-content hide">
+								<ul class="clearfix">
+									<li>
+										<a href="javascript:;" class="fore1"></a>
+										<a href="javascript:;" class="ft-btn1">选座购票</a>
+									</li>
+									<li>
+										<a href="javascript:;" class="fore2"></a>
+										<a href="javascript:;" class="ft-btn1">选座购票</a>
+									</li>
+									<li>
+										<a href="javascript:;" class="fore3"></a>
+										<a href="javascript:;" class="ft-btn1">选座购票</a>
+									</li>
+								</ul>
+								<a href="javascript:;" class="hot-sale"><i></i>4月14日19.9元看《纽约纽约》！</a>
+							</div>
+							<!-- 正在上映 -->
+							<div class="main-content">
+								<ul class="clearfix">
+									<li>
+										<a href="javascript:;" class="fore4"></a>
+										<a href="javascript:;" class="ft-btn2">选座购票</a>
+									</li>
+									<li>
+										<a href="javascript:;" class="fore5"></a>
+										<a href="javascript:;" class="ft-btn2">选座购票</a>
+									</li>
+									<li>
+										<a href="javascript:;" class="fore6"></a>
+										<a href="javascript:;" class="ft-btn2">选座购票</a>
+									</li>
+								</ul>
+								<a href="javascript:;" class="hot-sale"><i></i>4月14日19.9元看《纽约纽约》！</a>
+							</div>
+						</li>
+						<!-- 游戏 -->
+						<li id="games" class="">
+							<a class="close">×</a>
+							<!-- 导航栏 -->
+							<div class="top-tab">
+								<a href="javascript:;" class="main-tab">点卡</a>
+								<a href="javascript:;" class="main-tab">QQ</a>
+							</div>
+							<!-- 点卡 -->
+							<div class="main-content">
+								<div class="games-select">
+									<i>游戏</i>
+									<select>
+										<option value="M-魔兽世界">M-魔兽世界</option>
+										<option value="D-DOTA2">D-DOTA2</option>
+									</select>
+									<i>面值</i>
+									<select>
+										<option value="15">15</option>
+										<option value="30">30</option>
+									</select>
+								</div>
+								<div class="choose-box">
+									<input type="radio" name="name" value="" id="zhizhong">
+									<label for="zhizhong">直充</label>
+									<input type="radio" name="name" value="" id="kami">
+									<label for="kami">卡密</label>
+									<span>￥29.65</span>
+								</div>
+								<a href="javascript:;" class="mc-submit">快速充值</a>
+								<a href="javascript:;" class="hot-sale"><i></i>《天谕》时装礼包免费领！</a>
+							</div>
+							<!-- QQ -->
+							<div class="main-content hide">
+								<div class="games-select">
+									<i>QQ</i>
+									<select>
+										<option value="Q币">Q币</option>
+										<option value="Q点">Q点</option>
+									</select>
+									<i>面值</i>
+									<select>
+										<option value="1元">1元</option>
+										<option value="5元">5元</option>
+									</select>
+								</div>
+								<div class="choose-box">
+									<input type="radio" name="name" value="" id="zhizhong">
+									<label for="zhizhong">直充</label>
+									<span>￥0.96</span>
+								</div>
+								<a href="javascript:;" class="mc-submit">快速充值</a>
+								<a href="javascript:;" class="hot-sale"><i></i>《火影忍者》礼包免费领！</a>
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
+			<!-- 最下面的广告 -->
 			<a href="javascript:;" class="bottom-banner"><img src="image/bigimg/7.jpg"></a>
 		</div>
 	</div>
@@ -2425,6 +2726,26 @@
 		</div>
 	</div>
 	<!-- 综合推荐结束 -->
+	<!-- 楼层索引 -->
+	<ul id="elevator">
+		<li>
+			<a href="javascript:;">1F</a>
+			<a href="javascript:;" class="title">服饰</a>
+		</li>
+		<li>
+			<a href="javascript:;">2F</a>
+			<a href="javascript:;" class="title">美妆</a>
+		</li>
+		<li>
+			<a href="javascript:;">3F</a>
+			<a href="javascript:;" class="title">手机</a>
+		</li>
+		<li class="border-none">
+			<a href="javascript:;">4F</a>
+			<a href="javascript:;" class="title">运动</a>
+		</li>
+	</ul>
+	<!-- 楼层索引结束 -->
 	<!-- 主要内容开始 -->
 	<div id="content" class="common-width clearfix">
 		<!-- 第一层单行广告 -->
@@ -2525,7 +2846,7 @@
 				<div class="extra-side side-width-spec1">
 					<a href="javascript:;"><img src="image/clothes/sider_extra.jpg"/></a>
 				</div>
-				<div class="visible-content content-width-spec1 fr">
+				<div class="visible-content content-width-spec1 hide fr">
 					<div class="vc-left">
 						<ul class="wrap">
 							<li class="fore1 fl">
@@ -2579,6 +2900,95 @@
 						</div>
 					</div>
 				</div>
+				<div class="hide-content content-width-spec1 fr">
+					<ul class="wrap-width-spec1">
+						<li class="item-width-spec1">
+							<div class="mc-img">
+								<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/1.jpg"/></a>
+							</div>
+							<div class="mc-name">
+								<a href="javascript:;">劲霸男装 简约舒适丝光纯棉衬衣</a>
+							</div>
+							<p>￥383.40</p>
+						</li>
+						<li class="item-width-spec1">
+							<div class="mc-img">
+								<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/2.jpg"/></a>
+							</div>
+							<div class="mc-name">
+								<a href="javascript:;">布先生男士时尚纯棉圆领短袖T恤</a>
+							</div>
+							<p>￥238.00</p>
+						</li>
+						<li class="item-width-spec1">
+							<div class="mc-img">
+								<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/3.jpg"/></a>
+							</div>
+							<div class="mc-name">
+								<a href="javascript:;">班尼路男装 青年时尚撞色领POLO衫短袖</a>
+							</div>
+							<p>￥89.00</p>
+						</li>
+						<li class="item-width-spec1">
+							<div class="mc-img">
+								<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/4.jpg"/></a>
+							</div>
+							<div class="mc-name">
+								<a href="javascript:;">GXG男装 时尚都市男士白色圆领短袖T恤</a>
+							</div>
+							<p>￥149.00</p>
+						</li>
+						<li class="item-width-spec1">
+							<div class="mc-img">
+								<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/5.jpg"/></a>
+							</div>
+							<div class="mc-name">
+								<a href="javascript:;">杰克琼斯牛仔裤莱卡修身男植物染色牛仔裤</a>
+							</div>
+							<p>￥199.00</p>
+						</li>
+						<li class="item-width-spec1">
+							<div class="mc-img">
+								<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/6.jpg"/></a>
+							</div>
+							<div class="mc-name">
+								<a href="javascript:;">杉杉春季新品 男士商务修身休闲裤</a>
+							</div>
+							<p>￥159.00</p>
+						</li>
+						<li class="item-width-spec1">
+							<div class="mc-img">
+								<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/7.jpg"/></a>
+							</div>
+							<div class="mc-name">
+								<a href="javascript:;">红豆  男装商务休闲纯色微弹男士休闲裤</a>
+							</div>
+							<p>￥169.00</p>
+						</li>
+						<li class="item-width-spec1">
+							<div class="mc-img">
+								<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/8.jpg"/></a>
+							</div>
+							<div class="mc-name">
+								<a href="javascript:;">经典水洗斜纹卡其裤  |直筒商务休闲裤子</a>
+							</div>
+							<p>￥119.00</p>
+						</li>
+						<li class="item-width-spec2">
+							<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/9.jpg"/></a>
+						</li>
+						<li class="item-width-spec2">
+							<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/10.jpg"/></a>
+						</li>
+						<li class="item-width-spec2">
+							<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/11.jpg"/></a>
+						</li>
+						<li class="item-width-spec2">
+							<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/12.jpg"/></a>
+						</li> 
+					</ul>
+				</div>
+				
 			</div>
 			<!--底部的品牌-->
 			<ul class="foot-banner">

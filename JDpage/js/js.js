@@ -96,11 +96,7 @@ function toggleClass(obj , sClass){
 * @param   {function}     fnOver  鼠标移入函数
 * @param   {function}     fnOut   鼠标移出函数
 */
-function hover(obj , fnOver , fnOut) {
-    myAddEvent(obj , 'mouseover' , fnOver);
-    myAddEvent(obj , 'mouseout' , fnOut);
-}
-function classHover(obj , fn) {
+function hover(obj , fn) {
     myAddEvent(obj , 'mouseover' , fn);
     myAddEvent(obj , 'mouseout' , fn);
 }
@@ -167,7 +163,6 @@ function move (oEle , json , iCtrSpeed , fn) {
  * top、head及nav栏
  */
 myReady(function () {
-
 	var i = null,
         oDoc = document;
 
@@ -176,7 +171,7 @@ myReady(function () {
         iHideLen = aDropContent.length;
 
     for (i = 0; i < iHideLen; i++) {
-        classHover(aDropContent[i] , function () {
+        hover(aDropContent[i] , function () {
             toggleClass(this , 'is-current');
         });
     }
@@ -210,11 +205,11 @@ myReady(function () {
     for (i = 0; i < iCategoryLen; i++) {
         aCategoryLi[i].index = i;
         aHideCategory[i].index = i;
-        classHover(aCategoryLi[i] , function () {
+        hover(aCategoryLi[i] , function () {
             toggleClass(this , 'is-current');
             toggleClass(aHideCategory[this.index] , 'is-current');
         });
-        classHover(aHideCategory[i] , function () {
+        hover(aHideCategory[i] , function () {
             toggleClass(this , 'is-current');
             toggleClass(aCategoryLi[this.index] , 'is-current');
         });
@@ -228,7 +223,7 @@ myReady(function () {
         oClothesUl = oDoc.querySelector('#clothes .main-tab'),
         aClothesLi = oClothesUl.getElementsByTagName('li');
     for (var i = 0; i < aClothesLi.length; i++) {
-        classHover(aClothesLi[i] , function () {
+        hover(aClothesLi[i] , function () {
             toggleClass(this , 'is-current');
         });
     }

@@ -729,7 +729,8 @@ a:hover{color:#c81623;}
 }
 	#life-server .wrap {
 		position: relative;
-		top: 0px;
+		/* top: 0px; */
+		top: -39px;
 		width: 260px;
 		height: 250px;
 	}
@@ -800,8 +801,202 @@ a:hover{color:#c81623;}
 	.server-box .fore12 {
 		background: url('../image/lifeIcon.png') no-repeat 0 -225px;
 	}
+/* 生活服务隐藏公共 */
+.server-box-hide .close {
+	float: right;
+	height: 20px;
+	width: 20px;
+	text-align: center;
+	line-height: 20px;
+	cursor: pointer;
+}
+	.server-box-hide .close:hover {
+		background-color: #CCCCCC;
+		color: white;
+	} 
+	.server-box-hide .top-tab {
+		height: 19px;
+		width: 100%;
+		padding: 15px 0 0 10px;
+	}
+	.server-box-hide .main-tab {
+		float: left;
+		display: block;
+		height: 19px;
+		line-height: 16px;
+		margin-right: 10px;
+		padding: 0 2px;
+	}
+	.server-box-hide select {
+		height: 20px;
+		border: 1px solid #e8e8e7;
+		color: #666;
+	}
+	.server-box-hide .mc-submit {
+		display: block;
+		height: 26px;
+		width: 67px;
+		border-radius: 3px;
+		margin: 10px 0 20px 10px;
+		line-height: 26px;
+		text-align: center;
+		background-color: #C81623;
+		color: white;
+	}
+	.hot-sale {
+		display: block;
+		margin-left: 10px;
+		color: #005EA7;
+	}
+	.hot-sale i {
+		float: left;
+		display: block;
+		width: 22px;
+		height: 10px;
+		margin: 4px 7px 0 0;
+		background: url('../image/hot.png') no-repeat 0 0;
+	}
 /* 生活服务隐藏 */
-
+.server-box-hide {
+	position: relative;
+	/* top: 208px; */
+	top: 70px;
+	width: 247px;
+	height: 177px;
+}
+	#tele-bill,
+	#air-ticket,
+	#film-ticket,
+	#games {
+		position: absolute;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		background-color: white;
+	}
+	/* 话费 */
+	#tele-bill .ls-form {
+		position: relative;
+		width: 100%;
+		height: 21px;
+		line-height: 21px;
+		padding: 10px 0 0 10px;
+	}
+		#tele-bill .ls-form i {
+			padding-right: 5px;
+			cursor: default;
+		}
+		#tele-bill input{
+			height: 20px;
+			width: 110px;
+			border: 1px solid #e8e8e7;
+		}
+		#tele-bill select {
+			margin-right: 10px;
+		}
+		#tele-bill .input-width1 {
+			width: 115px;
+		} 
+		#tele-bill .input-width2 {
+			width: 117px;
+		} 
+	/* 机票 */
+	.ticket-set-out,
+	.ticket-date,
+	.ticket-back {
+		padding: 10px 0 0 10px;
+	}
+		.ticket-set-out select {
+			width: 80px;
+		}
+		.ticket-set-out select,
+		.ticket-date select,
+		.ticket-back select {
+			margin: 0 3px;
+		}
+		#air-ticket .choose-box .go-back-btn {
+			float: left;
+			margin: 17px 0 0 15px;
+		}
+		#air-ticket .choose-box {
+			width: 100%;
+			height: 47px;
+		}
+		#air-ticket .choose-box i {
+			float: left;
+			display: block;
+			width: 24px;
+			height: 18px;
+			padding: 14px 0 0 5px;
+			line-height: 18px;
+		}
+		#air-ticket .be-more {
+			float: right;
+			padding: 15px 10px 0 0;
+		}
+	/* 电影票 */
+	#film-ticket li {
+		float: left;
+		width: 65px;
+		margin: 0 5px;
+	}
+		#film-ticket .fore1,
+		#film-ticket .fore2,
+		#film-ticket .fore3,
+		#film-ticket .fore4,
+		#film-ticket .fore5,
+		#film-ticket .fore6 {
+			display: block;
+			width: 65px;
+			height: 90px;
+			background-image: url('../image/film.jpg');
+			background-repeat: no-repeat;
+		}
+		#film-ticket .fore1 {
+			background-position: 0 0;
+		}
+		#film-ticket .fore2 {
+			background-position: -65px 0;
+		}
+		#film-ticket .fore3 {
+			background-position: -130px 0;
+		}
+		#film-ticket .fore4 {
+			background-position: -195px 0;
+		}
+		#film-ticket .fore5 {
+			background-position: -260px 0;
+		}
+		#film-ticket .fore6 {
+			background-position: -325px 0;
+		}
+		#film-ticket .ft-btn1,
+		#film-ticket .ft-btn2 {
+			display: block;
+			width: 57px;
+			height: 20px;
+			margin: 5px 4px;
+			border-radius: 3px;
+			text-align: center;
+			line-height: 20px;
+			color: white;
+		}
+		.ft-btn1 {
+			background-color: #c81623;
+		}
+		.ft-btn2 {
+			background-color: #2ba5eb;
+		}
+	/* 游戏 */
+	.games-select {
+		padding: 10px 0 0 10px;
+	}
+		#games .choose-box {
+			padding-top: 10px;
+			padding-left: 8px;
+	    	height: 22px;
+	    	line-height: 22px;
+		}
 /* 最下面的广告 */
 #focus-extra .bottom-banner {
 	display: block;
@@ -1194,6 +1389,48 @@ a:hover{color:#c81623;}
 		}
 
 /**
+ * 楼层索引
+ */
+ #elevator {
+ 	position: fixed;
+ 	top: 50%;
+ 	left: 311.5px;
+ 	z-index: 1;
+ 	width: 30px;
+ }
+ 	#elevator li {
+ 		position: relative;
+ 		width: 18px;
+ 		height: 30px;
+ 		margin: 0 auto;
+ 		border-bottom: 1px dotted #c2c2c2;
+ 	}
+ 	#elevator .border-none {
+ 		border-bottom: none;
+ 	}
+ 	#elevator a {
+ 		display: block;
+ 		position: absolute;
+ 		top: 0;
+ 		width: 30px;
+ 		height: 30px;
+ 		margin-left: -6px;
+ 		line-height: 30px;
+ 		background-color: white;
+ 		text-align: center;
+ 		font-size: 14px;
+ 	}
+ 	#elevator .title {
+ 		background-color: transparent;
+ 		color: transparent;
+ 		font-size: 12px;
+ 	}
+ 	#elevator .title:hover {
+ 		background-color: #c81623;
+ 		color: white;
+ 	}
+
+/**
  * 主要内容
  */
 /* 整行广告 */
@@ -1231,16 +1468,16 @@ a:hover{color:#c81623;}
 		background-position: -800px -125px;
 	}
 /* 选项卡改变样式 */
-.main-tab .is-current {
+#content .main-tab .is-current {
 	border-color: #c81623; 
 } 
-	.main-tab .is-current a {
+	#content .main-tab .is-current a {
 		padding: 0 16px;
 		border-top: 3px solid #c81623;
 		color: #c81623;
 		background-color: white;
 	}
-	.main-tab .is-current i {
+	#content .main-tab .is-current i {
 		display: none;
 	}
 /* 主要内容公用 */
@@ -1259,7 +1496,7 @@ a:hover{color:#c81623;}
 		border-bottom: 1px solid #c81623;
 	}
 		/* 左侧 */
-		.top-tab .icon {
+		#content .top-tab .icon {
 			float: left;
 			height: 25px;
 			width: 21px;
@@ -1272,14 +1509,14 @@ a:hover{color:#c81623;}
 			background: url(../image/floor_mark.gif) no-repeat 0 0;
 		}
 		/* 右侧 */
-		.main-tab {
+		#content .main-tab {
 			float: right;
 			box-sizing: border-box;
 			height: 35px;
 			border-left: 1px solid #ededed;
 			border-right: 1px solid #ededed;
 		}
-		.top-tab li {
+		#content .top-tab li {
 			position: relative;
 			float: left;
 			height: 35px;
@@ -1287,7 +1524,7 @@ a:hover{color:#c81623;}
 			border-right: solid 1px transparent;
 			margin-left: -1px;
 		}
-		.top-tab a {
+		#content .top-tab a {
 			display: block;
 			position: relative;
 			height: 34px;
@@ -1295,7 +1532,7 @@ a:hover{color:#c81623;}
 			padding: 2px 16px 0 16px;
 			border-top: 1px solid #ededed;
 		}
-		.top-tab i {
+		#content .top-tab i {
 			display: block;
 			position: absolute;
 			top: 0;
@@ -1321,7 +1558,7 @@ a:hover{color:#c81623;}
 			width: 210px;
 			font-family: "microsoft yahei";
 		}
-		.main-content .banner {
+		#content .main-content .banner {
 			height: 474px;
 			overflow: hidden;
 		}
@@ -1403,7 +1640,7 @@ a:hover{color:#c81623;}
 			overflow: hidden;
 		}
 		
-	/* 右侧内容 */
+	/* 右侧第一页内容 */
 	.content-width-spec1 {
 		position: absolute;
 		top: 0;
@@ -1438,6 +1675,46 @@ a:hover{color:#c81623;}
 		.vc-left a,
 		.vc-right a {
 			display: block;
+			border-right: 1px solid #ededed;
+			border-bottom: 1px solid #ededed;
+			overflow: hidden;
+		}
+	/* 右侧其他页内容 */
+	/* .wrap-width-spec1 {
+		width: 900px;
+	} */
+		.wrap-width-spec2 {
+			width: 1100px;
+		}
+		.item-width-spec1 {
+			float: left;
+			height: 237px;
+			width: 220px;
+			box-sizing: border-box;
+			border-right: 1px solid #ededed;
+			border-bottom: 1px solid #ededed;
+			overflow: hidden;
+		}
+		.item-width-spec1 .mc-img a {
+			display: block;
+			margin: 20px 45px 10px 45px;
+		}
+		.item-width-spec1 .mc-name {
+			margin: 0 17px 3px 17px;
+			height: 3em;
+		}
+		.item-width-spec1 p {
+			margin: 0 17px;
+			font-size: 15px;
+	    	font-family: Verdana;
+			color: #e8393c;
+		}
+		.item-width-spec2 {
+			float: left;
+			width: 220px;
+			height: 159px;
+			box-sizing: border-box;
+			border-top: 1px solid #f8f6f7;
 			border-right: 1px solid #ededed;
 			border-bottom: 1px solid #ededed;
 			overflow: hidden;
