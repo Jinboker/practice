@@ -719,6 +719,13 @@ a:hover{color:#c81623;}
 		display: block;
 		font-family: "consolas";
 	}
+/* 生活服务鼠标移入后显示 */
+#life-server .is-current {
+	border-bottom-color: white;
+}
+	#life-server .is-current span {
+		border-top: solid 2px #C81623;
+	}
 /* 生活服务显示 */
 #life-server {
 	height: 208px;
@@ -729,8 +736,7 @@ a:hover{color:#c81623;}
 }
 	#life-server .wrap {
 		position: relative;
-		/* top: 0px; */
-		top: -39px;
+		top: 0px;
 		width: 260px;
 		height: 250px;
 	}
@@ -801,6 +807,11 @@ a:hover{color:#c81623;}
 	.server-box .fore12 {
 		background: url('../image/lifeIcon.png') no-repeat 0 -225px;
 	}
+/* 生活服务隐藏top切换样式 */
+.server-box-hide .is-current {
+	color: white;
+	background: url('../image/iframe-si.png') center 0 no-repeat;
+}
 /* 生活服务隐藏公共 */
 .server-box-hide .close {
 	float: right;
@@ -859,8 +870,7 @@ a:hover{color:#c81623;}
 /* 生活服务隐藏 */
 .server-box-hide {
 	position: relative;
-	/* top: 208px; */
-	top: 70px;
+	top: 208px;
 	width: 247px;
 	height: 177px;
 }

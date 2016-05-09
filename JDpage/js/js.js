@@ -126,7 +126,6 @@ function classHover(obj , fn) {
  */
 function move (oEle , json , iCtrSpeed , fn) {
     clearInterval(oEle.timer);
-
     if (!iCtrSpeed) {iCtrSpeed = 30;}
 
     oEle.timer = setInterval(function  () {
@@ -226,8 +225,75 @@ myReady(function () {
  * 生活服务
  */
 myReady(function () {
-     
+    var oDoc = document,
+        bStop = true,
+        timer = null,
+        iKey = 0,
+        i = null;
+
+    // 鼠标移入后显示
+    var oMoveBox = oDoc.querySelector('.js-move-box'),
+        aBoxLi = oMoveBox.getElementsByTagName('li'),
+        oHideBox = oDoc.querySelector('.js-hide-box'),
+        aHideLi = oDoc.querySelectorAll('.js-hide-box > li');
+
+    for (i = 0; i < 4; i++) {
+        aBoxLi[i].index = i;
+        hover(aBoxLi[i] , function () {
+            if (bStop) {
+                var that = this,
+                    iPosition1 = getStyle(oMoveBox , 'top'),
+                    iPosition2 = getStyle(oHideBox , 'top');
+
+                timer = setTimeout(function () {
+                    if (iPosition2 === '208px') {
+                        aHideLi[that.index].style.display = 'block';
+                        move(oHideBox , {top : 70} , 5 , function() {
+                            move(oMoveBox , {top : -39} , 5 , function () {
+                                toggleClass(that , 'is-current');
+                                iKey = that.index;
+                            });
+                        });
+                    }
+
+                    if (iPosition1 === '-39px') {
+                        toggleClass(aBoxLi[iKey] , 'is-current');
+                        toggleClass(that , 'is-current');
+                        aHideLi[iKey].style.display = 'none';
+                        aHideLi[that.index].style.display = 'block';
+                        iKey = that.index;
+                    }
+                } , 100);                
+            }
+        } , function () {
+            clearTimeout(timer);
+            (!bStop)&&(bStop = true);            
+        });
+    }
+
+    // 点击关闭后隐藏
+    var aClose = oDoc.querySelectorAll('.js-close'),
+        iCloseLen = aClose.length;
+
+    for (i = 0; i < iCloseLen; i++) {
+        aClose[i].index = i;
+        myAddEvent(aClose[i] , 'click' , function () {
+            bStop = false;
+            var that = this;
+            toggleClass(aBoxLi[iKey] , 'is-current');
+            move(oMoveBox , {top : 0} , 4 , function () {
+                move(oHideBox , {top : 208} , 5 , function () {
+                    aHideLi[that.index].style.display = 'none';
+                });
+            });
+        });
+    }
+
+    // 隐藏内容内部的鼠标移入切换
+    var aTab = oDoc.querySelectorAll('.js-ls-hide-tab > a'),
+        aContent = oDoc.querySelectorAll('.js-ls-hide-content');
 });
+
 
 /**
  * 综合推荐、天天低价及热门晒单
@@ -276,7 +342,7 @@ myReady(function () {
 
 
 
-    // 热门晒单
+    // 热门晒单的自动播放
     var oHsContent = oDoc.querySelector('.js-hs-content');
         oHsLi = oHsContent.getElementsByTagName('li');
         iLast = oHsLi.length - 1;
@@ -305,6 +371,7 @@ myReady(function () {
         aIcon = oToolbar.getElementsByTagName('i'),
         len = aLi.length;
 
+    // 鼠标移入移出
     for (i = 0; i < len; i++) {
         aLi[i].index = i;
         aLi[i].timer = null;
@@ -327,6 +394,7 @@ myReady(function () {
         });
     }
 
+    // 回到顶部
     myAddEvent(aLi[5] , 'click' , function () {
         document.documentElement.scrollTop = document.body.scrollTop = 0;
     });
