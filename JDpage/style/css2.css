@@ -1061,12 +1061,12 @@ a:hover{color:#c81623;}
 	}
 	.toolbar-head p {
 		position: relative;
-		/* right: 0; */
+		right: 0;
 		width: 100px;
 	}
 	.toolbar-footer p {
 		position: relative;
-		/* right: 0; */
+		right: 0;
 		width: 80px;
 	}
 	#gobal-toolbar p {
@@ -1159,7 +1159,7 @@ a:hover{color:#c81623;}
 /* 猜你喜欢 */
 #guess-like {
 	position: relative;
-	/* overflow: hidden; */
+	overflow: hidden;
 }
 	/* 内容头部 */
 	#guess-like .content-top {
@@ -1198,6 +1198,7 @@ a:hover{color:#c81623;}
 		padding-top: 20px;
 		border: solid 1px #e6e6e6;
 		border-top-color: #d1d1d1;
+		overflow: hidden;
 	}
 	#guess-like .main-content li {
 		float: left;

@@ -48,7 +48,13 @@ function myAddEvent(obj, type, fn) {
  * @param   {String} 	attr 	获取的样式名
  */
 function getStyle(obj, attr) {
-    obj.currentStyle ? obj.currentStyle[attr] : getComputedStyle(obj, false)[attr];
+    //IE写法
+    if (obj.currentStyle) {
+        return obj.currentStyle[attr];
+    //标准
+    } else {
+        return getComputedStyle(obj, false)[attr];
+    }
 }
 
 /**
@@ -92,11 +98,21 @@ function toggleClass(obj , sClass){
 
 /**
 *hover函数
-* @param   {Object}       obj     需要执行hover的对象
+* @param   {Object}       obj     需要执行classHover的对象
 * @param   {function}     fnOver  鼠标移入函数
 * @param   {function}     fnOut   鼠标移出函数
 */
-function hover(obj , fn) {
+function hover(obj , fnOver , fnOut) {
+    myAddEvent(obj , 'mouseover' , fnOver);
+    myAddEvent(obj , 'mouseout' , fnOut);
+}
+
+/**
+*classHover
+* @param   {Object}       obj     需要执行classHover的对象
+* @param   {function}     fn      鼠标移入移出时的函数
+*/
+function classHover(obj , fn) {
     myAddEvent(obj , 'mouseover' , fn);
     myAddEvent(obj , 'mouseout' , fn);
 }
@@ -110,26 +126,21 @@ function hover(obj , fn) {
  */
 function move (oEle , json , iCtrSpeed , fn) {
     clearInterval(oEle.timer);
-    iCtrSpeed = iCtrSpeed || 30;
-    // if (!iCtrSpeed) {iCtrSpeed = 30;}
+
+    if (!iCtrSpeed) {iCtrSpeed = 30;}
+
     oEle.timer = setInterval(function  () {
+        
         var bStop = true;
         for (var attr in json) {
-            var iSpeed = null,
-                iCur = null;
-            switch (attr) {
-                // 获取透明度IE8以前的写法
-                case 'opacity' :
-                    iCur = parseInt( parseFloat(getStyle(oEle , attr))*100 );
-                    break;
-                // 获取scrollTop
-                case 'scrollTop' :
-                    iCur = document.documentElement.scrollTop || document.body.scrollTop;
-                    break;
-                // 标准
-                default :
-                    iCur = parseInt(getStyle(oEle , attr));
+            var iSpeed = null;
+            var iCur = null;
+            if (attr === 'opacity') {
+                iCur = parseInt( parseFloat(getStyle(oEle , attr))*100 );
+            } else {
+                iCur = parseInt(getStyle(oEle , attr));
             }
+
             // 缓冲运动速度值
             iSpeed = (json[attr] - iCur)/8;
             iSpeed = iSpeed > 0 ? Math.ceil(iSpeed) : Math.floor(iSpeed);
@@ -137,16 +148,11 @@ function move (oEle , json , iCtrSpeed , fn) {
             if (iCur != json[attr]) {
                 bStop = false;
             }
-            switch (attr) {
-                case 'opacity' :
-                    oEle.style.opacity = (iCur + iSpeed)/100;
-                    oEle.style.filter = 'alpha(opacity:'+ (iCur + iSpeed) +')';
-                    break;
-                case 'scrollTop' :
-                    document.documentElement.scrollTop = document.body.scrollTop = iCur + iSpeed;
-                    break;
-                default :
-                    oEle.style[attr] = iCur + iSpeed + 'px';
+            if (attr === 'opacity') {
+                oEle.style.opacity = (iCur + iSpeed)/100;
+                oEle.style.filter = 'alpha(opacity:'+ (iCur + iSpeed) +')';
+            } else {
+                oEle.style[attr] = iCur + iSpeed + 'px';
             }
         }
         if (bStop) {
@@ -171,7 +177,7 @@ myReady(function () {
         iHideLen = aDropContent.length;
 
     for (i = 0; i < iHideLen; i++) {
-        hover(aDropContent[i] , function () {
+        classHover(aDropContent[i] , function () {
             toggleClass(this , 'is-current');
         });
     }
@@ -205,51 +211,127 @@ myReady(function () {
     for (i = 0; i < iCategoryLen; i++) {
         aCategoryLi[i].index = i;
         aHideCategory[i].index = i;
-        hover(aCategoryLi[i] , function () {
+        classHover(aCategoryLi[i] , function () {
             toggleClass(this , 'is-current');
             toggleClass(aHideCategory[this.index] , 'is-current');
         });
-        hover(aHideCategory[i] , function () {
+        classHover(aHideCategory[i] , function () {
             toggleClass(this , 'is-current');
             toggleClass(aCategoryLi[this.index] , 'is-current');
         });
     }
 });
 
-
-// 主要内容
+/**
+ * 生活服务
+ */
 myReady(function () {
-    var oDoc = document,
-        oClothesUl = oDoc.querySelector('#clothes .main-tab'),
-        aClothesLi = oClothesUl.getElementsByTagName('li');
-    for (var i = 0; i < aClothesLi.length; i++) {
-        hover(aClothesLi[i] , function () {
-            toggleClass(this , 'is-current');
-        });
-    }
+     
 });
 
+/**
+ * 综合推荐、天天低价及热门晒单
+ */
+myReady(function () {
+    var oDoc = document,
+        i = null;
+
+    // 品质生活及天天低价的图片移动
+    var aMoveHover = oDoc.querySelectorAll('.js-hover-move'),
+        aMovePic = oDoc.querySelectorAll('.js-img-move'),
+        len1 = aMovePic.length;
+
+    for (i = 0; i < len1; i++) {
+        aMoveHover[i].index = i;
+        hover(aMoveHover[i] , function () {
+            move(aMovePic[this.index] , {left : -8});
+        } , function () {
+            move(aMovePic[this.index] , {left : 0});
+        });
+    }
+
+    // 猜你喜欢
+    var oReplace = oDoc.querySelector('.js-replace'),
+        aRepContent = oDoc.querySelectorAll('.js-replace-content');
+        len2 = aRepContent.length,
+        oGuessLike = oDoc.getElementById('guess-like'),
+        oSpacer = oDoc.querySelector('.js-ql-spacer'),
+        timer = null;
+
+    myAddEvent(oReplace , 'click' , function () {
+        for (i = 0; i < len2; i++) {
+            toggleClass(aRepContent[i] , 'is-current');
+        }
+    });
+    hover(oGuessLike , function () {
+        timer = setTimeout ( function () {
+            oSpacer.style.right = '1210px';
+            move (oSpacer , {right : 0} , 15);
+        } , 600);
+    } , function () {
+        clearTimeout(timer);
+    });
+
+    // 今日推荐
 
 
 
+    // 热门晒单
+    var oHsContent = oDoc.querySelector('.js-hs-content');
+        oHsLi = oHsContent.getElementsByTagName('li');
+        iLast = oHsLi.length - 1;
 
+    setInterval(function () {
+        var oRemoveLi = oHsLi[iLast];
+        oRemoveLi.style.opacity = 0;
+        oRemoveLi.style.height = 0;
+        oHsContent.removeChild(oRemoveLi);
+        oHsContent.insertBefore(oRemoveLi , oHsLi[0]);
+        oHsLi = oHsContent.getElementsByTagName('li');
+        move(oHsLi[0] , {height : 100} , 15 , function () {
+            move(oHsLi[0] , {opacity : 100} , 40);
+        });
+    } , 3000);
+});
 
+/**
+ * 全局工具栏
+ */
+myReady(function () {
+    var i = null,
+        oToolbar = document.querySelector('.js-gobal-toolbar'),
+        aLi = oToolbar.getElementsByTagName('li'),
+        aText = oToolbar.getElementsByTagName('p'),
+        aIcon = oToolbar.getElementsByTagName('i'),
+        len = aLi.length;
 
+    for (i = 0; i < len; i++) {
+        aLi[i].index = i;
+        aLi[i].timer = null;
 
+        hover(aLi[i] , function () {
+            var that = this;
+            clearTimeout(this.timer);
+            aIcon[this.index].style.backgroundColor = '#C81623';
+            this.timer = setTimeout(function () {
+                if (that.index < 5) {
+                    move(aText[that.index] , {right : 65} , 15);
+                } else{
+                    move(aText[that.index] , {right : 45} , 15);
+                }
+            } , 300);
+        } , function () {
+            clearTimeout(this.timer);
+            aIcon[this.index].style.backgroundColor = '#7a6e6e';
+            move(aText[this.index] , {right : 0} , 15);
+        });
+    }
 
+    myAddEvent(aLi[5] , 'click' , function () {
+        document.documentElement.scrollTop = document.body.scrollTop = 0;
+    });
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*------------------------------------ 页面流程结束 ----------------------------------------*/
+/**
+ * 主要内容
+ */
