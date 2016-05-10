@@ -7,6 +7,7 @@
 </head>
 <body>
  	<!-- 备注：带js-前缀的class属于javascript的钩子 -->
+ 	<!-- 备注：带is-前缀的样式属于可改变的状态样式 -->
 
 	<!-- 最顶上的top栏开始 -->
 	<div id="top">
@@ -2089,16 +2090,16 @@
 					<!-- 话费、机票、电影票及游戏隐藏 -->
 					<ul class="js-hide-box server-box-hide">
 						<!-- 话费 -->
-						<li id="tele-bill" class="hide">
+						<li id="tele-bill" class="js-tele-bill hide">
 							<a class="js-close close">×</a>
 							<!-- 导航栏 -->
-							<div class="js-ls-hide-tab top-tab">
-								<a href="javascript:;" class="main-tab is-current">话费充值</a>
-								<a href="javascript:;" class="main-tab">流量充值</a>
-								<a href="javascript:;" class="main-tab">套餐变更</a>
-							</div>
+							<ul class="js-tab-top top-tab">
+								<li class="main-tab is-current"><a href="javascript:;">话费充值</a></li>
+								<li class="main-tab"><a href="javascript:;">流量充值</a></li>
+								<li class="main-tab"><a href="javascript:;">套餐变更</a></li>
+							</ul>
 							<!-- 话费充值 -->
-							<div class="js-ls-hide-content main-content">
+							<div class="js-tab-content main-content">
 								<div class="ls-form ls-form-top">
 									<i>号码</i>
 									<input type="text" name="name" placeholder="移动、联通、电信">
@@ -2116,7 +2117,7 @@
 								<a href="javascript:;" class="hot-sale"><i></i>移动流量充1G送1G</a>
 							</div>
 							<!-- 流量充值 -->
-							<div class="js-ls-hide-content main-content hide">
+							<div class="js-tab-content main-content hide">
 								<div class="ls-form">
 									<i>号码</i>
 									<input type="text" name="name" placeholder="移动、联通、电信" class="input-width2">
@@ -2137,7 +2138,7 @@
 								<a href="javascript:;" class="hot-sale"><i></i>送京豆 流量翻倍享</a>
 							</div>
 							<!-- 套餐变更 -->
-							<div class="js-ls-hide-content main-content hide">
+							<div class="js-tab-content main-content hide">
 								<div class="ls-form">
 									<i>号码</i>
 									<input type="text" name="name" placeholder="支持部分地区移动">
@@ -2155,15 +2156,15 @@
 							</div>
 						</li>
 						<!-- 机票 -->
-						<li id="air-ticket" class="hide">
+						<li id="air-ticket" class="js-air-ticket hide">
 							<a class="js-close close">×</a>
 							<!-- 导航栏 -->
-							<div class="js-ls-hide-tab top-tab">
-								<a href="javascript:;" class="main-tab is-current">国内</a>
-								<a href="javascript:;" class="main-tab">国际</a>
-							</div>
+							<ul class="js-tab-top top-tab">
+								<li class="main-tab is-current"><a href="javascript:;">国内</a></li>
+								<li class="main-tab"><a href="javascript:;">国际</a></li>
+							</ul>
 							<!-- 国内 -->
-							<div class="js-ls-hide-content main-content">
+							<div class="js-tab-content main-content">
 								<div class="ticket-set-out">
 									<i>出发</i>
 									<select>
@@ -2198,7 +2199,7 @@
 									</select>
 									<i>日</i>
 								</div>
-								<div class="ticket-back">
+								<div class="js-ticket-back ticket-back hide">
 									<i>返程</i>
 									<select>
 										<option value="2016">2016</option>
@@ -2220,13 +2221,13 @@
 								</div>
 								<div class="choose-box">
 									<a href="javascript:;" class="mc-submit fl">机票查询</a>
-									<input type="checkbox" name="name" value="往返" class="go-back-btn">
+									<input type="checkbox" name="name" value="往返" class="js-go-back-btn go-back-btn">
 									<i>往返</i>
 									<a href="javascript:;" class="be-more">更多></a>
 								</div>
 							</div>
 							<!-- 国际 -->
-							<div class="js-ls-hide-content main-content hide">
+							<div class="js-tab-content main-content hide">
 								<div class="ticket-set-out">
 									<i>出发</i>
 									<select>
@@ -2261,7 +2262,7 @@
 									</select>
 									<i>日</i>
 								</div>
-								<div class="ticket-back">
+								<div class="js-ticket-back ticket-back hide">
 									<i>返程</i>
 									<select>
 										<option value="2016">2016</option>
@@ -2283,22 +2284,22 @@
 								</div>
 								<div class="choose-box">
 									<a href="javascript:;" class="mc-submit fl">机票查询</a>
-									<input type="checkbox" name="name" value="往返" class="go-back-btn">
+									<input type="checkbox" name="name" value="往返" class="js-go-back-btn go-back-btn">
 									<i>往返</i>
 									<a href="javascript:;" class="be-more">更多></a>
 								</div>
 							</div>
 						</li>
 						<!-- 电影票 -->
-						<li id="film-ticket" class="hide">
+						<li id="film-ticket" class="js-film-ticket hide">
 							<a class="js-close close">×</a>
 							<!-- 导航栏 -->
-							<div class="js-ls-hide-tab top-tab">
-								<a href="javascript:;" class="main-tab is-current">正在热映</a>
-								<a href="javascript:;" class="main-tab">即将上映</a>
-							</div>
+							<ul class="js-tab-top top-tab">
+								<li class="main-tab is-current"><a href="javascript:;">正在热映</a></li>
+								<li class="main-tab"><a href="javascript:;">即将上映</a></li>
+							</ul>
 							<!-- 即将上映 -->
-							<div class="js-ls-hide-content main-content">
+							<div class="js-tab-content main-content">
 								<ul class="clearfix">
 									<li>
 										<a href="javascript:;" class="fore1"></a>
@@ -2316,7 +2317,7 @@
 								<a href="javascript:;" class="hot-sale"><i></i>4月14日19.9元看《纽约纽约》！</a>
 							</div>
 							<!-- 正在上映 -->
-							<div class="js-ls-hide-content main-content hide">
+							<div class="js-tab-content main-content hide">
 								<ul class="clearfix">
 									<li>
 										<a href="javascript:;" class="fore4"></a>
@@ -2335,15 +2336,15 @@
 							</div>
 						</li>
 						<!-- 游戏 -->
-						<li id="games" class="hide">
+						<li id="games" class="js-games hide">
 							<a class="js-close close">×</a>
 							<!-- 导航栏 -->
-							<div class="js-ls-hide-tab top-tab">
-								<a href="javascript:;" class="main-tab is-current">点卡</a>
-								<a href="javascript:;" class="main-tab">QQ</a>
-							</div>
+							<ul class="js-tab-top top-tab">
+								<li class="main-tab is-current"><a href="javascript:;">点卡</a></li>
+								<li class="main-tab"><a href="javascript:;">QQ</a></li>
+							</ul>
 							<!-- 点卡 -->
-							<div class="js-ls-hide-content main-content">
+							<div class="js-tab-content main-content">
 								<div class="games-select">
 									<i>游戏</i>
 									<select>
@@ -2367,7 +2368,7 @@
 								<a href="javascript:;" class="hot-sale"><i></i>《天谕》时装礼包免费领！</a>
 							</div>
 							<!-- QQ -->
-							<div class="js-ls-hide-content main-content hide">
+							<div class="js-tab-content main-content hide">
 								<div class="games-select">
 									<i>QQ</i>
 									<select>
@@ -2596,8 +2597,8 @@
 			<h2>京东 · 品质生活</h2>
 			<div class="main-content">
 				<ul class="wrap">
-					<li class="js-hover-move mc-column1 fl">
-						<a href="javascript:;" class="a-elem-wrap">
+					<li class="mc-column1 fl">
+						<a href="javascript:;" class="js-hover-move a-elem-wrap">
 							<p class="ql-title">新发现</p>
 							<dl class="text-top">
 								<dt>尚新品</dt>
@@ -2642,8 +2643,8 @@
 							<img src="image/quatily_life/ql2/2.jpg" />
 						</a>
 					</li>
-					<li class="js-hover-move mc-column3 fl">
-						<a href="javascript:;" class="a-elem-wrap">
+					<li class="mc-column3 fl">
+						<a href="javascript:;" class="js-hover-move a-elem-wrap">
 							<p class="ql-title">品牌街</p>
 							<dl class="text-top">
 								<dt>品质出游</dt>
@@ -2730,19 +2731,19 @@
 	<ul id="elevator">
 		<li>
 			<a href="javascript:;">1F</a>
-			<a href="javascript:;" class="title">服饰</a>
+			<a href="javascript:;" class="js-elevator title">服饰</a>
 		</li>
 		<li>
 			<a href="javascript:;">2F</a>
-			<a href="javascript:;" class="title">美妆</a>
+			<a href="javascript:;" class="js-elevator title">美妆</a>
 		</li>
 		<li>
 			<a href="javascript:;">3F</a>
-			<a href="javascript:;" class="title">手机</a>
+			<a href="javascript:;" class="js-elevator title">手机</a>
 		</li>
 		<li class="border-none">
 			<a href="javascript:;">4F</a>
-			<a href="javascript:;" class="title">运动</a>
+			<a href="javascript:;" class="js-elevator title">运动</a>
 		</li>
 	</ul>
 	<!-- 楼层索引结束 -->
@@ -2755,14 +2756,19 @@
 			<a href="javascript:;" class="fore3"></a>
 		</div>
 		<!-- 服装箱包 -->
-		<div id="clothes">
+		<div id="clothes" class="js-clothes">
 			<!--顶部选项卡-->
 			<div class="top-tab">
 				<h2 class="fl">
-					<div class="icon">1F</div>服装鞋包
+					<div class="content-floor">
+						<div class="bg-prev"></div>
+						<div class="js-bg-hide bg-hide"></div>
+						<span>1F</span>
+					</div>
+					<p>服装鞋包</p>
 				</h2>
-				<ul class="main-tab">
-					<li><a href="javascript:;">大牌</a><i></i></li>
+				<ul class="js-tab-top main-tab">
+					<li class="is-current"><a href="javascript:;">大牌</a><i></i></li>
 					<li><a href="javascript:;">男装</a><i></i></li>
 					<li><a href="javascript:;">女装</a><i></i></li>
 					<li><a href="javascript:;">鞋靴</a><i></i></li>
@@ -2846,7 +2852,7 @@
 				<div class="extra-side side-width-spec1">
 					<a href="javascript:;"><img src="image/clothes/sider_extra.jpg"/></a>
 				</div>
-				<div class="visible-content content-width-spec1 fr">
+				<div class="js-tab-content  visible-content content-width-spec1 fr">
 					<div class="vc-left">
 						<ul class="wrap">
 							<li class="fore1 fl">
@@ -2900,7 +2906,7 @@
 						</div>
 					</div>
 				</div>
-				<ul class="hide-content content-width-spec1 fr hide">
+				<ul class="js-tab-content  hide-content content-width-spec1 fr hide">
 					<li class="item-width-spec1">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/1.jpg"/></a>
@@ -2986,7 +2992,7 @@
 						<a href="javascript:;"><img src="image/clothes/sub_main/nanzhuang/12.jpg"/></a>
 					</li> 
 				</ul>
-				<ul class="hide-content content-width-spec1 fr hide">
+				<ul class="js-tab-content  hide-content content-width-spec1 fr hide">
 					<li class="item-width-spec1">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/clothes/sub_main/nvzhuang/1.jpg"/></a>
@@ -3072,7 +3078,7 @@
 						<a href="javascript:;"><img src="image/clothes/sub_main/nvzhuang/12.jpg"/></a>
 					</li>
 				</ul>
-				<ul class="hide-content content-width-spec1 fr hide">
+				<ul class="js-tab-content  hide-content content-width-spec1 fr hide">
 					<li class="item-width-spec1">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/clothes/sub_main/xiexue/1.jpg"/></a>
@@ -3158,7 +3164,7 @@
 						<a href="javascript:;"><img src="image/clothes/sub_main/xiexue/12.jpg"/></a>
 					</li>
 				</ul>
-				<ul class="hide-content content-width-spec1 fr hide">
+				<ul class="js-tab-content  hide-content content-width-spec1 fr hide">
 					<li class="item-width-spec1">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/clothes/sub_main/xiangbao/1.jpg"/></a>
@@ -3244,7 +3250,7 @@
 						<a href="javascript:;"><img src="image/clothes/sub_main/xiangbao/12.jpg"/></a>
 					</li>
 				</ul>
-				<ul class="hide-content content-width-spec1 fr hide">
+				<ul class="js-tab-content  hide-content content-width-spec1 fr hide">
 					<li class="item-width-spec1">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/clothes/sub_main/nvzhuang/1.jpg"/></a>
@@ -3330,7 +3336,7 @@
 						<a href="javascript:;"><img src="image/clothes/sub_main/nvzhuang/12.jpg"/></a>
 					</li>
 				</ul>
-				<ul class="hide-content content-width-spec1 fr hide">
+				<ul class="js-tab-content  hide-content content-width-spec1 fr hide">
 					<li class="item-width-spec1">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/clothes/sub_main/xiexue/1.jpg"/></a>
@@ -3416,7 +3422,7 @@
 						<a href="javascript:;"><img src="image/clothes/sub_main/xiexue/12.jpg"/></a>
 					</li>
 				</ul>
-				<ul class="hide-content content-width-spec1 fr hide">
+				<ul class="js-tab-content  hide-content content-width-spec1 fr hide">
 					<li class="item-width-spec1">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/clothes/sub_main/xiangbao/1.jpg"/></a>
@@ -3518,14 +3524,19 @@
 			</ul>
 		</div>
 		<!--个护美妆-->
-		<div id="cosmetic">
+		<div id="cosmetic" class="js-cosmetic">
 			<!--顶部选项卡-->
 			<div class="top-tab">
 				<h2 class="fl">
-					<div class="icon">2F</div>个护美妆
+					<div class="content-floor">
+						<div class="bg-prev"></div>
+						<div class="js-bg-hide bg-hide"></div>
+						<span>2F</span>
+					</div>
+					<p>个护美妆</p>
 				</h2>
-				<ul class="main-tab">
-					<li><a href="javascript:;">热门</a><i></i></li>
+				<ul class="js-tab-top main-tab">
+					<li class="is-current"><a href="javascript:;">热门</a><i></i></li>
 					<li><a href="javascript:;">国际大牌</a><i></i></li>
 					<li><a href="javascript:;">国妆名牌</a></li>
 				</ul>
@@ -3585,7 +3596,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="visible-content content-width-spec2 fr hide">
+				<div class="js-tab-content  visible-content content-width-spec2 fr">
 					<div class="vc-left">
 						<ul class="wrap">
 							<li class="fore1 extra-blank fl">
@@ -3642,7 +3653,7 @@
 						</div>
 					</div>
 				</div>
-				<ul class="hide-content content-width-spec2 fr hide">
+				<ul class="js-tab-content  hide-content content-width-spec2 fr hide">
 					<li class="item-width-spec3">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/cosmetic/sub_main/1/1.jpg"></a>
@@ -3734,7 +3745,7 @@
 						<p>￥449.00</p>
 					</li>
 				</ul>
-				<ul class="hide-content content-width-spec2 fr">
+				<ul class="js-tab-content  hide-content content-width-spec2 fr hide">
 					<li class="item-width-spec3">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/cosmetic/sub_main/2/1.jpg"></a>
@@ -3848,15 +3859,20 @@
 			<a href="javascript:;" class="fore6"></a>
 		</div>
 		<!--手机通讯-->
-		<div id="mobiles">
+		<div id="mobiles" class="js-mobiles">
 			<!--顶部选项卡-->
 			<div class="top-tab">
 				<h2 class="fl">
-					<div class="icon">3F</div>手机通讯
+					<div class="content-floor">
+						<div class="bg-prev"></div>
+						<div class="js-bg-hide bg-hide"></div>
+						<span>3F</span>
+					</div>
+					<p>手机通讯</p>
 				</h2>
 				<div class="wrap fr">
-					<ul class="main-tab">
-						<li class="current"><a href="javascript:;">热门</a><i></i></li>
+					<ul class="js-tab-top main-tab">
+						<li class="is-current"><a href="javascript:;">热门</a><i></i></li>
 						<li class=""><a href="javascript:;">新品</a><i></i></li>
 						<li class=""><a href="javascript:;">性价比</a></li>
 					</ul>
@@ -3929,7 +3945,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="visible-content content-width-spec3 fr">
+				<div class="js-tab-content  visible-content content-width-spec3 fr">
 					<div class="vc-left">
 						<ul class="wrap">
 							<li class="fore1 extra-blank fl">
@@ -3988,7 +4004,7 @@
 						</div>
 					</div>
 				</div>
-				<ul class="hide-content content-width-spec1 fr hide">
+				<ul class="js-tab-content  hide-content content-width-spec1 fr hide">
 					<li class="item-width-spec1">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/clothes/sub_main/xiexue/1.jpg"/></a>
@@ -4062,7 +4078,7 @@
 						<p>￥109.00</p>
 					</li>
 				</ul>
-				<ul class="hide-content content-width-spec1 fr hide">
+				<ul class="js-tab-content  hide-content content-width-spec1 fr hide">
 					<li class="item-width-spec1">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/clothes/sub_main/xiangbao/1.jpg"/></a>
@@ -4152,14 +4168,19 @@
 			</ul>
 		</div>
 		<!--运动健身-->
-		<div id="sports">
+		<div id="sports" class="js-sports">
 			<!--顶部选项卡-->
 			<div class="top-tab">
 				<h2 class="fl">
-					<div class="icon">4F</div>运动健身
+					<div class="content-floor">
+						<div class="bg-prev"></div>
+						<div class="js-bg-hide bg-hide"></div>
+						<span>4F</span>
+					</div>
+					<p>运动健身</p>
 				</h2>
-				<ul class="main-tab">
-					<li><a href="javascript:;">热门</a><i></i></li>
+				<ul class="js-tab-top main-tab">
+					<li class="is-current"><a href="javascript:;">热门</a><i></i></li>
 					<li><a href="javascript:;">大牌速递</a><i></i></li>
 					<li><a href="javascript:;">潮牌新品</a></li>
 				</ul>
@@ -4219,7 +4240,7 @@
 						</ul>
 					</div>
 				</div>
-				<div class="visible-content content-width-spec2 fr hide">
+				<div class="js-tab-content  visible-content content-width-spec2 fr">
 					<div class="vc-left">
 						<ul class="wrap">
 							<li class="extra-blank fl">
@@ -4276,7 +4297,7 @@
 						</div>
 					</div>
 				</div>
-				<ul class="hide-content content-width-spec2 fr hide">
+				<ul class="js-tab-content  hide-content content-width-spec2 fr hide">
 					<li class="item-width-spec3">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/cosmetic/sub_main/1/1.jpg"></a>
@@ -4368,7 +4389,7 @@
 						<p>￥449.00</p>
 					</li>
 				</ul>
-				<ul class="hide-content content-width-spec2 fr">
+				<ul class="js-tab-content  hide-content content-width-spec2 fr hide">
 					<li class="item-width-spec3">
 						<div class="mc-img">
 							<a href="javascript:;"><img src="image/cosmetic/sub_main/2/1.jpg"></a>

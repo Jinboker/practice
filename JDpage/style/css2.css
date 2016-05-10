@@ -809,8 +809,10 @@ a:hover{color:#c81623;}
 	}
 /* 生活服务隐藏top切换样式 */
 .server-box-hide .is-current {
-	color: white;
 	background: url('../image/iframe-si.png') center 0 no-repeat;
+}
+.server-box-hide .is-current > a{
+	color: white;
 }
 /* 生活服务隐藏公共 */
 .server-box-hide .close {
@@ -832,7 +834,6 @@ a:hover{color:#c81623;}
 	}
 	.server-box-hide .main-tab {
 		float: left;
-		display: block;
 		height: 19px;
 		line-height: 16px;
 		margin-right: 10px;
@@ -945,7 +946,7 @@ a:hover{color:#c81623;}
 			padding: 15px 10px 0 0;
 		}
 	/* 电影票 */
-	#film-ticket li {
+	#film-ticket .main-content li {
 		float: left;
 		width: 65px;
 		margin: 0 5px;
@@ -1402,7 +1403,14 @@ a:hover{color:#c81623;}
 /**
  * 楼层索引
  */
+/* 改变样式 */
+#elevator li .is-current {
+	background-color: white;
+	color: #c81623;
+}
+/* 主要样式 */
  #elevator {
+ 	display: none;
  	position: fixed;
  	top: 50%;
  	left: 311.5px;
@@ -1507,17 +1515,36 @@ a:hover{color:#c81623;}
 		border-bottom: 1px solid #c81623;
 	}
 		/* 左侧 */
-		#content .top-tab .icon {
-			float: left;
-			height: 25px;
-			width: 21px;
-			padding: 2px 10px 0 0;
-			margin-right: 10px;
-			text-align: center;
-			line-height: 25px;
+		#content .content-floor {
+			position: absolute;
+			height: 27px;
+			width: 31px;
 			font-size: 14px;
 			color: white;
+			overflow: hidden;
+		}
+		#content .bg-prev {	
+			top: 0;		
 			background: url(../image/floor_mark.gif) no-repeat 0 0;
+		}
+		#content .bg-hide {
+			top: -27px;	
+			background: url(../image/floor_mark.gif) no-repeat 0 -27px;
+		}
+		#content .bg-prev,
+		#content .bg-hide {
+			position: absolute;
+			left: 0;
+			height: 27px;
+			width: 31px;
+		}
+		#content .content-floor span {
+			position: absolute;
+			top: 2px;
+			left: 3px;
+		}
+		#content h2 p {
+			padding-left: 41px;
 		}
 		/* 右侧 */
 		#content .main-tab {
@@ -1691,14 +1718,26 @@ a:hover{color:#c81623;}
 			overflow: hidden;
 		}
 	/* 右侧其他页内容 */
-	.item-width-spec1 {
+	.item-width-spec1,
+	.item-width-spec2,
+	.item-width-spec3 {
 		float: left;
-		height: 237px;
-		width: 220px;
 		box-sizing: border-box;
 		border-right: 1px solid #ededed;
 		border-bottom: 1px solid #ededed;
 		overflow: hidden;
+	}
+	.item-width-spec1 {
+		height: 237px;
+		width: 220px;
+	}
+	.item-width-spec2 {
+		width: 220px;
+		height: 159px;
+	}
+	.item-width-spec3 {
+		width: 200px;
+		height: 237px;
 	}
 		.item-width-spec1 .mc-img a,
 		.item-width-spec3 .mc-img a {
@@ -1717,26 +1756,7 @@ a:hover{color:#c81623;}
 	    	font-family: Verdana;
 			color: #e8393c;
 		}
-		.item-width-spec2 {
-			float: left;
-			width: 220px;
-			height: 159px;
-			box-sizing: border-box;
-			border-top: 1px solid #f8f6f7;
-			border-right: 1px solid #ededed;
-			border-bottom: 1px solid #ededed;
-			overflow: hidden;
-		}
-		.item-width-spec3 {
-			float: left;
-			width: 200px;
-			height: 237px;
-			box-sizing: border-box;
-			border-top: 1px solid #f8f6f7;
-			border-right: 1px solid #ededed;
-			border-bottom: 1px solid #ededed;
-			overflow: hidden;
-		}
+		
 
 
 	/* 焦点图 */

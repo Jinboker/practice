@@ -127,13 +127,13 @@ function classHover(obj , fn) {
 function move (oEle , json , iCtrSpeed , fn) {
     clearInterval(oEle.timer);
     if (!iCtrSpeed) {iCtrSpeed = 30;}
-
     oEle.timer = setInterval(function  () {
-        
+
         var bStop = true;
         for (var attr in json) {
-            var iSpeed = null;
-            var iCur = null;
+            var iSpeed = null,
+                iCur = null;
+
             if (attr === 'opacity') {
                 iCur = parseInt( parseFloat(getStyle(oEle , attr))*100 );
             } else {
@@ -160,7 +160,43 @@ function move (oEle , json , iCtrSpeed , fn) {
         }
     },iCtrSpeed);
 }
-/*------------------------------------- 工具包函数 -----------------------------------------*/
+
+
+/*-------------------------------- 页面中的公用流程函数 ------------------------------------*/
+/**
+ * 选项卡切换函数
+ * @param {string}   sObj   选择是哪个选项卡
+ */
+function tabChange(sObj) {
+    var oDoc = document,
+        aTab = oDoc.querySelectorAll('.' + sObj + ' .js-tab-top > li'),
+        aContent = oDoc.querySelectorAll('.' + sObj + ' .js-tab-content'),
+        iKey = 0,
+        timer = null,
+        len = aTab.length;
+
+    for (var i = 0; i < len; i++) {
+        aTab[i].index = i;
+        hover(aTab[i] , function () {
+            var that = this;
+            timer = setTimeout(function () {
+                toggleClass(aTab[iKey] , 'is-current');
+                toggleClass(that , 'is-current');
+                aContent[iKey].style.display = 'none';
+                aContent[that.index].style.display = 'block';
+                iKey = that.index;
+            } , 60); 
+        } , function () {
+            clearTimeout(timer);
+        });
+    }
+}
+
+/**
+ *Class
+ *焦点图函数模块
+ */
+
 
 
 /*------------------------------------ 页面流程开始 ----------------------------------------*/
@@ -246,6 +282,15 @@ myReady(function () {
                     iPosition2 = getStyle(oHideBox , 'top');
 
                 timer = setTimeout(function () {
+                    // 隐藏块已经运动到顶部
+                    if (iPosition1 === '-39px') {
+                        toggleClass(aBoxLi[iKey] , 'is-current');
+                        toggleClass(that , 'is-current');
+                        aHideLi[iKey].style.display = 'none';
+                        aHideLi[that.index].style.display = 'block';
+                        iKey = that.index;
+                    }
+                    // 隐藏块没有开始运动
                     if (iPosition2 === '208px') {
                         aHideLi[that.index].style.display = 'block';
                         move(oHideBox , {top : 70} , 5 , function() {
@@ -255,18 +300,11 @@ myReady(function () {
                             });
                         });
                     }
-
-                    if (iPosition1 === '-39px') {
-                        toggleClass(aBoxLi[iKey] , 'is-current');
-                        toggleClass(that , 'is-current');
-                        aHideLi[iKey].style.display = 'none';
-                        aHideLi[that.index].style.display = 'block';
-                        iKey = that.index;
-                    }
                 } , 100);                
             }
         } , function () {
             clearTimeout(timer);
+            // 点击关闭后bStop为假，mouseover事件不会触发，必须触发一次mouseout事件后才会为真
             (!bStop)&&(bStop = true);            
         });
     }
@@ -289,9 +327,23 @@ myReady(function () {
         });
     }
 
-    // 隐藏内容内部的鼠标移入切换
-    var aTab = oDoc.querySelectorAll('.js-ls-hide-tab > a'),
-        aContent = oDoc.querySelectorAll('.js-ls-hide-content');
+    // 隐藏内容内部的选项卡切换
+    tabChange('js-tele-bill');
+    tabChange('js-air-ticket');
+    tabChange('js-film-ticket');
+    tabChange('js-games');
+
+    // 机票往返
+    var aGoBackBtn = oDoc.querySelectorAll('.js-go-back-btn'),
+        aTicketBack = oDoc.querySelectorAll('.js-ticket-back'),
+        len = aGoBackBtn.length;
+    
+    for (i = 0; i < len; i++) {
+        aGoBackBtn[i].index = i;
+        myAddEvent(aGoBackBtn[i] , 'click' , function () {
+            toggleClass(aTicketBack[this.index] , 'hide');
+        });
+    }
 });
 
 
@@ -343,21 +395,21 @@ myReady(function () {
 
 
     // 热门晒单的自动播放
-    var oHsContent = oDoc.querySelector('.js-hs-content');
-        oHsLi = oHsContent.getElementsByTagName('li');
-        iLast = oHsLi.length - 1;
+    // var oHsContent = oDoc.querySelector('.js-hs-content'),
+    //     oHsLi = oHsContent.getElementsByTagName('li'),
+    //     iLast = oHsLi.length - 1;
 
-    setInterval(function () {
-        var oRemoveLi = oHsLi[iLast];
-        oRemoveLi.style.opacity = 0;
-        oRemoveLi.style.height = 0;
-        oHsContent.removeChild(oRemoveLi);
-        oHsContent.insertBefore(oRemoveLi , oHsLi[0]);
-        oHsLi = oHsContent.getElementsByTagName('li');
-        move(oHsLi[0] , {height : 100} , 15 , function () {
-            move(oHsLi[0] , {opacity : 100} , 40);
-        });
-    } , 3000);
+    // setInterval(function () {
+    //     var oRemoveLi = oHsLi[iLast];
+    //     oRemoveLi.style.opacity = 0;
+    //     oRemoveLi.style.height = 0;
+    //     oHsContent.removeChild(oRemoveLi);
+    //     oHsContent.insertBefore(oRemoveLi , oHsLi[0]);
+    //     oHsLi = oHsContent.getElementsByTagName('li');
+    //     move(oHsLi[0] , {height : 100} , 15 , function () {
+    //         move(oHsLi[0] , {opacity : 100} , 40);
+    //     });
+    // } , 3000);
 });
 
 /**
@@ -371,7 +423,7 @@ myReady(function () {
         aIcon = oToolbar.getElementsByTagName('i'),
         len = aLi.length;
 
-    // 鼠标移入移出
+    // 鼠标移入移出的运动
     for (i = 0; i < len; i++) {
         aLi[i].index = i;
         aLi[i].timer = null;
@@ -400,6 +452,87 @@ myReady(function () {
     });
 });
 
+
 /**
- * 主要内容
+ * 主要内容及楼层索引
  */
+ myReady(function () {
+    var i = null,
+        iKey = null,
+        oDoc = document;
+
+    // 主要内容里的选项卡切换
+    tabChange('js-clothes');
+    tabChange('js-cosmetic');
+    tabChange('js-mobiles');
+    tabChange('js-sports');
+
+    // 页面放大缩小时候全局索引栏的重新定位（包括页面放大缩小后刷新页面的重新定位）
+    var oElevator = oDoc.getElementById('elevator');
+    function elevatorPosition() {
+        oElevator.style.left = parseInt((oDoc.body.clientWidth - 1280)/2) + 'px';
+    }
+
+    elevatorPosition();
+    window.onresize = elevatorPosition;
+
+    // 页面滚动时楼层索引及每层内容的楼层指示的变化
+    var oElevator = oDoc.getElementById('elevator'),
+        aElevatorTitle = oDoc.querySelectorAll('.js-elevator'),
+        aFloor = oDoc.querySelectorAll('.js-bg-hide'),
+        len = aElevatorTitle.length;
+
+    function floorJudge() {
+        var iScrollTop = oDoc.documentElement.scrollTop || oDoc.body.scrollTop;
+        if (iScrollTop <= 2902) {
+            if (iScrollTop <= 815) {
+               fna();
+            }else if (iScrollTop <= 2131) {
+                (iKey !== 1) && fnb(1);
+            } else {
+                 (iKey !== 2) && fnb(2);
+            }
+        } else {
+            if (iScrollTop <= 3519) {
+                (iKey !== 3) && fnb(3);
+            }else if (iScrollTop <= 4535) {
+                 (iKey !== 4) && fnb(4);
+            } else {
+                fna();
+            }
+        }
+    }
+    function fna() {
+       oElevator.style.display = 'none';
+       if (iKey) {
+            removeClass(aElevatorTitle[iKey - 1] , 'is-current');
+            aFloor[iKey - 1].style.top = '-27px';
+       }
+       iKey = null;
+    }
+    function fnb(iNum) {
+        var num1 = iKey - 1,
+            num2 = iNum - 1;
+
+        oElevator.style.display = 'block';
+        if (iKey) {
+            removeClass(aElevatorTitle[num1] , 'is-current');
+            aFloor[num1].style.top = '-27px';
+        }
+        addClass(aElevatorTitle[num2] , 'is-current');
+        move(aFloor[num2] , {top : 0});
+        iKey = iNum;
+    }
+
+    floorJudge();
+    myAddEvent(oDoc , 'scroll' , function () {
+        floorJudge();
+    });
+
+    // 点击楼层索引后运动至相应的楼层
+    // for (i = 0; i < len; i++) {
+    //     myAddEvent(aElevatorTitle[i] , 'click' , function () {
+            
+    //     });
+    // }
+ });
