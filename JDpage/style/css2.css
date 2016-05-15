@@ -125,17 +125,24 @@ a:hover{color:#c81623;}
 		margin: 9px 1px 0 1px;
 		background: #ddd;
 	}
-	#top .spinner {
+	.spinner {
 		display: inline-block;
 		height: 7px;
 		padding-left: 4px;
 		overflow: hidden;
+		-webkit-transition: all 1s ease-in;
+		transition: all .1s ease-in;
 	}
-	#top .spinner i {
+	.spinner i {
 		display: block;
 		position: relative;
 		top: -7px;
 		font: 400 15px/15px "consolas";
+	}
+	.js-has-drop-content:hover .spinner {
+		padding-left: 0;
+		padding-right: 4px;
+		transform: rotate(180deg);
 	}
 	/* 手机京东中的icon */
 	#phone-jd .icon {

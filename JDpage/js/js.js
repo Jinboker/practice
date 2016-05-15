@@ -118,6 +118,25 @@ function classHover(obj , fn) {
 }
 
 /**
+*delayTrigger
+* @param   {function}       fn     需要延迟执行的函数
+*/
+function delayTrigger(fn , delay) {
+    var timer = null;
+
+    return function () {
+        var context = this,
+            args = arguments;
+
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+            fn.apply(context , args);
+            console.log('a');
+        } , delay);
+    }
+}
+
+/**
  * 任意值的缓冲运动框架
  * @param {object}   oEle         想要运动的那个对象
  * @param {json}     json         运动的目标
@@ -196,8 +215,18 @@ function tabChange(sObj) {
  *Class
  *焦点图函数模块
  */
+// function SliderBtn(sObj) {
+//     var oDoc = document;
 
+//     this.oBtn = oDoc.querySelector('.' + sObj);
+//     this.prevBtn = oBtn.getElementsByTagName('a')[0];
+//     this.nextBtn = oBtn.getElementsByTagName('a')[1];
 
+//     this.oPic = oDoc.querySelector();
+// }
+// SliderBtn.prototype = function() {
+//     myAddEvent
+// };
 
 /*------------------------------------ 页面流程开始 ----------------------------------------*/
 /**
@@ -258,7 +287,7 @@ myReady(function () {
 });
 
 /**
- * 生活服务
+ * 最大的焦点图及生活服务
  */
 myReady(function () {
     var oDoc = document,
@@ -417,7 +446,8 @@ myReady(function () {
  */
 myReady(function () {
     var i = null,
-        oToolbar = document.querySelector('.js-gobal-toolbar'),
+        oDoc = document,
+        oToolbar = oDoc.querySelector('.js-gobal-toolbar'),
         aLi = oToolbar.getElementsByTagName('li'),
         aText = oToolbar.getElementsByTagName('p'),
         aIcon = oToolbar.getElementsByTagName('i'),
@@ -448,10 +478,9 @@ myReady(function () {
 
     // 回到顶部
     myAddEvent(aLi[5] , 'click' , function () {
-        document.documentElement.scrollTop = document.body.scrollTop = 0;
+        oDoc.documentElement.scrollTop = oDoc.body.scrollTop = 0;
     });
 });
-
 
 /**
  * 主要内容及楼层索引
@@ -461,20 +490,16 @@ myReady(function () {
         iKey = null,
         oDoc = document;
 
-    // 主要内容里的选项卡切换
-    tabChange('js-clothes');
-    tabChange('js-cosmetic');
-    tabChange('js-mobiles');
-    tabChange('js-sports');
-
     // 页面放大缩小时候全局索引栏的重新定位（包括页面放大缩小后刷新页面的重新定位）
     var oElevator = oDoc.getElementById('elevator');
     function elevatorPosition() {
+        // var oElevator = oDoc.getElementById('elevator');
         oElevator.style.left = parseInt((oDoc.body.clientWidth - 1280)/2) + 'px';
     }
-
+  
     elevatorPosition();
-    window.onresize = elevatorPosition;
+    window.onresize = delayTrigger(elevatorPosition , 100);
+    
 
     // 页面滚动时楼层索引及每层内容的楼层指示的变化
     var oElevator = oDoc.getElementById('elevator'),
@@ -525,14 +550,31 @@ myReady(function () {
     }
 
     floorJudge();
-    myAddEvent(oDoc , 'scroll' , function () {
-        floorJudge();
-    });
 
-    // 点击楼层索引后运动至相应的楼层
-    // for (i = 0; i < len; i++) {
-    //     myAddEvent(aElevatorTitle[i] , 'click' , function () {
-            
-    //     });
+    oDoc.onscroll = delayTrigger(floorJudge , 100);
+    // myAddEvent(oDoc , 'scroll' , function () {
+    //     delayTrigger(floorJudge , 100);
+    // });
+
+    // 主要内容里的选项卡切换及点击后运动至相应的楼层
+    var aSubMain = oDoc.querySelectorAll('.js-sub-content'),
+        iSubMainLen = aSubMain.length;
+
+    // for (i = 0; i < iSubMainLen; i++) {
+    //     tabChange(aSubMain[i]);
     // }
+    tabChange('js-clothes');
+    tabChange('js-cosmetic');
+    tabChange('js-mobiles');
+    tabChange('js-sports');
+
+
+    var iScrollTop = null;
+
+    for (i = 0; i < len; i++) {
+        aElevatorTitle[i].index = i;
+        myAddEvent(aElevatorTitle[i] , 'click' , function () {
+            oDoc.documentElement.scrollTop = oDoc.body.scrollTop = oDoc.documentElement.scrollTop || oDoc.body.scrollTop + aSubMain[this.index].getBoundingClientRect().top;
+        });
+    }
  });
