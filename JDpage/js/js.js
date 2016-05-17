@@ -131,7 +131,6 @@ function delayTrigger(fn , delay) {
         clearTimeout(timer);
         timer = setTimeout(function () {
             fn.apply(context , args);
-            console.log('a');
         } , delay);
     }
 }
@@ -181,35 +180,7 @@ function move (oEle , json , iCtrSpeed , fn) {
 }
 
 
-/*-------------------------------- 页面中的公用流程函数 ------------------------------------*/
-/**
- * 选项卡切换函数
- * @param {string}   sObj   选择是哪个选项卡
- */
-function tabChange(sObj) {
-    var oDoc = document,
-        aTab = oDoc.querySelectorAll('.' + sObj + ' .js-tab-top > li'),
-        aContent = oDoc.querySelectorAll('.' + sObj + ' .js-tab-content'),
-        iKey = 0,
-        timer = null,
-        len = aTab.length;
-
-    for (var i = 0; i < len; i++) {
-        aTab[i].index = i;
-        hover(aTab[i] , function () {
-            var that = this;
-            timer = setTimeout(function () {
-                toggleClass(aTab[iKey] , 'is-current');
-                toggleClass(that , 'is-current');
-                aContent[iKey].style.display = 'none';
-                aContent[that.index].style.display = 'block';
-                iKey = that.index;
-            } , 60); 
-        } , function () {
-            clearTimeout(timer);
-        });
-    }
-}
+/*-------------------------------- 焦点图模块 ------------------------------------*/
 
 /**
  *Class
@@ -287,6 +258,44 @@ myReady(function () {
 });
 
 /**
+ * 生活服务栏隐藏内容里的选项卡及主要内容的选项卡切换
+ */
+myReady(function () {
+    var i = null,
+        aTab = document.querySelectorAll('.js-tab'),
+        len = aTab.length;
+
+    function tabChange(obj) {
+        var i = null,
+            aTabTop = obj.querySelectorAll('.js-tab-top > li'),
+            aTabContent = obj.querySelectorAll('.js-tab-content'),
+            iKey = 0,
+            timer = null,
+            tabTopLen = aTabTop.length;
+
+        for (i = 0; i < tabTopLen; i++) {
+            aTabTop[i].index = i;
+            hover(aTabTop[i] , function () {
+                var that = this;
+                timer = setTimeout(function () {
+                    toggleClass(aTabTop[iKey] , 'is-current');
+                    toggleClass(that , 'is-current');
+                    aTabContent[iKey].style.display = 'none';
+                    aTabContent[that.index].style.display = 'block';
+                    iKey = that.index;
+                } , 60);
+            } , function () {
+                clearTimeout(timer);
+            });
+        } 
+    }
+
+    for (i = 0; i < len; i++) {
+        tabChange(aTab[i]);
+    }
+});
+
+/**
  * 最大的焦点图及生活服务
  */
 myReady(function () {
@@ -356,12 +365,6 @@ myReady(function () {
         });
     }
 
-    // 隐藏内容内部的选项卡切换
-    tabChange('js-tele-bill');
-    tabChange('js-air-ticket');
-    tabChange('js-film-ticket');
-    tabChange('js-games');
-
     // 机票往返
     var aGoBackBtn = oDoc.querySelectorAll('.js-go-back-btn'),
         aTicketBack = oDoc.querySelectorAll('.js-ticket-back'),
@@ -418,10 +421,6 @@ myReady(function () {
     } , function () {
         clearTimeout(timer);
     });
-
-    // 今日推荐
-
-
 
     // 热门晒单的自动播放
     // var oHsContent = oDoc.querySelector('.js-hs-content'),
@@ -483,7 +482,7 @@ myReady(function () {
 });
 
 /**
- * 主要内容及楼层索引
+ * 楼层索引相关
  */
  myReady(function () {
     var i = null,
@@ -492,14 +491,13 @@ myReady(function () {
 
     // 页面放大缩小时候全局索引栏的重新定位（包括页面放大缩小后刷新页面的重新定位）
     var oElevator = oDoc.getElementById('elevator');
+    
     function elevatorPosition() {
-        // var oElevator = oDoc.getElementById('elevator');
         oElevator.style.left = parseInt((oDoc.body.clientWidth - 1280)/2) + 'px';
     }
   
     elevatorPosition();
     window.onresize = delayTrigger(elevatorPosition , 100);
-    
 
     // 页面滚动时楼层索引及每层内容的楼层指示的变化
     var oElevator = oDoc.getElementById('elevator'),
@@ -550,26 +548,12 @@ myReady(function () {
     }
 
     floorJudge();
-
     oDoc.onscroll = delayTrigger(floorJudge , 100);
-    // myAddEvent(oDoc , 'scroll' , function () {
-    //     delayTrigger(floorJudge , 100);
-    // });
 
-    // 主要内容里的选项卡切换及点击后运动至相应的楼层
+    // 点击后运动至相应的楼层
     var aSubMain = oDoc.querySelectorAll('.js-sub-content'),
-        iSubMainLen = aSubMain.length;
-
-    // for (i = 0; i < iSubMainLen; i++) {
-    //     tabChange(aSubMain[i]);
-    // }
-    tabChange('js-clothes');
-    tabChange('js-cosmetic');
-    tabChange('js-mobiles');
-    tabChange('js-sports');
-
-
-    var iScrollTop = null;
+        iSubMainLen = aSubMain.length,
+        iScrollTop = null;
 
     for (i = 0; i < len; i++) {
         aElevatorTitle[i].index = i;
