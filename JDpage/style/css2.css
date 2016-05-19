@@ -38,6 +38,9 @@ a:hover{color:#c81623;}
 .hide {
 	display: none;
 }
+.is-hide {
+	display: none;
+}
 /* 焦点图的list改变样式公用 */
 .slider-list .is-current {
 	background-color: #C81623;
@@ -50,19 +53,18 @@ a:hover{color:#c81623;}
 .slider-list {
 	position: relative;
 	z-index: 7;
+	height: 0;
 	text-align: center;
 }
 	.slider-list li {
 		display: inline-block;
 		border-radius: 50%;
-		margin-left: 5px;
+		margin: 0 2px;
 		background-color: #3e3e3e;
+		text-align: center;
 		color: white;
 		cursor: pointer;
 	}
-.slider-btn {
-	display: none;
-}
 	.btn-prev,
 	.btn-next {
 		display: block;
@@ -662,6 +664,7 @@ a:hover{color:#c81623;}
  */
 /* 焦点图 */
 #big-slider {
+	position: relative;
 	width: 730px;
 	height: 454px;
 	margin: 14px 0 0 220px;
@@ -1170,9 +1173,6 @@ a:hover{color:#c81623;}
 		width: 249px;
 		margin-right: 1px;
 		overflow: hidden;
-	}
-	#today-recommend .btn-prev {
-		left: 210px;
 	}
 /* 猜你喜欢 */
 #guess-like {

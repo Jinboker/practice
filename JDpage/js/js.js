@@ -103,8 +103,8 @@ function toggleClass(obj , sClass){
 * @param   {function}     fnOut   鼠标移出函数
 */
 function hover(obj , fnOver , fnOut) {
-    myAddEvent(obj , 'mouseover' , fnOver);
-    myAddEvent(obj , 'mouseout' , fnOut);
+    myAddEvent(obj , 'mouseenter' , fnOver);
+    myAddEvent(obj , 'mouseleave' , fnOut);
 }
 
 /**
@@ -113,8 +113,8 @@ function hover(obj , fnOver , fnOut) {
 * @param   {function}     fn      鼠标移入移出时的函数
 */
 function classHover(obj , fn) {
-    myAddEvent(obj , 'mouseover' , fn);
-    myAddEvent(obj , 'mouseout' , fn);
+    myAddEvent(obj , 'mouseenter' , fn);
+    myAddEvent(obj , 'mouseleave' , fn);
 }
 
 /**
@@ -180,24 +180,125 @@ function move (oEle , json , iCtrSpeed , fn) {
 }
 
 
-/*-------------------------------- 焦点图模块 ------------------------------------*/
-
+/*------------------------------------ 焦点图模块 ----------------------------------------*/
 /**
  *Class
  *焦点图函数模块
  */
-// function SliderBtn(sObj) {
-//     var oDoc = document;
+function MoveFocus(obj) {
+    this.aPicLi = obj.querySelectorAll('.js-slider-pic > li');
+    this.len = this.aPicLi.length;
 
-//     this.oBtn = oDoc.querySelector('.' + sObj);
-//     this.prevBtn = oBtn.getElementsByTagName('a')[0];
-//     this.nextBtn = oBtn.getElementsByTagName('a')[1];
+    this.entrance.call(this , obj);
+}
 
-//     this.oPic = oDoc.querySelector();
-// }
-// SliderBtn.prototype = function() {
-//     myAddEvent
-// };
+MoveFocus.prototype = {
+    entrance : function (obj) {
+        // 自动播放
+        this.autoPlay(this , obj);
+
+        //鼠标移入移出时候自动播放的停止跟开始
+        this.autoPlayMouseover(this , obj);
+
+        // 按钮显示以及点击切换
+        this.btn(this , obj); 
+
+        // nav鼠标移入后的切换
+        this.nav(this , obj);
+    },
+
+    autoPlayMouseover : function (that , obj) {
+        hover(obj , function () {
+            clearInterval(that.timer);
+        } , function () {
+            that.autoPlay(that , obj);
+        });    
+    },
+
+    autoPlay : function (that , obj) {
+        that.timer = null;
+
+        that.timer = setInterval(function () {
+            that.togglePic();
+        } , 3000);
+    },
+
+    togglePic : function () {
+        console.log('a');
+    },
+
+    btn : function (that , obj) {
+        var oBtn = obj.querySelector('.js-slider-btn'),
+            oPrev = oBtn.getElementsByTagName('a')[0],
+            oNext = oBtn.getElementsByTagName('a')[1];
+
+        // 鼠标移入焦点图区域的时候按钮显示
+        classHover(obj , function () {
+            toggleClass(oBtn , 'is-hide');
+        });
+
+        // 点击按钮图片切换
+        myAddEvent(oPrev , 'click' , function () {
+            that.togglePic();
+        });
+        myAddEvent(oNext , 'click' , function () {
+            that.togglePic();
+        });
+    },
+
+    nav : function (that , obj) {
+        var aNav = obj.querySelectorAll('.js-slider-nav > li'),
+            iNavKey = 0,
+            navLen = that.len,
+            i = null,
+            timer = null;
+
+        for (i = 0; i < navLen; i++) {
+
+            aNav[i].index = i;
+            hover(aNav[i] , function () {
+                if (this.className != 'is-current') {
+                    var _this = this;
+                    timer = setTimeout(function () {
+                        toggleClass(aNav[iNavKey] , 'is-current');
+                        toggleClass(_this , 'is-current');
+                        that.togglePic();
+                        iNavKey = _this.index;
+                    } , 100);
+                }
+            } , function () {
+                clearTimeout(timer);
+            });
+        }
+    }
+}
+
+/**
+ * 焦点图
+ */
+myReady(function () {
+
+    // var oRecommendSlider = document.querySelector('.js-recommend-slider');
+    // new MoveFocus(oRecommendSlider);
+
+
+    // var oBigSlider = document.querySelector('.js-big-slider');
+    // new MoveFocus(oBigSlider); 
+
+
+    // 主要内容：
+    var oClothesSlider = document.querySelector('.js-clothes-slider');
+    new MoveFocus(oClothesSlider);
+
+    var oCosmeticSlider = document.querySelector('.js-cosmetic-slider');
+    new MoveFocus(oCosmeticSlider);
+
+    var oMobilesSlider = document.querySelector('.js-mobiles-slider');
+    new MoveFocus(oMobilesSlider);
+
+    var oSportsSlider = document.querySelector('.js-sports-slider');
+    new MoveFocus(oSportsSlider);
+});
 
 /*------------------------------------ 页面流程开始 ----------------------------------------*/
 /**
@@ -231,6 +332,7 @@ myReady(function () {
             for (var i = 0; i < iLiLen; i++) {
                 if (aLi[i].className === 'is-choose') {
                     aLi[i].className = '';
+                    break;
                 }
             }
             target.className = 'is-choose';
@@ -283,7 +385,7 @@ myReady(function () {
                     aTabContent[iKey].style.display = 'none';
                     aTabContent[that.index].style.display = 'block';
                     iKey = that.index;
-                } , 60);
+                } , 50);
             } , function () {
                 clearTimeout(timer);
             });
@@ -314,13 +416,15 @@ myReady(function () {
     for (i = 0; i < 4; i++) {
         aBoxLi[i].index = i;
         hover(aBoxLi[i] , function () {
+            //bStop在点击关闭后为假，只有在触发aBoxLi[i]上的onmouseout后才会重置为真
+            //这样主要是为了防止当鼠标点击关闭后不移动再次触发aBoxLi[i]上的鼠标移入事件
             if (bStop) {
                 var that = this,
                     iPosition1 = getStyle(oMoveBox , 'top'),
                     iPosition2 = getStyle(oHideBox , 'top');
 
                 timer = setTimeout(function () {
-                    // 隐藏块已经运动到顶部
+                    // iPosition1 === '-39px'表明隐藏块已经运动到顶部了，因此onmouseover触发的是选项卡切换
                     if (iPosition1 === '-39px') {
                         toggleClass(aBoxLi[iKey] , 'is-current');
                         toggleClass(that , 'is-current');
@@ -328,7 +432,7 @@ myReady(function () {
                         aHideLi[that.index].style.display = 'block';
                         iKey = that.index;
                     }
-                    // 隐藏块没有开始运动
+                    // iPosition2 === '208px'表明隐藏块没有开始运动，因此onmouseover触发的是隐藏的块运动出现
                     if (iPosition2 === '208px') {
                         aHideLi[that.index].style.display = 'block';
                         move(oHideBox , {top : 70} , 5 , function() {
@@ -354,6 +458,7 @@ myReady(function () {
     for (i = 0; i < iCloseLen; i++) {
         aClose[i].index = i;
         myAddEvent(aClose[i] , 'click' , function () {
+            //点击关闭后bStop为假并且隐藏内容运动回隐藏
             bStop = false;
             var that = this;
             toggleClass(aBoxLi[iKey] , 'is-current');
@@ -365,7 +470,7 @@ myReady(function () {
         });
     }
 
-    // 机票往返
+    // 机票往返的btn点击后返程票的selected选项显示
     var aGoBackBtn = oDoc.querySelectorAll('.js-go-back-btn'),
         aTicketBack = oDoc.querySelectorAll('.js-ticket-back'),
         len = aGoBackBtn.length;
@@ -400,7 +505,7 @@ myReady(function () {
         });
     }
 
-    // 猜你喜欢
+    // 猜你喜欢部分的点击换一批更换内容，同时有鼠标移入后的一个横向的小条的运动
     var oReplace = oDoc.querySelector('.js-replace'),
         aRepContent = oDoc.querySelectorAll('.js-replace-content');
         len2 = aRepContent.length,
@@ -423,21 +528,7 @@ myReady(function () {
     });
 
     // 热门晒单的自动播放
-    // var oHsContent = oDoc.querySelector('.js-hs-content'),
-    //     oHsLi = oHsContent.getElementsByTagName('li'),
-    //     iLast = oHsLi.length - 1;
-
-    // setInterval(function () {
-    //     var oRemoveLi = oHsLi[iLast];
-    //     oRemoveLi.style.opacity = 0;
-    //     oRemoveLi.style.height = 0;
-    //     oHsContent.removeChild(oRemoveLi);
-    //     oHsContent.insertBefore(oRemoveLi , oHsLi[0]);
-    //     oHsLi = oHsContent.getElementsByTagName('li');
-    //     move(oHsLi[0] , {height : 100} , 15 , function () {
-    //         move(oHsLi[0] , {opacity : 100} , 40);
-    //     });
-    // } , 3000);
+    
 });
 
 /**
@@ -480,7 +571,7 @@ myReady(function () {
         oDoc.documentElement.scrollTop = oDoc.body.scrollTop = 0;
     });
 });
-
+ 
 /**
  * 楼层索引相关
  */
@@ -491,7 +582,7 @@ myReady(function () {
 
     // 页面放大缩小时候全局索引栏的重新定位（包括页面放大缩小后刷新页面的重新定位）
     var oElevator = oDoc.getElementById('elevator');
-    
+
     function elevatorPosition() {
         oElevator.style.left = parseInt((oDoc.body.clientWidth - 1280)/2) + 'px';
     }
@@ -551,7 +642,7 @@ myReady(function () {
     oDoc.onscroll = delayTrigger(floorJudge , 100);
 
     // 点击后运动至相应的楼层
-    var aSubMain = oDoc.querySelectorAll('.js-sub-content'),
+    var aSubMain = oDoc.querySelectorAll('.js-content-top'),
         iSubMainLen = aSubMain.length,
         iScrollTop = null;
 
