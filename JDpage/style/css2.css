@@ -53,7 +53,9 @@ a:hover{color:#c81623;}
 .slider-list {
 	position: relative;
 	z-index: 7;
+	width: 100%;
 	height: 0;
+	line-height: 0;
 	text-align: center;
 }
 	.slider-list li {
@@ -1764,11 +1766,15 @@ a:hover{color:#c81623;}
 			color: #e8393c;
 		}
 		
-
-
 	/* 焦点图 */
+	.visible-content .slider-pic {
+		position: relative;
+	}
+	.visible-content .slider-pic li {
+		float: left;
+	}
 	.visible-content .slider-list {
-		bottom: 24px;
+		bottom: 19px;
 	}
 		.visible-content .slider-list li {
 			width: 9px;
@@ -1907,9 +1913,6 @@ a:hover{color:#c81623;}
 	#clothes-slider .slider-pic {
 		width: 2000px;
 	}
-	#clothes-slider .slider-pic li{
-		float: left;
-	}
 /* 服装箱包隐藏内容 */
 
 /* 服装箱包底部广告 */
@@ -1982,9 +1985,6 @@ a:hover{color:#c81623;}
 }
 	#cosmetic-slider .slider-pic {
 		width: 3000px;
-	}
-	#cosmetic-slider .slider-pic li {
-		float: left;
 	}
 	#cosmetic-slider .slider-pic a{
 		display: block;
@@ -2068,10 +2068,6 @@ a:hover{color:#c81623;}
 	#mobiles-slider .slider-pic {
 		width: 2000px;
 	}
-	#mobiles-slider .slider-pic li{
-		float: left;
-	}
-	
 /* 手机通讯底部广告 */
 #mobiles .foot-banner a {
 	background-image: url('../image/mobiles/mobiles_floor.jpg');
@@ -2117,9 +2113,6 @@ a:hover{color:#c81623;}
 }
 	#sports-slider .slider-pic {
 		width: 3000px;
-	}
-	#sports-slider .slider-pic li {
-		float: left;
 	}
 	#sports-slider .slider-pic a{
 		display: block;

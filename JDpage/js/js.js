@@ -97,6 +97,22 @@ function toggleClass(obj , sClass){
 }
 
 /**
+ * 清除掉一个nodeList对象中含有sClass这个class值的某个对象上的sClass
+ * 注：该nodeList对象中的值最多只能含有想要被清除的class
+ * @param   {Object}     nodeList     一个nodeList对象
+ * @param   {number}     len          这个nodeList对象的长度
+ * @param   {string}     sClass       想要清除的class名
+ */
+function clearClass(nodeList , len , sClass) {
+    for (var i = 0; i < len; i++) {
+        if (nodeList[i].className === sClass) {
+            toggleClass(nodeList[i] , sClass);
+            break;
+        }
+    }
+}
+
+/**
 *hover函数
 * @param   {Object}       obj     需要执行classHover的对象
 * @param   {function}     fnOver  鼠标移入函数
@@ -118,7 +134,7 @@ function classHover(obj , fn) {
 }
 
 /**
-*delayTrigger
+*函数节流
 * @param   {function}       fn     需要延迟执行的函数
 */
 function delayTrigger(fn , delay) {
@@ -181,50 +197,63 @@ function move (oEle , json , iCtrSpeed , fn) {
 
 
 /*------------------------------------ 焦点图模块 ----------------------------------------*/
-/**
- *Class
- *焦点图函数模块
+/**Class
+ *图片横移焦点图函数模块
+ *@param {object}    obj         焦点图对象
+ *@param {boolean}   bStop       默认为true的参数，设置为true/flase后可以开启/停止自动播放
  */
 function MoveFocus(obj) {
-    this.aPicLi = obj.querySelectorAll('.js-slider-pic > li');
+    // 只有图片相关的属性定义在了构造函数中，其他诸如btn , nav之类的属性都定义在了相关的方法中
+    // 主要是方便其他不含有btn , nav的焦点图对模块进行改写
+    this.oPic = obj.querySelector('.js-slider-pic');
+    this.aPicLi = this.oPic.getElementsByTagName('li');
     this.len = this.aPicLi.length;
+    this.key = 0;
 
-    this.entrance.call(this , obj);
+    this.entrance.apply(this , arguments);
 }
 
 MoveFocus.prototype = {
     entrance : function (obj) {
+        // 初始化
+        this.init.call(this);
         // 自动播放
-        this.autoPlay(this , obj);
-
+        this.autoPlay.call(this , obj);
         //鼠标移入移出时候自动播放的停止跟开始
-        this.autoPlayMouseover(this , obj);
-
-        // 按钮显示以及点击切换
+        this.autoPlayHover(this , obj);
+        // 按钮显示及点击切换
         this.btn(this , obj); 
-
         // nav鼠标移入后的切换
         this.nav(this , obj);
     },
 
-    autoPlayMouseover : function (that , obj) {
+    init : function () {
+        // 将图片复制一遍后，图片运动至头尾时通过改变图片的位置形成无缝滚动
+        var innerPic = this.oPic,
+            html = innerPic.innerHTML;
+
+        this.width = this.aPicLi[0].offsetWidth;
+        innerPic.style.left = -this.width + 'px';
+        // 将第一张图及最后一张图分别复制到这一串图的尾部跟头部，用来做无缝滚动（简单方式是直接将innerHTML自身赋值一遍就行）
+        innerPic.innerHTML = this.aPicLi[this.len-1].outerHTML + innerPic.innerHTML + this.aPicLi[0].outerHTML;
+        innerPic.style.width = this.width*(this.len+2) + 100 + 'px';  
+    },
+
+    autoPlayHover : function (that , obj) {
         hover(obj , function () {
             clearInterval(that.timer);
         } , function () {
-            that.autoPlay(that , obj);
+            that.autoPlay(obj);
         });    
     },
 
-    autoPlay : function (that , obj) {
-        that.timer = null;
-
-        that.timer = setInterval(function () {
-            that.togglePic();
+    autoPlay : function (obj) {
+        var that = this;
+        this.timer = null;
+        obj.bStop = true;
+        this.timer = setInterval(function () {
+            obj.bStop && that.next.call(that);
         } , 3000);
-    },
-
-    togglePic : function () {
-        console.log('a');
     },
 
     btn : function (that , obj) {
@@ -236,68 +265,87 @@ MoveFocus.prototype = {
         classHover(obj , function () {
             toggleClass(oBtn , 'is-hide');
         });
-
-        // 点击按钮图片切换
+        // 点击切换图片
         myAddEvent(oPrev , 'click' , function () {
-            that.togglePic();
+            that.prev.call(that);
         });
         myAddEvent(oNext , 'click' , function () {
-            that.togglePic();
+            that.next.call(that);
         });
     },
 
+    prev : function () {
+        // 当key值等于0 的时候就表示运动到头了，需要切换
+        if (this.key > 0) {
+            this.key --;
+        } else {
+            this.key = (this.len-1);
+            this.oPic.style.left = -this.width*(this.len + 1) + 'px';
+        }
+        // that.key > 0 ? that.key -- : that.key = (that.len-1);
+        this.change.call(this , this.aNav[this.key]);
+    },
+
+    next : function () {
+        // 当key值等于that.len-1的时候表明运动到尾了，同样需要切换
+        // that.key < ((that.len-1)) ? that.key ++ : that.key = 0;
+        if (this.key < ((this.len-1))) {
+            this.key ++;
+        } else {
+            this.key = 0;
+            this.oPic.style.left = 0;
+        }
+        this.change.call(this , this.aNav[this.key]);
+    },
+
     nav : function (that , obj) {
-        var aNav = obj.querySelectorAll('.js-slider-nav > li'),
-            iNavKey = 0,
-            navLen = that.len,
+        var navLen = that.len,
             i = null,
             timer = null;
+        that.aNav = obj.querySelectorAll('.js-slider-nav > li');
 
         for (i = 0; i < navLen; i++) {
-
-            aNav[i].index = i;
-            hover(aNav[i] , function () {
+            that.aNav[i].index = i;
+            // 鼠标划过nav后改变图片及本身的样式，设置定时主要是为了防止鼠标快速划过时也触发了onmouseenter
+            hover(that.aNav[i] , function () {
                 if (this.className != 'is-current') {
                     var _this = this;
+                    
                     timer = setTimeout(function () {
-                        toggleClass(aNav[iNavKey] , 'is-current');
-                        toggleClass(_this , 'is-current');
-                        that.togglePic();
-                        iNavKey = _this.index;
+                        that.key = _this.index;
+                        that.change.call(that , _this , that.key);
                     } , 100);
                 }
             } , function () {
                 clearTimeout(timer);
             });
         }
+    },
+
+    // nav的样式改变及图片的切换都通过chang来进行
+    change : function (aNavObj , triggerIndex) {
+        clearClass(this.aNav , this.len , 'is-current');
+        toggleClass(aNavObj , 'is-current');
+        this.togglePic.call(this);
+    },
+
+    togglePic : function (triggerIndex) {
+        var iLeft = -this.key * this.width - this.width;
+        move(this.oPic , {left : iLeft});
     }
 }
 
 /**
- * 焦点图
+ * 页面中全部的焦点图
  */
 myReady(function () {
 
     // var oRecommendSlider = document.querySelector('.js-recommend-slider');
     // new MoveFocus(oRecommendSlider);
 
-
     // var oBigSlider = document.querySelector('.js-big-slider');
     // new MoveFocus(oBigSlider); 
 
-
-    // 主要内容：
-    var oClothesSlider = document.querySelector('.js-clothes-slider');
-    new MoveFocus(oClothesSlider);
-
-    var oCosmeticSlider = document.querySelector('.js-cosmetic-slider');
-    new MoveFocus(oCosmeticSlider);
-
-    var oMobilesSlider = document.querySelector('.js-mobiles-slider');
-    new MoveFocus(oMobilesSlider);
-
-    var oSportsSlider = document.querySelector('.js-sports-slider');
-    new MoveFocus(oSportsSlider);
 });
 
 /*------------------------------------ 页面流程开始 ----------------------------------------*/
@@ -324,17 +372,13 @@ myReady(function () {
         aLi = oChooseAddr.getElementsByTagName('a'),
         iLiLen = aLi.length;
 
+    // 事件委托，获取点击选择的省份
     myAddEvent(oChooseAddr , 'click' , function (ev) {
         ev = ev || window.event;
         var target = ev.target || ev.srcElement;
 
         if (target.nodeName.toLowerCase() === 'a') {
-            for (var i = 0; i < iLiLen; i++) {
-                if (aLi[i].className === 'is-choose') {
-                    aLi[i].className = '';
-                    break;
-                }
-            }
+            clearClass(aLi , iLiLen , 'is-choose');
             target.className = 'is-choose';
             oVisibleAddr.innerHTML = target.innerHTML;
         }
@@ -380,6 +424,7 @@ myReady(function () {
             hover(aTabTop[i] , function () {
                 var that = this;
                 timer = setTimeout(function () {
+                    // 将之前class为is-current的那个对象的class设置为空，再将hover的这个对象class设置为is-current
                     toggleClass(aTabTop[iKey] , 'is-current');
                     toggleClass(that , 'is-current');
                     aTabContent[iKey].style.display = 'none';
@@ -424,7 +469,7 @@ myReady(function () {
                     iPosition2 = getStyle(oHideBox , 'top');
 
                 timer = setTimeout(function () {
-                    // iPosition1 === '-39px'表明隐藏块已经运动到顶部了，因此onmouseover触发的是选项卡切换
+                    // iPosition1 === '-39px'表明隐藏块已经运动到顶部了，因此mouseenter触发的是选项卡切换
                     if (iPosition1 === '-39px') {
                         toggleClass(aBoxLi[iKey] , 'is-current');
                         toggleClass(that , 'is-current');
@@ -432,7 +477,7 @@ myReady(function () {
                         aHideLi[that.index].style.display = 'block';
                         iKey = that.index;
                     }
-                    // iPosition2 === '208px'表明隐藏块没有开始运动，因此onmouseover触发的是隐藏的块运动出现
+                    // iPosition2 === '208px'表明隐藏块没有开始运动，因此mouseenter触发的是隐藏的块运动出现
                     if (iPosition2 === '208px') {
                         aHideLi[that.index].style.display = 'block';
                         move(oHideBox , {top : 70} , 5 , function() {
@@ -446,7 +491,7 @@ myReady(function () {
             }
         } , function () {
             clearTimeout(timer);
-            // 点击关闭后bStop为假，mouseover事件不会触发，必须触发一次mouseout事件后才会为真
+            // 点击关闭后bStop为假，mouseenter事件不会触发，必须触发一次mouseleave事件后才会为真
             (!bStop)&&(bStop = true);            
         });
     }
@@ -482,7 +527,6 @@ myReady(function () {
         });
     }
 });
-
 
 /**
  * 综合推荐、天天低价及热门晒单
@@ -527,7 +571,7 @@ myReady(function () {
         clearTimeout(timer);
     });
 
-    // 热门晒单的自动播放
+    //热门晒单
     
 });
 
@@ -553,6 +597,7 @@ myReady(function () {
             clearTimeout(this.timer);
             aIcon[this.index].style.backgroundColor = '#C81623';
             this.timer = setTimeout(function () {
+                //工具栏上面的五个工具隐藏的部分要比下面2个宽20px，因此要分开进行运动
                 if (that.index < 5) {
                     move(aText[that.index] , {right : 65} , 15);
                 } else{
@@ -577,7 +622,6 @@ myReady(function () {
  */
  myReady(function () {
     var i = null,
-        iKey = null,
         oDoc = document;
 
     // 页面放大缩小时候全局索引栏的重新定位（包括页面放大缩小后刷新页面的重新定位）
@@ -590,11 +634,14 @@ myReady(function () {
     elevatorPosition();
     window.onresize = delayTrigger(elevatorPosition , 100);
 
-    // 页面滚动时楼层索引及每层内容的楼层指示的变化
+    // 页面滚动时楼层索引及每层内容的楼层指示的变化，内容里的焦点图开始运动
     var oElevator = oDoc.getElementById('elevator'),
         aElevatorTitle = oDoc.querySelectorAll('.js-elevator'),
         aFloor = oDoc.querySelectorAll('.js-bg-hide'),
-        len = aElevatorTitle.length;
+        len = aElevatorTitle.length,
+        aContentSlider = oDoc.querySelectorAll('.js-content-slider'),
+        timer = null,
+        iKey = null;
 
     function floorJudge() {
         var iScrollTop = oDoc.documentElement.scrollTop || oDoc.body.scrollTop;
@@ -621,6 +668,7 @@ myReady(function () {
        if (iKey) {
             removeClass(aElevatorTitle[iKey - 1] , 'is-current');
             aFloor[iKey - 1].style.top = '-27px';
+            aContentSlider[iKey - 1].bStop = false;
        }
        iKey = null;
     }
@@ -632,10 +680,18 @@ myReady(function () {
         if (iKey) {
             removeClass(aElevatorTitle[num1] , 'is-current');
             aFloor[num1].style.top = '-27px';
+            aContentSlider[num1].bStop = false;
         }
+        // 内容头部的楼层指示
+        aContentSlider[num2].bStop = true;
         addClass(aElevatorTitle[num2] , 'is-current');
         move(aFloor[num2] , {top : 0});
         iKey = iNum;
+    }
+
+    for (i = 0; i < len; i++) {
+        new MoveFocus(aContentSlider[i]);
+        aContentSlider[i].bStop = false;
     }
 
     floorJudge();
