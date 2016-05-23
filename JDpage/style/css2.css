@@ -684,6 +684,15 @@ a:hover{color:#c81623;}
 		height: 18px;
 		line-height:18px;
 	}
+/* 隐藏的样式 */
+#big-slider .slider-pic .is-current {
+	z-index: 1;
+}	
+	/* 这个class在脚本执行后会从HTML中删除，是为了防止脚本未加载的时候全部图片的透明度都是0没有图片显示 */
+	#big-slider .slider-pic .is-js-delete {
+		opacity: 1;
+		filter: Alpha(opacity = 100);
+	}
 /* 新闻及生活服务 */
 #focus-extra {
 	width: 249px;
@@ -1025,14 +1034,6 @@ a:hover{color:#c81623;}
 	display: block;
 	margin-top: 9px;
 }
-/*--------------------------------------------------------------------*/
-/* 隐藏的样式 */
-#big-slider .slider-pic .is-current {
-	z-index: 1;
-	/* 这里要删除 */
-	opacity: 1;
-}
-/*--------------------------------------------------------------------*/
 
 /**
  * 全局工具栏
@@ -1163,6 +1164,7 @@ a:hover{color:#c81623;}
 	}
 	/* ------------------------------------------------------- */
 	#recommend-slider .slider-pic {
+		position: relative;
 		width: 3000px;
 	}
 	/* ------------------------------------------------------- */
@@ -2206,19 +2208,26 @@ a:hover{color:#c81623;}
 	width: 310px;
 	height: 319px;
 }
-	.hot-sheet .main-content {
-		height: 226px;
+	.hot-sheet-wrap {
+		height: 240px;
 		width: 268px;
-		padding: 35px 20px 20px;
+		padding: 21px 20px 20px;
 		border-right: 1px solid #e5e5e5;
 		border-bottom: 1px solid #e5e5e5;
+	}
+	#hot-sheet-slider {
+		height: 240px;
+		width: 268px;
 		overflow: hidden;
+	}
+	#hot-sheet-slider .slider-pic {
+		position: relative;
 	}
 	.hot-sheet li {
 		position: relative;
 		width: 266px;
 		height: 100px;
-		margin-bottom: 20px;
+		padding-bottom: 20px;
 		overflow: hidden;
 	}
 	.hot-sheet .mc-img {

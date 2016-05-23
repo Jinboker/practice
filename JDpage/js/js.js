@@ -152,6 +152,20 @@ function delayTrigger(fn , delay) {
 }
 
 /**
+ * prototype继承函数
+ * @param {object}      parent        父类
+ * @param {object}      child         子类
+ */
+function extend(child , parent) {
+    var p = parent.prototype,
+        c = child.prototype;
+
+    for (var i in p) {
+        c[i] = p[i];
+    }
+}
+
+/**
  * 任意值的缓冲运动框架
  * @param {object}   oEle         想要运动的那个对象
  * @param {json}     json         运动的目标
@@ -200,77 +214,79 @@ function move (oEle , json , iCtrSpeed , fn) {
 /**Class
  *图片横移焦点图函数模块
  *@param {object}    obj         焦点图对象
- *@param {boolean}   bStop       默认为true的参数，设置为true/flase后可以开启/停止自动播放
  */
 function MoveFocus(obj) {
     // 只有图片相关的属性定义在了构造函数中，其他诸如btn , nav之类的属性都定义在了相关的方法中
     // 主要是方便其他不含有btn , nav的焦点图对模块进行改写
+    this.obj = obj;
     this.oPic = obj.querySelector('.js-slider-pic');
     this.aPicLi = this.oPic.getElementsByTagName('li');
     this.len = this.aPicLi.length;
     this.key = 0;
-
-    this.entrance.apply(this , arguments);
 }
 
 MoveFocus.prototype = {
     entrance : function (obj) {
         // 初始化
-        this.init.call(this);
+        this.init();
         // 自动播放
-        this.autoPlay.call(this , obj);
+        this.autoPlay();
         //鼠标移入移出时候自动播放的停止跟开始
-        this.autoPlayHover(this , obj);
+        this.autoPlayHover();
         // 按钮显示及点击切换
-        this.btn(this , obj); 
+        this.btn();
         // nav鼠标移入后的切换
-        this.nav(this , obj);
+        this.nav();
     },
 
     init : function () {
+        // 默认开启自动轮播
+        this.obj.bStop = true;
         // 将图片复制一遍后，图片运动至头尾时通过改变图片的位置形成无缝滚动
         var innerPic = this.oPic,
             html = innerPic.innerHTML;
 
         this.width = this.aPicLi[0].offsetWidth;
         innerPic.style.left = -this.width + 'px';
+        innerPic.style.width = this.width*(this.len+2) + 100 + 'px';  
         // 将第一张图及最后一张图分别复制到这一串图的尾部跟头部，用来做无缝滚动（简单方式是直接将innerHTML自身赋值一遍就行）
         innerPic.innerHTML = this.aPicLi[this.len-1].outerHTML + innerPic.innerHTML + this.aPicLi[0].outerHTML;
-        innerPic.style.width = this.width*(this.len+2) + 100 + 'px';  
     },
 
-    autoPlayHover : function (that , obj) {
-        hover(obj , function () {
+    autoPlayHover : function () {
+        var that = this;
+        hover(this.obj , function () {
             clearInterval(that.timer);
         } , function () {
-            that.autoPlay(obj);
+            that.autoPlay();
         });    
     },
 
-    autoPlay : function (obj) {
+    autoPlay : function () {
         var that = this;
         this.timer = null;
-        obj.bStop = true;
         this.timer = setInterval(function () {
-            obj.bStop && that.next.call(that);
+            that.obj.bStop && that.next();
         } , 3000);
     },
 
-    btn : function (that , obj) {
-        var oBtn = obj.querySelector('.js-slider-btn'),
+    btn : function () {
+        var oBtn = this.obj.querySelector('.js-slider-btn'),
             oPrev = oBtn.getElementsByTagName('a')[0],
-            oNext = oBtn.getElementsByTagName('a')[1];
+            oNext = oBtn.getElementsByTagName('a')[1],
+            that = this;
 
+        this.moveAble = true;
         // 鼠标移入焦点图区域的时候按钮显示
-        classHover(obj , function () {
+        classHover(this.obj , function () {
             toggleClass(oBtn , 'is-hide');
         });
         // 点击切换图片
         myAddEvent(oPrev , 'click' , function () {
-            that.prev.call(that);
+            that.moveAble && that.prev();
         });
         myAddEvent(oNext , 'click' , function () {
-            that.next.call(that);
+            that.moveAble && that.next();
         });
     },
 
@@ -282,38 +298,38 @@ MoveFocus.prototype = {
             this.key = (this.len-1);
             this.oPic.style.left = -this.width*(this.len + 1) + 'px';
         }
-        // that.key > 0 ? that.key -- : that.key = (that.len-1);
-        this.change.call(this , this.aNav[this.key]);
+        this.change();
     },
 
     next : function () {
         // 当key值等于that.len-1的时候表明运动到尾了，同样需要切换
-        // that.key < ((that.len-1)) ? that.key ++ : that.key = 0;
-        if (this.key < ((this.len-1))) {
+        if (this.key < (this.len-1)) {
             this.key ++;
         } else {
             this.key = 0;
             this.oPic.style.left = 0;
         }
-        this.change.call(this , this.aNav[this.key]);
+        this.change();
     },
 
-    nav : function (that , obj) {
-        var navLen = that.len,
+    nav : function () {
+        var navLen = this.len,
             i = null,
+            that = this,
             timer = null;
-        that.aNav = obj.querySelectorAll('.js-slider-nav > li');
+
+        this.aNav = this.obj.querySelectorAll('.js-slider-nav > li');
 
         for (i = 0; i < navLen; i++) {
-            that.aNav[i].index = i;
+            this.aNav[i].index = i;
             // 鼠标划过nav后改变图片及本身的样式，设置定时主要是为了防止鼠标快速划过时也触发了onmouseenter
-            hover(that.aNav[i] , function () {
+            hover(this.aNav[i] , function () {
                 if (this.className != 'is-current') {
                     var _this = this;
                     
                     timer = setTimeout(function () {
                         that.key = _this.index;
-                        that.change.call(that , _this , that.key);
+                        that.change(_this);
                     } , 100);
                 }
             } , function () {
@@ -322,31 +338,105 @@ MoveFocus.prototype = {
         }
     },
 
-    // nav的样式改变及图片的切换都通过chang来进行
-    change : function (aNavObj , triggerIndex) {
-        clearClass(this.aNav , this.len , 'is-current');
-        toggleClass(aNavObj , 'is-current');
-        this.togglePic.call(this);
-    },
+    change : function () {
+        // 有部分轮播图没有nav，因此检查一下是否含有nav再执行下面的代码
+        if (!!this.aNav) {
+            clearClass(this.aNav , this.len , 'is-current');
+            toggleClass(this.aNav[this.key] , 'is-current');
+        }
+        var that = this,
+            iLeft = -this.key * this.width - this.width;
 
-    togglePic : function (triggerIndex) {
-        var iLeft = -this.key * this.width - this.width;
-        move(this.oPic , {left : iLeft});
+        move(this.oPic , {left : iLeft} , 20 , function () {
+            that.moveAble = true;
+        });
     }
 }
 
-/**
- * 页面中全部的焦点图
+/**Class
+ *热门晒单的自动播放
+ *@param {object}    obj     焦点图对象
  */
-myReady(function () {
+function HotSheet(obj) {
+    MoveFocus.call(this , obj);
+}
+extend (HotSheet , MoveFocus);
 
-    // var oRecommendSlider = document.querySelector('.js-recommend-slider');
-    // new MoveFocus(oRecommendSlider);
+HotSheet.prototype.init = function () {
+    this.key = this.len-1;
+    this.obj.bStop = true;
 
-    // var oBigSlider = document.querySelector('.js-big-slider');
-    // new MoveFocus(oBigSlider); 
+    var innerPic = this.oPic,
+        html = innerPic.innerHTML;
 
-});
+    this.height = this.aPicLi[0].offsetHeight;
+    innerPic.innerHTML += innerPic.innerHTML
+    innerPic.style.bottom = this.height * this.len + 'px';
+};
+
+HotSheet.prototype.next = function() {
+    // 当key值等于0 的时候就表示运动到头了，需要切换
+    if (this.key < this.len) {
+        this.key ++;
+    } else {
+        this.key = 0;
+        this.oPic.style.bottom = this.height * this.len + 'px';
+    }
+    this.change();
+};
+
+HotSheet.prototype.change = function() {
+    var iBottom = -this.key * this.height + this.height * this.len;
+
+    move(this.oPic , {bottom : iBottom} , 20);
+};
+
+/**Class
+ *图片透明度改变的焦点图函数模块
+ *@param {object}    obj         焦点图对象
+ */
+function OpacityMove(obj) {
+    MoveFocus.call(this , obj);
+}
+extend (OpacityMove , MoveFocus);
+
+OpacityMove.prototype.init = function () {
+    // 默认开启自动轮播
+    this.obj.bStop = true;
+    // 初始化
+    removeClass(this.aPicLi[0] , 'is-js-delete');
+    this.aPicLi[0].style.opacity = 1;
+    this.aPicLi[0].filter = 'alpha(opacity:'+ 100 +')';
+};
+
+OpacityMove.prototype.prev = function () {
+    // 当key值等于0 的时候就表示运动到头了，需要切换
+    this.key > 0 ? this.key -- : this.key = (this.len-1);
+    this.change();
+};
+
+OpacityMove.prototype.next = function () {
+    // 当key值等于that.len-1的时候表明运动到尾了，同样需要切换
+    this.key < ((this.len-1)) ? this.key ++ : this.key = 0;
+    this.change();
+};
+
+OpacityMove.prototype.change = function () {
+    var that = this;
+
+    for (var i = 0; i < this.len; i++) {
+        if (this.aNav[i].className === 'is-current') {
+            toggleClass(this.aNav[i] , 'is-current');
+            move(this.aPicLi[i] , {opacity : 0});
+            break;
+        }
+    }
+    this.moveAble = false;
+    toggleClass(this.aNav[this.key] , 'is-current');
+    move(this.aPicLi[this.key] , {opacity : 100} , 20 , function () {
+        that.moveAble = true;
+    });
+};
 
 /*------------------------------------ 页面流程开始 ----------------------------------------*/
 /**
@@ -452,7 +542,11 @@ myReady(function () {
         iKey = 0,
         i = null;
 
-    // 鼠标移入后显示
+    // 焦点图
+    var slider = new OpacityMove(oDoc.querySelector('.js-big-slider')); 
+    slider.entrance();
+
+    // 生活服务鼠标移入后显示
     var oMoveBox = oDoc.querySelector('.js-move-box'),
         aBoxLi = oMoveBox.getElementsByTagName('li'),
         oHideBox = oDoc.querySelector('.js-hide-box'),
@@ -468,6 +562,7 @@ myReady(function () {
                     iPosition1 = getStyle(oMoveBox , 'top'),
                     iPosition2 = getStyle(oHideBox , 'top');
 
+                // 这里开一个定时器主要是为了防止鼠标快速划过时触发事件
                 timer = setTimeout(function () {
                     // iPosition1 === '-39px'表明隐藏块已经运动到顶部了，因此mouseenter触发的是选项卡切换
                     if (iPosition1 === '-39px') {
@@ -535,6 +630,12 @@ myReady(function () {
     var oDoc = document,
         i = null;
 
+    // 今日推荐的轮播
+    var slider = new MoveFocus(oDoc.querySelector('.js-recommend-slider'));
+
+    slider.init();
+    slider.btn();
+
     // 品质生活及天天低价的图片移动
     var aMoveHover = oDoc.querySelectorAll('.js-hover-move'),
         aMovePic = oDoc.querySelectorAll('.js-img-move'),
@@ -571,8 +672,12 @@ myReady(function () {
         clearTimeout(timer);
     });
 
-    //热门晒单
-    
+    //热门晒单的自动播放
+    var hotSheet = oDoc.querySelector('.js-hot-sheet-slider'),
+        hsSlider = new HotSheet(hotSheet); 
+
+    hsSlider.init();
+    hsSlider.autoPlay();
 });
 
 /**
@@ -627,6 +732,9 @@ myReady(function () {
     // 页面放大缩小时候全局索引栏的重新定位（包括页面放大缩小后刷新页面的重新定位）
     var oElevator = oDoc.getElementById('elevator');
 
+    /**
+     * 给楼层索引所在的位置进行重新定位
+     */
     function elevatorPosition() {
         oElevator.style.left = parseInt((oDoc.body.clientWidth - 1280)/2) + 'px';
     }
@@ -643,6 +751,9 @@ myReady(function () {
         timer = null,
         iKey = null;
 
+    /**
+     * 判断到达的楼层，执行该楼层所对应的操作
+     */
     function floorJudge() {
         var iScrollTop = oDoc.documentElement.scrollTop || oDoc.body.scrollTop;
         if (iScrollTop <= 2902) {
@@ -663,34 +774,50 @@ myReady(function () {
             }
         }
     }
+    /**
+     * 当显示的范围不是每层楼主要内容的区域的时候，执行的操作
+     */
     function fna() {
        oElevator.style.display = 'none';
        if (iKey) {
             removeClass(aElevatorTitle[iKey - 1] , 'is-current');
             aFloor[iKey - 1].style.top = '-27px';
+            // 关闭轮播图的自动轮播
             aContentSlider[iKey - 1].bStop = false;
        }
        iKey = null;
     }
+    /**
+     * 当显示的范围正好是每层楼的主要内容区域的时候，执行的操作
+     * @param  {number}    iNum    楼层数
+     */
     function fnb(iNum) {
+        // iKey的值为上一次所在的楼层数
         var num1 = iKey - 1,
             num2 = iNum - 1;
 
         oElevator.style.display = 'block';
+        // 如果iKey为假，那么表示上一次屏幕的显示范围不是在主要内容区域，直接执行楼层相应的操作就行
         if (iKey) {
+            // 移除上一次所在的楼层的响应操作
             removeClass(aElevatorTitle[num1] , 'is-current');
             aFloor[num1].style.top = '-27px';
             aContentSlider[num1].bStop = false;
         }
         // 内容头部的楼层指示
-        aContentSlider[num2].bStop = true;
         addClass(aElevatorTitle[num2] , 'is-current');
         move(aFloor[num2] , {top : 0});
+        // 开启对应楼层的自动轮播
+        aContentSlider[num2].bStop = true;
         iKey = iNum;
     }
 
+    // 主要内容里面添加轮播图
+    var aSlider = [];
     for (i = 0; i < len; i++) {
-        new MoveFocus(aContentSlider[i]);
+        aSlider[i] = new MoveFocus(aContentSlider[i]);
+        aSlider[i].entrance(aContentSlider[i]);
+        // 统一关闭所有的自动轮播，只有页面在相应的楼层显示的时候才会将这个值设置为true，即开启自动轮播
         aContentSlider[i].bStop = false;
     }
 

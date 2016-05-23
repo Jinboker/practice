@@ -2013,7 +2013,7 @@
 		<!-- 焦点图 -->
 		<div id="big-slider" class="js-big-slider slider fl">
 			<ul class="js-slider-pic slider-pic">
-				<li class="is-current"><a href="javascript:;"><img src="image/bigimg/1.jpg"></a></li>
+				<li class="is-current is-js-delete"><a href="javascript:;"><img src="image/bigimg/1.jpg"></a></li>
 				<li><a href="javascript:;"><img src="image/bigimg/2.jpg"></a></li>
 				<li><a href="javascript:;"><img src="image/bigimg/3.jpg"></a></li>
 				<li><a href="javascript:;"><img src="image/bigimg/4.jpg"></a></li>
@@ -2021,6 +2021,7 @@
 				<li><a href="javascript:;"><img src="image/bigimg/6.jpg"></a></li>
 			</ul>
 			<ul class="js-slider-nav slider-list">
+				<!-- 这种写法是为了去掉inline-block中的空格占位 -->
 				<li class="is-current">1</li
 				><li>2</li
 				><li>3</li
@@ -4592,72 +4593,76 @@
 			<div class="content-top">
 				<h2>热门晒单</h2>
 			</div>
-			<ul class="js-hs-content main-content">
-				<li>
-					<div class="mc-img fl">
-						<a href="javascript:;"><img src="image/extra_content/right/1.jpg" width="80" height="80"></a>
-					</div>
-					<div class="mc-info fr">
-						<div class="mc-name">
-							<img src="image/extra_content/right/11.jpg">
-							<span>famosyzp</span>
-						</div>
-						<div class="mc-comment">
-							<a href="javascript:;">东西非常好！包装精美 做工也非常精细<span class="quote-right">”</span></a>
-						</div>
-						<span class="mc-triangle">◆</span>
-						<span class="quote-left">“</span>
-					</div>
-				</li>
-				<li>
-					<div class="mc-img fl">
-						<a href="javascript:;"><img src="image/extra_content/right/2.jpg" width="80" height="80"></a>
-					</div>
-					<div class="mc-info fr">
-						<div class="mc-name">
-							<img src="image/extra_content/right/12.jpg">
-							<span>phoenix369</span>
-						</div>
-						<div class="mc-comment">
-							<a href="javascript:;">还不错，挺好看的，手感也不错<span class="quote-right">”</span></a>
-						</div>
-						<span class="mc-triangle">◆</span>
-						<span class="quote-left">“</span>
-					</div>
-				</li>
-				<li>
-					<div class="mc-img fl">
-						<a href="javascript:;"><img src="image/extra_content/right/3.jpg" width="80" height="80"></a>
-					</div>
-					<div class="mc-info fr">
-						<div class="mc-name">
-							<img src="image/extra_content/right/13.jpg">
-							<span>b***4</span>
-						</div>
-						<div class="mc-comment">
-							<a href="javascript:;">不错，都用了一个月了才来给评价<span class="quote-right">”</span></a>
-						</div>
-						<span class="mc-triangle">◆</span>
-						<span class="quote-left">“</span>
-					</div>
-				</li>
-				<li>
-					<div class="mc-img fl">
-						<a href="javascript:;"><img src="image/extra_content/right/4.jpg" width="80" height="80"></a>
-					</div>
-					<div class="mc-info fr">
-						<div class="mc-name">
-							<img src="image/extra_content/right/14.jpg">
-							<span>snow_w_201</span>
-						</div>
-						<div class="mc-comment">
-							<a href="javascript:;">还不错，挺好看的，手感也不错<span class="quote-right">”</span></a>
-						</div>
-						<span class="mc-triangle">◆</span>
-						<span class="quote-left">“</span>
-					</div>
-				</li>
-			</ul>
+			<div class="hot-sheet-wrap main-content">
+				<div id="hot-sheet-slider" class="js-hot-sheet-slider">
+					<ul class="js-slider-pic slider-pic">
+						<li>
+							<div class="mc-img fl">
+								<a href="javascript:;"><img src="image/extra_content/right/1.jpg" width="80" height="80"></a>
+							</div>
+							<div class="mc-info fr">
+								<div class="mc-name">
+									<img src="image/extra_content/right/11.jpg">
+									<span>famosyzp</span>
+								</div>
+								<div class="mc-comment">
+									<a href="javascript:;">东西非常好！包装精美 做工也非常精细<span class="quote-right">”</span></a>
+								</div>
+								<span class="mc-triangle">◆</span>
+								<span class="quote-left">“</span>
+							</div>
+						</li>
+						<li>
+							<div class="mc-img fl">
+								<a href="javascript:;"><img src="image/extra_content/right/2.jpg" width="80" height="80"></a>
+							</div>
+							<div class="mc-info fr">
+								<div class="mc-name">
+									<img src="image/extra_content/right/12.jpg">
+									<span>phoenix369</span>
+								</div>
+								<div class="mc-comment">
+									<a href="javascript:;">还不错，挺好看的，手感也不错<span class="quote-right">”</span></a>
+								</div>
+								<span class="mc-triangle">◆</span>
+								<span class="quote-left">“</span>
+							</div>
+						</li>
+						<li>
+							<div class="mc-img fl">
+								<a href="javascript:;"><img src="image/extra_content/right/3.jpg" width="80" height="80"></a>
+							</div>
+							<div class="mc-info fr">
+								<div class="mc-name">
+									<img src="image/extra_content/right/13.jpg">
+									<span>b***4</span>
+								</div>
+								<div class="mc-comment">
+									<a href="javascript:;">不错，都用了一个月了才来给评价<span class="quote-right">”</span></a>
+								</div>
+								<span class="mc-triangle">◆</span>
+								<span class="quote-left">“</span>
+							</div>
+						</li>
+						<li>
+							<div class="mc-img fl">
+								<a href="javascript:;"><img src="image/extra_content/right/4.jpg" width="80" height="80"></a>
+							</div>
+							<div class="mc-info fr">
+								<div class="mc-name">
+									<img src="image/extra_content/right/14.jpg">
+									<span>snow_w_201</span>
+								</div>
+								<div class="mc-comment">
+									<a href="javascript:;">还不错，挺好看的，手感也不错<span class="quote-right">”</span></a>
+								</div>
+								<span class="mc-triangle">◆</span>
+								<span class="quote-left">“</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
 		</div>
 	</div>
 	<!-- 天天低价及热门晒单结束 -->
