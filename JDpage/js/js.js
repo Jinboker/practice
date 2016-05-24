@@ -3,16 +3,65 @@
  * 把多个函数同时绑定到onload事件上面
  * @param {function} fn 想要添加至onload的函数
  */
-function myReady (fn) {
-	var oldonload = window.onload;
-    //如果onload没有绑定过函数
-	if (typeof window.onload != 'function'){
-		window.onload = fn;
-	}else{
-		window.onload = function () {
-			oldonload();
-    		fn();
-    	};
+// function myReady (fn) {
+// 	var oldonload = window.onload;
+//     //如果onload没有绑定过函数
+// 	if (typeof window.onload != 'function'){
+// 		window.onload = fn;
+// 	}else{
+// 		window.onload = function () {
+// 			oldonload();
+//     		fn();
+//     	};
+//     }
+// }
+
+/**
+ * DomReady,在文档创建时,就访问dom元素.比window.onload要快很多.绑定需要执行的函数.
+ * @param  {Function}     fn     需要执行的函数
+ * @return {执行}                在dom节点创建时,同时执行,window.onload等到节点全部创建完毕才执行
+ */
+function myReady(fn) {
+    //对于现代浏览器，对DOMContentLoaded事件的处理采用标准的事件绑定方式
+    if (document.addEventListener) {
+        document.addEventListener("DOMContentLoaded", fn, false);
+    } else {
+        IEContentLoaded(fn);
+    }
+
+    //IE模拟DOMContentLoaded
+    function IEContentLoaded(fn) {
+        var d = window.document;
+        var done = false;
+
+        //只执行一次用户的回调函数init();
+        var init = function () {
+            if (!done) {
+                done = true;
+                fn();
+            }
+        };
+        (function () {
+            try {
+                // DOM树未创建完之前调用doScroll会抛出错误
+                d.documentElement.doScroll('left');
+            } catch (e) {
+                //延迟再试一次~
+                setTimeout(arguments.callee, 50);
+                return;
+            }
+            // 没有错误就表示DOM树创建完毕，然后立马执行用户回调
+            init();
+        })();
+
+        //监听document的加载状态
+        d.onreadystatechange = function () {
+            // 如果用户是在domReady之后绑定的函数，就立马执行
+            if (d.readyState === 'complete') {
+                d.onreadystatechange = null;
+                init();
+            }
+        };
     }
 }
 
@@ -124,7 +173,7 @@ function hover(obj , fnOver , fnOut) {
 }
 
 /**
-*classHover
+*classHover，主要是有一些hover函数移入移出执行的都是相同的操作：添加或去掉同一个class，因此简化一下
 * @param   {Object}       obj     需要执行classHover的对象
 * @param   {function}     fn      鼠标移入移出时的函数
 */
@@ -266,6 +315,7 @@ MoveFocus.prototype = {
         var that = this;
         this.timer = null;
         this.timer = setInterval(function () {
+            // 假如that.obj.bStop为假，则关闭自动播放
             that.obj.bStop && that.next();
         } , 3000);
     },
@@ -283,6 +333,7 @@ MoveFocus.prototype = {
         });
         // 点击切换图片
         myAddEvent(oPrev , 'click' , function () {
+            // that.moveAble在图片运动时会被设置为假，只有运动结束后才会被设置为真，这是为了防止用户短时间内多次点击按钮触发运动
             that.moveAble && that.prev();
         });
         myAddEvent(oNext , 'click' , function () {
@@ -291,7 +342,7 @@ MoveFocus.prototype = {
     },
 
     prev : function () {
-        // 当key值等于0 的时候就表示运动到头了，需要切换
+        // 当key值等于0 的时候就表示运动到头了，需要切换位置
         if (this.key > 0) {
             this.key --;
         } else {
@@ -302,7 +353,7 @@ MoveFocus.prototype = {
     },
 
     next : function () {
-        // 当key值等于that.len-1的时候表明运动到尾了，同样需要切换
+        // 当key值等于that.len-1的时候表明运动到尾了，同样需要切换位置
         if (this.key < (this.len-1)) {
             this.key ++;
         } else {
@@ -347,7 +398,8 @@ MoveFocus.prototype = {
         var that = this,
             iLeft = -this.key * this.width - this.width;
 
-        move(this.oPic , {left : iLeft} , 20 , function () {
+        this.moveAble = false;
+        move(this.oPic , {left : iLeft} , 16 , function () {
             that.moveAble = true;
         });
     }
@@ -363,32 +415,29 @@ function HotSheet(obj) {
 extend (HotSheet , MoveFocus);
 
 HotSheet.prototype.init = function () {
-    this.key = this.len-1;
     this.obj.bStop = true;
+    this.height = this.aPicLi[0].offsetHeight;
 
     var innerPic = this.oPic,
         html = innerPic.innerHTML;
 
-    this.height = this.aPicLi[0].offsetHeight;
     innerPic.innerHTML += innerPic.innerHTML
-    innerPic.style.bottom = this.height * this.len + 'px';
+    innerPic.style.bottom = 0;
 };
 
 HotSheet.prototype.next = function() {
-    // 当key值等于0 的时候就表示运动到头了，需要切换
-    if (this.key < this.len) {
-        this.key ++;
+    if (this.key > 0) {
+        this.key --;
     } else {
-        this.key = 0;
+        this.key = (this.len-1);
         this.oPic.style.bottom = this.height * this.len + 'px';
     }
     this.change();
 };
 
 HotSheet.prototype.change = function() {
-    var iBottom = -this.key * this.height + this.height * this.len;
-
-    move(this.oPic , {bottom : iBottom} , 20);
+    var iBottom = (this.key- this.len) * this.height + this.height * this.len;
+    move(this.oPic , {bottom : iBottom} , 16);
 };
 
 /**Class
@@ -433,7 +482,7 @@ OpacityMove.prototype.change = function () {
     }
     this.moveAble = false;
     toggleClass(this.aNav[this.key] , 'is-current');
-    move(this.aPicLi[this.key] , {opacity : 100} , 20 , function () {
+    move(this.aPicLi[this.key] , {opacity : 100} , 16 , function () {
         that.moveAble = true;
     });
 };
@@ -465,6 +514,7 @@ myReady(function () {
     // 事件委托，获取点击选择的省份
     myAddEvent(oChooseAddr , 'click' , function (ev) {
         ev = ev || window.event;
+
         var target = ev.target || ev.srcElement;
 
         if (target.nodeName.toLowerCase() === 'a') {
@@ -475,21 +525,27 @@ myReady(function () {
     });
 
     // 详细商品栏的显示隐藏
-    var aCategoryLi = oDoc.querySelector('.js-has-side-content').getElementsByTagName('li'),
-        aHideCategory = oDoc.querySelectorAll('.js-hide-category'),
-        iCategoryLen = aCategoryLi.length;
+    var aCategoryVisible = oDoc.querySelectorAll('.js-category > li'),
+        aCategoryHide = oDoc.querySelectorAll('.js-category > .js-hide-category'),
+        iCategoryLen = aCategoryVisible.length;
+
+    /**
+     * @param  {object}     obj1    当前想要添加is-current的对象
+     * @param  {object}     obj2    另外一个想要添加is-current的对象
+     * @param  {unmber}     key     索引值
+     */
+    function categoryShowHide(obj1 , obj2 , key) {
+        obj1.index = key;
+
+        classHover(obj1 , function () {
+            toggleClass(this , 'is-current');
+            toggleClass(obj2[this.index] , 'is-current');
+        });
+    }
 
     for (i = 0; i < iCategoryLen; i++) {
-        aCategoryLi[i].index = i;
-        aHideCategory[i].index = i;
-        classHover(aCategoryLi[i] , function () {
-            toggleClass(this , 'is-current');
-            toggleClass(aHideCategory[this.index] , 'is-current');
-        });
-        classHover(aHideCategory[i] , function () {
-            toggleClass(this , 'is-current');
-            toggleClass(aCategoryLi[this.index] , 'is-current');
-        });
+        categoryShowHide(aCategoryVisible[i] , aCategoryHide , i);
+        categoryShowHide(aCategoryHide[i] , aCategoryVisible , i);
     }
 });
 
@@ -533,7 +589,7 @@ myReady(function () {
 });
 
 /**
- * 最大的焦点图及生活服务
+ * 详细商品栏右边的焦点图及生活服务
  */
 myReady(function () {
     var oDoc = document,
@@ -673,8 +729,7 @@ myReady(function () {
     });
 
     //热门晒单的自动播放
-    var hotSheet = oDoc.querySelector('.js-hot-sheet-slider'),
-        hsSlider = new HotSheet(hotSheet); 
+    var hsSlider = new HotSheet(oDoc.querySelector('.js-hot-sheet-slider')); 
 
     hsSlider.init();
     hsSlider.autoPlay();
@@ -756,7 +811,7 @@ myReady(function () {
      */
     function floorJudge() {
         var iScrollTop = oDoc.documentElement.scrollTop || oDoc.body.scrollTop;
-        if (iScrollTop <= 2902) {
+        if (iScrollTop <= 2777) {
             if (iScrollTop <= 815) {
                fna();
             }else if (iScrollTop <= 2131) {
