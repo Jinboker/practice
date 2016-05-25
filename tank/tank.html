@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>坦克大战</title>
+	<style media="screen">
+		body {
+			margin: 0;
+			width: 100%;
+			height: 100%;
+			background-color: #993;
+		}
+		.tank-canvas {
+			height: 490px;
+			width: 538px;
+			margin: 50px auto;
+		}
+		.tank-canvas canvas {
+			position: absolute;
+			background: black;
+		}
+	</style>
+</head>
+<body>
+	<div class="tank-canvas">
+		<canvas id='canvas-bottom' width="538" height="490"></canvas>
+		<canvas id='canvas-top' width="538" height="490"></canvas>
+	</div>
+	<script type="text/javascript" src='js/main.js'></script>
+	<script>
+		window.onload = function () {
+			// 游戏的主函数开始
+			main();
+		}
+	</script>
+</body>
+</html>
