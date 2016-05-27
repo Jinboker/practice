@@ -11,12 +11,15 @@
 			background-color: #993;
 		}
 		.tank-canvas {
+			position: relative;
 			height: 490px;
 			width: 538px;
 			margin: 50px auto;
 		}
 		.tank-canvas canvas {
 			position: absolute;
+			top: 0;
+			left: 0;
 			background: black;
 		}
 	</style>
@@ -26,12 +29,19 @@
 		<canvas id='canvas-bottom' width="538" height="490"></canvas>
 		<canvas id='canvas-top' width="538" height="490"></canvas>
 	</div>
-	<script type="text/javascript" src='js/main.js'></script>
-	<script>
-		window.onload = function () {
-			// 游戏的主函数开始
-			main();
-		}
-	</script>
+	
+	<!-- 引入预先定义的常量跟变量 -->
+	<script type="text/javascript" src='src/Util/constAndVar.js'></script>
+	<!-- 引入公用函数 -->
+	<script type="text/javascript" src='src/Util/commomFunction.js'></script>
+
+	<!-- 游戏对象相关 -->
+	<script type="text/javascript" src='src/object/js/tank.js'></script>
+	<script type="text/javascript" src='src/object/js/myTank.js'></script>
+
+	<!-- UI相关 -->
+
+	<!-- 游戏入口 -->
+	<script type="text/javascript" src='src/gameLoader.js'></script>
 </body>
 </html>
