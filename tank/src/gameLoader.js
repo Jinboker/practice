@@ -1,3 +1,14 @@
+
+window.onload = function () {
+	lastTime = Date.now();
+	deltaTime = 0;
+
+	init();
+	gameLoop();
+}
+
+let aTankObj;
+
 /**
  * 初始化
  */
@@ -11,14 +22,15 @@ function init() {
 	canWidth = canTop.width;
 	canHeight = canBottom.height;
 
-	aTank.src = 'src/object/image/mayTank.png';
+	keyEvent();
+
+	aTankObj = new TankObj();
+	aTankObj.init();
+
+	aUi = new UI();
+	aUi.init();
 }
 
-
-var aTank = new Image();
-
-
-var dir = 0;
 
 /*
  *循环函数，用来逐帧更新画布
@@ -31,58 +43,11 @@ function gameLoop() {
 	deltaTime = now - lastTime;
 	lastTime = now;
 
-	stage.mode = 1;
+	// 绘制UI
+	aUi.draw();
 
-	if (stage.mode === 1) {
-		switch (true) {
-			case roleCtrl[keyVal.up1] === true:
-				dir = 0;
-				break;
-
-			case roleCtrl[keyVal.down1] === true:
-				dir = 128;
-				break;
-
-			case roleCtrl[keyVal.left1] === true:
-				dir = 192;
-				break;
-
-			case roleCtrl[keyVal.right1] === true:
-				dir = 64;
-				break;
-
-			case roleCtrl[keyVal.fire1] === true:
-				console.log('fire');
-				break;
-
-			default:
-				break;
-		}
+	if(ui.status === 2){      //只有在ui.status为2的时候才回去绘制游戏界面
+		aTankObj.draw();      // 绘制坦克
 	}
 
-
-	cxtTop.drawImage(aTank , 0 , dir , 32 , 32 , 0 , 0 , 32 , 32 );
-}
-
-/**
- * 键盘按键事件函数
- */
-function keyEvent() {
-	addEventListener('keydown' , function (ev) {
-		roleCtrl[ev.keyCode] = true;
-	} , false);
-
-	addEventListener('keyup' , function (ev) {
-		roleCtrl[ev.keyCode] = false;
-	} , false);
-}
-
-
-window.onload = function () {
-	lastTime = Date.now();
-	deltaTime = 0;
-
-	init();
-	keyEvent();
-	gameLoop();
 }
