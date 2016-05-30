@@ -7,9 +7,18 @@ function init() {
 
 	cxtTop = canTop.getContext('2d');
 	cxtBottom = canBottom.getContext('2d');
-	canWidth = cxtTop.width;
-	canHeight = cxtBottom.height;
+
+	canWidth = canTop.width;
+	canHeight = canBottom.height;
+
+	aTank.src = 'src/object/image/mayTank.png';
 }
+
+
+var aTank = new Image();
+
+
+var dir = 0;
 
 /*
  *循环函数，用来逐帧更新画布
@@ -22,13 +31,37 @@ function gameLoop() {
 	deltaTime = now - lastTime;
 	lastTime = now;
 
-	// switch (expression) {
-	// 	case expression:
-	//
-	// 		break;
-	// 	default:
-	//
-	// }
+	stage.mode = 1;
+
+	if (stage.mode === 1) {
+		switch (true) {
+			case roleCtrl[keyVal.up1] === true:
+				dir = 0;
+				break;
+
+			case roleCtrl[keyVal.down1] === true:
+				dir = 128;
+				break;
+
+			case roleCtrl[keyVal.left1] === true:
+				dir = 192;
+				break;
+
+			case roleCtrl[keyVal.right1] === true:
+				dir = 64;
+				break;
+
+			case roleCtrl[keyVal.fire1] === true:
+				console.log('fire');
+				break;
+
+			default:
+				break;
+		}
+	}
+
+
+	cxtTop.drawImage(aTank , 0 , dir , 32 , 32 , 0 , 0 , 32 , 32 );
 }
 
 /**
@@ -37,12 +70,10 @@ function gameLoop() {
 function keyEvent() {
 	addEventListener('keydown' , function (ev) {
 		roleCtrl[ev.keyCode] = true;
-		console.log(roleCtrl[ev.keyCode]);
 	} , false);
 
 	addEventListener('keyup' , function (ev) {
 		roleCtrl[ev.keyCode] = false;
-		console.log(roleCtrl[ev.keyCode]);
 	} , false);
 }
 
