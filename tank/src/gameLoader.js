@@ -18,8 +18,6 @@ let canHeight;   //画布高度
 
 let gameUI          //gameUI对象
 let tankObj     //坦克对象
-
-
 /**
  * 初始化
  */
@@ -44,6 +42,9 @@ function init() {
 	gameUI.init();
 }
 
+
+
+
 // 确定每帧之间的间隔时间
 let lastTime;    //上一帧的时间
 let deltaTime;   //两帧的时间差
@@ -59,7 +60,7 @@ function gameLoop() {
 	deltaTime = now - lastTime;
 	lastTime = now;
 
-	// 绘制gameUI
+	// 绘制游戏的UI界面
 	gameUI.draw();
 
 	if(gameUI.status === 2){      //只有在gameUI.status为2的时候才回去绘制游戏界面
