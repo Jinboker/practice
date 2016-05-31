@@ -17,6 +17,10 @@ let keyVal = {     //键值表
 	right2 : 39,          //右
 	fire2 : 17            //发射子弹
 };
+
+
+let pressedKey;        // 按键
+
 let roleCtrl = new Array(87);           // 按下的按键对应的状态存入该数组
 
 /**
@@ -24,9 +28,8 @@ let roleCtrl = new Array(87);           // 按下的按键对应的状态存入�
  */
 function keyEvent() {
 	addEventListener('keydown' , function (ev) {
-		pressedKey = ev.keyCode;
-		roleCtrl[pressedKey] = true;
-
+		roleCtrl[ev.keyCode] = true;
+		pressedKey = true;   //表明有按键被按下
 	} , false);
 
 	addEventListener('keyup' , function (ev) {

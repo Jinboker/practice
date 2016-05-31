@@ -8,39 +8,33 @@
 			margin: 0;
 			width: 100%;
 			height: 100%;
-			background-color: #993;
+			background-color: #660;
 		}
 		.game-box {
 			position: relative;
-			height: 416px;
-			width: 416px;
+			height: 456px;
+			width: 519px;
 			margin: 100px auto;
-			padding: 20px 65px 20px 35px;
 			background-color: #666;
 			border: #630 solid 4px;
 		}
-		.game-box-inner {
-			height: 416px;
-			width: 416px;
-			background: black;
-		}
 		.game-box canvas {
 			position: absolute;
-			top: 20px;
-			left: 35px;
+			top: 0;
+			left: 0;
+		}
+		#canvas-bottom {
+			background-color: black;
 		}
 	</style>
 </head>
 <body>
 	<div class="game-box">
-		<div class="game-box-inner">
-			<canvas id='canvas-bottom' width="416" height="416"></canvas>
-			<canvas id='canvas-top' width="416" height="416"></canvas>
-		</div>
+		<canvas id='canvas-bottom' width="519" height="456"></canvas>
+		<canvas id='canvas-top' width="519" height="456"></canvas>
 	</div>
 
-	<!-- 引入预先定义的常量跟变量 -->
-	<script type="text/javascript" src='src/Util/constAndVar.js'></script>
+
 	<!-- 引入公用函数 -->
 	<script type="text/javascript" src='src/Util/commomFunction.js'></script>
 
@@ -52,9 +46,7 @@
 	<script type="text/javascript" src='src/keybord/key.js'></script>
 
 	<!-- UI相关 -->
-	<script type="text/javascript" src='src/UI/UI.js'>
-
-	</script>
+	<script type="text/javascript" src='src/UI/UI.js'></script>
 
 	<!-- 游戏入口 -->
 	<script type="text/javascript" src='src/gameLoader.js'></script>
