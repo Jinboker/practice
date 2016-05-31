@@ -9,22 +9,23 @@ window.onload = function () {
 
 
 // 画布
+let canTop;
+let canBottom;
 let cxtTop;
 let cxtBottom;
 let canWidth;    //画布宽度
 let canHeight;   //画布高度
 
-let oUi          //UI对象
-let oTankObj     //坦克对象
+let gameUI          //gameUI对象
+let tankObj     //坦克对象
 
 
 /**
  * 初始化
  */
 function init() {
-	let canTop = document.getElementById('canvas-top'),
-		canBottom = document.getElementById('canvas-bottom');
-
+	canTop = document.getElementById('canvas-top');
+	canBottom = document.getElementById('canvas-bottom');
 	cxtTop = canTop.getContext('2d');
 	cxtBottom = canBottom.getContext('2d');
 
@@ -35,12 +36,12 @@ function init() {
 	keyEvent();
 
 	// 坦克对象初始化
-	oTankObj = new TankObj();
-	oTankObj.init();     //坦克对象的初始化必须在UI的初始化之前，因为UI需要这里初始化的图片资源
+	tankObj = new TankObj();
+	tankObj.init();     //坦克对象的初始化必须在gameUI的初始化之前，因为gameUI需要这里初始化的图片资源
 
-	// ui初始化
-	oUi = new UI();
-	oUi.init();
+	// gameUI初始化
+	gameUI = new UI();
+	gameUI.init();
 }
 
 // 确定每帧之间的间隔时间
@@ -58,10 +59,10 @@ function gameLoop() {
 	deltaTime = now - lastTime;
 	lastTime = now;
 
-	// 绘制UI
-	oUi.draw();
+	// 绘制gameUI
+	gameUI.draw();
 
-	if(ui.status === 2){      //只有在ui.status为2的时候才回去绘制游戏界面
-		oTankObj.draw();      // 绘制坦克
+	if(gameUI.status === 2){      //只有在gameUI.status为2的时候才回去绘制游戏界面
+		tankObj.draw();      // 绘制坦克
 	}
 }
