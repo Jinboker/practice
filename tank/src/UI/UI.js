@@ -49,7 +49,6 @@ class UI {
 		} else {
 			fn();
 			this.num = 0;
-			a();
 		}
 	}
 
@@ -160,10 +159,9 @@ class UI {
 						oAud.start.play();
 						this.audPlay = false;
 						this.nextAble = true;     //开始播放音乐后允许进入下一个stage.status
-						a();
 					}
 				}
-				// 如果开始播放音乐，那么延迟个循环后开始进入下一个UI状态
+				// 开始播放音乐后this.nextAble为真，那么延迟80个循环后开始进入下一个UI状态
 				if (this.nextAble) {
 					this.delay(() => {
 						cxtTop.clearRect(0 , 0 , topW , topH);

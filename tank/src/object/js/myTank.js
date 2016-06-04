@@ -19,9 +19,6 @@ class MyTank extends TankObj{
 		this.x = 128;
 		this.y =  384;
 
-		this.num1 = 0;
-
-		this.fuck = 0;
 	}
 
 	key(){
@@ -45,27 +42,16 @@ class MyTank extends TankObj{
 	}
 
 	draw() {
-
-
 		if (!this.borned) {
-			if (this.num1 < 2) {
-				if (this.cao) {
-					this.num1 ++;
-					this.cao = false;
-				}
-				this.born();
-			} else {
-				this.num1 = 0;
-				this.borned = true;
-			}
-		} else {
-			if (hasPressedKey) {
-				this.key();
-				this.dirJudge();
-			}
-			cxtTop.clearRect(0 , 0 , topW , topW);
-			this.wheelChange();
-			cxtTop.drawImage(oImg.myTank , 0 ,  0 + this.dir * 64 + this.wheel * 32 , 32 , 32 , this.x , this.y , 32 , 32);
+			this.born();
+			return;
 		}
+
+		if (hasPressedKey) {
+			this.key();
+			this.dirJudge();
+		}
+		this.delay(() => this.wheel = +!this.wheel , 5);      // 每循环5次就改变一次轮胎
+		cxtTop.drawImage(oImg.myTank , 0 ,  0 + this.dir * 64 + this.wheel * 32 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 }

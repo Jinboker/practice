@@ -82,11 +82,15 @@ function gameLoop() {
 	draw.ui && oClass.ui.draw();
 
 	if (draw.map) {
-		// a();
+		// oAud.eMove.play();
 	}
 
 	//绘制坦克
-	draw.tank && oClass.myTank.draw();
+	if (draw.tank) {
+		cxtTop.clearRect(0 , 0 , topW , topW);
+		oClass.myTank.draw();
+	}
+
 
 	// 循环执行函数
 	requestAnimFrame(gameLoop);

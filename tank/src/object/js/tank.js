@@ -6,36 +6,49 @@ class TankObj {
 		this.dir;
 
 		this.num = 0;
-		this.bornChange = 0;
+
 		this.wheel = 0;
 
-		this.borned = false;
-		this.cao = false;
+		//渲染出生时候的动画
+		this.borned = false;              //坦克角色是否已经出生
+		this.bornNumCont = false;         //是否允许this.bornNum开始累加计数
+		this.bornChange = 0;
+		this.bornNum = 0;                 //出生的动画循环的次数
 	}
 
-	wheelChange(){
-		if (this.num < 5) {
+	delay(fn , num){
+		if (this.num < num) {
 			this.num ++;
 		} else {
-			this.wheel = +!this.wheel;
+			fn();
 			this.num = 0;
 		}
 	}
 
+
 	born(){
-		if (this.num < 3) {
-			this.num ++;
-		} else {
-			if (this.bornChange < 5) {
-				this.bornChange ++;
-				cxtTop.drawImage(oImg.bonus , 96 - 32 * this.bornChange , 64 , 32 , 32 , 128 , 384 , 32 , 32);
-			} else {
-				cxtTop.clearRect(0 , 0 , topW , topW);
-				this.bornChange = 0;
-				cxtTop.drawImage(oImg.bonus , 96 - 32 * this.bornChange , 64 , 32 , 32 , 128 , 384 , 32 , 32);
-				this.cao = true;
+		if (this.bornNum < 3) {
+			if (this.bornNumCont) {
+				this.bornNum ++;
+				this.bornNumCont = false;   //不允许this.bornNum开始累加
+											//直到完整的执行玩一次bornLoop里的全部的技术累加循环后这个值才会为真
 			}
-			this.num = 0;
+			(() => {
+				this.delay(() => {
+					if (this.bornChange < 4) {
+						this.bornChange ++;
+					} else {
+						cxtBottom.clearRect(163 , 404 , 32 , 32);
+						this.bornChange = 0;
+						this.bornNumCont = true;      //允许出生的动画循环的次数的值开始累加
+					}
+					cxtBottom.drawImage(oImg.bonus , 96 - 32 * this.bornChange , 64 , 32 , 32 , 163 , 404 , 32 , 32);
+				} , 3);
+			})();
+		} else {
+			this.bornNum = 0;
+			this.borned = true;              //出生的动画执行完毕，开始绘制坦克
+			cxtBottom.clearRect(163 , 404 , 32 , 32);
 		}
 	}
 
