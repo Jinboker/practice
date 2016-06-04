@@ -19,7 +19,8 @@ const keyVal = {     //键值表
 };
 
 let roleCtrl = new Array(87);           // 按下的按键对应的状态存入该数组
-let pressedKey;        // 布尔值，表明有按键被按下
+let hasPressedKey;        // 布尔值，表明有按键被按下
+let pressedKey;           //按下的键值
 
 let control = new Array(87);
 
@@ -48,16 +49,14 @@ function keyInit() {
 		able : false
 	};
 
-
-
 	addEventListener('keydown' , function (ev) {
+		pressedKey = ev.keyCode;
+
 		// 通过检测roleCtrl[keyCode]的值，防止键盘事件的持续触发
 		if (!roleCtrl[ev.keyCode]) {
-			roleCtrl[ev.keyCode] = pressedKey = true;       //pressedKey为真表明有按键被按下
+			roleCtrl[ev.keyCode] = hasPressedKey = true;        //hasPressedKey为真表明有按键被按下
 			console.log(control[ev.keyCode].dir);
 		}
-
-
 	} , false);
 
 	addEventListener('keyup' , function (ev) {

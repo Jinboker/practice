@@ -1,35 +1,64 @@
+// 画布相关
+let canTop,
+ 	canBottom,
+ 	cxtTop,
+ 	cxtBottom,
+ 	topH,
+ 	topW,
+ 	bottomH,
+ 	bottomW;
+
+// 所有的类
+let oClass = {
+	ui : new UI(),
+	myTank : new MyTank()
+};
+
+//所有的图片
+let oImg = {
+	ui : document.getElementById('UI'),
+	myTank : document.getElementById('myTank'),
+	enemyTank : document.getElementById('enemyTank'),
+	bonus : document.getElementById('bonus'),
+	misc : document.getElementById('Misc')
+};
+//所有的音频
+let oAud = {
+	start : document.getElementById('start'),
+	over : document.getElementById('over'),
+	move : document.getElementById('move'),
+	eMove : document.getElementById('eMove'),
+	att : document.getElementById('attack'),
+	attOver : document.getElementById('attackOver'),
+	eat : document.getElementById('eat'),
+	boom : document.getElementById('boom'),
+	bonus : document.getElementById('bonus')
+}
+
+// 控制是否更新某些模块
+let draw = {
+	ui : true,
+	tank : false,
+	map : false
+};
+
+
 // 游戏入口
 window.onload = function () {
-	lastTime = Date.now();
-	deltaTime = 0;
-
 	init();
 	gameLoop();
 }
 
-
-// 画布
-let canTop;
-let canBottom;
-let cxtTop;
-let cxtBottom;
-let topH;
-let topW;
-let bottomH;
-let bottomW;
-
-let gameUI          //gameUI对象
-let myTank     //坦克对象
 /**
  * 初始化
  */
 function init() {
-	canTop = document.getElementById('canvas-top');
-	canBottom = document.getElementById('canvas-bottom');
+	//画布相关
+	let oDoc = document;
+	canTop = oDoc.getElementById('canvas-top');
+	canBottom = oDoc.getElementById('canvas-bottom');
 	cxtTop = canTop.getContext('2d');
 	cxtBottom = canBottom.getContext('2d');
-
-	//画布宽高
 	topH = canTop.height;
 	topW = canTop.width;
 	bottomH = canBottom.height;
@@ -39,19 +68,10 @@ function init() {
 	keyInit();
 
 	// 玩家坦克对象初始化
-	myTank = new MyTank();
-	myTank.init();        //坦克对象的初始化必须在gameUI的初始化之前，因为gameUI需要这里初始化的图片资源
+	oClass.myTank.init();
 
-	// gameUI初始化
-	gameUI = new UI();
-	gameUI.init();
-}
-
-
-let draw = {
-	ui : true,
-	tank : false,
-	map : false
+	// UI初始化
+	oClass.ui.init();
 }
 
 /*
@@ -59,14 +79,14 @@ let draw = {
  */
 function gameLoop() {
 	// 绘制游戏的UI界面
-	draw.ui && gameUI.draw();
+	draw.ui && oClass.ui.draw();
 
 	if (draw.map) {
 		// a();
 	}
 
 	//绘制坦克
-	draw.tank && myTank.draw();
+	draw.tank && oClass.myTank.draw();
 
 	// 循环执行函数
 	requestAnimFrame(gameLoop);

@@ -1,10 +1,16 @@
+// 坦克的父类
 class TankObj {
 	constructor(){
 		this.x;
 		this.y;
 		this.dir;
-		this.wheel = 0;
+
 		this.num = 0;
+		this.bornChange = 0;
+		this.wheel = 0;
+
+		this.borned = false;
+		this.cao = false;
 	}
 
 	wheelChange(){
@@ -12,6 +18,23 @@ class TankObj {
 			this.num ++;
 		} else {
 			this.wheel = +!this.wheel;
+			this.num = 0;
+		}
+	}
+
+	born(){
+		if (this.num < 3) {
+			this.num ++;
+		} else {
+			if (this.bornChange < 5) {
+				this.bornChange ++;
+				cxtTop.drawImage(oImg.bonus , 96 - 32 * this.bornChange , 64 , 32 , 32 , 128 , 384 , 32 , 32);
+			} else {
+				cxtTop.clearRect(0 , 0 , topW , topW);
+				this.bornChange = 0;
+				cxtTop.drawImage(oImg.bonus , 96 - 32 * this.bornChange , 64 , 32 , 32 , 128 , 384 , 32 , 32);
+				this.cao = true;
+			}
 			this.num = 0;
 		}
 	}
