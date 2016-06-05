@@ -12,7 +12,8 @@ let cxt = {
 // 所有的类
 let oClass = {
 	ui : new UI(),
-	myTank : new MyTank()
+	myTank : new MyTank(),
+	map : new Map()
 };
 
 //所有的图片
@@ -56,11 +57,14 @@ function init() {
 	// 键盘按下事件函数
 	keyInit();
 
+	// UI初始化
+	oClass.ui.init();
+
 	// 玩家坦克对象初始化
 	oClass.myTank.init();
 
-	// UI初始化
-	oClass.ui.init();
+	//游戏地图初始化
+	oClass.map.init();
 }
 
 /*
@@ -70,8 +74,11 @@ function gameLoop() {
 	// 绘制游戏的UI界面
 	draw.ui && oClass.ui.draw();
 
+	//绘制地图（地图只有当UI界面的关卡选择界面准备结束的时候才会绘制一次）
 	if (draw.map) {
-		// oAud.eMove.play();
+		oClass.map.draw(stage.num);
+		draw.map = false;
+		stage.num ++;
 	}
 
 	//绘制坦克
@@ -79,7 +86,6 @@ function gameLoop() {
 		cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
 		oClass.myTank.draw();
 	}
-
 
 	// 循环执行函数
 	requestAnimFrame(gameLoop);
