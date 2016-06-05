@@ -11,6 +11,10 @@
 			background-color: #660;
 			-webkit-font-smoothing: antialiased;
 		}
+		@font-face {
+			font-family: prstart;
+			src: url('font/prstart.ttf');
+		}
 		.game-box {
 			position: relative;
 			height: 456px;
@@ -61,8 +65,9 @@
 		<audio src="src/sound/start.mp3" id="start"></audio>
 	</div>
 
-	<!-- 引入公用函数 -->
+	<!-- 公用 -->
 	<script type="text/javascript" src='src/Util/commomFunction.js'></script>
+	<script type="text/javascript" src='src/Util/delay.js'></script>
 
 	<!-- 游戏对象相关 -->
 	<script type="text/javascript" src='src/object/js/tank.js'></script>

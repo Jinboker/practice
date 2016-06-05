@@ -9,6 +9,16 @@
 // }
 //
 
+// 奖励类型
+let oBonus = {
+	home : false,
+	star : false,
+	life : false,
+	shield : false,
+	boom : false,
+	stop : false
+}
+
 class MyTank extends TankObj{
 	// constructor(){
 	// 	super();
@@ -19,6 +29,38 @@ class MyTank extends TankObj{
 		this.x = 128;
 		this.y =  384;
 
+		this.shieldDelay = new Delay();    //这个是用来控制防护罩变化的延迟
+
+		//渲染出生时候的动画
+		this.borned = false;              //坦克角色是否已经出生
+		this.bornNumCont = false;         //是否允许this.bornNum开始累加计数
+		this.bornChange = 0;
+		this.bornNum = 0;                 //出生的动画循环的次数
+
+		// 防护罩
+		this.shieldLoopNumSet = true;         //是否设置防护罩的执行次数
+		this.shieldNum = 0;                   //防护罩的执行次数
+		this.shieldNumSave = 0;               //防护罩执行次数的保存
+		this.shieldAble = false;              //是否具有防护罩
+		this.shieldPicPos = 0;           //决定防护罩显示的是哪部分的图片
+	}
+
+	draw() {
+		// 判断坦克是否需要出生
+		if (!this.borned) {
+			this.born();
+			return;
+		}
+		// 按键判断
+		if (hasPressedKey) {
+			this.key();
+			this.dirJudge();
+		}
+		// 防护罩（刚出生时候或者吃了防护罩的奖励）
+		!this.shieldAble && this.shield();
+		//画坦克
+		this.delay.do(() => this.wheel = +!this.wheel , 5);     //坦克轮子的改变
+		cxtTop.drawImage(oImg.myTank , 0 ,  0 + this.dir * 64 + this.wheel * 32 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 
 	key(){
@@ -41,17 +83,20 @@ class MyTank extends TankObj{
 		}
 	}
 
-	draw() {
-		if (!this.borned) {
-			this.born();
-			return;
+	// 防护罩相关
+	shield(){
+		if (this.shieldLoopNumSet) {
+			this.shieldNum = oBonus.shield ? 1000 : 200;   //如果有防护罩，则循环1000次，没有则循环200次
+			this.shieldLoopNumSet = false;
 		}
-
-		if (hasPressedKey) {
-			this.key();
-			this.dirJudge();
+		if (this.shieldNumSave < this.shieldNum) {
+			this.shieldNumSave ++;
+			// 每隔5次循环改变一下防护罩的图片
+			this.shieldDelay.do(() => this.shieldPicPos = +! this.shieldPicPos , 5);
+			cxtTop.drawImage(oImg.misc , 32 + this.shieldPicPos * 32 , 0 , 32 , 32 , this.x , this.y , 32 , 32);
+		} else {
+			this.shieldNumSave = 0;
+			this.shieldAble = true;
 		}
-		this.delay(() => this.wheel = +!this.wheel , 5);      // 每循环5次就改变一次轮胎
-		cxtTop.drawImage(oImg.myTank , 0 ,  0 + this.dir * 64 + this.wheel * 32 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 }

@@ -5,36 +5,21 @@ class TankObj {
 		this.y;
 		this.dir;
 
-		this.num = 0;
-
 		this.wheel = 0;
-
-		//渲染出生时候的动画
-		this.borned = false;              //坦克角色是否已经出生
-		this.bornNumCont = false;         //是否允许this.bornNum开始累加计数
-		this.bornChange = 0;
-		this.bornNum = 0;                 //出生的动画循环的次数
+		this.delay = new Delay();   //这个延迟是用来控制出生时候的动画及轮子变化的
 	}
-
-	delay(fn , num){
-		if (this.num < num) {
-			this.num ++;
-		} else {
-			fn();
-			this.num = 0;
-		}
-	}
-
 
 	born(){
+		// 出生的动画循环执行三次
 		if (this.bornNum < 3) {
 			if (this.bornNumCont) {
 				this.bornNum ++;
 				this.bornNumCont = false;   //不允许this.bornNum开始累加
 											//直到完整的执行玩一次bornLoop里的全部的技术累加循环后这个值才会为真
 			}
+			//每隔3次循环更新一下出生的动画，因为出生的动画是由四个图片组成，因此this.bornChange要循环四次
 			(() => {
-				this.delay(() => {
+				this.delay.do(() => {
 					if (this.bornChange < 4) {
 						this.bornChange ++;
 					} else {

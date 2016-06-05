@@ -4,7 +4,7 @@ let stage = {
 	//当mode为1时表示双人模式
 	//当mode为2时表示自定义地图模式
 	mode : 0,
-
+	
 	//关卡数
 	num : 1,
 
@@ -29,7 +29,7 @@ class UI {
 	}
 
 	init(){
-		this.num = 0;                   //主要用在this.delay()方法中，表示延迟几个循环
+		this.delay = new Delay();      //延迟执行
 		this.audPlay = true;           //是否开始播放音频
 		// 开始的UI的相关变量
 		this.startY = bottomH;          // 开始画面上移的y值
@@ -41,15 +41,6 @@ class UI {
 		this.maxCurtainHeight = bottomH * 0.5;
 		this.nextAble = false;          //是否允许进入下一个stage.status
 		this.bgWidth = 0;               //当幕布开始左右分开时，游戏界面的宽度的一半
-	}
-
-	delay(fn , num){
-		if (this.num < num) {
-			this.num ++;
-		} else {
-			fn();
-			this.num = 0;
-		}
 	}
 
 	draw(){
@@ -77,7 +68,7 @@ class UI {
 
 			//更新开始界面的图片和文字
 			cxtBottom.save();
-			cxtBottom.font = "22px Arial black";      //这里的字体就叫 Arial black！！
+			cxtBottom.font = "15px prstart";
 			cxtBottom.fillStyle = "white";
 			cxtBottom.clearRect(0 , 0 , bottomW , bottomH);
 			cxtBottom.fillText("I-         00   HI-20000", 50, this.startY - 25);
@@ -97,7 +88,7 @@ class UI {
 			cxtTop.clearRect(105 , 0 , 32 , topH);
 			cxtTop.drawImage(oImg.myTank , 0 ,  64 + this.wheel * 32 , 32 , 32 , 105 , this.modeChoose , 32 , 32);
 			// 每循环5次就改变一次轮胎
-			this.delay(() => this.wheel = +!this.wheel , 5);
+			this.delay.do(() => this.wheel = +!this.wheel , 5);
 			// 如果有按键按下则检测是哪一个按键并执行相应的操作
 			if (hasPressedKey) {
 				switch (true) {
@@ -114,7 +105,7 @@ class UI {
 						break;
 					// 检测回车
 					case roleCtrl[keyVal.enter]:
-						this.num = 0;          //重置延迟循环计数
+						this.delay.num = 0;          //重置延迟循环计数
 						ui.status = 1;         //进入关卡界面的UI
 						stage.mode = (this.modeChoose - 252) / 30;    //确定选择的模式
 						// 清空画布方便关卡选择界面去重绘
@@ -146,10 +137,10 @@ class UI {
 			case 1:
 				//绘制当前关卡
 				cxtTop.save();
-				cxtTop.font = "22px Arial black";
-				cxtTop.fillStyle = '#fff';
+				cxtTop.font = "20px prstart";
+				cxtTop.fillStyle = '#000';
 				cxtTop.clearRect(0 , 0 , topW , topH);
-				cxtTop.fillText("STAGE   " + stage.num , 160 , 220);
+				cxtTop.fillText("STAGE   " + stage.num , 140 , 220);
 				cxtTop.restore();
 				// 键盘选择
 				if (roleCtrl[keyVal.enter]) {
@@ -163,7 +154,7 @@ class UI {
 				}
 				// 开始播放音乐后this.nextAble为真，那么延迟80个循环后开始进入下一个UI状态
 				if (this.nextAble) {
-					this.delay(() => {
+					this.delay.do(() => {
 						cxtTop.clearRect(0 , 0 , topW , topH);
 						draw.map = true;       //循环开始绘制背景地图
 						stage.status = 2;      //左右幕布拉开
