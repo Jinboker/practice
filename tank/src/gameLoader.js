@@ -1,12 +1,13 @@
 // 画布相关
-let canTop,
- 	canBottom,
- 	cxtTop,
- 	cxtBottom,
- 	topH,
- 	topW,
- 	bottomH,
- 	bottomW;
+let canRol = document.getElementById('canvas-role'),
+	canBg = document.getElementById('canvas-bg');
+let cxt = {
+	role : canRol.getContext('2d'),
+	bg : canBg.getContext('2d'),
+	l : 416,              //l表示canRol的长与宽
+	w : 516,              //canBg的宽度
+	h : 456               //canBg的高度
+}
 
 // 所有的类
 let oClass = {
@@ -52,17 +53,6 @@ window.onload = function () {
  * 初始化
  */
 function init() {
-	//画布相关
-	let oDoc = document;
-	canTop = oDoc.getElementById('canvas-top');
-	canBottom = oDoc.getElementById('canvas-bottom');
-	cxtTop = canTop.getContext('2d');
-	cxtBottom = canBottom.getContext('2d');
-	topH = canTop.height;
-	topW = canTop.width;
-	bottomH = canBottom.height;
-	bottomW = canBottom.width;
-
 	// 键盘按下事件函数
 	keyInit();
 
@@ -86,7 +76,7 @@ function gameLoop() {
 
 	//绘制坦克
 	if (draw.tank) {
-		cxtTop.clearRect(0 , 0 , topW , topW);
+		cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
 		oClass.myTank.draw();
 	}
 

@@ -6,33 +6,30 @@
 	<style media="screen">
 		body {
 			margin: 0;
-			width: 100%;
-			height: 100%;
 			background-color: #660;
-			-webkit-font-smoothing: antialiased;
 		}
 		@font-face {
 			font-family: prstart;
 			src: url('font/prstart.ttf');
 		}
-		.game-box {
+		#game-box {
 			position: relative;
-			height: 456px;
 			width: 516px;
+			height: 456px;
 			margin: 100px auto;
-			background-color: #666;
 			border: #630 solid 4px;
+			background-color: #000;
 		}
-		#canvas-bottom {
-			position: absolute;
-			top: 0;
-			left: 0;
-			background-color: black;
-		}
-		#canvas-top {
+		#canvas-role {
 			position: absolute;
 			top: 20px;
 			left: 35px;
+			background-color: #000;
+		}
+		#canvas-bg {
+			position: absolute;
+			top: 0;
+			left: 0;
 		}
 		.hide {
 			display: none;
@@ -40,17 +37,17 @@
 	</style>
 </head>
 <body>
-	<div class="game-box">
-		<canvas id='canvas-bottom' width="516" height="456"></canvas>
-		<canvas id='canvas-top' width="416" height="416"></canvas>
+	<div id="game-box">
+		<canvas id="canvas-role" width="416" height="416"></canvas>
+		<canvas id="canvas-bg" width="516" height="456"></canvas>
 	</div>
 	<!-- 提前缓存图片 -->
 	<div class="hide">
-		<img src="src/UI/UI.png" id="UI">
-		<img src="src/object/image/myTank.png" id="myTank">
-		<img src="src/object/image/enemyTank.png" id="enemyTank">
-		<img src="src/object/image/bonus.png" id="bonus">
-		<img src="src/background/Misc.png" id="Misc">
+		<img src="src/image/UI.png" id="UI">
+		<img src="src/image/myTank.png" id="myTank">
+		<img src="src/image/enemyTank.png" id="enemyTank">
+		<img src="src/image/bonus.png" id="bonus">
+		<img src="src/image/Misc.png" id="Misc">
 	</div>
 	<!-- 提前缓存音频文件 -->
 	<div class="hide">
@@ -70,12 +67,12 @@
 	<script type="text/javascript" src='src/Util/delay.js'></script>
 
 	<!-- 游戏对象相关 -->
-	<script type="text/javascript" src='src/object/js/tank.js'></script>
-	<script type="text/javascript" src='src/object/js/myTank.js'></script>
-	<script type="text/javascript" src='src/object/js/enemyTank.js'></script>
+	<script type="text/javascript" src='src/object/tank.js'></script>
+	<script type="text/javascript" src='src/object/myTank.js'></script>
+	<script type="text/javascript" src='src/object/enemyTank.js'></script>
 
 	<!-- 键盘事件 -->
-	<script type="text/javascript" src='src/keybord/key.js'></script>
+	<script type="text/javascript" src='src/keyboard/key.js'></script>
 
 	<!-- UI相关 -->
 	<script type="text/javascript" src='src/UI/UI.js'></script>

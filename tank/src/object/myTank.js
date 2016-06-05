@@ -60,7 +60,7 @@ class MyTank extends TankObj{
 		!this.shieldAble && this.shield();
 		//画坦克
 		this.delay.do(() => this.wheel = +!this.wheel , 5);     //坦克轮子的改变
-		cxtTop.drawImage(oImg.myTank , 0 ,  0 + this.dir * 64 + this.wheel * 32 , 32 , 32 , this.x , this.y , 32 , 32);
+		cxt.role.drawImage(oImg.myTank , 0 ,  0 + this.dir * 64 + this.wheel * 32 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 
 	key(){
@@ -91,9 +91,9 @@ class MyTank extends TankObj{
 		}
 		if (this.shieldNumSave < this.shieldNum) {
 			this.shieldNumSave ++;
-			// 每隔5次循环改变一下防护罩的图片
-			this.shieldDelay.do(() => this.shieldPicPos = +! this.shieldPicPos , 5);
-			cxtTop.drawImage(oImg.misc , 32 + this.shieldPicPos * 32 , 0 , 32 , 32 , this.x , this.y , 32 , 32);
+			// 每隔3次循环改变一下防护罩的图片
+			this.shieldDelay.do(() => this.shieldPicPos = +! this.shieldPicPos , 3);
+			cxt.role.drawImage(oImg.misc , 32 + this.shieldPicPos * 32 , 0 , 32 , 32 , this.x , this.y , 32 , 32);
 		} else {
 			this.shieldNumSave = 0;
 			this.shieldAble = true;
