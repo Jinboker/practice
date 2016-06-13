@@ -1,5 +1,3 @@
-// 用来控制画布所在区域的背景
-let oGameBox = document.getElementById('game-box');
 // 关卡相关
 let stage = {
 	//当mode为0时表示单人模式
@@ -66,7 +64,7 @@ class UI {
 		// 画面没有到最终位置
 		if (!this.moveToTop) {
 			// 检测是否有按下回车，如果按下，那么直接显示最后的画面而不继续运动
-			roleCtrl[keyVal.enter] ? this.startY = 96 : this.startY -= 3;
+			keyStatus[keyNum.enter] ? this.startY = 96 : this.startY -= 3;
 			//更新开始界面的图片和文字
 			cxt.bg.save();
 			cxt.bg.font = "15px prstart";
@@ -80,8 +78,8 @@ class UI {
 			cxt.bg.restore();
 
 			if (this.startY === 96) {
-				hasPressedKey = false;                    // 强制让表示有按键被按下的值为假，防止一直按着某个按键然后一直触发，下面同样的语句都是这个用处
-				this.moveToTop = true;                 //运动到终点后不再刷新画面
+				keyPressed = false;                    // 强制让表示有按键被按下的值为假，防止一直按着某个按键然后一直触发，下面同样的语句都是这个用处
+				this.moveToTop = true;                    //运动到终点后不再刷新画面
 			}
 
 		// 画面到了最终位置
@@ -91,32 +89,37 @@ class UI {
 			// 每循环5次就改变一次轮胎
 			this.delay.do(() => this.wheel = +!this.wheel , 5);
 			// 如果有按键按下则检测是哪一个按键并执行相应的操作
-			if (hasPressedKey) {
+			if (keyPressed) {
 				switch (true) {
 					// 检测向下的按键
-					case roleCtrl[keyVal.down1]:
+					case keyStatus[keyNum.down1]:
 						//小坦克的位置
 						this.modeChoose < 332 ?  this.modeChoose += 30 : this.modeChoose = 272;
-						hasPressedKey = false;
 						break;
 					// 检测向上的按键
-					case roleCtrl[keyVal.up1]:
+					case keyStatus[keyNum.up1]:
 						this.modeChoose > 272 ?  this.modeChoose -= 30 : this.modeChoose = 332;
-						hasPressedKey = false;
 						break;
 					// 检测回车
-					case roleCtrl[keyVal.enter]:
+					case keyStatus[keyNum.enter]:
 						this.delay.num = 0;          //重置延迟循环计数
-						ui.status = 1;         //进入关卡界面的UI
-						stage.mode = (this.modeChoose - 252) / 30;    //确定选择的模式
-						// 清空画布方便关卡选择界面去重绘
+						stage.mode = (this.modeChoose - 272) / 30;    //确定选择的模式
+						console.log(stage.mode);
+						if (stage.mode === 2) {
+							draw.ui = false;         //选择自定义模式那么关闭ui的绘制
+							draw.setMap = true;      //开启地图编辑模式
+							this.moveToTop = true;   //直接让画面在最终位置
+						}else {
+							ui.status = 1;           //下次循环直接进入下一个ui的状态
+							this.moveToTop = false;  //下次进入这个状态画面重新开始运动
+						}
 						cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
-						hasPressedKey = false;
+						keyPressed = false;
 						break;
 					default:
-						hasPressedKey = false;
 						break;
 				}
+				keyPressed = false;
 			}
 		}
 	}
@@ -134,27 +137,23 @@ class UI {
 				if (this.curtainHeight <= this.maxCurtainHeight) {
 					this.curtainHeight += 15;
 				} else {
-					//幕布合拢后清空背景层，将角色层用#666色覆盖，周围一圈直接改变game-box的背景颜色
-					oGameBox.style.backgroundColor = '#666';
-					cxt.role.save();
-					cxt.role.fillStyle = '#666';
-					cxt.role.fillRect(0 , 0 , cxt.l , cxt.l);
-					cxt.role.restore();
+					//改变背景颜色是为了bg层清除右边边框内容时不需要再重绘#666色的背景了，直接显示背景色就好了
+					gameBox.border.style.backgroundColor = '#666';
 					stage.status = 1;
 				}
 				break;
 			// 关卡选择
 			case 1:
 				//绘制当前关卡
-				cxt.bg.save();
-				cxt.bg.font = "20px prstart";
-				cxt.bg.fillStyle = '#000';
-				cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
-				cxt.bg.fillText("STAGE   " + stage.num , 175 , 240);
-				cxt.bg.restore();
+				cxt.role.save();
+				cxt.role.font = "20px prstart";
+				cxt.role.fillStyle = '#000';
+				cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
+				cxt.role.fillText("STAGE   " + stage.num , 140 , 220);
+				cxt.role.restore();
 				// 键盘选择
-				if (roleCtrl[keyVal.enter]) {
-					hasPressedKey = false;
+				if (keyStatus[keyNum.enter]) {
+					keyPressed = false;
 					// 开始播放开始音乐,只播放一次
 					if (this.audPlay) {
 						oAud.start.play();
@@ -165,7 +164,12 @@ class UI {
 				// 开始播放音乐后this.nextAble为真，那么延迟80个循环后开始进入下一个UI状态
 				if (this.nextAble) {
 					this.delay.do(() => {
+						cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
 						cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
+						cxt.role.save();
+						cxt.role.fillStyle = '#666';
+						cxt.role.fillRect(0 , 0 , cxt.l , cxt.l);
+						cxt.role.restore();
 						draw.map = true;       //循环开始绘制背景地图
 						stage.status = 2;      //左右幕布拉开
 						this.audPlay = true;   //重置this.audPlay的值，为下一次播放音乐做准备
@@ -174,13 +178,13 @@ class UI {
 				break;
 			// 左右两幕布拉开
 			case 2:
-				cxt.role.clearRect(208 - this.bgWidth , 0 , 2 * this.bgWidth , cxt.l);   // 通过不断清空cxtBottom上某个区域来模拟幕布拉开
+				cxt.role.clearRect(208 - this.bgWidth , 0 , 2 * this.bgWidth , cxt.l);   // 通过不断清空cxt.role上某个区域来模拟幕布拉开
 				if (this.bgWidth < 208) {
 					this.bgWidth += 16;
 				} else {
 					draw.tank = true;          //循环开始绘制坦克
-					draw.ui = false;           //循环停止绘制UI界面
-					stage.status = 3;          //进入计分UI
+					draw.ui = false;           //停止绘制UI界面
+					stage.status = 3;          //进入计分UI界面
 				}
 				break;
 			default:

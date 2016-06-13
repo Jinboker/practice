@@ -52,33 +52,33 @@ class MyTank extends TankObj{
 			return;
 		}
 		// 按键判断
-		if (hasPressedKey) {
+		if (keyPressed) {
 			this.key();
 			this.dirJudge();
 		}
 		// 防护罩（刚出生时候或者吃了防护罩的奖励）
 		!this.shieldAble && this.shield();
-		//画坦克
-		this.delay.do(() => this.wheel = +!this.wheel , 5);     //坦克轮子的改变
+		//坦克轮子的改变
+		this.delay.do(() => this.wheel = +!this.wheel , 5);
 		cxt.role.drawImage(oImg.myTank , 0 ,  0 + this.dir * 64 + this.wheel * 32 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 
 	key(){
 		switch (true) {
-			case roleCtrl[keyVal.up1]:
+			case keyStatus[keyNum.up1]:
 				this.dir = 0;
 				break;
-			case roleCtrl[keyVal.right1]:
+			case keyStatus[keyNum.right1]:
 				this.dir = 1;
 				break;
-			case roleCtrl[keyVal.down1]:
+			case keyStatus[keyNum.down1]:
 				this.dir = 2;
 				break;
-			case roleCtrl[keyVal.left1]:
+			case keyStatus[keyNum.left1]:
 				this.dir = 3;
 				break;
 			default:
-				hasPressedKey = false;    //按键松开后再检查一遍按键，如果此时上下左右都没有被按下，不管有没有其他按键被按下都将这个值设置为假
+				keyPressed = false;    //按键松开后再检查一遍按键，如果此时上下左右都没有被按下，不管有没有其他按键被按下都将这个值设置为假
 				break;
 		}
 	}

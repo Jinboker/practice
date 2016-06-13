@@ -10,8 +10,8 @@ class TankObj {
 	}
 
 	born(){
-		// 出生的动画循环执行三次
-		if (this.bornNum < 3) {
+		// 出生的动画循环执行4次
+		if (this.bornNum < 4) {
 			if (this.bornNumCont) {
 				this.bornNum ++;
 				this.bornNumCont = false;   //不允许this.bornNum开始累加
@@ -23,19 +23,19 @@ class TankObj {
 					if (this.bornChange < 4) {
 						this.bornChange ++;
 					} else {
-						cxt.bg.clearRect(163 , 404 , 32 , 32);
 						this.bornChange = 0;
-						this.bornNumCont = true;      //允许出生的动画循环的次数的值开始累加
+						this.bornNumCont = true;      //出生的动画已经执行完一次，动画执行次数可以开始累加
+						cxt.bg.clearRect(163 , 404 , 32 , 32);
 					}
-					//因为角色层每次循环都会清空画布，如果这里再延迟，那么会有较长时间页面上无显示，因此将出生的动画放在背景层
 					cxt.bg.drawImage(oImg.bonus , 96 - 32 * this.bornChange , 64 , 32 , 32 , 163 , 404 , 32 , 32);
 				} , 3);
 			})();
 		} else {
+			cxt.bg.clearRect(163 , 404 , 32 , 32);
 			this.bornNum = 0;
 			this.borned = true;              //出生的动画执行完毕，开始绘制坦克
-			cxt.bg.clearRect(163 , 404 , 32 , 32);
 		}
+		// cxt.role.drawImage(oImg.bonus , 96 - 32 * this.bornChange , 64 , 32 , 32 , 128 , 384 , 32 , 32);
 	}
 
 	dirJudge(){

@@ -1,5 +1,5 @@
-// 按键
-const keyVal = {     //键值表
+//键值表
+let keyNum = {
 	start : 72,          //开始，暂停
 	enter : 13,          //回车
 
@@ -18,48 +18,25 @@ const keyVal = {     //键值表
 	fire2 : 17            //发射子弹
 };
 
-let roleCtrl = new Array(87);           // 按下的按键对应的状态存入该数组
-let hasPressedKey;        // 布尔值，表明有按键被按下
-let pressedKey;           //按下的键值
+// 游戏控制
+let keyPressed = false,            //是否有按键被按下
+	keyVal = null,                 //被按下的按键的键值
+	keyStatus = new Array(87);     //按键被按下后对应的数组项会为true，可以很方便的去判断到底是哪个按键被按下
 
-let control = new Array(87);
 
+// 如果按键检测是直接使用keyVal === 87这种来进行判断的时候，那么我每次键盘事件触发都需要先检查一遍是否是我需要
+// 的按键被按下了，把不是的给排除掉，但是用数组的方式来判断就很直接，真就是按下，假就是没有，简单，方便
 function keyInit() {
-	control[keyVal.up1] = control[keyVal.up2] = {
-		able : false,
-		speed : -2,
-		dir : 0
-	};
-	control[keyVal.right1] = control[keyVal.righ2] = {
-		able : false,
-		speed : 2,
-		dir : 1
-	};
-	control[keyVal.down1] = control[keyVal.down2] = {
-		able : false,
-		speed : -2,
-		dir : 2
-	};
-	control[keyVal.left1] = control[keyVal.left2] = {
-		able : false,
-		speed : -2,
-		dir : 3
-	};
-	control[keyVal.enter] = {
-		able : false
-	};
-
 	addEventListener('keydown' , function (ev) {
-		pressedKey = ev.keyCode;
-
-		// 通过检测roleCtrl[keyCode]的值，防止键盘事件的持续触发
-		if (!roleCtrl[ev.keyCode]) {
-			roleCtrl[ev.keyCode] = hasPressedKey = true;        //hasPressedKey为真表明有按键被按下
-			console.log(control[ev.keyCode].dir);
+		keyVal = ev.keyCode;
+		// 当按键按下的时候没必要一直触发事件
+		if (!keyStatus[keyVal]) {
+			keyStatus[keyVal] = true;         //被按下的按键的状态变为true
+			keyPressed = true;                  //确实有按键被按下
 		}
 	} , false);
 
 	addEventListener('keyup' , function (ev) {
-		roleCtrl[ev.keyCode] = false;
+		keyStatus[ev.keyCode] = false;
 	} , false);
 }

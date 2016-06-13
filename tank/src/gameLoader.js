@@ -1,49 +1,3 @@
-// 画布相关
-let canRol = document.getElementById('canvas-role'),
-	canBg = document.getElementById('canvas-bg');
-let cxt = {
-	role : canRol.getContext('2d'),
-	bg : canBg.getContext('2d'),
-	l : 416,              //l表示canRol的长与宽
-	w : 516,              //canBg的宽度
-	h : 456               //canBg的高度
-}
-
-// 所有的类
-let oClass = {
-	ui : new UI(),
-	myTank : new MyTank(),
-	map : new Map()
-};
-
-//所有的图片
-let oImg = {
-	ui : document.getElementById('UI'),
-	myTank : document.getElementById('myTank'),
-	enemyTank : document.getElementById('enemyTank'),
-	bonus : document.getElementById('bonus'),
-	misc : document.getElementById('Misc')
-};
-//所有的音频
-let oAud = {
-	start : document.getElementById('start'),
-	over : document.getElementById('over'),
-	move : document.getElementById('move'),
-	eMove : document.getElementById('eMove'),
-	att : document.getElementById('attack'),
-	attOver : document.getElementById('attackOver'),
-	eat : document.getElementById('eat'),
-	boom : document.getElementById('boom'),
-	bonus : document.getElementById('bonus')
-}
-
-// 控制是否更新某些模块
-let draw = {
-	ui : true,
-	tank : false,
-	map : false
-};
-
 // 游戏入口
 window.onload = function () {
 	init();
@@ -63,8 +17,11 @@ function init() {
 	// 玩家坦克对象初始化
 	oClass.myTank.init();
 
+	// 自定义地图模块初始化
+	oClass.setMap.init();
+
 	//游戏地图初始化
-	oClass.map.init();
+	// oClass.map.init();
 }
 
 /*
@@ -73,6 +30,9 @@ function init() {
 function gameLoop() {
 	// 绘制游戏的UI界面
 	draw.ui && oClass.ui.draw();
+
+	// 绘制自定义地图界面
+	draw.setMap && oClass.setMap.draw();
 
 	//绘制地图（地图只有当UI界面的关卡选择界面准备结束的时候才会绘制一次）
 	if (draw.map) {

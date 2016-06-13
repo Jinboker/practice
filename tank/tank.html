@@ -12,18 +12,20 @@
 			font-family: prstart;
 			src: url('font/prstart.ttf');
 		}
-		#game-box {
+		#game-box-border {
 			position: relative;
 			width: 516px;
 			height: 456px;
 			margin: 100px auto;
-			border: #630 solid 4px;
 			background-color: #000;
+			border: #630 solid 4px;
 		}
-		#canvas-role {
+		#game-box {
 			position: absolute;
 			top: 20px;
 			left: 35px;
+			width: 416px;
+			height: 416px;
 			background-color: #000;
 		}
 		#canvas-bg {
@@ -31,15 +33,21 @@
 			top: 0;
 			left: 0;
 		}
+		#canvas-role {
+			position: absolute;
+			top: 20px;
+			left: 35px;
+		}
 		.hide {
 			display: none;
 		}
 	</style>
 </head>
 <body>
-	<div id="game-box">
-		<canvas id="canvas-role" width="416" height="416"></canvas>
+	<div id="game-box-border">
+		<div id="game-box"></div>
 		<canvas id="canvas-bg" width="516" height="456"></canvas>
+		<canvas id="canvas-role" width="416" height="416"></canvas>
 	</div>
 	<!-- 提前缓存图片 -->
 	<div class="hide">
@@ -48,6 +56,7 @@
 		<img src="src/image/enemyTank.png" id="enemyTank">
 		<img src="src/image/bonus.png" id="bonus">
 		<img src="src/image/Misc.png" id="Misc">
+		<img src="src/image/brick.png" id="brick">
 	</div>
 	<!-- 提前缓存音频文件 -->
 	<div class="hide">
@@ -61,9 +70,6 @@
 		<audio src="src/sound/over.mp3" id="over"></audio>
 		<audio src="src/sound/start.mp3" id="start"></audio>
 	</div>
-
-	<!-- 游戏入口 -->
-	<script type="text/javascript" src='src/gameLoader.js'></script>
 
 	<!-- 公用 -->
 	<script type="text/javascript" src='src/Util/commomFunction.js'></script>
@@ -81,7 +87,14 @@
 	<script type="text/javascript" src='src/UI/UI.js'></script>
 
 	<!-- 游戏地图设置 -->
+	<script type="text/javascript" src='src/gameMap/drawMap.js'></script>
 	<script type="text/javascript" src='src/gameMap/setMap.js'></script>
 	<script type="text/javascript" src='src/gameMap/mapData.js'></script>
+
+	<!-- 全局变量 -->
+	<script type="text/javascript" src='src/globalVar.js'></script>
+
+	<!-- 游戏入口 -->
+	<script type="text/javascript" src='src/gameLoader.js'></script>
 </body>
 </html>
