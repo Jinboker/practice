@@ -3,10 +3,6 @@ let roadMap = new Array(26);
 // 画地图
 class DrawMap{
 	constructor(){
-
-	}
-
-	init(){
 		for (let i = 0; i < 26; i++) {
 			roadMap[i] = new Array(26);
 		}

@@ -19,9 +19,6 @@ function init() {
 
 	// 自定义地图模块初始化
 	oClass.setMap.init();
-
-	// 绘制地图初始化
-	oClass.drawMap.init();
 }
 
 /*
