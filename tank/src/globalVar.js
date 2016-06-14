@@ -14,7 +14,7 @@ let oClass = {
 	ui : new UI(),
 	myTank : new MyTank(),
 	setMap : new SetMap(),
-	map : new Map()
+	drawMap : new DrawMap()
 };
 
 //所有的图片

@@ -6,7 +6,7 @@ let stage = {
 	mode : 0,
 
 	//关卡数
-	num : 1,
+	num : 3,
 
 	//当为0的时候表示幕布上下合拢
 	//当为1的时候表示关卡选择界面
@@ -19,7 +19,9 @@ let ui = {
 	//为1时表示关卡的UI
 	//为2时表示记分的UI
 	//为3时表示游戏结束
-	status : 0
+	status : 0,
+
+	moveToTop : false
 };
 
 // UI相关执行函数
@@ -33,7 +35,7 @@ class UI {
 		this.audPlay = true;           //是否开始播放音频
 		// 开始的UI的相关变量
 		this.startY = cxt.h;          // 开始画面上移的y值
-		this.moveToTop = false;         //moveToTop为真就表示开始画面已经运动到了最终位置
+		// this.moveToTop = false;         //moveToTop为真就表示开始画面已经运动到了最终位置
 		this.modeChoose = 272;          // 开始画面上小坦克的纵向位置
 		this.wheel = 0;                 //wheel表示轮子的变化0 -> 1 -> 0 -> 1
 		// 关卡选择界面的相关变量
@@ -62,7 +64,7 @@ class UI {
 	// 最开始的UI界面
 	gameStart(){
 		// 画面没有到最终位置
-		if (!this.moveToTop) {
+		if (!ui.moveToTop) {
 			// 检测是否有按下回车，如果按下，那么直接显示最后的画面而不继续运动
 			keyStatus[keyNum.enter] ? this.startY = 96 : this.startY -= 3;
 			//更新开始界面的图片和文字
@@ -79,9 +81,8 @@ class UI {
 
 			if (this.startY === 96) {
 				keyPressed = false;                    // 强制让表示有按键被按下的值为假，防止一直按着某个按键然后一直触发，下面同样的语句都是这个用处
-				this.moveToTop = true;                    //运动到终点后不再刷新画面
+				ui.moveToTop = true;                    //运动到终点后不再刷新画面
 			}
-
 		// 画面到了最终位置
 		} else {
 			cxt.bg.clearRect(140 , 260 , 32 , 120);
@@ -108,7 +109,7 @@ class UI {
 						if (stage.mode === 2) {
 							draw.ui = false;         //选择自定义模式那么关闭ui的绘制
 							draw.setMap = true;      //开启地图编辑模式
-							this.moveToTop = true;   //直接让画面在最终位置
+							setMapInit = true;
 						}else {
 							ui.status = 1;           //下次循环直接进入下一个ui的状态
 							this.moveToTop = false;  //下次进入这个状态画面重新开始运动

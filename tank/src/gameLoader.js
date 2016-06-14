@@ -20,8 +20,8 @@ function init() {
 	// 自定义地图模块初始化
 	oClass.setMap.init();
 
-	//游戏地图初始化
-	// oClass.map.init();
+	// 绘制地图初始化
+	oClass.drawMap.init();
 }
 
 /*
@@ -36,7 +36,7 @@ function gameLoop() {
 
 	//绘制地图（地图只有当UI界面的关卡选择界面准备结束的时候才会绘制一次）
 	if (draw.map) {
-		oClass.map.draw(stage.num);
+		oClass.drawMap.draw(stage.num);
 		draw.map = false;
 		stage.num ++;
 	}
