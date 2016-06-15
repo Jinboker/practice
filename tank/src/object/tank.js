@@ -3,6 +3,13 @@ class TankObj {
 	constructor(){
 		this.x;
 		this.y;
+
+		this.posi;  //用来检测当前坦克的位置，如果不在砖块契合处则需要改变位置
+
+		this.posiX;
+		this.posiY;
+
+
 		this.dir;
 
 		this.wheel = 0;
@@ -43,21 +50,59 @@ class TankObj {
 			//向上
 			case 0:
 				this.y > 0 ? this.y -= 2 : this.y;
+
+				this.posiX = this.x % 16;
+				this.posiX && this.positionX();
+				// (this.posiX) && this.position(this.x , this.x % 16);
 				break;
 			//向右
 			case 1:
 				this.x < 384 ? this.x += 2 : this.x;
+
+				this.posiY = this.y % 16;
+				this.posiY && this.positionY();
+				// (this.posiY) && this.position(this.y , this.y % 16);
 				break;
 			//向下
 			case 2:
 				this.y < 384 ? this.y += 2 : this.y;
+
+				this.posiX = this.x % 16;
+				this.posiX && this.positionX();
+				// (this.posiX) && this.position(this.x , this.x % 16);
+				a();
 				break;
 			//向左
 			case 3:
 				this.x > 0 ? this.x -= 2 : this.x;
+
+				this.posiY = this.y % 16;
+				this.posiY && this.positionY();
+				// (this.posiY) && this.position(this.y , this.y % 16);
 				break;
 			default:
 				break;
 		}
+	}
+
+	//每次坦克改变方向的时候都要重置一下位置使坦克正中间对准砖块的契合处
+	positionX(){
+		this.x = this.posiX <= 6 ? this.x - this.posiX : this.x - this.posiX + 16;
+	}
+	positionY(){
+		this.y = this.posiY <= 6 ? this.y - this.posiY : this.y - this.posiY + 16;
+	}
+	// position(posi , rem){
+	// 	posi = rem <= 6 ? posi - rem : posi - rem + 16;
+	// 	if (posi === this.x) {
+	// 		this.x = posi;
+	// 	} else {
+	// 		this.y = posi;
+	// 	}
+	// 	console.log(posi);
+	// }
+
+	collision(){
+
 	}
 }

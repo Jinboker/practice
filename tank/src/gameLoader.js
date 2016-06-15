@@ -33,7 +33,7 @@ function gameLoop() {
 
 	//绘制地图（地图只有当UI界面的关卡选择界面准备结束的时候才会绘制一次）
 	if (draw.map) {
-		oClass.drawMap.draw(stage.num);
+		oClass.drawMap.draw(stage.num - 1);
 		draw.map = false;
 		stage.num ++;
 	}
