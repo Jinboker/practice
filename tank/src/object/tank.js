@@ -12,6 +12,9 @@ class TankObj {
 
 		this.dir;
 
+		this.row;
+		this.col;
+
 		this.wheel = 0;
 		this.delay = new Delay();   //这个延迟是用来控制出生时候的动画及轮子变化的
 	}
@@ -45,45 +48,59 @@ class TankObj {
 		// cxt.role.drawImage(oImg.bonus , 96 - 32 * this.bornChange , 64 , 32 , 32 , 128 , 384 , 32 , 32);
 	}
 
-	dirJudge(){
+	move(){
+		//坦克轮子的改变
+		this.delay.do(() => this.wheel = +!this.wheel , 5);
+
+
+		this.col = parseInt(this.x / 16);
+		this.row = parseInt(this.y / 16);
 		switch (this.dir) {
 			//向上
 			case 0:
-				this.y > 0 ? this.y -= 2 : this.y;
 
 				this.posiX = this.x % 16;
+
+				if (this.y > 0 && !roadMap[this.row][this.col] && !roadMap[this.row][this.col + 1]) {
+					this.y -= 2;
+				}
 				this.posiX && this.positionX();
-				// (this.posiX) && this.position(this.x , this.x % 16);
 				break;
 			//向右
 			case 1:
-				this.x < 384 ? this.x += 2 : this.x;
-
 				this.posiY = this.y % 16;
+
+				if (this.x < 384 && !roadMap[this.row][this.col + 2] && !roadMap[this.row + 1][this.col + 2]) {
+					this.x += 2;
+				}
+
 				this.posiY && this.positionY();
-				// (this.posiY) && this.position(this.y , this.y % 16);
 				break;
 			//向下
 			case 2:
-				this.y < 384 ? this.y += 2 : this.y;
-
 				this.posiX = this.x % 16;
+
+				if (this.y < 384 && !roadMap[this.row + 2][this.col] && !roadMap[this.row + 2][this.col + 1]) {
+					this.y += 2;
+				}
 				this.posiX && this.positionX();
-				// (this.posiX) && this.position(this.x , this.x % 16);
-				a();
 				break;
 			//向左
 			case 3:
-				this.x > 0 ? this.x -= 2 : this.x;
-
 				this.posiY = this.y % 16;
+
+				if (this.x > 0 && !roadMap[this.row][this.col] && !roadMap[this.row + 1][this.col]) {
+					this.x -= 2;
+				}
 				this.posiY && this.positionY();
-				// (this.posiY) && this.position(this.y , this.y % 16);
 				break;
 			default:
 				break;
 		}
+		this.collision();
+
 	}
+
 
 	//每次坦克改变方向的时候都要重置一下位置使坦克正中间对准砖块的契合处
 	positionX(){
@@ -92,15 +109,6 @@ class TankObj {
 	positionY(){
 		this.y = this.posiY <= 6 ? this.y - this.posiY : this.y - this.posiY + 16;
 	}
-	// position(posi , rem){
-	// 	posi = rem <= 6 ? posi - rem : posi - rem + 16;
-	// 	if (posi === this.x) {
-	// 		this.x = posi;
-	// 	} else {
-	// 		this.y = posi;
-	// 	}
-	// 	console.log(posi);
-	// }
 
 	collision(){
 

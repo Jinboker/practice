@@ -54,12 +54,11 @@ class MyTank extends TankObj{
 		// 按键判断
 		if (keyPressed) {
 			this.key();
-			this.dirJudge();
+			this.move();
 		}
 		// 防护罩（刚出生时候或者吃了防护罩的奖励）
 		!this.shieldAble && this.shield();
-		//坦克轮子的改变
-		this.delay.do(() => this.wheel = +!this.wheel , 5);
+
 		cxt.role.drawImage(oImg.myTank , 0 ,  0 + this.dir * 64 + this.wheel * 32 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 
