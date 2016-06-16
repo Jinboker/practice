@@ -13,7 +13,7 @@ let cxt = {
 let oClass = {
 	ui : new UI(),
 	myTank : new MyTank(),
-	setMap : new SetMap(),
+	mapEditor : new MapEditor(),
 	drawMap : new DrawMap()
 };
 
@@ -46,6 +46,16 @@ let draw = {
 	setMap : false,
 	map : false
 };
+
+// 奖励类型
+let oBonus = {
+	home : false,
+	star : false,
+	life : false,
+	shield : false,
+	boom : false,
+	stop : false
+}
 
 // 用来控制画布所在区域的背景
 let gameBox = {

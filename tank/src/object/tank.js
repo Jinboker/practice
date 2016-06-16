@@ -9,18 +9,23 @@ class TankObj {
 		this.posiX;
 		this.posiY;
 
-
 		this.dir;
-
 		this.row;
 		this.col;
+
+		this.fire = false;          //默认不开火
+		this.bulletStatus = true;   //子弹状态，只有当this.bulletStatus及this.fire都为真时才会发射子弹
+		this.bx;
+		this.by;
+		this.bDir;
 
 		this.wheel = 0;
 		this.delay = new Delay();   //这个延迟是用来控制出生时候的动画及轮子变化的
 	}
 
+	// 坦克出生的动画
 	born(){
-		// 出生的动画循环执行4次
+		// 动画循环执行4次
 		if (this.bornNum < 4) {
 			if (this.bornNumCont) {
 				this.bornNum ++;
@@ -45,20 +50,17 @@ class TankObj {
 			this.bornNum = 0;
 			this.borned = true;              //出生的动画执行完毕，开始绘制坦克
 		}
-		// cxt.role.drawImage(oImg.bonus , 96 - 32 * this.bornChange , 64 , 32 , 32 , 128 , 384 , 32 , 32);
 	}
 
 	move(){
 		//坦克轮子的改变
 		this.delay.do(() => this.wheel = +!this.wheel , 5);
 
-
 		this.col = parseInt(this.x / 16);
 		this.row = parseInt(this.y / 16);
 		switch (this.dir) {
 			//向上
 			case 0:
-
 				this.posiX = this.x % 16;
 
 				if (this.y > 0 && !roadMap[this.row][this.col] && !roadMap[this.row][this.col + 1]) {
@@ -97,8 +99,6 @@ class TankObj {
 			default:
 				break;
 		}
-		this.collision();
-
 	}
 
 
@@ -108,6 +108,35 @@ class TankObj {
 	}
 	positionY(){
 		this.y = this.posiY <= 6 ? this.y - this.posiY : this.y - this.posiY + 16;
+	}
+
+	// 子弹
+	bullet(){
+		if (this.bulletStatus) {
+			this.bulletStatus = false;
+			this.bx = this.x;
+			this.by = this.y;
+			this.bDir = this.dir;
+		}
+
+		switch (this.bDir) {
+			case 0:
+				// this.by = this.y;
+				this.bx += 4;
+				break;
+			case 1:
+
+				break;
+			case 2:
+
+				break;
+			case 3:
+
+				break;
+			default:
+				break;
+		}
+		cxt.role.drawImage(oImg.misc , this.dir * 8 , 8 , 8 , 8, this.bx , this.by , 8 , 8);
 	}
 
 	collision(){

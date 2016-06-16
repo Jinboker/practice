@@ -16,9 +16,6 @@ function init() {
 
 	// 玩家坦克对象初始化
 	oClass.myTank.init();
-
-	// 自定义地图模块初始化
-	oClass.setMap.init();
 }
 
 /*
@@ -29,12 +26,12 @@ function gameLoop() {
 	draw.ui && oClass.ui.draw();
 
 	// 绘制自定义地图界面
-	draw.setMap && oClass.setMap.draw();
+	draw.setMap && oClass.mapEditor.draw();
 
 	//绘制地图（地图只有当UI界面的关卡选择界面准备结束的时候才会绘制一次）
 	if (draw.map) {
-		oClass.drawMap.draw(stage.num - 1);
 		draw.map = false;
+		oClass.drawMap.draw(stage.num - 1);
 		stage.num ++;
 	}
 

@@ -3,19 +3,21 @@ let roadMap = new Array(26);
 // 画地图
 class DrawMap{
 	constructor(){
+		this.idata;      //当前需要绘制的一个地图格子的数据
 		for (let i = 0; i < 26; i++) {
 			roadMap[i] = new Array(26);
 		}
 	}
 
 	draw(num){        //传入当前需要绘制的关卡数
+		// 绘制地图
 		for (let i = 0; i < 13; i++) {
 			for(let j = 0; j < 13; j++){
-				let idata = mapData[num][i][j];
-				if (idata) {
-					cxt.bg.drawImage(oImg.brick , 32 * idata , 0 , 32 , 32 , 35+32*j , 20+32*i , 32, 32);
+				this.idata = mapData[num][i][j];
+				if (this.idata) {
+					cxt.bg.drawImage(oImg.brick , 32 * this.idata , 0 , 32 , 32 , 35+32*j , 20+32*i , 32, 32);
 					// 根据地图数据确定路径数据
-					this.road(i , j , idata);
+					this.road(i , j);
 				}
 			}
 		}
@@ -32,10 +34,9 @@ class DrawMap{
 	 * 确定路径数组
 	 * @param  {number} i     行
 	 * @param  {number} j     列
-	 * @param  {number} idata 地图数据中当前位置所保存的数据
 	 */
-	road(i , j , idata){
-		switch (idata) {
+	road(i , j){
+		switch (this.idata) {
 			//1、2、3、4、5、17、18都表示砖块
 			case 1:
 				roadMap[2*i][2*j] =

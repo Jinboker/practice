@@ -9,25 +9,16 @@
 // }
 //
 
-// 奖励类型
-let oBonus = {
-	home : false,
-	star : false,
-	life : false,
-	shield : false,
-	boom : false,
-	stop : false
-}
-
 class MyTank extends TankObj{
 	// constructor(){
 	// 	super();
 	// }
 
 	init(){
-		this.dir = 0;          //己方坦克默认方向向下
 		this.x = 128;
 		this.y =  384;
+
+		this.dir = 0;          //己方坦克默认方向向下
 
 		this.shieldDelay = new Delay();    //这个是用来控制防护罩变化的延迟
 
@@ -53,33 +44,17 @@ class MyTank extends TankObj{
 		}
 		// 按键判断
 		if (keyPressed) {
-			this.key();
-			this.move();
+			//移动坦克
+			if (keyInfo[keyDir_1].pressed) {
+				this.dir = keyInfo[keyDir_1].dir;
+				this.move();
+			}
 		}
+		// this.fire && this.bullet();     //发射子弹
 		// 防护罩（刚出生时候或者吃了防护罩的奖励）
 		!this.shieldAble && this.shield();
 
 		cxt.role.drawImage(oImg.myTank , 0 ,  0 + this.dir * 64 + this.wheel * 32 , 32 , 32 , this.x , this.y , 32 , 32);
-	}
-
-	key(){
-		switch (true) {
-			case keyStatus[keyNum.up1]:
-				this.dir = 0;
-				break;
-			case keyStatus[keyNum.right1]:
-				this.dir = 1;
-				break;
-			case keyStatus[keyNum.down1]:
-				this.dir = 2;
-				break;
-			case keyStatus[keyNum.left1]:
-				this.dir = 3;
-				break;
-			default:
-				keyPressed = false;    //按键松开后再检查一遍按键，如果此时上下左右都没有被按下，不管有没有其他按键被按下都将这个值设置为假
-				break;
-		}
 	}
 
 	// 防护罩相关
