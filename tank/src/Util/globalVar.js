@@ -11,10 +11,11 @@ let cxt = {
 
 // 所有的类
 let oClass = {
-	ui : new UI(),
-	myTank : new MyTank(),
-	mapEditor : new MapEditor(),
-	drawMap : new DrawMap()
+	ui : null,
+	tank : null,
+	myTank : null,
+	mapEditor : null,
+	drawMap : null
 };
 
 //所有的图片
@@ -44,7 +45,11 @@ let draw = {
 	ui : true,
 	tank : false,
 	setMap : false,
-	map : false
+	map : false,
+	stop : false,
+	misc : false,
+	enemyNum : false,
+	info : false
 };
 
 // 奖励类型

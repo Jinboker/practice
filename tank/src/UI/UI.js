@@ -191,8 +191,9 @@ class UI {
 				} else {
 					canBg.style.zIndex = '1';  //让背景层在上面显示主要是树林会遮盖住坦克
 					draw.tank = true;          //循环开始绘制坦克
+					draw.misc = true;          //循环开始绘制杂项
+					draw.enemyNum = true;      //循环开始绘制敌军坦克数量信息
 					draw.ui = false;           //停止绘制UI界面
-					stage.status = 3;          //进入计分UI界面
 				}
 				break;
 			default:

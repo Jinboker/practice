@@ -1,11 +1,13 @@
-let roadMap = new Array(26);
+// 这里建立一个28*28的roadMap数组而不是建立一个26*26的主要因为子弹的问题
+// 子弹图片只有8*8，而坦克是32*32，如果还是用26*26的数组去判断，子弹运动到边界路劲数组就不够用了
+let roadMap = new Array(28);
 
 // 画地图
 class DrawMap{
 	constructor(){
 		this.idata;      //当前需要绘制的一个地图格子的数据
-		for (let i = 0; i < 26; i++) {
-			roadMap[i] = new Array(26);
+		for (let i = 0; i < 28; i++) {
+			roadMap[i] = new Array(28);
 		}
 	}
 

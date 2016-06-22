@@ -20,45 +20,31 @@
 
 // 游戏控制
 let keyPressed = false,            //是否有按键被按下
-	keyInfo = new Array(87),
+	keyInfo = new Array(88),
 	keyCode =
 	keyDir_1 =
 	keyDir_2 = null;
 
 //直接在keyInit函数里面调用，用来设置一些相关的按键信息
 function setKeyInfo() {
-	// 按顺序分别是H（确定，开始，暂停） J（角色1发射子弹，选择） Ctrl（角色2发射子弹）是否被按下
-	keyInfo[72] = keyInfo[74] = keyInfo[17] =
-	// 角色1的方向键是否被按下
-	keyInfo[87] = keyInfo[83] =
-	keyInfo[65] = keyInfo[68] =
-	// 角色2的方向键是否被按下
-	keyInfo[38] = keyInfo[39] =
-	keyInfo[40] = keyInfo[37] = {
-		pressed : false
-	};
+	// 给所有需要用到的按键添加表示是否被按下的属性
+	let aKey = [72 , 74 , 87 , 83 , 65 , 68 , 38 , 40 , 37 , 39 , 17],
+		len = aKey.length;
 
-	// 角色1和角色2的上右下左
-	keyInfo[87] =
-	keyInfo[38] = {
-		dir : 0
-	};
-	keyInfo[68] =
-	keyInfo[39] = {
-		dir : 1
-	};
-	keyInfo[83] =
-	keyInfo[40] = {
-		dir : 2
-	};
-	keyInfo[65] =
-	keyInfo[37] = {
-		dir : 3
-	};
+	for (let i = 0; i < len; i++) {
+		keyInfo[aKey[i]] = {
+			pressed : false
+		}
+	}
+
+	// 添加角色1和角色2的上右下左属性
+	keyInfo[87].dir = keyInfo[38].dir = 0;
+	keyInfo[68].dir = keyInfo[39].dir = 1;
+	keyInfo[83].dir = keyInfo[40].dir = 2;
+	keyInfo[65].dir = keyInfo[37].dir = 3;
 }
 
 function keyInit() {
-	let keyUp;
 	setKeyInfo();
 	addEventListener('keydown' , function (ev) {
 		keyCode = ev.keyCode;
@@ -75,6 +61,7 @@ function keyInit() {
 		}
 	} , false);
 
+	let keyUp;
 	addEventListener('keyup' , function (ev) {
 		keyUp = ev.keyCode;
 		if (typeof keyInfo[keyUp] === 'object') {

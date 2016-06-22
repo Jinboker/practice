@@ -25,30 +25,28 @@ class MapEditor{
 		this.tankMove();
 	}
 
-	draw(){
-		// 初始化相关设置
-		if (setMapInit) {
-			setMapInit = false;
-			gameBox.border.style.backgroundColor = '#666';
-			cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
-			for (let i = 0; i < 13; i++) {
-				for(let j = 0; j < 13; j++){
-					this.setMapData[i][j] && cxt.bg.drawImage(oImg.brick , 32 * this.setMapData[i][j] , 0 , 32 , 32 , 35+32*j , 20+32*i , 32, 32);
-				}
-			}
-			this.ensureMap = true;
+	tankMove(){
+		// 上
+		this.move[87] = () => {
+			this.y > 0 ? this.y -= 32 : this.y;
 		}
-		cxt.role.clearRect(this.x , this.y , 32 , 32);
-		// 如果有按键被按下
-		if (keyPressed) {
-			this.key();
-		}
-		this.ensureMap && cxt.role.drawImage(oImg.myTank , 0 , 0 , 32 , 32 , this.x , this.y , 32 , 32);
+		// 下
+		this.move[83] = () => {
+			this.y < 384 ? this.y += 32 : this.y;
+		};
+		// 左
+		this.move[65] = () => {
+			this.x > 0 ? this.x -= 32 : this.x;
+		};
+		// 右
+		this.move[68] = () => {
+			this.x < 384 ? this.x += 32 : this.x;
+		};
 	}
 
 	key(){
 		// 上下左右被按下
-		if (keyInfo[keyDir_1].pressed) {
+		if (keyDir_1 && keyInfo[keyDir_1].pressed) {
 			this.move[keyDir_1]();
 			if (this.brickNumSave) {
 				this.brickNum --;
@@ -82,22 +80,24 @@ class MapEditor{
 		keyPressed = false;
 	}
 
-	tankMove(){
-		// 上
-		this.move[87] = () => {
-			this.y > 0 ? this.y -= 32 : this.y;
+	draw(){
+		// 初始化相关设置
+		if (setMapInit) {
+			setMapInit = false;
+			gameBox.border.style.backgroundColor = '#666';
+			cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
+			for (let i = 0; i < 13; i++) {
+				for(let j = 0; j < 13; j++){
+					this.setMapData[i][j] && cxt.bg.drawImage(oImg.brick , 32 * this.setMapData[i][j] , 0 , 32 , 32 , 35+32*j , 20+32*i , 32, 32);
+				}
+			}
+			this.ensureMap = true;
 		}
-		// 下
-		this.move[83] = () => {
-			this.y < 384 ? this.y += 32 : this.y;
-		};
-		// 左
-		this.move[65] = () => {
-			this.x > 0 ? this.x -= 32 : this.x;
-		};
-		// 右
-		this.move[68] = () => {
-			this.x < 384 ? this.x += 32 : this.x;
-		};
+		cxt.role.clearRect(this.x , this.y , 32 , 32);
+		// 如果有按键被按下
+		if (keyPressed) {
+			this.key();
+		}
+		this.ensureMap && cxt.role.drawImage(oImg.myTank , 0 , 0 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 }
