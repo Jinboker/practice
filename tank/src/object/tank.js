@@ -71,25 +71,43 @@ class TankObj {
 	}
 
 	misc(){
-		// 判断正前方是否有障碍物导至无法通行
-		this.roadArrJudge = [
-			// 上
-			(num , row , col , x , y) => {
-				return !!(y > 0) && !roadMap[row][col] && !roadMap[row][col + 1] ?  true : false;
+		this.tankRoad = {
+			dir0 : (row , col) => {
+				return this.y > 0 && !roadMap[row][col] && !roadMap[row][col + 1] ?  true : false;
 			},
-			// 右
-			(num , row , col , x , y) => {
-				return !!(x < num) && !roadMap[row][col + 2] && !roadMap[row + 1][col + 2] ? true : false;
+
+			dir1 : (row , col) => {
+				return this.x < 384 && !roadMap[row][col + 2] && !roadMap[row + 1][col + 2] ? true : false;
 			},
-			// 下
-			(num , row , col , x , y) => {
-				return !!(y < num) && !roadMap[row + 2][col] && !roadMap[row + 2][col + 1] ? true : false;
+
+			dir2 : (row , col) => {
+				return this.y < 384 && !roadMap[row + 2][col] && !roadMap[row + 2][col + 1] ? true : false;
 			},
-			// 左
-			(num , row , col , x , y) => {
-				return !!(x > 0) && !roadMap[row][col] && !roadMap[row + 1][col] ? true :  false;
+
+			dir3 : (row , col) => {
+				return this.x > 0 && !roadMap[row][col] && !roadMap[row + 1][col] ? true :  false;
 			}
-		];
+		};
+
+		//判断子弹正前方是否能够通行
+		let row , col;
+		this.bulletRoad = {
+			dir0 : (row = parseInt(this.by / 16) , col = parseInt(this.bx / 16)) => {
+				return this.by > 0 && !roadMap[row][col] && !roadMap[row][col + 1] ? true : false;
+			},
+
+			dir1 : (row = parseInt(this.by / 16) , col = parseInt((this.bx + 8) / 16)) => {
+				return this.bx < 408 && !roadMap[row][col + 0] && !roadMap[row + 1][col + 0] ? true : false;
+			},
+
+			dir2 : (row = parseInt((this.by + 8) / 16) , col = parseInt(this.bx / 16)) => {
+				return this.by < 408 && !roadMap[row + 0][col] && !roadMap[row + 0][col + 1] ? true : false;
+			},
+
+			dir3 : (row = parseInt(this.by / 16) , col = parseInt(this.bx / 16)) => {
+				return this.bx > 0 && !roadMap[row][col] && !roadMap[row + 1][col] ? true : false;
+			}
+		}
 	}
 
 	move(){
@@ -98,25 +116,25 @@ class TankObj {
 		switch (this.dir) {
 			//向上
 			case 0:
-				if (this.roadArrJudge[0](384 , parseInt(this.y / 16) , parseInt(this.x / 16) , this.x , this.y)) { this.y -= 2; }
+				if (this.tankRoad['dir' + 0](parseInt(this.y / 16) , parseInt(this.x / 16) )) { this.y -= 2; }
 				this.posiX = this.x % 16;
 				this.posiX && this.positionX();
 				break;
 			//向右
 			case 1:
-				if (this.roadArrJudge[1](384 , parseInt(this.y / 16) , parseInt(this.x / 16) , this.x , this.y)) { this.x += 2; }
+				if (this.tankRoad['dir' + 1](parseInt(this.y / 16) , parseInt(this.x / 16))) { this.x += 2; }
 				this.posiY = this.y % 16;
 				this.posiY && this.positionY();
 				break;
 			//向下
 			case 2:
-				if (this.roadArrJudge[2](384 , parseInt(this.y / 16) , parseInt(this.x / 16) , this.x , this.y)) { this.y += 2; }
+				if (this.tankRoad['dir' + 2](parseInt(this.y / 16) , parseInt(this.x / 16))) { this.y += 2; }
 				this.posiX = this.x % 16;
 				this.posiX && this.positionX();
 				break;
 			//向左
 			default:
-				if (this.roadArrJudge[3](384 , parseInt(this.y / 16) , parseInt(this.x / 16) , this.x , this.y)) { this.x -= 2; }
+				if (this.tankRoad['dir' + 3](parseInt(this.y / 16) , parseInt(this.x / 16))) { this.x -= 2; }
 				this.posiY = this.y % 16;
 				this.posiY && this.positionY();
 				break;
@@ -142,13 +160,14 @@ class TankObj {
 
 				switch (this.bDir) {
 					case 0:
+						// 因为this.bx是等于this.x的，因此要将this.bx的位置改变为坦克正中心
 						this.bx += 12;
 						this.moveX = 0;
 						this.moveY = -4;
 						this.shotImg = m_canT;
 						break;
 					case 1:
-						this.bx += 28;
+						this.bx += 24;
 						this.by += 12;
 						this.moveX = 4;
 						this.moveY = 0;
@@ -156,7 +175,7 @@ class TankObj {
 						break;
 					case 2:
 						this.bx += 12;
-						this.by += 28;
+						this.by += 24;
 						this.moveX = 0;
 						this.moveY = 4;
 						this.shotImg = m_canD;
@@ -169,7 +188,7 @@ class TankObj {
 						break;
 				}
 			}
-			if (this.roadArrJudge[this.bDir](408 , parseInt(this.by / 16) , parseInt(this.bx / 16) , this.bx , this.by)) {
+			if (this.bulletRoad['dir' + this.bDir]() ){
 				this.bx += this.moveX;
 				this.by += this.moveY;
 				cxt.role.drawImage(this.shotImg , this.bx , this.by , 8 , 8);

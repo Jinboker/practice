@@ -33,7 +33,8 @@
 			top: 0;
 			left: 0;
 		}
-		#canvas-role {
+		#canvas-role,
+		#canvas-boom {
 			position: absolute;
 			top: 20px;
 			left: 35px;
@@ -46,8 +47,12 @@
 <body>
 	<div id="game-box-border">
 		<div id="game-box"></div>
+		<!-- 背景层 -->
 		<canvas id="canvas-bg" width="516" height="456"></canvas>
+		<!-- 角色层 -->
 		<canvas id="canvas-role" width="416" height="416"></canvas>
+		<!-- 爆炸层 -->
+		<canvas id="canvas-boom" width="416" height="416"></canvas>
 	</div>
 	<!-- 提前缓存图片 -->
 	<div class="hide">
