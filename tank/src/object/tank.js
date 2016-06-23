@@ -37,9 +37,19 @@ class TankObj {
 
 		this.wheel = 0;
 		this.delay = new Delay();   //这个延迟是用来控制出生时候的动画及轮子变化的
+
+		this.collision();
+		this.fn();
 	}
 
 
+	fn(){
+		// 一个立即执行函数吧
+		this.doFun = fn => {
+			fn();
+		}
+
+	}
 
 	// 坦克出生的动画
 	born(){
@@ -51,7 +61,7 @@ class TankObj {
 											//直到完整的执行玩一次bornLoop里的全部的技术累加循环后这个值才会为真
 			}
 			//每隔3次循环更新一下出生的动画，因为出生的动画是由四个图片组成，因此this.bornChange要循环四次
-			(() => {
+			this.doFun(() => {
 				this.delay.do(() => {
 					if (this.bornChange < 4) {
 						this.bornChange ++;
@@ -62,51 +72,11 @@ class TankObj {
 					}
 					cxt.bg.drawImage(oImg.bonus , 96 - 32 * this.bornChange , 64 , 32 , 32 , 163 , 404 , 32 , 32);
 				} , 3);
-			})();
+			});
 		} else {
 			cxt.bg.clearRect(163 , 404 , 32 , 32);
 			this.bornNum = 0;
 			this.borned = true;              //出生的动画执行完毕，开始绘制坦克
-		}
-	}
-
-	misc(){
-		this.tankRoad = {
-			dir0 : (row , col) => {
-				return this.y > 0 && !roadMap[row][col] && !roadMap[row][col + 1] ?  true : false;
-			},
-
-			dir1 : (row , col) => {
-				return this.x < 384 && !roadMap[row][col + 2] && !roadMap[row + 1][col + 2] ? true : false;
-			},
-
-			dir2 : (row , col) => {
-				return this.y < 384 && !roadMap[row + 2][col] && !roadMap[row + 2][col + 1] ? true : false;
-			},
-
-			dir3 : (row , col) => {
-				return this.x > 0 && !roadMap[row][col] && !roadMap[row + 1][col] ? true :  false;
-			}
-		};
-
-		//判断子弹正前方是否能够通行
-		let row , col;
-		this.bulletRoad = {
-			dir0 : (row = parseInt(this.by / 16) , col = parseInt(this.bx / 16)) => {
-				return this.by > 0 && !roadMap[row][col] && !roadMap[row][col + 1] ? true : false;
-			},
-
-			dir1 : (row = parseInt(this.by / 16) , col = parseInt((this.bx + 8) / 16)) => {
-				return this.bx < 408 && !roadMap[row][col + 0] && !roadMap[row + 1][col + 0] ? true : false;
-			},
-
-			dir2 : (row = parseInt((this.by + 8) / 16) , col = parseInt(this.bx / 16)) => {
-				return this.by < 408 && !roadMap[row + 0][col] && !roadMap[row + 0][col + 1] ? true : false;
-			},
-
-			dir3 : (row = parseInt(this.by / 16) , col = parseInt(this.bx / 16)) => {
-				return this.bx > 0 && !roadMap[row][col] && !roadMap[row + 1][col] ? true : false;
-			}
 		}
 	}
 
@@ -116,25 +86,25 @@ class TankObj {
 		switch (this.dir) {
 			//向上
 			case 0:
-				if (this.tankRoad['dir' + 0](parseInt(this.y / 16) , parseInt(this.x / 16) )) { this.y -= 2; }
+				if (this.tankRoad['dir' + 0]( parseInt(this.y / 16) , parseInt(this.x / 16) )) { this.y -= 2; }
 				this.posiX = this.x % 16;
 				this.posiX && this.positionX();
 				break;
 			//向右
 			case 1:
-				if (this.tankRoad['dir' + 1](parseInt(this.y / 16) , parseInt(this.x / 16))) { this.x += 2; }
+				if (this.tankRoad['dir' + 1]( parseInt(this.y / 16) , parseInt(this.x / 16) )) { this.x += 2; }
 				this.posiY = this.y % 16;
 				this.posiY && this.positionY();
 				break;
 			//向下
 			case 2:
-				if (this.tankRoad['dir' + 2](parseInt(this.y / 16) , parseInt(this.x / 16))) { this.y += 2; }
+				if (this.tankRoad['dir' + 2]( parseInt(this.y / 16) , parseInt(this.x / 16) )) { this.y += 2; }
 				this.posiX = this.x % 16;
 				this.posiX && this.positionX();
 				break;
 			//向左
 			default:
-				if (this.tankRoad['dir' + 3](parseInt(this.y / 16) , parseInt(this.x / 16))) { this.x -= 2; }
+				if (this.tankRoad['dir' + 3]( parseInt(this.y / 16) , parseInt(this.x / 16) )) { this.x -= 2; }
 				this.posiY = this.y % 16;
 				this.posiY && this.positionY();
 				break;
@@ -151,50 +121,138 @@ class TankObj {
 
 	// 子弹
 	bullet(){
-		if (this.shot) {
-			if (this.bulletStatus) {
-				this.bulletStatus = false;
-				this.bx = this.x;
-				this.by = this.y;
-				this.bDir = this.dir;
-
-				switch (this.bDir) {
-					case 0:
-						// 因为this.bx是等于this.x的，因此要将this.bx的位置改变为坦克正中心
-						this.bx += 12;
-						this.moveX = 0;
-						this.moveY = -4;
-						this.shotImg = m_canT;
-						break;
-					case 1:
-						this.bx += 24;
-						this.by += 12;
-						this.moveX = 4;
-						this.moveY = 0;
-						this.shotImg = m_canR;
-						break;
-					case 2:
-						this.bx += 12;
-						this.by += 24;
-						this.moveX = 0;
-						this.moveY = 4;
-						this.shotImg = m_canD;
-						break;
-					default:
-						this.by += 12;
-						this.moveX = -4;
-						this.moveY = 0;
-						this.shotImg = m_canL;
-						break;
-				}
+		if (this.bulletStatus) {
+			this.bulletStatus = false;
+			this.bx = this.x;
+			this.by = this.y;
+			this.bDir = this.dir;
+			switch (this.bDir) {
+				case 0:
+					// 因为this.bx是等于this.x的，因此要将this.bx的位置改变为坦克正中心
+					this.bx += 12;
+					this.moveX = 0;
+					this.moveY = -4;
+					this.shotImg = m_canT;
+					break;
+				case 1:
+					this.bx += 24;
+					this.by += 12;
+					this.moveX = 4;
+					this.moveY = 0;
+					this.shotImg = m_canR;
+					break;
+				case 2:
+					this.bx += 12;
+					this.by += 24;
+					this.moveX = 0;
+					this.moveY = 4;
+					this.shotImg = m_canD;
+					break;
+				default:
+					this.by += 12;
+					this.moveX = -4;
+					this.moveY = 0;
+					this.shotImg = m_canL;
+					break;
 			}
-			if (this.bulletRoad['dir' + this.bDir]() ){
-				this.bx += this.moveX;
-				this.by += this.moveY;
-				cxt.role.drawImage(this.shotImg , this.bx , this.by , 8 , 8);
-			} else {
-				this.shot = false;
-				this.bulletStatus = true;
+		}
+		if ( this.bulletRoad['dir' + this.bDir]() ){
+			this.bx += this.moveX;
+			this.by += this.moveY;
+			cxt.role.drawImage(this.shotImg , this.bx , this.by , 8 , 8);
+		} else {
+			oAud.attOver.play();
+			this.shot = false;
+			this.bulletStatus = true;
+		}
+	}
+
+	// 碰撞检测
+	collision(){
+		/**
+		 * [pass description]
+		 * @param  {[type]} roadMapNum1 [description]
+		 * @param  {[type]} roadMapNum2 [description]
+		 * @param  {[type]} num         0表示坦克，1表示子弹
+		 * @return {[type]}             [description]
+		 */
+		function pass(roadMapNum1 , roadMapNum2 , num) {
+			// 检查是否与砖块相互碰撞
+			let arr = [2];
+			for (let i = 0; i < 2; i++) {
+				arr[i] = num ? bulletRoadJudge(arguments[i]) : tankRoadJudge(arguments[i]);
+			}
+			if (arr[0] && arr[1]) {
+				return true;
+			}
+		}
+
+		// 坦克路径判断
+		function tankRoadJudge(num) {
+			switch (num) {
+				case undefined:
+				case 0: return true; break;
+				case 1:
+				case 2:
+				case 4:
+				case 5: return false; break;
+				// 冰路中间有相应的代码
+				case 3: return true; break;
+				// 砖块钢筋河流老家无法通过
+				default: break;
+			}
+		}
+		this.tankRoad = {
+			dir0 : (row , col) => {
+				return pass(roadMap[row][col] , roadMap[row][col + 1] , 0) && this.y > 0;
+			},
+
+			dir1 : (row , col) => {
+				return pass(roadMap[row][col + 2] , roadMap[row + 1][col + 2] , 0) && this.x < 384;
+			},
+
+			dir2 : (row , col) => {
+				return pass(roadMap[row + 2][col] , roadMap[row + 2][col + 1] , 0) && this.y < 384;
+			},
+
+			dir3 : (row , col) => {
+				return pass(roadMap[row][col] , roadMap[row + 1][col] , 0) && this.x > 0;
+			}
+		};
+
+		// 子弹路径判断
+		function bulletRoadJudge(num) {
+			switch (num) {
+				case undefined:
+				case 0: return true; break;
+				case 1:
+				case 2: return false; break;
+				// 河流跟冰路直接过
+				case 3:
+				case 4: return true; break;
+				// 子弹过老家那么游戏结束
+				case 5: draw.gameover = true; return false; break;
+				default: break;
+			}
+		}
+
+		let row , col;
+		this.bulletRoad = {
+			dir0 : (row = parseInt(this.by / 16) , col = parseInt(this.bx / 16)) => {
+				return pass(roadMap[row][col] , roadMap[row][col + 1] , 1) && this.by > 0;
+			},
+
+			// 这里改变this.bx的值是为了方便对子弹的下一个经过的roadMap数组进行判断
+			dir1 : (row = parseInt(this.by / 16) , col = parseInt((this.bx + 8) / 16)) => {
+				return pass(roadMap[row][col] , roadMap[row + 1][col] , 1) && this.bx < 408;
+			},
+
+			dir2 : (row = parseInt((this.by + 8) / 16) , col = parseInt(this.bx / 16)) => {
+				return pass(roadMap[row][col] , roadMap[row][col + 1] , 1) && this.by < 408;
+			},
+
+			dir3 : (row = parseInt(this.by / 16) , col = parseInt(this.bx / 16)) => {
+				return pass(roadMap[row][col] , roadMap[row + 1][col] , 1) && this.bx > 0;
 			}
 		}
 	}

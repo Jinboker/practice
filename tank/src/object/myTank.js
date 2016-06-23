@@ -19,7 +19,6 @@ class MyTank extends TankObj{
 		this.y =  384;
 		this.dir = 0;          //己方坦克默认方向向下
 
-		this.a = 0;
 		//渲染出生时候的动画
 		this.borned = false;              //坦克角色是否已经出生
 		this.bornNumCont = false;         //是否允许this.bornNum开始累加计数
@@ -35,8 +34,6 @@ class MyTank extends TankObj{
 		this.shieldDelay = new Delay();    //这个是用来控制防护罩变化的延迟
 
 		this.shot = false;     //己方坦克默认不射击
-
-		this.misc();
 	}
 
 	//按键判断
@@ -91,7 +88,10 @@ class MyTank extends TankObj{
 		keyPressed && this.btn();
 
 		//绘制子弹，只有当按键J按下的时候this.shot才会为真
-		this.shot && this.bullet();
+		if (this.shot) {
+			this.bulletStatus && oAud.att.play();
+			this.bullet();
+		}
 
 		// 防护罩（刚出生时候或者吃了防护罩的奖励）
 		this.shieldAble && this.shield();

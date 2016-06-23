@@ -1,3 +1,4 @@
+// 游戏暂停
 let stopSet,
 	stopAble = false,
 	startAble = true;
@@ -21,4 +22,10 @@ function gameStop() {
 		draw.tank = true;
 		stopAble = false;
 	}
+}
+
+
+// 游戏结束
+function gameOver(){
+	a();
 }

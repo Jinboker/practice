@@ -71,6 +71,9 @@ function gameLoop() {
 	// 游戏暂停
 	draw.stop && gameStop();
 
+	// 被子弹打到老家游戏结束
+	draw.gameover && gameOver();
+
 	// 循环执行函数
 	requestAnimFrame(gameLoop);
 }

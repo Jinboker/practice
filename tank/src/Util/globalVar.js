@@ -51,7 +51,8 @@ let draw = {
 	stop : false,
 	misc : false,
 	enemyNum : false,
-	info : false
+	info : false,
+	gameover : false
 };
 
 // 奖励类型
