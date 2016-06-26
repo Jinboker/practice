@@ -7,8 +7,7 @@ function gameStop() {
 	if (stopSet) {
 		stopSet = false;
 		cxt.role.save();
-		cxt.role.font = '100px';
-		cxt.role.fillStyle = 'yellow';
+		cxt.role.fillStyle = '#b53120';
 		cxt.role.fillText("GAME STOP" , 140 , 220);
 		cxt.role.restore();
 	}

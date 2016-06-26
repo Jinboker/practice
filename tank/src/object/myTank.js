@@ -34,6 +34,8 @@ class MyTank extends TankObj{
 		this.shieldDelay = new Delay();    //这个是用来控制防护罩变化的延迟
 
 		this.shot = false;     //己方坦克默认不射击
+
+		this.keyDirSave = 0;            //保存当前按下的方向键，用来判断是否有改变坦克的方向
 	}
 
 	//按键判断
@@ -41,7 +43,12 @@ class MyTank extends TankObj{
 		// 看是否按下了上下左右，为真则重新设置坦克坐标
 		if (keyDir_1 && keyInfo[keyDir_1].pressed) {
 			this.dir = keyInfo[keyDir_1].dir;
-			this.move();
+			// 看看是否有按下不同的方向键改变了坦克的方向
+			if (this.keyDirSave != keyDir_1) {
+				this.keyDirSave = keyDir_1;
+				this.dirChange = true;
+			}
+			this.tankPosi();     //重新确定坦克的坐标
 		}
 
 		// 开始/暂停，H键
@@ -95,8 +102,8 @@ class MyTank extends TankObj{
 
 		// 防护罩（刚出生时候或者吃了防护罩的奖励）
 		this.shieldAble && this.shield();
-
 		// 绘制坦克
+		// console.log(this.y);
 		cxt.role.drawImage(oImg.myTank , 0 ,  0 + this.dir * 64 + this.wheel * 32 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 }

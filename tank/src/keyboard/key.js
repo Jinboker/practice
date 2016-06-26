@@ -21,8 +21,8 @@
 // 游戏控制
 let keyPressed = false,            //是否有按键被按下
 	keyInfo = new Array(88),
-	keyCode =
-	keyDir_1 =
+	keyCode = null,
+	keyDir_1 = null,
 	keyDir_2 = null;
 
 //直接在keyInit函数里面调用，用来设置一些相关的按键信息
