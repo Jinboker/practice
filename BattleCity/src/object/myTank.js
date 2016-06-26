@@ -10,10 +10,6 @@
 //
 let tankLife = 2;
 class MyTank extends TankObj{
-	// constructor(){
-	// 	super();
-	// }
-
 	init(){
 		this.x = 128;
 		this.y =  384;
@@ -30,8 +26,8 @@ class MyTank extends TankObj{
 		this.shieldNum = 0;                   //防护罩的执行次数
 		this.shieldNumSave = 0;               //防护罩执行次数的保存
 		this.shieldAble = true;               //是否具有防护罩，默认有，在防护罩时间结束后被关闭
-		this.shieldPicPos = 0;               //决定防护罩显示的是哪部分的图片
-		this.shieldDelay = new Delay();    //这个是用来控制防护罩变化的延迟
+		this.shieldPicPos = 0;                //决定防护罩显示的是哪部分的图片
+		this.shieldDelay = new Delay();      //这个是用来控制防护罩变化的延迟
 
 		this.shot = false;     //己方坦克默认不射击
 
@@ -52,9 +48,7 @@ class MyTank extends TankObj{
 		}
 
 		// 开始/暂停，H键
-		if (!keyInfo[72].pressed) {
-			startAble = true;
-		}
+		!keyInfo[72].pressed && startAble = true;
 		if (startAble && keyInfo[72].pressed) {
 			draw.tank = false;
 			draw.stop = true;
@@ -63,9 +57,7 @@ class MyTank extends TankObj{
 		}
 
 		//发射子弹，J键
-		if (keyInfo[74].pressed) {
-			this.shot = true;
-		}
+		keyInfo[74].pressed && this.shot = true;
 	}
 
 	// 防护罩相关
@@ -102,8 +94,8 @@ class MyTank extends TankObj{
 
 		// 防护罩（刚出生时候或者吃了防护罩的奖励）
 		this.shieldAble && this.shield();
+
 		// 绘制坦克
-		// console.log(this.y);
 		cxt.role.drawImage(oImg.myTank , 0 ,  0 + this.dir * 64 + this.wheel * 32 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 }

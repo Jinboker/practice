@@ -20,16 +20,14 @@ class TankObj {
 		this.x;
 		this.y;
 
-		this.posi;  //用来检测当前坦克的位置，如果不在砖块契合处则需要改变位置
-
 		this.dir;
 		this.dirChange = true;   //坦克是否有改变方向
-		this.moveAble;    //坦克是否能够运动（主要是做砖块的检测）
+		this.tankMoveAble;    //坦克是否能够运动（主要是做砖块的检测）
 
 		this.shot;
 		this.bulletStatus = true;   //子弹状态，只有当this.bulletStatus及this.fire都为真时才会发射子弹
-		this.bx;
-		this.by;
+		this.bullet_x;
+		this.bullet_y;
 		this.shotImg;
 		this.xMove;
 		this.yMove;
@@ -85,76 +83,66 @@ class TankObj {
 		// 坦克变换方向（相邻的方向，不是相对的方向）后相关的准备工作，包括使坦克与砖块契合处对齐和检测当前方向是否可以通行
 		this.dirChange && this.positionSet(this.dir);
 
-		switch (this.dir) {
-			//向上
-			case 0:
-				// 如果可以通行，那么运动坦克
-				this.moveAble && (this.y -= 2);
-				// 如果坦克正好运动到路径数组节点处，那么检测下一个路径是否允许通过
-				!(this.y % 16) && ( this.moveAble = this.tankRoad['dir' + 0]());
-				break;
-			//向右
-			case 1:
-				this.moveAble && (this.x += 2);
-				!(this.x % 16) && ( this.moveAble = this.tankRoad['dir' + 1]());
-				break;
-			//向下
-			case 2:
-				this.moveAble && (this.y += 2);
-				!(this.y % 16) && ( this.moveAble = this.tankRoad['dir' + 2]());
-				break;
-			//向左
-			default:
-				this.moveAble && (this.x -= 2);
-				!(this.x % 16) && ( this.moveAble = this.tankRoad['dir' + 3]());
-				break;
+		// 因为方向是由0、1、2、3（上、右、下、左）来表示的，所以通过this.dir % 2就能判断具体是上下还是左右
+		if (this.dir % 2) {
+			// 如果可以通行，那么运动坦克
+			// 因为this.dir % 2为真，那么this.dir正好为1或3（右、左），减1后判断是否为真就能确定是左还是右了，再执行相应的操作
+			(this.dir - 1) ? ( this.tankMoveAble && (this.x -= 2) ) : ( this.tankMoveAble && (this.x += 2) );
+			// 如果坦克正好运动到路径数组节点处，那么检测下一个路径是否允许通过
+			!(this.x % 16) && ( this.tankMoveAble = this.tankRoad['dir' + this.dir]());
+		} else {
+			this.dir ? ( this.tankMoveAble && (this.y += 2) ) : ( this.tankMoveAble && (this.y -= 2) );
+			!(this.y % 16) && ( this.tankMoveAble = this.tankRoad['dir' + this.dir]());
 		}
 	}
 
 	//每次坦克改变方向后的相应的设置及检测工作
 	positionSet(dir){
 		this.dirChange = false;
-		if (dir === 0 || dir === 2) {
-			let posiX = this.x % 16;
-			this.x = posiX <= 6 ? this.x - posiX : this.x - posiX + 16;
-		} else {
+		if (dir % 2) {
+			// 左右方向的设置
 			let posiY = this.y % 16;
 			this.y = posiY <= 6 ? this.y - posiY : this.y - posiY + 16;
+		} else {
+			// 上下方向的设置
+			let posiX = this.x % 16;
+			this.x = posiX <= 6 ? this.x - posiX : this.x - posiX + 16;
 		}
-		this.moveAble = this.tankRoad['dir' + dir]();
+		this.tankMoveAble = this.tankRoad['dir' + dir]();
 	}
 
 	// 子弹
 	bullet(){
 		if (this.bulletStatus) {
 			this.bulletStatus = false;
-			this.bx = this.x;
-			this.by = this.y;
+			this.bullet_x = this.x;
+			this.bullet_y = this.y;
 			this.bDir = this.dir;
+
+			// this.bullet_x及this.bullet_y代表了子弹的位置，因为子弹绘制的地点与this.x和this.y不同，因此需要根据方向改变位置
 			switch (this.bDir) {
 				case 0:
-					// 因为this.bx是等于this.x的，因此要将this.bx的位置改变为坦克正中心
-					this.bx += 12;
+					this.bullet_x += 12;
 					this.moveX = 0;
 					this.moveY = -4;
 					this.shotImg = m_canT;
 					break;
 				case 1:
-					this.bx += 24;
-					this.by += 12;
+					this.bullet_x += 24;
+					this.bullet_y += 12;
 					this.moveX = 4;
 					this.moveY = 0;
 					this.shotImg = m_canR;
 					break;
 				case 2:
-					this.bx += 12;
-					this.by += 24;
+					this.bullet_x += 12;
+					this.bullet_y += 24;
 					this.moveX = 0;
 					this.moveY = 4;
 					this.shotImg = m_canD;
 					break;
 				default:
-					this.by += 12;
+					this.bullet_y += 12;
 					this.moveX = -4;
 					this.moveY = 0;
 					this.shotImg = m_canL;
@@ -162,9 +150,9 @@ class TankObj {
 			}
 		}
 		if ( this.bulletRoad['dir' + this.bDir]() ){
-			this.bx += this.moveX;
-			this.by += this.moveY;
-			cxt.role.drawImage(this.shotImg , this.bx , this.by , 8 , 8);
+			this.bullet_x += this.moveX;
+			this.bullet_y += this.moveY;
+			cxt.role.drawImage(this.shotImg , this.bullet_x , this.bullet_y , 8 , 8);
 		} else {
 			oAud.attOver.play();
 			this.shot = false;
@@ -241,21 +229,21 @@ class TankObj {
 		}
 
 		this.bulletRoad = {
-			dir0 : (row = parseInt(this.by / 16) , col = parseInt(this.bx / 16)) => {
-				return pass(roadMap[row][col] , roadMap[row][col + 1] , 1) && this.by > 0;
+			dir0 : (row = parseInt(this.bullet_y / 16) , col = parseInt(this.bullet_x / 16)) => {
+				return pass(roadMap[row][col] , roadMap[row][col + 1] , 1) && this.bullet_y > 0;
 			},
 
-			// 这里改变this.bx的值是为了方便对子弹的下一个经过的roadMap数组进行判断
-			dir1 : (row = parseInt(this.by / 16) , col = parseInt((this.bx + 8) / 16)) => {
-				return pass(roadMap[row][col] , roadMap[row + 1][col] , 1) && this.bx < 408;
+			// 这里改变this.bullet_x的值是为了方便对子弹的下一个经过的roadMap数组进行判断
+			dir1 : (row = parseInt(this.bullet_y / 16) , col = parseInt((this.bullet_x + 8) / 16)) => {
+				return pass(roadMap[row][col] , roadMap[row + 1][col] , 1) && this.bullet_x < 408;
 			},
 
-			dir2 : (row = parseInt((this.by + 8) / 16) , col = parseInt(this.bx / 16)) => {
-				return pass(roadMap[row][col] , roadMap[row][col + 1] , 1) && this.by < 408;
+			dir2 : (row = parseInt((this.bullet_y + 8) / 16) , col = parseInt(this.bullet_x / 16)) => {
+				return pass(roadMap[row][col] , roadMap[row][col + 1] , 1) && this.bullet_y < 408;
 			},
 
-			dir3 : (row = parseInt(this.by / 16) , col = parseInt(this.bx / 16)) => {
-				return pass(roadMap[row][col] , roadMap[row + 1][col] , 1) && this.bx > 0;
+			dir3 : (row = parseInt(this.bullet_y / 16) , col = parseInt(this.bullet_x / 16)) => {
+				return pass(roadMap[row][col] , roadMap[row + 1][col] , 1) && this.bullet_x > 0;
 			}
 		}
 	}
