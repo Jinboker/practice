@@ -1,25 +1,11 @@
-// class Student extends People {
-//     constructor(name, grade) { //构造函数
-//         super(name);    //调用父类构造函数
-//           this.grade = grade;
-//     }
-//     sayGrade() {
-//           console.log(this.grade);
-//     }
-// }
-//
 let tankLife = 2;
 class MyTank extends TankObj{
 	init(){
 		this.x = 128;
 		this.y =  384;
+		this.iType = 1;        //坦克的状态，最高三级，可以打钢筋
 		this.dir = 0;          //己方坦克默认方向向下
-
-		//渲染出生时候的动画
-		this.borned = false;              //坦克角色是否已经出生
-		this.bornNumCont = false;         //是否允许this.bornNum开始累加计数
-		this.bornChange = 0;
-		this.bornNum = 0;                 //出生的动画循环的次数
+		this.iTankSpeed = 2;   //己方坦克默认速度为2
 
 		// 防护罩
 		this.shieldLoopNumSet = true;         //是否设置防护罩的执行次数
@@ -27,11 +13,14 @@ class MyTank extends TankObj{
 		this.shieldNumSave = 0;               //防护罩执行次数的保存
 		this.shieldAble = true;               //是否具有防护罩，默认有，在防护罩时间结束后被关闭
 		this.shieldPicPos = 0;                //决定防护罩显示的是哪部分的图片
-		this.shieldDelay = new Delay();      //这个是用来控制防护罩变化的延迟
+		this.iShieldDelay = 3;                //这个是用来控制防护罩变化的延迟
 
-		this.shot = false;     //己方坦克默认不射击
+		this.shot = false;                //己方坦克默认不射击
+		this.bShotAble = false;
+		this.iBulletDelay = 0;          //最少需要n次循环后才会开始发射下一发子弹，默认是0，第一次发射子弹过后设置成20
 
 		this.keyDirSave = 0;            //保存当前按下的方向键，用来判断是否有改变坦克的方向
+
 	}
 
 	//按键判断
@@ -48,7 +37,9 @@ class MyTank extends TankObj{
 		}
 
 		// 开始/暂停，H键
-		!keyInfo[72].pressed && startAble = true;
+		if (!keyInfo[72].pressed) {
+			startAble = true;
+		}
 		if (startAble && keyInfo[72].pressed) {
 			draw.tank = false;
 			draw.stop = true;
@@ -57,7 +48,15 @@ class MyTank extends TankObj{
 		}
 
 		//发射子弹，J键
-		keyInfo[74].pressed && this.shot = true;
+		if (!keyInfo[74].pressed) {
+			this.bShotAble = true;
+		}
+		this.iBulletDelay > 0 && this.iBulletDelay --;
+		if (!this.iBulletDelay && this.bShotAble && keyInfo[74].pressed) {
+			this.iBulletDelay = 20;
+			this.bShotAble = false;
+			this.shot = true;
+		}
 	}
 
 	// 防护罩相关
@@ -68,7 +67,12 @@ class MyTank extends TankObj{
 		}
 		if (this.shieldNumSave < this.shieldNum) {
 			this.shieldNumSave ++;
-			this.shieldDelay.do(() => this.shieldPicPos = +! this.shieldPicPos , 3);   // 每隔3次循环改变一下防护罩的图片
+			// 每隔3次循环改变一下防护罩的图片
+			this.iShieldDelay > 0 && this.iShieldDelay --;
+			if (!this.iShieldDelay) {
+				this.iShieldDelay = 3;
+				this.shieldPicPos = +! this.shieldPicPos;
+			}
 			cxt.role.drawImage(oImg.misc , 32 + this.shieldPicPos * 32 , 0 , 32 , 32 , this.x , this.y , 32 , 32);
 		} else {
 			this.shieldNumSave = 0;

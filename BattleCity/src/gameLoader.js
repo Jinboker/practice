@@ -65,7 +65,6 @@ function gameLoop() {
 		// 绘制己方坦克
 		oClass.myTank.draw();
 		// 绘制敌军
-
 	}
 
 	// 游戏暂停

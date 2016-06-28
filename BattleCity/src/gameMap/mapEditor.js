@@ -12,8 +12,6 @@ class MapEditor{
 		}
 		this.setMapData[12][6] = 15;         // 设置老家的砖块
 
-		this.delay = new Delay();
-
 		this.ensureMap = true;
 
 		this.drawTankAble = true;     //是否需要重绘坦克

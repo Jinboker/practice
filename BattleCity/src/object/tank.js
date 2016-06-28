@@ -19,26 +19,34 @@ class TankObj {
 	constructor(){
 		this.x;
 		this.y;
+		this.iType;         //坦克的状态，主要是看吃了几颗星星，最高三级，能打钢筋
+		this.iWheelDelay = 5;     //坦克轮胎隔5个循环改变一次
+		this.wheel = 0;
 
 		this.dir;
 		this.dirChange = true;   //坦克是否有改变方向
 		this.tankMoveAble;    //坦克是否能够运动（主要是做砖块的检测）
 
+		//渲染出生时候的动画
+		this.borned = false;              //坦克角色是否已经出生
+		this.bornNumCont = false;         //是否允许this.bornNum开始累加计数
+		this.bornChange = 0;
+		this.bornNum = 0;                 //出生的动画循环的次数
+		this.bornDelay = 3;               //三个循环的延迟改变一次出生的图片
+
 		this.shot;
+		this.bAttOverAud;      //播放子弹攻击结束的音乐
 		this.bulletStatus = true;   //子弹状态，只有当this.bulletStatus及this.fire都为真时才会发射子弹
 		this.bullet_x;
 		this.bullet_y;
 		this.shotImg;
 		this.xMove;
 		this.yMove;
-
-		this.wheel = 0;
-		this.delay = new Delay();   //这个延迟是用来控制出生时候的动画及轮子变化的
+		this.iTankSpeed;        //坦克移动速度
 
 		this.collision();
 		this.fn();
 	}
-
 
 	fn(){
 		// 一个立即执行函数吧
@@ -58,7 +66,9 @@ class TankObj {
 			}
 			//每隔3次循环更新一下出生的动画，因为出生的动画是由四个图片组成，因此this.bornChange要循环四次
 			this.doFun(() => {
-				this.delay.do(() => {
+				this.bornDelay > 0 && this.bornDelay --;
+				if (!this.bornDelay) {
+					this.bornDelay = 3;
 					if (this.bornChange < 4) {
 						this.bornChange ++;
 					} else {
@@ -67,7 +77,7 @@ class TankObj {
 						cxt.bg.clearRect(163 , 404 , 32 , 32);
 					}
 					cxt.bg.drawImage(oImg.bonus , 96 - 32 * this.bornChange , 64 , 32 , 32 , 163 , 404 , 32 , 32);
-				} , 3);
+				}
 			});
 		} else {
 			cxt.bg.clearRect(163 , 404 , 32 , 32);
@@ -78,37 +88,44 @@ class TankObj {
 
 	tankPosi(){
 		//坦克轮子的改变
-		this.delay.do(() => this.wheel = +!this.wheel , 5);
+		this.iWheelDelay > 0 && this.iWheelDelay --;
+		if (!this.iWheelDelay) {
+			this.iWheelDelay = 5;
+			this.wheel = +!this.wheel;
+		}
 
 		// 坦克变换方向（相邻的方向，不是相对的方向）后相关的准备工作，包括使坦克与砖块契合处对齐和检测当前方向是否可以通行
 		this.dirChange && this.positionSet(this.dir);
 
 		// 因为方向是由0、1、2、3（上、右、下、左）来表示的，所以通过this.dir % 2就能判断具体是上下还是左右
 		if (this.dir % 2) {
-			// 如果可以通行，那么运动坦克
-			// 因为this.dir % 2为真，那么this.dir正好为1或3（右、左），减1后判断是否为真就能确定是左还是右了，再执行相应的操作
-			(this.dir - 1) ? ( this.tankMoveAble && (this.x -= 2) ) : ( this.tankMoveAble && (this.x += 2) );
+			// 因为this.dir % 2为真，那么this.dir正好为1或3（右、左），减1后判断是否为真就能确定是左还是右了
+			// 如果tankMoveAble为真则代表可以通行，那么运动坦克
+			(this.dir - 1) ? ( this.tankMoveAble && (this.x -= this.iTankSpeed) ) : ( this.tankMoveAble && (this.x += this.iTankSpeed) );
 			// 如果坦克正好运动到路径数组节点处，那么检测下一个路径是否允许通过
 			!(this.x % 16) && ( this.tankMoveAble = this.tankRoad['dir' + this.dir]());
 		} else {
-			this.dir ? ( this.tankMoveAble && (this.y += 2) ) : ( this.tankMoveAble && (this.y -= 2) );
+			this.dir ? ( this.tankMoveAble && (this.y += this.iTankSpeed) ) : ( this.tankMoveAble && (this.y -= this.iTankSpeed) );
 			!(this.y % 16) && ( this.tankMoveAble = this.tankRoad['dir' + this.dir]());
 		}
 	}
 
-	//每次坦克改变方向后的相应的设置及检测工作
-	positionSet(dir){
+	/**
+	 * 每次坦克改变方向后的相应的设置及检测工作
+	 * @param  {number} iDir [方向，this.dir]
+	 */
+	positionSet(iDir){
 		this.dirChange = false;
-		if (dir % 2) {
+		if (iDir % 2) {
 			// 左右方向的设置
-			let posiY = this.y % 16;
-			this.y = posiY <= 6 ? this.y - posiY : this.y - posiY + 16;
+			let iPosiY = this.y % 16;
+			this.y = iPosiY <= 6 ? this.y - iPosiY : this.y - iPosiY + 16;
 		} else {
 			// 上下方向的设置
-			let posiX = this.x % 16;
-			this.x = posiX <= 6 ? this.x - posiX : this.x - posiX + 16;
+			let iPosiX = this.x % 16;
+			this.x = iPosiX <= 6 ? this.x - iPosiX : this.x - iPosiX + 16;
 		}
-		this.tankMoveAble = this.tankRoad['dir' + dir]();
+		this.tankMoveAble = this.tankRoad['dir' + iDir]();
 	}
 
 	// 子弹
@@ -149,7 +166,7 @@ class TankObj {
 					break;
 			}
 		}
-		if ( this.bulletRoad['dir' + this.bDir]() ){
+		if ( this.bulletRoad[this.bDir]() ){
 			this.bullet_x += this.moveX;
 			this.bullet_y += this.moveY;
 			cxt.role.drawImage(this.shotImg , this.bullet_x , this.bullet_y , 8 , 8);
@@ -176,9 +193,7 @@ class TankObj {
 				arr[i] = num ? bulletRoadJudge(arguments[i]) : tankRoadJudge(arguments[i]);
 			}
 
-			if (arr[0] && arr[1]) {
-				return true;
-			}
+			return (arr[0] && arr[1]);
 		}
 
 		// 坦克路径判断
@@ -198,53 +213,82 @@ class TankObj {
 		this.tankRoad = {
 			// 这里row = parseInt((this.y - 1) / 16)是因为需要检测的是当前this.y所代表的数组的上一行的数组值，因此减1，dir3同理
 			dir0 : ( row = parseInt((this.y - 1) / 16) , col = parseInt(this.x / 16) ) => {
-				return pass(roadMap[row][col] , roadMap[row][col + 1] , 0) && this.y > 0;
+				return pass(roadMap[row][col] , roadMap[row][col + 1]) && this.y > 0;
 			},
 
 			dir1 : ( row = parseInt(this.y / 16) , col = parseInt(this.x / 16) ) => {
-				return pass(roadMap[row][col + 2] , roadMap[row + 1][col + 2] , 0) && this.x < 384;
+				return pass(roadMap[row][col + 2] , roadMap[row + 1][col + 2]) && this.x < 384;
 			},
 
 			dir2 : ( row = parseInt(this.y / 16) , col = parseInt(this.x / 16) ) => {
-				return pass(roadMap[row + 2][col] , roadMap[row + 2][col + 1] , 0) && this.y < 384;
+				return pass(roadMap[row + 2][col] , roadMap[row + 2][col + 1]) && this.y < 384;
 			},
 
 			dir3 : ( row = parseInt(this.y / 16) , col = parseInt((this.x - 1) / 16) ) => {
-				return pass(roadMap[row][col] , roadMap[row + 1][col] , 0) && this.x > 0;
+				return pass(roadMap[row][col] , roadMap[row + 1][col]) && this.x > 0;
 			}
 		};
 
+
+		let arr = [2];
 		// 子弹路径判断
-		function bulletRoadJudge(num) {
+		this.bulletRoad = {
+			0 : (row = parseInt(this.bullet_y / 16) , col = parseInt(this.bullet_x / 16)) => {
+				arr[0] = this.bulletRoadJudge(roadMap[row][col] , row , col , 0);
+				arr[1] = this.bulletRoadJudge(roadMap[row][col + 1] , row , col + 1 , 1);
+				return arr[0] && arr[1] && this.bullet_y > 0;
+			},
+
+			// 这里改变this.bullet_x的值是为了方便对子弹的下一个经过的roadMap数组进行判断
+			1 : (row = parseInt(this.bullet_y / 16) , col = parseInt((this.bullet_x + 8) / 16)) => {
+				arr[0] = this.bulletRoadJudge(roadMap[row][col] , row , col , 0);
+				arr[1] = this.bulletRoadJudge(roadMap[row + 1][col] , row + 1 , col , 1);
+				return arr[0] && arr[1] && this.bullet_x < 408;
+			},
+
+			2 : (row = parseInt((this.bullet_y + 8) / 16) , col = parseInt(this.bullet_x / 16)) => {
+				arr[0] = this.bulletRoadJudge(roadMap[row][col] , row , col , 0);
+				arr[1] = this.bulletRoadJudge(roadMap[row][col + 1] , row , col + 1 , 1);
+				return arr[0] && arr[1] && this.bullet_y < 408;
+			},
+
+			3 : (row = parseInt(this.bullet_y / 16) , col = parseInt(this.bullet_x / 16)) => {
+				arr[0] = this.bulletRoadJudge(roadMap[row][col] , row , col , 0);
+				arr[1] = this.bulletRoadJudge(roadMap[row + 1][col] , row + 1 , col , 1);
+				return arr[0] && arr[1] && this.bullet_x > 0;
+			}
+		}
+
+		// num值，i表示是第几个，这个主要是为了砖块的判断
+		this.bulletRoadJudge = function (num , row , col , i) {
 			switch (num) {
+				// 如果是未定义或者0，直接通过
 				case undefined:
 				case 0: return true; break;
+				// 砖块
 				case 1:
-				case 2: return false; break;
+					roadMap[row][col] = 0;
+					cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
+					return false;
+					break;
+				// 钢筋
+				case 2:
+					if (this.iType === 3) {
+						roadMap[row][col] = 0;
+						cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
+					}
+					return false;
+					break;
 				// 子弹过老家那么游戏结束
-				case 5: draw.gameover = true; return false; break;
-				// 河流跟冰路直接过（默认是3和4，最少）
+				case 5:
+					draw.gameover = true;
+					return false;
+					break;
+				// 河流跟冰路直接过（默认是3和4）
 				default: return true; break;
 			}
 		}
 
-		this.bulletRoad = {
-			dir0 : (row = parseInt(this.bullet_y / 16) , col = parseInt(this.bullet_x / 16)) => {
-				return pass(roadMap[row][col] , roadMap[row][col + 1] , 1) && this.bullet_y > 0;
-			},
 
-			// 这里改变this.bullet_x的值是为了方便对子弹的下一个经过的roadMap数组进行判断
-			dir1 : (row = parseInt(this.bullet_y / 16) , col = parseInt((this.bullet_x + 8) / 16)) => {
-				return pass(roadMap[row][col] , roadMap[row + 1][col] , 1) && this.bullet_x < 408;
-			},
-
-			dir2 : (row = parseInt((this.bullet_y + 8) / 16) , col = parseInt(this.bullet_x / 16)) => {
-				return pass(roadMap[row][col] , roadMap[row][col + 1] , 1) && this.bullet_y < 408;
-			},
-
-			dir3 : (row = parseInt(this.bullet_y / 16) , col = parseInt(this.bullet_x / 16)) => {
-				return pass(roadMap[row][col] , roadMap[row + 1][col] , 1) && this.bullet_x > 0;
-			}
-		}
 	}
 }

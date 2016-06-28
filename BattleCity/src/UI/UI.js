@@ -33,18 +33,20 @@ class UI {
 	}
 
 	init(){
-		this.delay = new Delay();      //延迟执行
 		this.audPlay = true;           //是否开始播放音频
 		// 开始的UI的相关变量
 		this.startY = cxt.h;          // 开始画面上移的y值
 		// this.moveToTop = false;         //moveToTop为真就表示开始画面已经运动到了最终位置
 		this.modeChoose = 272;          // 开始画面上小坦克的纵向位置
+		this.iWheelDelay = 5;          //坦克轮胎隔5个循环改变一次
 		this.wheel = 0;                 //wheel表示轮子的变化0 -> 1 -> 0 -> 1
 		// 关卡选择界面的相关变量
 		this.curtainHeight = 0;         //当幕布开始上下合拢时，幕布的高度
 		this.maxCurtainHeight = cxt.h * 0.5;
 		this.nextAble = false;          //是否允许进入下一个stage.status
 		this.bgWidth = 0;               //当幕布开始左右分开时，游戏界面的宽度的一半
+
+		this.iStartMusicDelay = 80;     //在开始播放开始音乐过了后再过80个循环才拉开幕布会开始游戏
 	}
 
 	draw(){
@@ -90,7 +92,11 @@ class UI {
 			cxt.bg.clearRect(140 , 260 , 32 , 120);
 			cxt.bg.drawImage(oImg.myTank , 0 ,  64 + this.wheel * 32 , 32 , 32 , 140 , this.modeChoose , 32 , 32);
 			// 每循环5次就改变一次轮胎
-			this.delay.do(() => this.wheel = +!this.wheel , 5);
+			this.iWheelDelay > 0 && this.iWheelDelay --;
+			if (!this.iWheelDelay) {
+				this.iWheelDelay = 5;
+				this.wheel = +!this.wheel;
+			}
 			// 如果有按键按下则检测是哪一个按键并执行相应的操作
 			if (keyPressed) {
 				keyPressed = false;
@@ -101,7 +107,6 @@ class UI {
 					case 87: this.modeChoose > 272 ?  this.modeChoose -= 30 : this.modeChoose = 332; break;
 					// 确认按键H
 					case 72:
-						this.delay.num = 0;          //重置延迟循环计数
 						stage.mode = (this.modeChoose - 272) / 30;    //确定选择的模式
 						if (stage.mode === 2) {
 							draw.ui = false;         //选择自定义模式那么关闭ui的绘制
@@ -170,17 +175,20 @@ class UI {
 				}
 				// 开始播放音乐后this.nextAble为真，那么延迟80个循环后开始进入下一个UI状态
 				if (this.nextAble) {
-					this.delay.do(() => {
-						cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
-						cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
-						cxt.role.save();
-						cxt.role.fillStyle = '#666';
-						cxt.role.fillRect(0 , 0 , cxt.l , cxt.l);
-						cxt.role.restore();
-						draw.map = true;       //循环开始绘制背景地图
-						stage.status = 2;      //左右幕布拉开
-						this.audPlay = true;   //重置this.audPlay的值，为下一次播放音乐做准备
-					} , 80);
+					if (this.iStartMusicDelay > 0) {
+						this.iStartMusicDelay --;
+						return;
+					}
+					this.iStartMusicDelay = 80;
+					cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
+					cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
+					cxt.role.save();
+					cxt.role.fillStyle = '#666';
+					cxt.role.fillRect(0 , 0 , cxt.l , cxt.l);
+					cxt.role.restore();
+					draw.map = true;       //循环开始绘制背景地图
+					stage.status = 2;      //左右幕布拉开
+					this.audPlay = true;   //重置this.audPlay的值，为下一次播放音乐做准备
 				}
 				break;
 			// 左右两幕布拉开

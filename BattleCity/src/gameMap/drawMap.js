@@ -9,6 +9,7 @@ class DrawMap{
 		for (let i = 0; i < 28; i++) {
 			roadMap[i] = new Array(28);
 		}
+		this.a = 0;
 	}
 
 	draw(num){        //传入当前需要绘制的关卡数
