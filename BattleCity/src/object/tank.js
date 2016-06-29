@@ -233,9 +233,11 @@ class TankObj {
 		let arr = [2];
 		// 子弹路径判断
 		this.bulletRoad = {
-			0 : (row = parseInt(this.bullet_y / 16) , col = parseInt(this.bullet_x / 16)) => {
+			0 : (row = parseInt( (this.bullet_y) / 16) , col = parseInt(this.bullet_x / 16)) => {
 				arr[0] = this.bulletRoadJudge(roadMap[row][col] , row , col , 0);
 				arr[1] = this.bulletRoadJudge(roadMap[row][col + 1] , row , col + 1 , 1);
+				// console.log(arr[0])
+				// console.log(arr[1])
 				return arr[0] && arr[1] && this.bullet_y > 0;
 			},
 
@@ -252,13 +254,15 @@ class TankObj {
 				return arr[0] && arr[1] && this.bullet_y < 408;
 			},
 
-			3 : (row = parseInt(this.bullet_y / 16) , col = parseInt(this.bullet_x / 16)) => {
+			3 : (row = parseInt(this.bullet_y / 16) , col = parseInt( (this.bullet_x) / 16)) => {
 				arr[0] = this.bulletRoadJudge(roadMap[row][col] , row , col , 0);
 				arr[1] = this.bulletRoadJudge(roadMap[row + 1][col] , row + 1 , col , 1);
 				return arr[0] && arr[1] && this.bullet_x > 0;
 			}
 		}
 
+		let oBrickStatus = new Object();
+		let ccc;
 		// num值，i表示是第几个，这个主要是为了砖块的判断
 		this.bulletRoadJudge = function (num , row , col , i) {
 			switch (num) {
@@ -267,9 +271,12 @@ class TankObj {
 				case 0: return true; break;
 				// 砖块
 				case 1:
-					roadMap[row][col] = 0;
-					cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
-					return false;
+					this.bulletBrickRoad(row , col , i);
+
+					return ccc;
+					// roadMap[row][col] = 0;
+					// cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
+					// return false;
 					break;
 				// 钢筋
 				case 2:
@@ -289,6 +296,50 @@ class TankObj {
 			}
 		}
 
+		let nn;
+		this.bulletBrickRoad = function (row , col , i) {
+			nn = row * 16 + col;
+			if (!!oBrickStatus[nn]) {
+				this.bulletBrickA(row , col , i);
+			} else{
+				oBrickStatus[nn] = [1 , 1 , 1 , 1];
+				this.bulletBrickA(row , col , i);
+			}
+		}
 
+		function clearBrick(row , col) {
+			if( !(oBrickStatus[nn][0] && oBrickStatus[nn][1] && oBrickStatus[nn][2] && oBrickStatus[nn][3]) ) {
+				oBrickStatus[nn] = null;
+				roadMap[row][col] = 0;
+			}
+		}
+
+		let linshi;
+		this.bulletBrickA = function (row , col , i) {
+			switch (this.dir) {
+				case 0:
+					linshi = parseInt((this.bullet_y - row * 16) / 8);
+					if (oBrickStatus[nn][linshi * 2 + 1 - i]) {
+						oBrickStatus[nn][linshi * 2] = 0;
+						oBrickStatus[nn][linshi * 2 + 1] = 0;
+						cxt.bg.clearRect(35 + col * 16 , 20 + linshi * 8 + row * 16 , 16 , 8);
+						ccc =  false;
+					}else {
+						ccc = true;
+					}
+					break;
+				case 1:
+
+					break;
+				case 2:
+
+					break;
+				case 3:
+
+					break;
+				default:
+					break;
+			}
+		}
 	}
 }
