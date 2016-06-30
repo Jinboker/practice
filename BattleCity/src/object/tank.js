@@ -329,10 +329,10 @@ class TankObj {
 			if (this.iBullet_dir % 2) {
 				// this.iBullet_dir%3*8是因为方向不同，子弹的x值并不是一直处于子弹当前前进方向的最面的，下面的y同理
 				brickLayer = parseInt( ((this.bullet_x+this.iBullet_dir%3*8) - col * 16) / 8 );
-				if (oBrickStatus[iBrickObjIndex][linshi + (1 - i) * 2]) {
-					oBrickStatus[iBrickObjIndex][linshi] = 0;
-					oBrickStatus[iBrickObjIndex][linshi + 2] = 0;
-					cxt.bg.clearRect(35 + linshi * 8 + col * 16 , 20 + row * 16 , 8 , 16);
+				if (oBrickStatus[iBrickObjIndex][brickLayer + (1 - i) * 2]) {
+					oBrickStatus[iBrickObjIndex][brickLayer] = 0;
+					oBrickStatus[iBrickObjIndex][brickLayer + 2] = 0;
+					cxt.bg.clearRect(35 + brickLayer * 8 + col * 16 , 20 + row * 16 , 8 , 16);
 					clearBrick(row , col);
 					return false;
 				}
@@ -340,10 +340,10 @@ class TankObj {
 			// 子弹方向为上下
 			} else {
 				brickLayer = parseInt( ((this.bullet_y+this.iBullet_dir/2*8) - row * 16) / 8 );
-				if (oBrickStatus[iBrickObjIndex][linshi * 2 + 1 - i]) {
-					oBrickStatus[iBrickObjIndex][linshi * 2] = 0;
-					oBrickStatus[iBrickObjIndex][linshi * 2 + 1] = 0;
-					cxt.bg.clearRect(35 + col * 16 , 20 + linshi * 8 + row * 16 , 16 , 8);
+				if (oBrickStatus[iBrickObjIndex][brickLayer * 2 + 1 - i]) {
+					oBrickStatus[iBrickObjIndex][brickLayer * 2] = 0;
+					oBrickStatus[iBrickObjIndex][brickLayer * 2 + 1] = 0;
+					cxt.bg.clearRect(35 + col * 16 , 20 + brickLayer * 8 + row * 16 , 16 , 8);
 					clearBrick(row , col);
 					return false;
 				}
