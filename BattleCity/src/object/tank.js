@@ -14,6 +14,8 @@ m_canR.getContext('2d').drawImage(oImg.misc , 8 , 0 , 8 , 8 , 0 , 0 , 8 , 8);
 m_canD.getContext('2d').drawImage(oImg.misc , 16 , 0 , 8 , 8 , 0 , 0 , 8 , 8);
 m_canL.getContext('2d').drawImage(oImg.misc , 24 , 0 , 8 , 8 , 0 , 0 , 8 , 8);
 
+let oBrickStatus = new Object();    //每当子弹碰到砖块后就将当前砖块的状态存如该数组，在每次关卡结束后该对象要重置
+
 // 坦克的父类
 class TankObj {
 	constructor(){
@@ -43,6 +45,7 @@ class TankObj {
 		this.xMove;
 		this.yMove;
 		this.iTankSpeed;        //坦克移动速度
+		this.iBullet_dir;           //子弹的方向
 
 		this.collision();
 		this.fn();
@@ -103,10 +106,10 @@ class TankObj {
 			// 如果tankMoveAble为真则代表可以通行，那么运动坦克
 			(this.dir - 1) ? ( this.tankMoveAble && (this.x -= this.iTankSpeed) ) : ( this.tankMoveAble && (this.x += this.iTankSpeed) );
 			// 如果坦克正好运动到路径数组节点处，那么检测下一个路径是否允许通过
-			!(this.x % 16) && ( this.tankMoveAble = this.tankRoad['dir' + this.dir]());
+			!(this.x % 16) && ( this.tankMoveAble = this.tankRoad[this.dir]());
 		} else {
 			this.dir ? ( this.tankMoveAble && (this.y += this.iTankSpeed) ) : ( this.tankMoveAble && (this.y -= this.iTankSpeed) );
-			!(this.y % 16) && ( this.tankMoveAble = this.tankRoad['dir' + this.dir]());
+			!(this.y % 16) && ( this.tankMoveAble = this.tankRoad[this.dir]());
 		}
 	}
 
@@ -125,7 +128,7 @@ class TankObj {
 			let iPosiX = this.x % 16;
 			this.x = iPosiX <= 6 ? this.x - iPosiX : this.x - iPosiX + 16;
 		}
-		this.tankMoveAble = this.tankRoad['dir' + iDir]();
+		this.tankMoveAble = this.tankRoad[iDir]();
 	}
 
 	// 子弹
@@ -134,10 +137,10 @@ class TankObj {
 			this.bulletStatus = false;
 			this.bullet_x = this.x;
 			this.bullet_y = this.y;
-			this.bDir = this.dir;
+			this.iBullet_dir = this.dir;
 
 			// this.bullet_x及this.bullet_y代表了子弹的位置，因为子弹绘制的地点与this.x和this.y不同，因此需要根据方向改变位置
-			switch (this.bDir) {
+			switch (this.iBullet_dir) {
 				case 0:
 					this.bullet_x += 12;
 					this.moveX = 0;
@@ -166,12 +169,12 @@ class TankObj {
 					break;
 			}
 		}
-		if ( this.bulletRoad[this.bDir]() ){
+		if ( this.bulletRoad[this.iBullet_dir]() ){
 			this.bullet_x += this.moveX;
 			this.bullet_y += this.moveY;
 			cxt.role.drawImage(this.shotImg , this.bullet_x , this.bullet_y , 8 , 8);
 		} else {
-			oAud.attOver.play();
+			// oAud.attOver.play();
 			this.shot = false;
 			this.bulletStatus = true;
 		}
@@ -212,19 +215,19 @@ class TankObj {
 		}
 		this.tankRoad = {
 			// 这里row = parseInt((this.y - 1) / 16)是因为需要检测的是当前this.y所代表的数组的上一行的数组值，因此减1，dir3同理
-			dir0 : ( row = parseInt((this.y - 1) / 16) , col = parseInt(this.x / 16) ) => {
+			0 : ( row = parseInt((this.y - 1) / 16) , col = parseInt(this.x / 16) ) => {
 				return pass(roadMap[row][col] , roadMap[row][col + 1]) && this.y > 0;
 			},
 
-			dir1 : ( row = parseInt(this.y / 16) , col = parseInt(this.x / 16) ) => {
+			1 : ( row = parseInt(this.y / 16) , col = parseInt(this.x / 16) ) => {
 				return pass(roadMap[row][col + 2] , roadMap[row + 1][col + 2]) && this.x < 384;
 			},
 
-			dir2 : ( row = parseInt(this.y / 16) , col = parseInt(this.x / 16) ) => {
+			2 : ( row = parseInt(this.y / 16) , col = parseInt(this.x / 16) ) => {
 				return pass(roadMap[row + 2][col] , roadMap[row + 2][col + 1]) && this.y < 384;
 			},
 
-			dir3 : ( row = parseInt(this.y / 16) , col = parseInt((this.x - 1) / 16) ) => {
+			3 : ( row = parseInt(this.y / 16) , col = parseInt((this.x - 1) / 16) ) => {
 				return pass(roadMap[row][col] , roadMap[row + 1][col]) && this.x > 0;
 			}
 		};
@@ -236,8 +239,6 @@ class TankObj {
 			0 : (row = parseInt( (this.bullet_y) / 16) , col = parseInt(this.bullet_x / 16)) => {
 				arr[0] = this.bulletRoadJudge(roadMap[row][col] , row , col , 0);
 				arr[1] = this.bulletRoadJudge(roadMap[row][col + 1] , row , col + 1 , 1);
-				// console.log(arr[0])
-				// console.log(arr[1])
 				return arr[0] && arr[1] && this.bullet_y > 0;
 			},
 
@@ -261,9 +262,14 @@ class TankObj {
 			}
 		}
 
-		let oBrickStatus = new Object();
-		let ccc;
-		// num值，i表示是第几个，这个主要是为了砖块的判断
+		/**
+		 * [bulletRoadJudge description]
+		 * @param  {number} num 当前子弹对应的roadMap数组项
+		 * @param  {number} row 当前子弹位置对应的roadMap数组中的行数
+ 		 * @param  {number} col 当前子弹位置对应的roadMap数组中的列数
+ 		 * @param  {number} i   当前进行处理的这个roadMap数组项是这次处理的第几个（一共有两个，每个的处理方式不同）
+		 * @return {boolean}     返回一个布尔值，通过这个值确定子弹是否还能继续往前走
+		 */
 		this.bulletRoadJudge = function (num , row , col , i) {
 			switch (num) {
 				// 如果是未定义或者0，直接通过
@@ -271,12 +277,7 @@ class TankObj {
 				case 0: return true; break;
 				// 砖块
 				case 1:
-					this.bulletBrickRoad(row , col , i);
-
-					return ccc;
-					// roadMap[row][col] = 0;
-					// cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
-					// return false;
+					return this.bulletBrickRoad(row , col , i);
 					break;
 				// 钢筋
 				case 2:
@@ -296,49 +297,69 @@ class TankObj {
 			}
 		}
 
-		let nn;
+		let iBrickObjIndex;                 //如果子弹碰到砖块了，那么就将当前砖块的行列计算成oBrickStatus对象的属性名，用来读取对应砖块的属性
+		/**
+		 * 一个16*16的砖块格子，可以分成如下的4个8*8的小格子：
+		 * |  8*8  |  8*8  |
+ 		 * -----------------
+ 		 * |  8*8  |  8*8  |
+		 * 这是因为如果坦克子弹不是最高等级，那么一次最多只能打掉两个8*8的格子
+		 * 如果将每个砖块视为一个含有四个数组项的数组，如果数组项为1，表示对应的8*8的格子没有被打掉
+		 * @param  同上
+		 * @return 同上
+		 */
 		this.bulletBrickRoad = function (row , col , i) {
-			nn = row * 16 + col;
-			if (!!oBrickStatus[nn]) {
-				this.bulletBrickA(row , col , i);
+			iBrickObjIndex = row * 16 + col;
+			if (oBrickStatus[iBrickObjIndex]) {
+				return this.bulletHitBrick(row , col , i);
 			} else{
-				oBrickStatus[nn] = [1 , 1 , 1 , 1];
-				this.bulletBrickA(row , col , i);
+				oBrickStatus[iBrickObjIndex] = [1 , 1 , 1 , 1];
+				return this.bulletHitBrick(row , col , i);
 			}
 		}
 
+		let brickLayer;      //根据子弹的位置计算当前砖块还有几层（一般有两层）
+		/**
+		 * 子弹击中砖块后相应的处理函数
+		 * @param  同上
+		 * @return 同上
+		 */
+		this.bulletHitBrick = function (row , col , i) {
+			// 子弹方向为左右
+			if (this.iBullet_dir % 2) {
+				// this.iBullet_dir%3*8是因为方向不同，子弹的x值并不是一直处于子弹当前前进方向的最面的，下面的y同理
+				brickLayer = parseInt( ((this.bullet_x+this.iBullet_dir%3*8) - col * 16) / 8 );
+				if (oBrickStatus[iBrickObjIndex][linshi + (1 - i) * 2]) {
+					oBrickStatus[iBrickObjIndex][linshi] = 0;
+					oBrickStatus[iBrickObjIndex][linshi + 2] = 0;
+					cxt.bg.clearRect(35 + linshi * 8 + col * 16 , 20 + row * 16 , 8 , 16);
+					clearBrick(row , col);
+					return false;
+				}
+				return true;
+			// 子弹方向为上下
+			} else {
+				brickLayer = parseInt( ((this.bullet_y+this.iBullet_dir/2*8) - row * 16) / 8 );
+				if (oBrickStatus[iBrickObjIndex][linshi * 2 + 1 - i]) {
+					oBrickStatus[iBrickObjIndex][linshi * 2] = 0;
+					oBrickStatus[iBrickObjIndex][linshi * 2 + 1] = 0;
+					cxt.bg.clearRect(35 + col * 16 , 20 + linshi * 8 + row * 16 , 16 , 8);
+					clearBrick(row , col);
+					return false;
+				}
+				return true;
+			}
+		}
+
+		/**
+		 * 当一个16*16的格子里的装块全部被打掉后，清除相关对象，并将相应的roadMap数组项置0
+		 * @param  同上
+		 */
 		function clearBrick(row , col) {
-			if( !(oBrickStatus[nn][0] && oBrickStatus[nn][1] && oBrickStatus[nn][2] && oBrickStatus[nn][3]) ) {
-				oBrickStatus[nn] = null;
+			if( !(oBrickStatus[iBrickObjIndex][0] || oBrickStatus[iBrickObjIndex][1] || oBrickStatus[iBrickObjIndex][2] || oBrickStatus[iBrickObjIndex][3]) ) {
+				oBrickStatus[iBrickObjIndex] = null;
 				roadMap[row][col] = 0;
-			}
-		}
-
-		let linshi;
-		this.bulletBrickA = function (row , col , i) {
-			switch (this.dir) {
-				case 0:
-					linshi = parseInt((this.bullet_y - row * 16) / 8);
-					if (oBrickStatus[nn][linshi * 2 + 1 - i]) {
-						oBrickStatus[nn][linshi * 2] = 0;
-						oBrickStatus[nn][linshi * 2 + 1] = 0;
-						cxt.bg.clearRect(35 + col * 16 , 20 + linshi * 8 + row * 16 , 16 , 8);
-						ccc =  false;
-					}else {
-						ccc = true;
-					}
-					break;
-				case 1:
-
-					break;
-				case 2:
-
-					break;
-				case 3:
-
-					break;
-				default:
-					break;
+				cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
 			}
 		}
 	}
