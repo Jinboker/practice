@@ -1,11 +1,11 @@
 // 画布相关
 let canRol = document.getElementById('canvas-role'),
 	canBg = document.getElementById('canvas-bg'),
-	canBoom = document.getElementById('canvas-boom');
+	canMisc = document.getElementById('canvas-misc');
 let cxt = {
 	role : canRol.getContext('2d'),
 	bg : canBg.getContext('2d'),
-	boom : canBoom.getContext('2d'),
+	misc : canMisc.getContext('2d'),
 	l : 416,              //l表示canRol的长与宽
 	w : 516,              //canBg的宽度
 	h : 456               //canBg的高度
@@ -69,4 +69,24 @@ let oBonus = {
 let gameBox = {
 	box : document.getElementById('game-box'),
 	border : document.getElementById('game-box-border')
+}
+
+
+
+/**
+ * 动画回调函数
+ */
+let requestAnimFrame = (function() {
+	return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+		function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
+			return window.setTimeout(callback, 1000 / 60);
+		};
+})();
+
+
+function a() {
+	console.log('a');
+}
+function b() {
+	console.log('b');
 }
