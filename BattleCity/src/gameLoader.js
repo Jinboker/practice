@@ -12,7 +12,7 @@ function init() {
 	oClass = {
 		ui : new UI(),
 		tank : new TankObj(),
-		myTank : new MyTank(),
+		player : new PlayerObj(),
 		mapEditor : new MapEditor(),
 		drawMap : new DrawMap()
 	};
@@ -24,7 +24,7 @@ function init() {
 	oClass.ui.init();
 
 	// 玩家坦克对象初始化
-	oClass.myTank.init();
+	oClass.player.init();
 }
 
 /*
@@ -62,8 +62,8 @@ function gameLoop() {
 	//绘制坦克
 	if (draw.tank) {
 		cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
-		// 绘制己方坦克
-		oClass.myTank.draw();
+		// 绘制玩家
+		oClass.player.draw();
 		// 绘制敌军
 	}
 

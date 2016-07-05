@@ -17,14 +17,19 @@
 // 	fire2 : 17            //发射子弹
 // };
 
-
 // 游戏控制
 let keyPressed = false,            //是否有按键被按下
 	keyInfo = new Array(88),
 	keyCode = null,
-	keyDir_1 = null,
+	keyDir_1 = 87,
 	keyDir_2 = null;
 
+// 按键松开
+let iKeyUp,
+	oKeyUp = {
+	h : true,
+	j : true
+};
 //直接在keyInit函数里面调用，用来设置一些相关的按键信息
 function setKeyInfo() {
 	// 给所有需要用到的按键添加表示是否被按下的属性
@@ -56,16 +61,18 @@ function keyInit() {
 					keyDir_1 = keyCode;
 				}
 				keyInfo[keyCode].pressed = true;
-				keyPressed = true;
 			}
+			keyPressed = true;
 		}
 	} , false);
 
-	let keyUp;
 	addEventListener('keyup' , function (ev) {
-		keyUp = ev.keyCode;
-		if (typeof keyInfo[keyUp] === 'object') {
-			keyInfo[keyUp].pressed = false;
+		iKeyUp = ev.keyCode;
+		if (typeof keyInfo[iKeyUp] === 'object') {
+			// 如果H键跟J键松开，那么将oKeyUp中对应的属性置为真
+			(iKeyUp === 72) && (oKeyUp.h = true);
+			(iKeyUp === 74) && (oKeyUp.j = true);
+			keyInfo[iKeyUp].pressed = false;
 		}
 	} , false);
 }

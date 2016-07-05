@@ -39,7 +39,7 @@ class UI {
 		// this.moveToTop = false;         //moveToTop为真就表示开始画面已经运动到了最终位置
 		this.modeChoose = 272;          // 开始画面上小坦克的纵向位置
 		this.iWheelDelay = 5;          //坦克轮胎隔5个循环改变一次
-		this.wheel = 0;                 //wheel表示轮子的变化0 -> 1 -> 0 -> 1
+		this.iWheelPic = 0;            //wheel表示轮子的变化0 -> 1 -> 0 -> 1
 		// 关卡选择界面的相关变量
 		this.curtainHeight = 0;         //当幕布开始上下合拢时，幕布的高度
 		this.maxCurtainHeight = cxt.h * 0.5;
@@ -90,13 +90,11 @@ class UI {
 		// 画面到了最终位置
 		} else {
 			cxt.bg.clearRect(140 , 260 , 32 , 120);
-			cxt.bg.drawImage(oImg.myTank , 0 ,  64 + this.wheel * 32 , 32 , 32 , 140 , this.modeChoose , 32 , 32);
+			cxt.bg.drawImage(oImg.myTank , 0 ,  64 + this.iWheelPic * 32 , 32 , 32 , 140 , this.modeChoose , 32 , 32);
 			// 每循环5次就改变一次轮胎
-			this.iWheelDelay > 0 && this.iWheelDelay --;
-			if (!this.iWheelDelay) {
-				this.iWheelDelay = 5;
-				this.wheel = +!this.wheel;
-			}
+			this.iWheelDelay = delay(this.iWheelDelay , 5 , () => {
+				this.iWheelPic = +!this.iWheelPic;
+			});
 			// 如果有按键按下则检测是哪一个按键并执行相应的操作
 			if (keyPressed) {
 				keyPressed = false;

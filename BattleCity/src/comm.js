@@ -15,7 +15,7 @@ let cxt = {
 let oClass = {
 	ui : null,
 	tank : null,
-	myTank : null,
+	player : null,
 	mapEditor : null,
 	drawMap : null
 };
@@ -82,6 +82,25 @@ let requestAnimFrame = (function() {
 			return window.setTimeout(callback, 1000 / 60);
 		};
 })();
+
+/**
+ * 延迟函数，延迟delayNum个循环后再执行fn函数
+ * @param  {[number]}   num      [记录这是第几次循环的属性]
+ * @param  {[number]}   delayNum [需要循环的次数]
+ * @param  {Function}   fn       [执行完delayNum次循环后执行的函数]
+ * @return {[number]}            [返回当前循环的次数方便赋值给相关的属性进行记录]
+ */
+function delay(num , delayNum , fn){
+	if (num) {
+		num --;
+	} else {
+		num = delayNum;
+		fn();
+	}
+	return num;
+}
+
+
 
 
 function a() {

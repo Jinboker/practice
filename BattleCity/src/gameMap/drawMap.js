@@ -7,9 +7,11 @@ class DrawMap{
 	constructor(){
 		this.idata;      //当前需要绘制的一个地图格子的数据
 		for (let i = 0; i < 28; i++) {
-			roadMap[i] = new Array(28);
+			roadMap[i] = [0 , 0 , 0 , 0 , 0 , 0 , 0 ,
+						  0 , 0 , 0 , 0 , 0 , 0 , 0 ,
+						  0 , 0 , 0 , 0 , 0 , 0 , 0 ,
+						  0 , 0 , 0 , 0 , 0 , 0 , 0 ];
 		}
-		this.a = 0;
 	}
 
 	draw(num){        //传入当前需要绘制的关卡数

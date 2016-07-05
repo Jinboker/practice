@@ -1,7 +1,5 @@
 // 游戏暂停
-let stopSet,
-	stopAble = false,
-	startAble = true;
+let stopSet;
 
 function gameStop() {
 	if (stopSet) {
@@ -11,16 +9,20 @@ function gameStop() {
 		cxt.role.fillText("GAME STOP" , 140 , 220);
 		cxt.role.restore();
 	}
-	if (!keyInfo[72].pressed) {
-		stopAble = true;
-	}
-
-	// 如果按下确认键（H键），则暂停中止
-	if (stopAble && keyInfo[72].pressed) {
+	if (keyInfo[72].pressed && oKeyUp.h) {
+		oKeyUp.h = false;
 		draw.stop = false;
 		draw.tank = true;
-		stopAble = false;
 	}
+	// if (!keyInfo[72].pressed) {
+	// 	stopAble = true;
+	// }
+	// // 如果按下确认键（H键），则暂停中止
+	// if (stopAble && keyInfo[72].pressed) {
+	// 	draw.stop = false;
+	// 	draw.tank = true;
+	// 	stopAble = false;
+	// }
 }
 
 
