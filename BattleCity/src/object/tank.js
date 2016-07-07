@@ -50,6 +50,17 @@ class TankObj extends MoverObj {
 		});
 	}
 
+	// 对象移动函数
+	move(){
+		this.bMoveSet && this.moveSet();
+		if (this.bMoveAble) {
+			this.x += this.iSpeedX;
+			this.y += this.iSpeedY;
+		}
+		// 只有当对象的位置可以整除16才会开始检查是否可以通行
+		!(this.x % 16) && !(this.y % 16) && (this.bMoveAble = this.oRoad[this.iDir]());
+	}
+
 	// 根据当前方向重置相关的坐标参数
 	moveSet(){
 		this.bMoveSet = false;

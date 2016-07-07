@@ -31,6 +31,7 @@ class BulletObj extends MoverObj {
 		this.y = y;
 		this.iRank = rank;
 		this.iDir = dir;
+
 		// 1、3
 		if (dir%2) {
 			this.y += 12;
@@ -42,12 +43,10 @@ class BulletObj extends MoverObj {
 			this.y += 24*dir/2;
 			this.oImg = (dir/2) ? m_canD : m_canT;
 		}
-		this.moveSet();
+		this.speedSet();
 	}
 
 	draw(){
-		// console.log(this.y);
-		// console.log(this.bMoveAble);
 		if (this.oRoad[this.iDir]()) {
 			this.x += this.iSpeedX;
 			this.y += this.iSpeedY;
@@ -58,9 +57,139 @@ class BulletObj extends MoverObj {
 		}
 	}
 
-	// move(){
-	// 	this.bMoveSet && this.moveSet();
-	// 	this.x += this.iSpeedX;
-	// 	this.y += this.iSpeedY;
-	// }
+	collision(){
+		let iRow,
+			iCol,
+			arr = [2];
+
+		this.oRoad = {
+			0 : () => {
+				[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
+				return this.roadJudge(roadMap[iRow][iCol] , roadMap[iRow][iCol + 1]) && this.y > 0;
+			},
+
+			1 : () => {
+				[iRow , iCol] = [parseInt(this.y / 16) , parseInt((this.x + 8) / 16)];
+				return this.roadJudge(roadMap[iRow][iCol] , roadMap[iRow + 1][iCol]) && this.x < 408;
+			},
+
+			2 : () => {
+				[iRow , iCol] = [parseInt((this.y + 8) / 16) , parseInt(this.x / 16)];
+				return this.roadJudge(roadMap[iRow][iCol] , roadMap[iRow][iCol + 1]) && this.y < 408;
+			},
+
+			3 : () => {
+				[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
+				return this.roadJudge(roadMap[iRow][iCol] , roadMap[iRow + 1][iCol]) && this.x > 0;
+			}
+		}
+
+		this.roadJudge = function (...values) {
+			for (let i = 0; i < 2; i++) {
+				arr[i] = this.iDir%2 ? this.judge(values[i] , iRow + i , iCol , i) : this.judge(values[i] , iRow , iCol + i , i);
+			}
+			return arr[0] && arr[1];
+		}
+
+		let iRoadMapVal,
+			iBulletRow,
+			iBulletCol,
+			iOrderNum;
+
+		this.judge = function (...values) {
+			[iRoadMapVal , iBulletRow , iBulletCol , iOrderNum] = values;
+			switch (iRoadMapVal) {
+				case 0: return true; break;
+				// 砖块
+				case 1:
+					return this.bulletBrickRoad(iOrderNum);
+					break;
+				// 钢筋
+				case 2:
+					if (this.iRank === 3) {
+						roadMap[iBulletRow][iBulletCol] = 0;
+						cxt.bg.clearRect(35 + iBulletCol * 16 , 20 + iBulletRow * 16 , 16 , 16);
+					}
+					return false;
+					break;
+				// 子弹过老家那么游戏结束
+				case 5:
+					draw.gameover = true;
+					return false;
+					break;
+				// 河流跟冰路直接过（默认是3和4）
+				default: return true; break;
+			}
+		}
+
+		let iBrickObjIndex;                 //如果子弹碰到砖块了，那么就将当前砖块的行列计算成oBrickStatus对象的属性名，用来读取对应砖块的属性
+		/**
+		 * 一个16*16的砖块格子，可以分成如下的4个8*8的小格子：
+		 * |  8*8  |  8*8  |
+ 		 * -----------------
+ 		 * |  8*8  |  8*8  |
+		 * 这是因为如果坦克子弹不是最高等级，那么一次最多只能打掉两个8*8的格子
+		 * 如果将每个砖块视为一个含有四个数组项的数组，如果数组项为1，表示对应的8*8的格子没有被打掉
+		 * @param  同上
+		 * @return 同上
+		 */
+		this.bulletBrickRoad = function () {
+			iBrickObjIndex = iBulletRow * 16 + iBulletCol;
+			if (oBrickStatus[iBrickObjIndex]) {
+				return this.bulletHitBrick(iOrderNum);
+			} else{
+				oBrickStatus[iBrickObjIndex] = [1 , 1 , 1 , 1];
+				return this.bulletHitBrick(iOrderNum);
+			}
+		}
+
+		let brickLayer;      //根据子弹的位置计算当前砖块还有几层（一般有两层）
+		/**
+		 * 子弹击中砖块后相应的处理函数
+		 * @param  同上
+		 * @return 同上
+		 */
+		this.bulletHitBrick = function () {
+			// 子弹方向为左右
+			if (this.iDir % 2) {
+				// this.iDir%3*8是因为方向不同，子弹的x值并不是一直处于子弹当前前进方向的最面的
+				// 因此要根据方向决定是否在x轴坐标上加上8个像素，下面的y同理
+				brickLayer = parseInt( ((this.x + this.iDir%3*8) - iBulletCol * 16) / 8 );
+				if (oBrickStatus[iBrickObjIndex][brickLayer + (1 - iOrderNum) * 2]) {
+					oBrickStatus[iBrickObjIndex][brickLayer] = 0;
+					oBrickStatus[iBrickObjIndex][brickLayer + 2] = 0;
+					cxt.bg.clearRect(35 + brickLayer * 8 + iBulletCol * 16 , 20 + iBulletRow * 16 , 8 , 16);
+					clearBrick(iBulletRow , iBulletCol);
+					return false;
+				}
+				return true;
+			// 子弹方向为上下
+			} else {
+				brickLayer = parseInt( ((this.y + this.iDir/2*8) - iBulletRow * 16) / 8 );
+				if (oBrickStatus[iBrickObjIndex][brickLayer * 2 + 1 - iOrderNum]) {
+					oBrickStatus[iBrickObjIndex][brickLayer * 2] = 0;
+					oBrickStatus[iBrickObjIndex][brickLayer * 2 + 1] = 0;
+					cxt.bg.clearRect(35 + iBulletCol * 16 , 20 + brickLayer * 8 + iBulletRow * 16 , 16 , 8);
+					clearBrick(iBulletRow , iBulletCol);
+					return false;
+				}
+				return true;
+			}
+		}
+
+		/**
+		 * 当一个16*16的格子里的装块全部被打掉后，清除相关对象，并将相应的roadMap数组项置0
+		 * @param  同上
+		 */
+		function clearBrick() {
+			if( !(oBrickStatus[iBrickObjIndex][0]
+				|| oBrickStatus[iBrickObjIndex][1]
+				|| oBrickStatus[iBrickObjIndex][2]
+				|| oBrickStatus[iBrickObjIndex][3]) ) {
+				oBrickStatus[iBrickObjIndex] = null;
+				roadMap[iBulletRow][iBulletCol] = 0;
+				cxt.bg.clearRect(35 + iBulletCol * 16 , 20 + iBulletRow * 16 , 16 , 16);
+			}
+		}
+	}
 }
