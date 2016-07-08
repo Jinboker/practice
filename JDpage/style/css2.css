@@ -1146,6 +1146,61 @@ a:hover{color:#c81623;}
 	margin: 10px 0 20px;
 }
 	/*时钟*/
+	.jd-clock {
+		position: absolute;
+	    left: 72px;
+	    top: 31px;
+	    width: 43px;
+	    height: 43px;
+	    border-radius: 50%;
+	    border: 7px solid #fff;
+	}
+	.jd-clock::before {
+	    content: "";
+	    position: absolute;
+	    left: 18px;
+	    top: 18px;
+	    width: 7px;
+	    height: 7px;
+	    border-radius: 50%;
+	    background: #fff;
+	}
+	.jd-clock-h {
+		position: absolute;
+	    top: 9px;
+	    left: 19px;
+	    height: 15px;
+	    width: 5px;
+	    background-color: #fff;
+	    border-radius: 2px;
+	    -webkit-transform-origin: 2.5px 12.5px;
+    	-moz-transform-origin: 2.5px 12.5px;
+	    transform-origin: 2.5px 12.5px;
+	}
+	.jd-clock-m {
+		position: absolute;
+	    left: 5px;
+	    top: 19px;
+	    width: 19px;
+	    height: 5px;
+	    background-color: #fff;
+	    border-radius: 2px;
+ 	    -webkit-transform-origin: 16.5px 2.5px;
+    	-moz-transform-origin: 16.5px 2.5px;
+	    transform-origin: 16.5px 2.5px;
+	}
+	.jd-clock-s {
+		position: absolute;
+	    left: 0;
+	    top: 2px;
+	    width: 5px;
+	    height: 5px;
+	    background-color: #5e5252;
+	    border-radius: 50%;
+	    -webkit-transform-origin: 21.5px 19.5px;
+    	-moz-transform-origin: 21.5px 19.5px;
+	    transform-origin: 21.5px 19.5px;
+	}
 	.clock i {
 		float: left;
 		display: block;

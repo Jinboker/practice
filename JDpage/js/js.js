@@ -685,9 +685,33 @@ myReady(function () {
     var oDoc = document,
         i = null;
 
+    // 今日推荐时钟
+    var oClock_h = oDoc.querySelector('.jd-clock-h'),
+        oClock_m = oDoc.querySelector('.jd-clock-m'),
+        oClock_s = oDoc.querySelector('.jd-clock-s');
+
+    function setClock() {
+        var oDate = new Date(),
+            oHours = oDate.getHours(),
+            oMin = oDate.getMinutes(),
+            oSen = oDate.getSeconds(),
+            oHoursValue = 'rotate(' + oHours*30 + oMin/2 + 'deg)',
+            oMinValue = 'rotate(' + oMin*6 + 'deg)',
+            oSenValue = 'rotate(' + oSen*6 + 'deg)';
+
+        // var oHoursValue = 'rotate(' + oHours*30 + oMin/2 + 'deg)';
+        // var oMinValue = 'rotate(' + oMin*6 + 'deg)';
+        // var oSenValue = 'rotate(' + oSen*6 + 'deg)';
+
+        oClock_h.style.transform = oHoursValue;
+        oClock_m.style.transform = oMinValue;
+        oClock_s.style.transform = oSenValue;
+    }
+    setClock();
+    setInterval(setClock , 1000);
+
     // 今日推荐的轮播
     var slider = new MoveFocus(oDoc.querySelector('.js-recommend-slider'));
-
     slider.init();
     slider.btn();
 
