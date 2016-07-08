@@ -1172,6 +1172,9 @@ a:hover{color:#c81623;}
 	#recommend-slider .slider-pic div {
 		float: left;
 	}
+	#recommend-slider .slider-pic li {
+		width: 1000px;
+	}
 	#recommend-slider .slider-pic img {
 		height: 164px;
 		width: 249px;
@@ -1915,6 +1918,9 @@ a:hover{color:#c81623;}
 	#clothes-slider .slider-pic {
 		width: 2000px;
 	}
+	#clothes-slider .slider-pic li {
+		width: 439px;
+	}
 /* 服装箱包隐藏内容 */
 
 /* 服装箱包底部广告 */
@@ -1987,6 +1993,9 @@ a:hover{color:#c81623;}
 }
 	#cosmetic-slider .slider-pic {
 		width: 3000px;
+	}
+	#cosmetic-slider .slider-pic li {
+		width: 340px;
 	}
 	#cosmetic-slider .slider-pic a{
 		display: block;
@@ -2068,7 +2077,10 @@ a:hover{color:#c81623;}
 	overflow: hidden;
 }
 	#mobiles-slider .slider-pic {
-		width: 2000px;
+		width: 4000px;
+	}
+	#mobiles-slider .slider-pic li {
+		width: 439px;
 	}
 /* 手机通讯底部广告 */
 #mobiles .foot-banner a {
@@ -2115,6 +2127,9 @@ a:hover{color:#c81623;}
 }
 	#sports-slider .slider-pic {
 		width: 3000px;
+	}
+	#sports-slider .slider-pic li {
+		width: 340px;
 	}
 	#sports-slider .slider-pic a{
 		display: block;
