@@ -1179,15 +1179,15 @@ a:hover{color:#c81623;}
 	}
 	.jd-clock-m {
 		position: absolute;
-	    left: 5px;
-	    top: 19px;
-	    width: 19px;
-	    height: 5px;
+	    top: 5px;
+	    left: 19px;
+	    width: 5px;
+	    height: 19px;
 	    background-color: #fff;
 	    border-radius: 2px;
- 	    -webkit-transform-origin: 16.5px 2.5px;
-    	-moz-transform-origin: 16.5px 2.5px;
-	    transform-origin: 16.5px 2.5px;
+	    -webkit-transform-origin: 2.5px 16.5px;
+    	-moz-transform-origin: 2.5px 16.5px;
+	    transform-origin: 2.5px 16.5px;
 	}
 	.jd-clock-s {
 		position: absolute;
