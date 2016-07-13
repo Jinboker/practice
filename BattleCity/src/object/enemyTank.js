@@ -90,6 +90,4 @@ class EnemyObj extends TankObj {
 	}
 
 
-
-
 }
