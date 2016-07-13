@@ -15,7 +15,6 @@ let cxt = {
 let oClass = {
 	ui : null,
 	tank : null,
-	player : null,
 	mapEditor : null,
 	drawMap : null
 };

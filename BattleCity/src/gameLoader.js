@@ -4,6 +4,7 @@ window.onload = function () {
 	gameLoop();
 }
 
+let aTankArr = new Array;
 /**
  * 初始化
  */
@@ -12,7 +13,6 @@ function init() {
 	oClass = {
 		ui : new UI(),
 		tank : new TankObj(),
-		player : new PlayerObj(),
 		mapEditor : new MapEditor(),
 		drawMap : new DrawMap()
 	};
@@ -23,8 +23,11 @@ function init() {
 	// UI初始化
 	oClass.ui.init();
 
-	// 玩家坦克对象初始化
-	oClass.player.init();
+	// 坦克对象初始化，第一个是玩家坦克，后面四个是敌军坦克
+	aTankArr[0] = new PlayerObj(0);
+	for (let i = 1; i < 5; i++) {
+		aTankArr[i] = new EnemyObj(i);
+	}
 }
 
 /*
@@ -55,7 +58,6 @@ function gameLoop() {
 		//己方坦克生命数
 		if (draw.info) {
 			draw.info = false;
-
 		}
 	}
 
@@ -63,8 +65,11 @@ function gameLoop() {
 	if (draw.tank) {
 		cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
 		// 绘制玩家
-		oClass.player.draw();
+		aTankArr[0].draw();
 		// 绘制敌军
+		for (let i = 1; i < 5; i++) {
+			aTankArr[i].draw();
+		}
 	}
 
 	// 游戏暂停

@@ -2,16 +2,17 @@
  * 玩家坦克对象，继承自TankObj
  */
 class PlayerObj extends TankObj {
-	constructor() {
+	constructor(i) {
 		super();
+
+		this.index = i;
+		this.iRank = 0;                 //默认坦克等级为0，玩家坦克可以通过吃星星升级
 
 		// 防护罩相关
 		this.bShield = true;            //是否开启防护罩
 		this.iShieldNum = 200;          //防护罩循环的次数，默认是200，如果吃了防护罩奖励那么就是1000
 		this.iShieldDelay = 3;
 		this.iShieldPic = 0;
-
-		this.iBulletDelay = 20;         //子弹延迟20个循环
 
 		// 按键相关
 		this.keyDirSave = 0;            //保存当前按下的方向键，用来判断是否有改变坦克的方向
@@ -41,7 +42,7 @@ class PlayerObj extends TankObj {
 		this.oBullet.bAlive && this.shot();
 
 		// 绘制坦克
-		cxt.role.drawImage(oImg.myTank , 0 ,  0 + this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);
+		cxt.role.drawImage(oImg.myTank , 0 ,  this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 
 	//按键判断
@@ -55,8 +56,8 @@ class PlayerObj extends TankObj {
 				this.bMoveSet = true;
 			}
 			this.move();     //重新确定坦克的坐标
-			this.wheel();    //轮胎改变
 		}
+
 
 		// 开始/暂停，H键
 		if (keyInfo[72].pressed && oKeyUp.h) {
@@ -73,7 +74,6 @@ class PlayerObj extends TankObj {
 			this.iBulletDelay = 20;
 			oKeyUp.j = false;
 			if (!this.oBullet.bAlive) {
-				this.oBullet.bAlive = true;
 				this.oBullet.init(this.x , this.y , this.iDir , this.iRank);
 				oAud.att.play();
 			}

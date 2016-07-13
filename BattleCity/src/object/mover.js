@@ -1,5 +1,3 @@
-let oBrickStatus = new Object();
-
 // 顶级对象
 class MoverObj {
 	constructor() {
@@ -57,7 +55,7 @@ class MoverObj {
 			}
 		}
 
-		this.oRoad = {
+		this.oPass = {
 			0 : () => {
 				[iRow , iCol] = [parseInt((this.y - 1) / 16) , parseInt(this.x / 16)];
 				return roadJudge(roadMap[iRow][iCol] , roadMap[iRow][iCol + 1]) && this.y > 0;
