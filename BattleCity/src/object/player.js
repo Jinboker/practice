@@ -2,11 +2,12 @@
  * 玩家坦克对象，继承自TankObj
  */
 class PlayerObj extends TankObj {
-	constructor(i) {
+	constructor() {
 		super();
 
-		this.index = i;
+		this.iIndex = 0;
 		this.iRank = 0;                 //默认坦克等级为0，玩家坦克可以通过吃星星升级
+		this.iTankType = 0;             //当前坦克对象是玩家（0）还是NPC（1）
 
 		// 防护罩相关
 		this.bShield = true;            //是否开启防护罩

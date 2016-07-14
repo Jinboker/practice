@@ -16,8 +16,9 @@ class EnemyObj extends TankObj {
 	constructor(i) {
 		super();
 
-		this.index = i;
-		this.iTankType;                  //坦克的类型
+		this.iIndex = i;
+		this.iTankType = 0;         //当前坦克对象是玩家（0）还是NPC（1）
+		this.iEnemyTankType;             //敌军坦克的类型
 		this.iChangeDirDelay = 10;       //坦克碰到障碍物后暂停10个循环后再改变方向
 		this.bUiSet = true;              //UI界面右侧剩余坦克数的设置
 		this.OrderNum;                   //本次绘制的是第几个坦克
@@ -29,8 +30,8 @@ class EnemyObj extends TankObj {
 		this.iDir = 2;
 		this.x = (oEnemy.num % 3) * 192;
 		this.y = 0;
-		this.iTankType = oEnemyData[stage.num - 1][oEnemy.num - 1];
-		this.iSpeed = (this.iTankType != 2 && this.iTankType != 3) ? 1 : 2;
+		this.iEnemyTankType = oEnemyData[stage.num - 1][oEnemy.num - 1];
+		this.iSpeed = (this.iEnemyTankType != 2 && this.iEnemyTankType != 3) ? 1 : 2;
 		this.OrderNum = oEnemy.num;
 		oEnemy.num ++;
 	}
@@ -44,7 +45,10 @@ class EnemyObj extends TankObj {
 		}
 
 		// 改变方向
-		!this.bMoveAble && this.changeDir();
+		if (!this.bMoveAble || !this.aaa) {
+			this.changeDir();
+		}
+		// !this.bMoveAble && !this.aaa && this.changeDir();
 
 		//绘制子弹
 		this.shot();
@@ -53,11 +57,12 @@ class EnemyObj extends TankObj {
 		this.move();
 
 		// 绘制坦克
-		cxt.role.drawImage(oImg.enemyTank , 32 * this.iTankType ,  this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);
+		cxt.role.drawImage(oImg.enemyTank , 32 * this.iEnemyTankType ,  this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 
 	uiSet(){
 		this.bUiSet = false;
+		// 剩余坦克数量的图标的减少
 		cxt.bg.clearRect(481 - ((21 - this.OrderNum) % 2) * 18 , 20 + parseInt((22 - this.OrderNum) / 2) * 18, 16 , 16);
 	}
 
@@ -85,12 +90,8 @@ class EnemyObj extends TankObj {
 	}
 
 	setBulletDelay(){
-		let aDelay = [20 , 40 , 60]
+		let aDelay = [20 , 40 , 60];
 		this.iBulletDelay = aDelay[parseInt(Math.random()*3)];
 	}
-
-
-
-
 
 }

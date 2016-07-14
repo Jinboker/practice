@@ -24,6 +24,8 @@ class BulletObj extends MoverObj {
 		this.oImg                //子弹图片，已缓存
 		this.iType = 0;          //当前运动对象为子弹
 		this.iRank = 0;          //子弹的等级，为3时一枚子弹打掉16*16的砖块且能够击穿钢筋
+
+		this.collision();
 	}
 
 	init(x , y , dir , rank = 0){
@@ -67,34 +69,38 @@ class BulletObj extends MoverObj {
 			iCol,
 			arr = [2];
 
-		this.oPass = {
-			0 : () => {
-				[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
-				arr[0] = this.judge(roadMap[iRow][iCol] , iRow , iCol , 0);
-				arr[1] = this.judge(roadMap[iRow][iCol + 1] , iRow , iCol + 1 , 1);
-				return arr[0] && arr[1] && this.y > 0;
-			},
+			this.oPass = {
+				0 : () => {
+					[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
+					return this.hitBarrier(iRow , iCol , iRow , iCol + 1) && this.y > 0;
+				},
 
-			1 : () => {
-				[iRow , iCol] = [parseInt(this.y / 16) , parseInt((this.x + 8) / 16)];
-				arr[0] = this.judge(roadMap[iRow][iCol] , iRow , iCol , 0);
-				arr[1] = this.judge(roadMap[iRow + 1][iCol] , iRow + 1 , iCol , 1);
-				return arr[0] && arr[1] && this.x < 408;
-			},
+				1 : () => {
+					[iRow , iCol] = [parseInt(this.y / 16) , parseInt((this.x + 8) / 16)];
+					return this.hitBarrier(iRow , iCol , iRow + 1 , iCol) && this.x < 408;
+				},
 
-			2 : () => {
-				[iRow , iCol] = [parseInt((this.y + 8) / 16) , parseInt(this.x / 16)];
-				arr[0] = this.judge(roadMap[iRow][iCol] , iRow , iCol , 0);
-				arr[1] = this.judge(roadMap[iRow][iCol + 1] , iRow , iCol + 1 , 1);
-				return arr[0] && arr[1] && this.y < 408;
-			},
+				2 : () => {
+					[iRow , iCol] = [parseInt((this.y + 8) / 16) , parseInt(this.x / 16)];
+					return this.hitBarrier(iRow , iCol , iRow , iCol + 1) && this.y < 408;
+				},
 
-			3 : () => {
-				[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
-				arr[0] = this.judge(roadMap[iRow][iCol] , iRow , iCol , 0);
-				arr[1] = this.judge(roadMap[iRow + 1][iCol] , iRow + 1 , iCol , 1);
-				return arr[0] && arr[1] && this.x > 0;
+				3 : () => {
+					[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
+					return this.hitBarrier(iRow , iCol , iRow + 1 , iCol) && this.x > 0;
+				}
 			}
+
+		let iRowVal,
+			iColVal;
+		
+		this.hitBarrier = function (...values) {
+			for (let i = 0; i < 2; i++) {
+				iRowVal = values[2*i];
+				iColVal = values[2*i+1];
+				arr[i] = this.barrierVal(roadMap[iRowVal][iColVal] , iRowVal , iColVal , i)
+			}
+			return arr[0] && arr[1];
 		}
 
 		let num,
@@ -102,7 +108,7 @@ class BulletObj extends MoverObj {
 			col,
 			j;
 
-	   this.judge = function (...values) {
+	   this.barrierVal = function (...values) {
 		   [num , row , col , j] = values;
 		   switch (num) {
 			   // 如果是0，直接通过

@@ -25,7 +25,7 @@ function init() {
 
 	// 坦克对象初始化，第一个是玩家坦克，后面四个是敌军坦克
 	aTankArr[0] = new PlayerObj(0);
-	for (let i = 1; i < 5; i++) {
+	for (let i = 1; i < 4; i++) {
 		aTankArr[i] = new EnemyObj(i);
 	}
 }
@@ -67,7 +67,7 @@ function gameLoop() {
 		// 绘制玩家
 		aTankArr[0].draw();
 		// 绘制敌军
-		for (let i = 1; i < 5; i++) {
+		for (let i = 1; i < 4; i++) {
 			aTankArr[i].draw();
 		}
 	}
