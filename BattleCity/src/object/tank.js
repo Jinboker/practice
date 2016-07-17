@@ -22,7 +22,7 @@ class TankObj extends MoverObj {
 		this.iBulletDelay = 20;            //子弹延迟20个循环
 		this.oBullet = new BulletObj();
 
-		this.collision();
+		this.barrierCollision();
 	}
 
 	born(){
@@ -55,10 +55,10 @@ class TankObj extends MoverObj {
 		// 根据当前方向重置相关的坐标参数
 		this.bMoveSet && this.moveSet();
 		// 只有当对象的位置可以整除16才会开始检查是否可以通行（this.oPass继承自mover对象，位于碰撞函数内）
-		!(this.x % 16) && !(this.y % 16) && (this.bMoveAble = this.oPass[this.iDir]());
+		!(this.x % 16) && !(this.y % 16) && (this.bHitBarrier = this.oHitBarrier[this.iDir]());
 		// 移动坦克的坐标
-		this.aaa = this.tankJudge();
-		if (this.bMoveAble && this.aaa) {
+		this.bHitTank = this.tankCollision();
+		if (this.bHitBarrier && this.bHitTank) {
 			this.x += this.iSpeedX;
 			this.y += this.iSpeedY;
 		}
@@ -69,41 +69,40 @@ class TankObj extends MoverObj {
 		// 在坦克转换方向后重新定位坦克的位置，使坦克当前移动方向的左边正好能够整除16，这样就正好对齐了砖块的契合处
 		this.iDir % 2 ? this.y = Math.round(this.y / 16) * 16 : this.x = Math.round(this.x / 16) * 16;
 		this.speedSet();
-		this.bMoveAble = this.oPass[this.iDir]();
 	}
 
-	//碰撞检测（坦克与砖块的），子弹与砖块的继承后重写
-	collision(){
+	//坦克与障碍物之间的碰撞检测
+	barrierCollision(){
 		let iRow,
 			iCol,
 			arr = [2];
 
-		this.oPass = {
+		this.oHitBarrier = {
 			0 : () => {
 				[iRow , iCol] = [parseInt((this.y - 1) / 16) , parseInt(this.x / 16)];
-				return hitBarrier(iRow , iCol , iRow , iCol + 1) && this.y > 0;
+				return hit(iRow , iCol , iRow , iCol + 1) && this.y > 0;
 			},
 
 			1 : () => {
 				[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
-				return hitBarrier(iRow , iCol + 2 , iRow + 1 , iCol + 2) && this.x < 384;
+				return hit(iRow , iCol + 2 , iRow + 1 , iCol + 2) && this.x < 384;
 			},
 
 			2 : () => {
 				[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
-				return hitBarrier(iRow + 2 , iCol , iRow + 2 , iCol + 1) && this.y < 384;
+				return hit(iRow + 2 , iCol , iRow + 2 , iCol + 1) && this.y < 384;
 			},
 
 			3 : () => {
 				[iRow , iCol] = [parseInt(this.y / 16) , parseInt((this.x - 1) / 16)];
-				return hitBarrier(iRow , iCol , iRow + 1 , iCol) && this.x > 0;
+				return hit(iRow , iCol , iRow + 1 , iCol) && this.x > 0;
 			}
 		}
 
 		let iRowVal,
 			iColVal;
 
-		function hitBarrier(...values) {
+		function hit(...values) {
 			for (let i = 0; i < 2; i++) {
 				iRowVal = values[2*i];
 				iColVal = values[2*i+1];
@@ -124,41 +123,33 @@ class TankObj extends MoverObj {
 				default: return true; break;
 			}
 		}
+	}
 
-
+	// 坦克与坦克之间的碰撞检测
+	tankCollision(){
 		let xVal,
-			yVal;
-		this.tankJudge = function () {
-			for (let i = 0; i < 4; i++) {
-				if ((this.iIndex != i) && this.bBorned) {
-					xVal = this.x - aTankArr[i].x;
-					yVal = this.y - aTankArr[i].y;
-					switch (this.iDir) {
-						case 0:
-							if (yVal < 32 && yVal > 26 && Math.abs(xVal) < 32) {
-								return false;
-							}
-							break;
-						case 1:
-							if (xVal > -32 && xVal < -26 && Math.abs(yVal) < 32) {
-								return false;
-							}
-							break;
-						case 2:
-							if (yVal > -32 && yVal < -26 && Math.abs(xVal) < 32) {
-								return false;
-							}
-							break;
-						default:
-							if (xVal < 32 && xVal > 26 && Math.abs(yVal) < 32) {
-								return false;
-							}
-							break;
-					}
+			yVal,
+			bHitTankTest;
+
+		for (let i = 0; i < 4; i++) {
+			if ((this.iIndex != i) && this.bBorned) {
+				xVal = this.x - aTankArr[i].x;
+				yVal = this.y - aTankArr[i].y;
+				if (this.iDir % 2) {
+					bHitTankTest = (this.iDir -1)
+					? (xVal < 32 && xVal > 26 && Math.abs(yVal) < 32)
+					: (xVal > -32 && xVal < -26 && Math.abs(yVal) < 32);
+				} else {
+					bHitTankTest = this.iDir
+					? (yVal > -32 && yVal < -26 && Math.abs(xVal) < 32)
+					: (yVal < 32 && yVal > 26 && Math.abs(xVal) < 32);
+				}
+				if (bHitTankTest) {
+					return false;
 				}
 			}
-			return true;
 		}
+		return true;
 	}
 
 	shot(){

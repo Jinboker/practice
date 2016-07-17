@@ -25,7 +25,7 @@ class BulletObj extends MoverObj {
 		this.iType = 0;          //当前运动对象为子弹
 		this.iRank = 0;          //子弹的等级，为3时一枚子弹打掉16*16的砖块且能够击穿钢筋
 
-		this.collision();
+		this.barrierCollision();
 	}
 
 	init(x , y , dir , rank = 0){
@@ -51,7 +51,7 @@ class BulletObj extends MoverObj {
 	}
 
 	draw(){
-		if (this.oPass[this.iDir]()) {
+		if (this.oHitBarrier[this.iDir]()) {
 			this.x += this.iSpeedX;
 			this.y += this.iSpeedY;
 			cxt.role.drawImage(this.oImg , this.x , this.y , 8 , 8);
@@ -61,44 +61,43 @@ class BulletObj extends MoverObj {
 		}
 	}
 
-	/**
-	 * 覆盖-----碰撞检测
-	 */
-	collision(){
+	//子弹与障碍物之间的碰撞检测
+	barrierCollision(){
 		let iRow,
 			iCol,
-			arr = [2];
+			arr = [2],
+			that = this;
 
-			this.oPass = {
-				0 : () => {
-					[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
-					return this.hitBarrier(iRow , iCol , iRow , iCol + 1) && this.y > 0;
-				},
+		this.oHitBarrier = {
+			0 : () => {
+				[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
+				return hit(iRow , iCol , iRow , iCol + 1) && this.y > 0;
+			},
 
-				1 : () => {
-					[iRow , iCol] = [parseInt(this.y / 16) , parseInt((this.x + 8) / 16)];
-					return this.hitBarrier(iRow , iCol , iRow + 1 , iCol) && this.x < 408;
-				},
+			1 : () => {
+				[iRow , iCol] = [parseInt(this.y / 16) , parseInt((this.x + 8) / 16)];
+				return hit(iRow , iCol , iRow + 1 , iCol) && this.x < 408;
+			},
 
-				2 : () => {
-					[iRow , iCol] = [parseInt((this.y + 8) / 16) , parseInt(this.x / 16)];
-					return this.hitBarrier(iRow , iCol , iRow , iCol + 1) && this.y < 408;
-				},
+			2 : () => {
+				[iRow , iCol] = [parseInt((this.y + 8) / 16) , parseInt(this.x / 16)];
+				return hit(iRow , iCol , iRow , iCol + 1) && this.y < 408;
+			},
 
-				3 : () => {
-					[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
-					return this.hitBarrier(iRow , iCol , iRow + 1 , iCol) && this.x > 0;
-				}
+			3 : () => {
+				[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
+				return hit(iRow , iCol , iRow + 1 , iCol) && this.x > 0;
 			}
+		}
 
 		let iRowVal,
 			iColVal;
-		
-		this.hitBarrier = function (...values) {
+
+		function hit(...values) {
 			for (let i = 0; i < 2; i++) {
 				iRowVal = values[2*i];
 				iColVal = values[2*i+1];
-				arr[i] = this.barrierVal(roadMap[iRowVal][iColVal] , iRowVal , iColVal , i)
+				arr[i] = barrierVal(roadMap[iRowVal][iColVal] , iRowVal , iColVal , i)
 			}
 			return arr[0] && arr[1];
 		}
@@ -108,35 +107,35 @@ class BulletObj extends MoverObj {
 			col,
 			j;
 
-	   this.barrierVal = function (...values) {
-		   [num , row , col , j] = values;
-		   switch (num) {
-			   // 如果是0，直接通过
-			   case 0: return true; break;
-			   // 砖块
-			   case 1:
-					return this.bulletBrickRoad();
-					break;
-			   // 钢筋
-			   case 2:
-				   if (this.iType === 3) {
-					   roadMap[row][col] = 0;
-					   cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
-				   }
-				   return false;
+		function barrierVal(...values) {
+			[num , row , col , j] = values;
+			switch (num) {
+			  // 如果是0，直接通过
+			  case 0: return true; break;
+			  // 砖块
+			  case 1:
+				   return bulletBrickRoad();
 				   break;
-			   // 子弹过老家那么游戏结束
-			   case 5:
-				   draw.gameover = true;
-				   return false;
-				   break;
-			   // 河流跟冰路直接过（默认是3和4）
-			   default: return true; break;
-		   }
-	   }
+			  // 钢筋
+			  case 2:
+				  if (that.iType === 3) {
+					  roadMap[row][col] = 0;
+					  cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
+				  }
+				  return false;
+				  break;
+			  // 子弹过老家那么游戏结束
+			  case 5:
+				  draw.gameover = true;
+				  return false;
+				  break;
+			  // 河流跟冰路直接过（默认是3和4）
+			  default: return true; break;
+			}
+		}
 
-	   let iBrickObjIndex;                 //如果子弹碰到砖块了，那么就将当前砖块的行列计算成oBrickStatus对象的属性名，用来读取对应砖块的属性
-	   /**
+		let iBrickObjIndex;                 //如果子弹碰到砖块了，那么就将当前砖块的行列计算成oBrickStatus对象的属性名，用来读取对应砖块的属性
+		/**
 		* 一个16*16的砖块格子，可以分成如下的4个8*8的小格子：
 		* |  8*8  |  8*8  |
 		* -----------------
@@ -146,63 +145,68 @@ class BulletObj extends MoverObj {
 		* @param  同上
 		* @return 同上
 		*/
-		this.bulletBrickRoad = function () {
-		   iBrickObjIndex = row * 16 + col;
-		   if (oBrickStatus[iBrickObjIndex]) {
-			return this.hitBrick();
-		   } else{
+		function bulletBrickRoad() {
+			iBrickObjIndex = row * 16 + col;
+			if (oBrickStatus[iBrickObjIndex]) {
+			return hitBrick();
+			} else{
 			   oBrickStatus[iBrickObjIndex] = [1 , 1 , 1 , 1];
-			return this.hitBrick();
-		   }
-	   }
+			return hitBrick();
+			}
+		}
 
-	   let iBrickLayer;      //根据子弹的位置计算当前砖块还有几层（一般有两层）
-	   /**
+		let iBrickLayer;      //根据子弹的位置计算当前砖块还有几层（一般有两层）
+		/**
 		* 子弹击中砖块后相应的处理函数
 		* @param  同上
 		* @return 同上
 		*/
-		this.hitBrick = function () {
-		   // 子弹方向为左右
-		   if (this.iDir % 2) {
-			   // this.iDir%3*8是因为方向不同，子弹的x值并不是一直处于子弹当前前进方向的最面的
-			   // 因此要根据方向决定是否在x轴坐标上加上8个像素，下面的y同理
-			   iBrickLayer = parseInt( ((this.x+this.iDir%3*8) - col * 16) / 8 );
-			   if (oBrickStatus[iBrickObjIndex][iBrickLayer + (1 - j) * 2]) {
-				   oBrickStatus[iBrickObjIndex][iBrickLayer] = 0;
-				   oBrickStatus[iBrickObjIndex][iBrickLayer + 2] = 0;
-				   cxt.bg.clearRect(35 + iBrickLayer * 8 + col * 16 , 20 + row * 16 , 8 , 16);
-				   clearBrick(row , col);
-				   return false;
-			   }
-			   return true;
-		   // 子弹方向为上下
-		   } else {
-			   iBrickLayer = parseInt( ((this.y+this.iDir/2*8) - row * 16) / 8 );
-			   if (oBrickStatus[iBrickObjIndex][iBrickLayer * 2 + 1 - j]) {
-				   oBrickStatus[iBrickObjIndex][iBrickLayer * 2] = 0;
-				   oBrickStatus[iBrickObjIndex][iBrickLayer * 2 + 1] = 0;
-				   cxt.bg.clearRect(35 + col * 16 , 20 + iBrickLayer * 8 + row * 16 , 16 , 8);
-				   clearBrick(row , col);
-				   return false;
-			   }
-			   return true;
-		   }
-	   }
+		function hitBrick() {
+			// 子弹方向为左右
+			if (that.iDir % 2) {
+			 // that.iDir%3*8是因为方向不同，子弹的x值并不是一直处于子弹当前前进方向的最面的
+			 // 因此要根据方向决定是否在x轴坐标上加上8个像素，下面的y同理
+			 iBrickLayer = parseInt( ((that.x+that.iDir%3*8) - col * 16) / 8 );
+			 if (oBrickStatus[iBrickObjIndex][iBrickLayer + (1 - j) * 2]) {
+				 oBrickStatus[iBrickObjIndex][iBrickLayer] = 0;
+				 oBrickStatus[iBrickObjIndex][iBrickLayer + 2] = 0;
+				 cxt.bg.clearRect(35 + iBrickLayer * 8 + col * 16 , 20 + row * 16 , 8 , 16);
+				 clearBrick();
+				 return false;
+			 }
+			 return true;
+			// 子弹方向为上下
+			} else {
+			iBrickLayer = parseInt( ((that.y+that.iDir/2*8) - row * 16) / 8 );
+			if (oBrickStatus[iBrickObjIndex][iBrickLayer * 2 + 1 - j]) {
+				oBrickStatus[iBrickObjIndex][iBrickLayer * 2] = 0;
+				oBrickStatus[iBrickObjIndex][iBrickLayer * 2 + 1] = 0;
+				cxt.bg.clearRect(35 + col * 16 , 20 + iBrickLayer * 8 + row * 16 , 16 , 8);
+				clearBrick();
+				return false;
+			}
+			return true;
+			}
+		}
 
-	   /**
+		/**
 		* 当一个16*16的格子里的装块全部被打掉后，清除相关对象，并将相应的roadMap数组项置0
 		* @param  同上
 		*/
-	   function clearBrick(row , col) {
-		   if( !(oBrickStatus[iBrickObjIndex][0]
-			   || oBrickStatus[iBrickObjIndex][1]
-			   || oBrickStatus[iBrickObjIndex][2]
-			   || oBrickStatus[iBrickObjIndex][3]) ) {
-			   oBrickStatus[iBrickObjIndex] = null;
-			   roadMap[row][col] = 0;
-			   cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
-		   }
-	   }
+		function clearBrick() {
+			for (let i = 0; i < 4; i++) {
+				if (oBrickStatus[iBrickObjIndex][i]) { return; }
+				if (i === 3) {
+					oBrickStatus[iBrickObjIndex] = null;
+					roadMap[row][col] = 0;
+					cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
+				}
+			}
+		}
+	}
+
+	// 子弹与坦克之间的碰撞检测
+	tankCollision(){
+
 	}
 }

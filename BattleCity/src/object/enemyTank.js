@@ -34,6 +34,7 @@ class EnemyObj extends TankObj {
 		this.iSpeed = (this.iEnemyTankType != 2 && this.iEnemyTankType != 3) ? 1 : 2;
 		this.OrderNum = oEnemy.num;
 		oEnemy.num ++;
+
 	}
 
 	draw(){
@@ -45,10 +46,7 @@ class EnemyObj extends TankObj {
 		}
 
 		// 改变方向
-		if (!this.bMoveAble || !this.aaa) {
-			this.changeDir();
-		}
-		// !this.bMoveAble && !this.aaa && this.changeDir();
+		(!this.bHitBarrier || !this.bHitTank) ? this.changeDir() : this.iChangeDirDelay = 10;
 
 		//绘制子弹
 		this.shot();
