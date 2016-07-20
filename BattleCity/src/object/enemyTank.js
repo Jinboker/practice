@@ -27,6 +27,7 @@ class EnemyObj extends TankObj {
 	}
 
 	init(){
+		this.bBorned = false;
 		this.iDir = 2;
 		this.x = (oEnemy.num % 3) * 192;
 		this.y = 0;
@@ -34,7 +35,6 @@ class EnemyObj extends TankObj {
 		this.iSpeed = (this.iEnemyTankType != 2 && this.iEnemyTankType != 3) ? 1 : 2;
 		this.OrderNum = oEnemy.num;
 		oEnemy.num ++;
-
 	}
 
 	draw(){
@@ -82,7 +82,8 @@ class EnemyObj extends TankObj {
 			if (!this.iBulletDelay) {
 				// 默认的延迟是20个循环，这里进行重置
 				this.setBulletDelay();
-				!this.oBullet.bAlive && this.oBullet.init(this.x , this.y , this.iDir);
+				//这里的参数1表示这是NPC的坦克
+				!this.oBullet.bAlive && this.oBullet.init(this.x , this.y , this.iDir , 1 , this.iIndex);
 			}
 		}
 	}

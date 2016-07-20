@@ -24,17 +24,20 @@ class BulletObj extends MoverObj {
 		this.oImg                //子弹图片，已缓存
 		this.iType = 0;          //当前运动对象为子弹
 		this.iRank = 0;          //子弹的等级，为3时一枚子弹打掉16*16的砖块且能够击穿钢筋
+		this.iBulletType;        //子弹的类型（是玩家还是NPC）
 
 		this.barrierCollision();
 	}
 
-	init(x , y , dir , rank = 0){
-		this.iSpeed = rank ? 5 : 4;    //如果坦克的iRank是0，那么子弹一次移动4像素，如果不是0，一次移动5像素
+	init(x , y , dir , type , iIndex , rank = 0){
 		this.bAlive = true;
 		this.x = x;
 		this.y = y;
-		this.iRank = rank;
 		this.iDir = dir;
+		this.iBulletType = type;
+		this.iIndex = iIndex;
+		this.iRank = rank;
+		this.iSpeed = rank ? 5 : 4;    //如果坦克的iRank是0，那么子弹一次移动4像素，如果不是0，一次移动5像素
 
 		// 1、3
 		if (dir%2) {
@@ -51,7 +54,7 @@ class BulletObj extends MoverObj {
 	}
 
 	draw(){
-		if (this.oHitBarrier[this.iDir]()) {
+		if (this.oHitBarrier[this.iDir]() && this.tankCollision()) {
 			this.x += this.iSpeedX;
 			this.y += this.iSpeedY;
 			cxt.role.drawImage(this.oImg , this.x , this.y , 8 , 8);
@@ -177,15 +180,15 @@ class BulletObj extends MoverObj {
 			 return true;
 			// 子弹方向为上下
 			} else {
-			iBrickLayer = parseInt( ((that.y+that.iDir/2*8) - row * 16) / 8 );
-			if (oBrickStatus[iBrickObjIndex][iBrickLayer * 2 + 1 - j]) {
-				oBrickStatus[iBrickObjIndex][iBrickLayer * 2] = 0;
-				oBrickStatus[iBrickObjIndex][iBrickLayer * 2 + 1] = 0;
-				cxt.bg.clearRect(35 + col * 16 , 20 + iBrickLayer * 8 + row * 16 , 16 , 8);
-				clearBrick();
-				return false;
-			}
-			return true;
+				iBrickLayer = parseInt( ((that.y+that.iDir/2*8) - row * 16) / 8 );
+				if (oBrickStatus[iBrickObjIndex][iBrickLayer * 2 + 1 - j]) {
+					oBrickStatus[iBrickObjIndex][iBrickLayer * 2] = 0;
+					oBrickStatus[iBrickObjIndex][iBrickLayer * 2 + 1] = 0;
+					cxt.bg.clearRect(35 + col * 16 , 20 + iBrickLayer * 8 + row * 16 , 16 , 8);
+					clearBrick();
+					return false;
+				}
+				return true;
 			}
 		}
 
@@ -207,6 +210,34 @@ class BulletObj extends MoverObj {
 
 	// 子弹与坦克之间的碰撞检测
 	tankCollision(){
+		let iStart,
+			iOver;
+		//如果this.iBulletType为真，那么表示子弹是由NPC发射的，否则就是玩家发射的
+		[iStart , iOver] = this.iBulletType ? [0 , 1] : [1 , 4];
 
+		let xVal,
+			yVal,
+			bHitTankTest;
+
+		for (let i = iStart; i < iOver; i++) {
+			if (this.iIndex === i) { continue; }
+			xVal = this.x - aTankArr[i].x;
+			yVal = this.y - aTankArr[i].y;
+			if (this.iDir % 2) {
+				bHitTankTest = (this.iDir -1)
+				? (xVal < 32 && xVal > 0 && yVal > -8 && yVal < 32)
+				: (xVal > -8 && xVal < -0 && yVal > -8 && yVal < 32);
+			} else {
+				bHitTankTest = this.iDir
+				? (yVal > -8 && yVal < 0 && xVal > -8 && xVal < 32)
+				: (yVal < 32 && yVal > 0 && xVal > -8 && xVal < 32);
+			}
+			if (bHitTankTest) {
+				aTankArr[i].init();
+				return false;
+			}
+		}
+		return true;
 	}
+
 }

@@ -23,6 +23,7 @@ class PlayerObj extends TankObj {
 	}
 
 	init(){
+		this.bBorned = false;
 		this.x = 128;
 		this.y = 384;
 		this.iDir = 0;
@@ -75,7 +76,8 @@ class PlayerObj extends TankObj {
 			this.iBulletDelay = 20;
 			oKeyUp.j = false;
 			if (!this.oBullet.bAlive) {
-				this.oBullet.init(this.x , this.y , this.iDir , this.iRank);
+				//这里的参数0表示这是玩家的坦克
+				this.oBullet.init(this.x , this.y , this.iDir , 0 , this.iIndex , this.iRank);
 				oAud.att.play();
 			}
 		}

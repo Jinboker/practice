@@ -9,7 +9,7 @@ class TankObj extends MoverObj {
 		this.iType = 1;                    //当前移动对象为坦克
 
 		//渲染出生时候的动画
-		this.bBorned = false;              //坦克角色是否已经出生
+		this.bBorned;                      //坦克角色是否已经出生
 		this.iBornAniNum = 0;              //出生的动画循环的次数
 		this.iBornPic = 0;                 //当前出生的动画所显示的图片
 		this.iBornDelay = 3;               //三个循环的延迟改变一次出生的图片
@@ -132,22 +132,19 @@ class TankObj extends MoverObj {
 			bHitTankTest;
 
 		for (let i = 0; i < 4; i++) {
-			if ((this.iIndex != i) && this.bBorned) {
-				xVal = this.x - aTankArr[i].x;
-				yVal = this.y - aTankArr[i].y;
-				if (this.iDir % 2) {
-					bHitTankTest = (this.iDir -1)
-					? (xVal < 32 && xVal > 26 && Math.abs(yVal) < 32)
-					: (xVal > -32 && xVal < -26 && Math.abs(yVal) < 32);
-				} else {
-					bHitTankTest = this.iDir
-					? (yVal > -32 && yVal < -26 && Math.abs(xVal) < 32)
-					: (yVal < 32 && yVal > 26 && Math.abs(xVal) < 32);
-				}
-				if (bHitTankTest) {
-					return false;
-				}
+			if ((this.iIndex === i) && !this.bBorned) { continue; }
+			xVal = this.x - aTankArr[i].x;
+			yVal = this.y - aTankArr[i].y;
+			if (this.iDir % 2) {
+				bHitTankTest = (this.iDir -1)
+				? (xVal < 32 && xVal > 26 && Math.abs(yVal) < 32)
+				: (xVal > -32 && xVal < -26 && Math.abs(yVal) < 32);
+			} else {
+				bHitTankTest = this.iDir
+				? (yVal > -32 && yVal < -26 && Math.abs(xVal) < 32)
+				: (yVal < 32 && yVal > 26 && Math.abs(xVal) < 32);
 			}
+			if (bHitTankTest) { return false; }
 		}
 		return true;
 	}
