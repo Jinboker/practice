@@ -3,7 +3,7 @@ class MoverObj {
 	constructor() {
 		this.x;
 		this.y;
-		this.bAlive = false;      //对象是否存活
+		this.bAlive;              //对象是否存活
 		this.iType;               //用来判断当前对象到底是子弹还是坦克（0表示子弹1表示坦克）
 		this.iDir;                //方向0：上，1：右，2：下，3：左
 		this.iSpeed;              //速度
@@ -12,7 +12,6 @@ class MoverObj {
 		this.bMoveSet = true;     //对象重置后重新设置一下移动相关的函数（坦克在改变方向后也需要重新设置）
 		this.bHitBarrier = false; //是否碰到了障碍物
 		this.bHitTank = false;    //是否碰到了坦克
-		this.bHitBrick = false;   //当前对象是否碰到砖块
 	}
 
 	//根据方向重置当前速度参数

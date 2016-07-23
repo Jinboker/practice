@@ -5,8 +5,9 @@ class TankObj extends MoverObj {
 	constructor() {
 		super();
 
-		this.iIndex;                        //当前坦克在aTankArr中的索引值
+		this.iIndex;                       //当前坦克在aTankArr中的索引值
 		this.iType = 1;                    //当前移动对象为坦克
+		this.bAlive = false;               //坦克一开始都是未出生
 
 		//渲染出生时候的动画
 		this.bBorned;                      //坦克角色是否已经出生

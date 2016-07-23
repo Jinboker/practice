@@ -20,6 +20,7 @@ function gameStop() {
 // 游戏结束
 function gameOver(){
 	draw.gameover = false;
+	draw.tank = false;
 	cxt.bg.clearRect(227 , 404 , 32 , 32);
 	cxt.bg.drawImage(oImg.brick , 512 , 0 , 32 , 32 , 227 , 404 , 32, 32);
 }

@@ -6,9 +6,10 @@ let oEnemy = {
 
 let oEnemyData = [
 	[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 2, 2],
-	[],
+	[1, 2, 3, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 2, 2],
 ];
 
+let npcBornDelay = 30;         //第一个NPC延迟60个循环后出生，以后的坦克延迟180个循环出生
 /**
  * 敌方坦克对象，继承自TankObj
  */
@@ -17,35 +18,37 @@ class EnemyObj extends TankObj {
 		super();
 
 		this.iIndex = i;
-		this.iTankType = 0;         //当前坦克对象是玩家（0）还是NPC（1）
+		this.iTankType = 0;              //当前坦克对象是玩家（0）还是NPC（1）
 		this.iEnemyTankType;             //敌军坦克的类型
 		this.iChangeDirDelay = 10;       //坦克碰到障碍物后暂停10个循环后再改变方向
 		this.bUiSet = true;              //UI界面右侧剩余坦克数的设置
 		this.OrderNum;                   //本次绘制的是第几个坦克
-
-		this.init();
 	}
 
 	init(){
+		this.bAlive = true;
 		this.bBorned = false;
 		this.iDir = 2;
 		this.x = (oEnemy.num % 3) * 192;
 		this.y = 0;
+		console.log(stage.num);
 		this.iEnemyTankType = oEnemyData[stage.num - 1][oEnemy.num - 1];
 		this.iSpeed = (this.iEnemyTankType != 2 && this.iEnemyTankType != 3) ? 1 : 2;
 		this.OrderNum = oEnemy.num;
 		oEnemy.num ++;
+		npcBornDelay += 180;
 	}
 
 	draw(){
 		// 判断坦克是否需要出生
 		if (!this.bBorned) {
-			this.bUiSet && this.uiSet();
+			// 剩余坦克数量的图标的减少
+			cxt.bg.clearRect(481 - ((21 - this.OrderNum) % 2) * 18 , 20 + parseInt((22 - this.OrderNum) / 2) * 18, 16 , 16);
 			this.born();
 			return;
 		}
 
-		// 改变方向
+		// 每次遇到障碍物后经过10个循环后改变方向
 		(!this.bHitBarrier || !this.bHitTank) ? this.changeDir() : this.iChangeDirDelay = 10;
 
 		//绘制子弹
@@ -56,12 +59,6 @@ class EnemyObj extends TankObj {
 
 		// 绘制坦克
 		cxt.role.drawImage(oImg.enemyTank , 32 * this.iEnemyTankType ,  this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);
-	}
-
-	uiSet(){
-		this.bUiSet = false;
-		// 剩余坦克数量的图标的减少
-		cxt.bg.clearRect(481 - ((21 - this.OrderNum) % 2) * 18 , 20 + parseInt((22 - this.OrderNum) / 2) * 18, 16 , 16);
 	}
 
 	changeDir(){

@@ -20,11 +20,11 @@ let oBrickStatus = new Object();
 class BulletObj extends MoverObj {
 	constructor() {
 		super();
-
+		
 		this.oImg                //子弹图片，已缓存
-		this.iType = 0;          //当前运动对象为子弹
-		this.iRank = 0;          //子弹的等级，为3时一枚子弹打掉16*16的砖块且能够击穿钢筋
+		this.iRank;              //子弹的等级，为3时一枚子弹打掉16*16的砖块且能够击穿钢筋
 		this.iBulletType;        //子弹的类型（是玩家还是NPC）
+		this.iType = 0;          //当前运动对象为子弹
 
 		this.barrierCollision();
 	}
@@ -54,7 +54,12 @@ class BulletObj extends MoverObj {
 	}
 
 	draw(){
+		// if (this.iBulletType === 0) {
+		// 	console.log(this.bulletCollision());
+		// }
+		// console.log(this.bulletCollision());
 		if (this.oHitBarrier[this.iDir]() && this.tankCollision()) {
+		// if (this.oHitBarrier[this.iDir]() && this.tankCollision() && this.bulletCollision()) {
 			this.x += this.iSpeedX;
 			this.y += this.iSpeedY;
 			cxt.role.drawImage(this.oImg , this.x , this.y , 8 , 8);
@@ -233,11 +238,31 @@ class BulletObj extends MoverObj {
 				: (yVal < 32 && yVal > 0 && xVal > -8 && xVal < 32);
 			}
 			if (bHitTankTest) {
-				aTankArr[i].init();
+				aTankArr[i].bAlive = false;
 				return false;
 			}
 		}
 		return true;
 	}
 
+	// 子弹与子弹的碰撞
+	bulletCollision(){
+		// 如果子弹是NPC的子弹，就不需要检测子弹的碰撞了
+		if (!!this.iBulletType && !aTankArr[0].oBullet.bAlive) { return true; }
+
+		let xVal,
+			yVal;
+		for (let i = 1; i < 4; i++) {
+			// 如果子弹不存在，不进行检测
+			if (!aTankArr[i].oBullet.bAlive) { continue; }
+			xVal = Math.abs(this.x - aTankArr[i].oBullet.x);
+			yVal = Math.abs(this.y - aTankArr[i].oBullet.y);
+			if (xVal <= 8 && yVal <= 8) {
+				aTankArr[i].oBullet.bAlive = false;
+				aTankArr[i].oBullet.bMoveSet = true;
+				return false;
+			}
+		}
+		return true;
+	}
 }

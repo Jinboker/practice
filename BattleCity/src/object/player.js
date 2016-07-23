@@ -8,6 +8,7 @@ class PlayerObj extends TankObj {
 		this.iIndex = 0;
 		this.iRank = 0;                 //默认坦克等级为0，玩家坦克可以通过吃星星升级
 		this.iTankType = 0;             //当前坦克对象是玩家（0）还是NPC（1）
+		this.iLife = 3;                 //玩家默认有两条命，在每次初始化的时候要减掉一条，因此这里是3
 
 		// 防护罩相关
 		this.bShield = true;            //是否开启防护罩
@@ -17,17 +18,16 @@ class PlayerObj extends TankObj {
 
 		// 按键相关
 		this.keyDirSave = 0;            //保存当前按下的方向键，用来判断是否有改变坦克的方向
-
-		// 初始化坦克设置
-		this.init();
 	}
 
 	init(){
+		this.bAlive = true;
 		this.bBorned = false;
 		this.x = 128;
 		this.y = 384;
 		this.iDir = 0;
 		this.iSpeed = 2;
+		this.iLife --;
 	}
 
 	draw(){
