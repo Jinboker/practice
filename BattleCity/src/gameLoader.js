@@ -75,9 +75,7 @@ function gameLoop() {
 			} else {
 				if (i) {
 					bHasTankDie = true;
-					if (npcBornDelay) {
-						continue;
-					}
+					if (npcBornDelay || (oEnemy.num > 20)) { continue; }
 				} else {
 					(!aTankArr[0].iLife) && (draw.gameover = true);
 				}

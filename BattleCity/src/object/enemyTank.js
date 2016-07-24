@@ -26,12 +26,10 @@ class EnemyObj extends TankObj {
 	}
 
 	init(){
-		this.bAlive = true;
-		this.bBorned = false;
+		this.bornInit();
 		this.iDir = 2;
 		this.x = (oEnemy.num % 3) * 192;
 		this.y = 0;
-		console.log(stage.num);
 		this.iEnemyTankType = oEnemyData[stage.num - 1][oEnemy.num - 1];
 		this.iSpeed = (this.iEnemyTankType != 2 && this.iEnemyTankType != 3) ? 1 : 2;
 		this.OrderNum = oEnemy.num;

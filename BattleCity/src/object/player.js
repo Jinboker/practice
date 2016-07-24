@@ -21,8 +21,7 @@ class PlayerObj extends TankObj {
 	}
 
 	init(){
-		this.bAlive = true;
-		this.bBorned = false;
+		this.bornInit();
 		this.x = 128;
 		this.y = 384;
 		this.iDir = 0;

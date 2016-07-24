@@ -20,7 +20,7 @@ let oBrickStatus = new Object();
 class BulletObj extends MoverObj {
 	constructor() {
 		super();
-		
+
 		this.oImg                //子弹图片，已缓存
 		this.iRank;              //子弹的等级，为3时一枚子弹打掉16*16的砖块且能够击穿钢筋
 		this.iBulletType;        //子弹的类型（是玩家还是NPC）
@@ -54,10 +54,6 @@ class BulletObj extends MoverObj {
 	}
 
 	draw(){
-		// if (this.iBulletType === 0) {
-		// 	console.log(this.bulletCollision());
-		// }
-		// console.log(this.bulletCollision());
 		if (this.oHitBarrier[this.iDir]() && this.tankCollision()) {
 		// if (this.oHitBarrier[this.iDir]() && this.tankCollision() && this.bulletCollision()) {
 			this.x += this.iSpeedX;
@@ -225,13 +221,13 @@ class BulletObj extends MoverObj {
 			bHitTankTest;
 
 		for (let i = iStart; i < iOver; i++) {
-			if (this.iIndex === i) { continue; }
+			if (this.iIndex === i || !aTankArr[i].bBorned) { continue; }
 			xVal = this.x - aTankArr[i].x;
 			yVal = this.y - aTankArr[i].y;
 			if (this.iDir % 2) {
 				bHitTankTest = (this.iDir -1)
 				? (xVal < 32 && xVal > 0 && yVal > -8 && yVal < 32)
-				: (xVal > -8 && xVal < -0 && yVal > -8 && yVal < 32);
+				: (xVal > -8 && xVal < 0 && yVal > -8 && yVal < 32);
 			} else {
 				bHitTankTest = this.iDir
 				? (yVal > -8 && yVal < 0 && xVal > -8 && xVal < 32)
@@ -239,6 +235,7 @@ class BulletObj extends MoverObj {
 			}
 			if (bHitTankTest) {
 				aTankArr[i].bAlive = false;
+				aTankArr[i].bBorned = false;
 				return false;
 			}
 		}

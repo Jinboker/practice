@@ -26,6 +26,12 @@ class TankObj extends MoverObj {
 		this.barrierCollision();
 	}
 
+	bornInit(){
+		this.bMoveSet = true;
+		this.bAlive = true;
+		this.bBorned = false;
+	}
+
 	born(){
 		// 动画播放4次
 		if (this.iBornAniNum < 4) {
@@ -133,7 +139,7 @@ class TankObj extends MoverObj {
 			bHitTankTest;
 
 		for (let i = 0; i < 4; i++) {
-			if ((this.iIndex === i) && !this.bBorned) { continue; }
+			if ((this.iIndex === i) && !this.bBorned || !aTankArr[i].bBorned) { continue; }
 			xVal = this.x - aTankArr[i].x;
 			yVal = this.y - aTankArr[i].y;
 			if (this.iDir % 2) {
