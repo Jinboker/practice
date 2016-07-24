@@ -168,17 +168,16 @@ class BulletObj extends MoverObj {
 		function hitBrick() {
 			// 子弹方向为左右
 			if (that.iDir % 2) {
-			 // that.iDir%3*8是因为方向不同，子弹的x值并不是一直处于子弹当前前进方向的最面的
-			 // 因此要根据方向决定是否在x轴坐标上加上8个像素，下面的y同理
-			 iBrickLayer = parseInt( ((that.x+that.iDir%3*8) - col * 16) / 8 );
-			 if (oBrickStatus[iBrickObjIndex][iBrickLayer + (1 - j) * 2]) {
-				 oBrickStatus[iBrickObjIndex][iBrickLayer] = 0;
-				 oBrickStatus[iBrickObjIndex][iBrickLayer + 2] = 0;
-				 cxt.bg.clearRect(35 + iBrickLayer * 8 + col * 16 , 20 + row * 16 , 8 , 16);
-				 clearBrick();
-				 return false;
-			 }
-			 return true;
+				 // that.iDir%3*8是因为方向不同，子弹的x值并不是一直处于子弹当前前进方向的最面的
+				 // 因此要根据方向决定是否在x轴坐标上加上8个像素，下面的y同理
+				 iBrickLayer = parseInt( ((that.x+that.iDir%3*8) - col * 16) / 8 );
+				 if (oBrickStatus[iBrickObjIndex][iBrickLayer + (1 - j) * 2]) {
+					 oBrickStatus[iBrickObjIndex][iBrickLayer] = 0;
+					 oBrickStatus[iBrickObjIndex][iBrickLayer + 2] = 0;
+					 cxt.bg.clearRect(35 + iBrickLayer * 8 + col * 16 , 20 + row * 16 , 8 , 16);
+					 clearBrick();
+					 return false;
+				}
 			// 子弹方向为上下
 			} else {
 				iBrickLayer = parseInt( ((that.y+that.iDir/2*8) - row * 16) / 8 );
@@ -189,8 +188,8 @@ class BulletObj extends MoverObj {
 					clearBrick();
 					return false;
 				}
-				return true;
 			}
+			return true;
 		}
 
 		/**

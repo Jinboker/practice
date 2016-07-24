@@ -5,8 +5,9 @@ let oEnemy = {
 };
 
 let oEnemyData = [
-	[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 2, 2],
-	[1, 2, 3, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 2, 2],
+	[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 4, 4],
+	[6, 6, 2, 3, 2, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+	[]
 ];
 
 let npcBornDelay = 30;         //第一个NPC延迟60个循环后出生，以后的坦克延迟180个循环出生
@@ -31,7 +32,7 @@ class EnemyObj extends TankObj {
 		this.x = (oEnemy.num % 3) * 192;
 		this.y = 0;
 		this.iEnemyTankType = oEnemyData[stage.num - 1][oEnemy.num - 1];
-		this.iSpeed = (this.iEnemyTankType != 2 && this.iEnemyTankType != 3) ? 1 : 2;
+		this.iSpeed = (parseInt(this.iEnemyTankType/2) === 2) ? 2 : 1;
 		this.OrderNum = oEnemy.num;
 		oEnemy.num ++;
 		npcBornDelay += 180;

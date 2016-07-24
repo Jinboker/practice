@@ -45,6 +45,7 @@ let oAud = {
 let draw = {
 	ui : true,
 	tank : false,
+	bullet : false,
 	setMap : false,
 	map : false,
 	stop : false,

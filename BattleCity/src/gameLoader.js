@@ -88,6 +88,11 @@ function gameLoop() {
 		}
 	}
 
+	// 绘制子弹
+	if (draw.bullet) {
+		
+	}
+
 	// 游戏暂停
 	draw.stop && gameStop();
 
