@@ -21,10 +21,29 @@ let ui = {
 	//为1时表示关卡的UI
 	//为2时表示记分的UI
 	//为3时表示游戏结束
-	status : 0,
+	status : 2,
 
 	moveToTop : false
 };
+
+// 提前定义好一些需要引入的图片，省掉画图时剪切的时间
+let m_canArrow = document.createElement('canvas'),
+	m_can_1 = document.createElement('canvas'),
+	m_can_2 = document.createElement('canvas'),
+	m_can_3 = document.createElement('canvas'),
+	m_can_4 = document.createElement('canvas');
+
+m_canArrow.width = m_canArrow.height = 16;
+m_can_1.width = m_can_1.height =
+m_can_2.width = m_can_2.height =
+m_can_3.width = m_can_3.height =
+m_can_4.width = m_can_4.height = 32;
+
+m_canArrow.getContext('2d').drawImage(oImg.misc , 96 , 0 , 16 , 16 , 0 , 0 , 16 , 16);
+m_can_1.getContext('2d').drawImage(oImg.enemyTank , 0 , 0 , 32 , 32 , 0 , 0 , 32 , 32);
+m_can_2.getContext('2d').drawImage(oImg.enemyTank , 64 , 0 , 32 , 32 , 0 , 0 , 32 , 32);
+m_can_3.getContext('2d').drawImage(oImg.enemyTank , 128 , 0 , 32 , 32 , 0 , 0 , 32 , 32);
+m_can_4.getContext('2d').drawImage(oImg.enemyTank , 192 , 0 , 32 , 32 , 0 , 0 , 32 , 32);
 
 // UI相关执行函数
 class UI {
@@ -36,7 +55,6 @@ class UI {
 		this.audPlay = true;           //是否开始播放音频
 		// 开始的UI的相关变量
 		this.startY = cxt.h;          // 开始画面上移的y值
-		// this.moveToTop = false;         //moveToTop为真就表示开始画面已经运动到了最终位置
 		this.modeChoose = 272;          // 开始画面上小坦克的纵向位置
 		this.iWheelDelay = 5;          //坦克轮胎隔5个循环改变一次
 		this.iWheelPic = 0;            //wheel表示轮子的变化0 -> 1 -> 0 -> 1
@@ -45,6 +63,7 @@ class UI {
 		this.maxCurtainHeight = cxt.h * 0.5;
 		this.nextAble = false;          //是否允许进入下一个stage.status
 		this.bgWidth = 0;               //当幕布开始左右分开时，游戏界面的宽度的一半
+		// 计分界面的相关变量
 
 		this.iStartMusicDelay = 80;     //在开始播放开始音乐过了后再过80个循环才拉开幕布会开始游戏
 	}
@@ -116,8 +135,7 @@ class UI {
 						}
 						cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
 						break;
-					default:
-						break;
+					default: break;
 				}
 			}
 		}
@@ -209,6 +227,37 @@ class UI {
 
 	// 计分的界面
 	gameScore(){
-
+		cxt.bg.save();
+		cxt.bg.clearRect(35 , 20 , cxt.l , cxt.l);   //这里必须要清除屏幕，不然prstart字体不会被应用！！！！
+		cxt.bg.font = "15px prstart";
+		cxt.bg.fillStyle = "#b53120";
+		cxt.bg.fillText("HI-SCORE", 100, 50);
+		cxt.bg.fillText("1-PLAYER", 50, 130);
+		cxt.bg.fillStyle = '#ea9e22';
+		cxt.bg.fillText("20000", 300, 50);
+		cxt.bg.fillText(3000, 110, 160);
+		cxt.bg.fillStyle = 'white';
+		cxt.bg.fillText("STAGE  "+ stage.num , 190, 90);
+		cxt.bg.fillText("PTS", 120, 210);
+		cxt.bg.drawImage(m_canArrow ,  230 , 195 , 16 , 16);
+		cxt.bg.drawImage(m_can_1 , 250 , 185 , 32 , 32);
+		cxt.bg.fillText("PTS", 120, 250);
+		cxt.bg.drawImage(m_canArrow ,  230 , 235 , 16 , 16);
+		cxt.bg.drawImage(m_can_2 , 250 , 225 , 32 , 32);
+		cxt.bg.fillText("PTS", 120, 290);
+		cxt.bg.drawImage(m_canArrow ,  230 , 275 , 16 , 16);
+		cxt.bg.drawImage(m_can_3 , 250 , 265 , 32 , 32);
+		cxt.bg.fillText("PTS", 120, 330);
+		cxt.bg.drawImage(m_canArrow ,  230 , 315 , 16 , 16);
+		cxt.bg.drawImage(m_can_4 , 250 , 305 , 32 , 32);
+		cxt.bg.fillRect(180, 345, 168, 5);
+		cxt.bg.fillText("TOTAL", 90, 400);
+		for (let i = 0; i < 4; i++) {
+			cxt.bg.fillText('1500', 40, 210);
+			cxt.bg.fillText('15' , 185 , 210);
+		}
+		// uiScore.y = [210, 250, 290, 330];
+		cxt.bg.fillText(15, 185, 400); //总分
+		cxt.bg.restore();
 	}
 }

@@ -210,10 +210,13 @@ class BulletObj extends MoverObj {
 
 	// 子弹与坦克之间的碰撞检测
 	tankCollision(){
+		// 如果所有的NPC坦克都被干掉了，那么就不用检测碰撞了
+		if (bAllTankDie) { return true; }
+
 		let iStart,
 			iOver;
 		//如果this.iBulletType为真，那么表示子弹是由NPC发射的，否则就是玩家发射的
-		[iStart , iOver] = this.iBulletType ? [0 , 1] : [1 , 4];
+		[iStart , iOver] = this.iBulletType ? [0 , 1] : [1 , 5];
 
 		let xVal,
 			yVal,
@@ -243,12 +246,12 @@ class BulletObj extends MoverObj {
 
 	// 子弹与子弹的碰撞
 	bulletCollision(){
-		// 如果子弹是NPC的子弹，就不需要检测子弹的碰撞了
-		if (!!this.iBulletType && !aTankArr[0].oBullet.bAlive) { return true; }
+		// 如果子弹是NPC的子弹，或者所有的NPC都被干掉了，就不需要检测子弹的碰撞了
+		if (!!this.iBulletType && !aTankArr[0].oBullet.bAlive && bAllTankDie) { return true; }
 
 		let xVal,
 			yVal;
-		for (let i = 1; i < 4; i++) {
+		for (let i = 1; i < 5; i++) {
 			// 如果子弹不存在，不进行检测
 			if (!aTankArr[i].oBullet.bAlive) { continue; }
 			xVal = Math.abs(this.x - aTankArr[i].oBullet.x);

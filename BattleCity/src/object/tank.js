@@ -134,11 +134,14 @@ class TankObj extends MoverObj {
 
 	// 坦克与坦克之间的碰撞检测
 	tankCollision(){
+		// 如果所有的NPC坦克都被干掉了，那么就不用检测坦克与坦克之间的碰撞了
+		if (bAllTankDie) { return true; }
+		
 		let xVal,
 			yVal,
 			bHitTankTest;
 
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < 5; i++) {
 			if ((this.iIndex === i) && !this.bBorned || !aTankArr[i].bBorned) { continue; }
 			xVal = this.x - aTankArr[i].x;
 			yVal = this.y - aTankArr[i].y;

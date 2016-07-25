@@ -27,15 +27,18 @@ function init() {
 }
 
 let aTankArr = new Array;
+let iEnemyNum = 5;
 function tankInit() {
 	// 第一个是玩家坦克，后面四个是敌军坦克
 	aTankArr[0] = new PlayerObj(0);
-	for (let i = 1; i < 4; i++) {
+	for (let i = 1; i < iEnemyNum; i++) {
 		aTankArr[i] = new EnemyObj(i);
 	}
 }
 
 let bHasTankDie = false;         //是否有坦克不是处于活着的状态
+let bAllTankDie = false;
+let iDelayEnterNextStage = 180;  //消灭所有的坦克后延迟180个循环后进入分数统计界面
 /*
  *循环函数，用来逐帧更新画布
  */
@@ -69,13 +72,17 @@ function gameLoop() {
 	//绘制坦克
 	if (draw.tank) {
 		cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
-		for (let i = 0; i < 4; i++) {
+		for (let i = 0; i < iEnemyNum; i++) {
 			if (aTankArr[i].bAlive) {
 				aTankArr[i].draw();
+				if (oEnemy.num > oEnemy.maxNum) {
+					bAllTankDie = true;
+					i && (bAllTankDie = false);
+				}
 			} else {
 				if (i) {
 					bHasTankDie = true;
-					if (npcBornDelay || (oEnemy.num > 20)) { continue; }
+					if (npcBornDelay || (oEnemy.num > oEnemy.maxNum)) { continue; }
 				} else {
 					(!aTankArr[0].iLife) && (draw.gameover = true);
 				}
@@ -86,11 +93,18 @@ function gameLoop() {
 			npcBornDelay --;
 			bHasTankDie = false;
 		}
-	}
-
-	// 绘制子弹
-	if (draw.bullet) {
-		
+		// 如果全部的NPC都被干掉了，那么延迟180个循环后开始统计数据并进入下一关
+		if (bAllTankDie) {
+			iEnemyNum = 1;
+			iDelayEnterNextStage = delay(iDelayEnterNextStage , 180 , () => {
+				draw.tank = false;
+				draw.ui = true;
+				bAllTankDie = false;
+				ui.status = 2;
+				gameBox.border.style.backgroundColor = 'black';
+				cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
+			});
+		}
 	}
 
 	// 游戏暂停

@@ -101,8 +101,6 @@ function delay(num , delayNum , fn){
 }
 
 
-
-
 function a() {
 	console.log('a');
 }

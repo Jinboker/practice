@@ -4,10 +4,11 @@ let stopSet;
 function gameStop() {
 	if (stopSet) {
 		stopSet = false;
-		cxt.role.save();
-		cxt.role.fillStyle = '#b53120';
-		cxt.role.fillText("GAME STOP" , 140 , 220);
-		cxt.role.restore();
+		cxt.bg.save();
+		cxt.bg.font = "20px prstart";
+		cxt.bg.fillStyle = '#b53120';
+		cxt.bg.fillText("GAME STOP" , 140 , 220);
+		cxt.bg.restore();
 	}
 	if (keyInfo[72].pressed && oKeyUp.h) {
 		oKeyUp.h = false;
