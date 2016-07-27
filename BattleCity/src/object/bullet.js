@@ -70,27 +70,28 @@ class BulletObj extends MoverObj {
 		let iRow,
 			iCol,
 			arr = [2],
+			bHitBarrier,
 			that = this;
 
 		this.oHitBarrier = {
 			0 : () => {
 				[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
-				return hit(iRow , iCol , iRow , iCol + 1) && this.y > 0;
+				return this.boomInit((hit(iRow , iCol , iRow , iCol + 1) && this.y > 0));
 			},
 
 			1 : () => {
 				[iRow , iCol] = [parseInt(this.y / 16) , parseInt((this.x + 8) / 16)];
-				return hit(iRow , iCol , iRow + 1 , iCol) && this.x < 408;
+				return this.boomInit((hit(iRow , iCol , iRow + 1 , iCol) && this.x < 408));
 			},
 
 			2 : () => {
 				[iRow , iCol] = [parseInt((this.y + 8) / 16) , parseInt(this.x / 16)];
-				return hit(iRow , iCol , iRow , iCol + 1) && this.y < 408;
+				return this.boomInit((hit(iRow , iCol , iRow , iCol + 1) && this.y < 408));
 			},
 
 			3 : () => {
 				[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
-				return hit(iRow , iCol , iRow + 1 , iCol) && this.x > 0;
+				return this.boomInit((hit(iRow , iCol , iRow + 1 , iCol) && this.x > 0));
 			}
 		}
 
@@ -152,10 +153,10 @@ class BulletObj extends MoverObj {
 		function bulletBrickRoad() {
 			iBrickObjIndex = row * 16 + col;
 			if (oBrickStatus[iBrickObjIndex]) {
-			return hitBrick();
+				return hitBrick();
 			} else{
-			   oBrickStatus[iBrickObjIndex] = [1 , 1 , 1 , 1];
-			return hitBrick();
+				oBrickStatus[iBrickObjIndex] = [1 , 1 , 1 , 1];
+				return hitBrick();
 			}
 		}
 
@@ -206,6 +207,19 @@ class BulletObj extends MoverObj {
 				}
 			}
 		}
+
+		/**
+		 * 如果子弹撞到了障碍物或者墙壁那么就要开始初始化爆炸效果
+		 * @param  {[boolean]} bHitBarrier [子弹是否撞到了墙壁或者障碍物]
+		 * @return {[boolean]}             [返回子弹是否撞到了墙壁或者障碍物的布尔值]
+		 */
+		this.boomInit = function (bHitBarrier) {
+			if (!bHitBarrier) {
+				let oSmallExplode = new SmallExplode(this.x , this.y , this.iDir);
+				aSmallExplode.push(oSmallExplode);
+			}
+			return bHitBarrier;
+		}
 	}
 
 	// 子弹与坦克之间的碰撞检测
@@ -236,12 +250,27 @@ class BulletObj extends MoverObj {
 				: (yVal < 32 && yVal > 0 && xVal > -8 && xVal < 32);
 			}
 			if (bHitTankTest) {
-				aTankArr[i].bAlive = false;
-				aTankArr[i].bBorned = false;
+				let oTank = aTankArr[i],
+					oBigExplode = new BigExplode(oTank.x + 16 , oTank.y + 16 , oTank.iDir);
+
+				aBigExplode.push(oBigExplode);
+				oTank.bAlive = false;
+				oTank.bBorned = false;
+				this.getScore(aTankArr[i].iEnemyType);
 				return false;
 			}
 		}
 		return true;
+	}
+
+	// 统计被子弹击杀的坦克类型，用来在结束后统计分数
+	getScore(num){
+		switch (parseInt(num / 2)) {
+			case 0: oScore.tankNum[0] ++; break;
+			case 1: oScore.tankNum[1] ++; break;
+			case 2: oScore.tankNum[2] ++; break;
+			default: oScore.tankNum[3] ++; break;
+		}
 	}
 
 	// 子弹与子弹的碰撞

@@ -26,7 +26,8 @@ let oImg = {
 	enemyTank : document.getElementById('enemyTank'),
 	bonus : document.getElementById('bonus'),
 	misc : document.getElementById('Misc'),
-	brick : document.getElementById('brick')
+	brick : document.getElementById('brick'),
+	boom : document.getElementById('boom')
 };
 //所有的音频
 let oAud = {

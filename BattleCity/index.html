@@ -28,13 +28,13 @@
 			height: 416px;
 			background-color: #000;
 		}
-		#canvas-bg {
+		#canvas-bg,
+		#canvas-misc {
 			position: absolute;
 			top: 0;
 			left: 0;
 		}
-		#canvas-role,
-		#canvas-misc {
+		#canvas-role {
 			position: absolute;
 			top: 20px;
 			left: 35px;
@@ -52,7 +52,7 @@
 		<!-- 角色层 -->
 		<canvas id="canvas-role" width="416" height="416"></canvas>
 		<!-- 爆炸层 -->
-		<canvas id="canvas-misc" width="416" height="416"></canvas>
+		<canvas id="canvas-misc" width="516" height="456"></canvas>
 	</div>
 	<!-- 提前缓存图片 -->
 	<div class="hide">
@@ -62,6 +62,7 @@
 		<img src="src/image/bonus.png" id="bonus">
 		<img src="src/image/Misc.png" id="Misc">
 		<img src="src/image/brick.png" id="brick">
+		<img src="src/image/Boom.png" id="boom">
 	</div>
 	<!-- 提前缓存音频文件 -->
 	<div class="hide">
@@ -85,6 +86,7 @@
 	<script type="text/javascript" src='src/keyboard/key.js'></script>
 
 	<!-- 游戏对象相关 -->
+	<script type="text/javascript" src='src/object/explode.js'></script>
 	<script type="text/javascript" src='src/object/mover.js'></script>
 	<script type="text/javascript" src='src/object/bullet.js'></script>
 	<script type="text/javascript" src='src/object/tank.js'></script>

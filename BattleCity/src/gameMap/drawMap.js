@@ -15,6 +15,7 @@ class DrawMap{
 	}
 
 	draw(num){        //传入当前需要绘制的关卡数
+		draw.map = false;
 		// 绘制地图
 		for (let i = 0; i < 13; i++) {
 			for(let j = 0; j < 13; j++){

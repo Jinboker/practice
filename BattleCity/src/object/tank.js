@@ -1,3 +1,63 @@
+let aTankArr = new Array,
+	iEnemyNum = 5;
+
+/**
+ * 初始化全部的坦克
+ */
+function tankInit() {
+	// 第一个是玩家坦克，后面四个是敌军坦克
+	aTankArr[0] = new PlayerObj(0);
+	for (let i = 1; i < iEnemyNum; i++) {
+		aTankArr[i] = new EnemyObj(i);
+	}
+}
+
+let bHasTankDie = false,         //是否有坦克不是处于活着的状态
+	bAllTankDie = false,
+	iDelayEnterNextStage = 180;  //消灭所有的坦克后延迟180个循环后进入分数统计界面
+
+/**
+ * 绘制坦克
+ */
+function drawTank() {
+	cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
+	for (let i = 0; i < iEnemyNum; i++) {
+		if (aTankArr[i].bAlive) {
+			aTankArr[i].draw();
+			if (oEnemy.num > oEnemy.maxNum) {
+				bAllTankDie = true;
+				i && (bAllTankDie = false);
+			}
+		} else {
+			if (i) {
+				bHasTankDie = true;
+				if (npcBornDelay || (oEnemy.num > oEnemy.maxNum)) { continue; }
+			} else {
+				(!aTankArr[0].iLife) && (draw.gameover = true);
+			}
+			aTankArr[i].init();
+		}
+	}
+	if (bHasTankDie) {
+		npcBornDelay --;
+		bHasTankDie = false;
+	}
+	// 如果全部的NPC都被干掉了，那么延迟180个循环后开始统计数据并进入下一关
+	if (bAllTankDie) {
+		iEnemyNum = 1;
+		iDelayEnterNextStage = delay(iDelayEnterNextStage , 180 , () => {
+			draw.tank = false;
+			draw.ui = true;
+			bAllTankDie = false;
+			ui.status = 2;
+			gameBox.border.style.backgroundColor = 'black';
+			cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
+		});
+	}
+	// 渲染爆炸
+	explode();
+}
+
 /**
  * 坦克对象，继承自MoverObj
  */
@@ -42,12 +102,12 @@ class TankObj extends MoverObj {
 				} else {
 					this.iBornPic = 0;
 					this.iBornAniNum ++;
-					cxt.misc.clearRect(this.x , this.y , 32 , 32);
+					cxt.misc.clearRect(this.x + 35 , this.y + 20 , 32 , 32);
 				}
-				cxt.misc.drawImage(oImg.bonus , 96 - 32 * this.iBornPic , 64 , 32 , 32 , this.x , this.y , 32 , 32);
+				cxt.misc.drawImage(oImg.bonus , 96 - 32 * this.iBornPic , 64 , 32 , 32 , this.x + 35 , this.y + 20 , 32 , 32);
 			});
 		} else {
-			cxt.misc.clearRect(this.x , this.y , 32 , 32);
+			cxt.misc.clearRect(this.x + 35 , this.y + 20 , 32 , 32);
 			this.iBornAniNum = 0;
 			this.bBorned = true;              //出生的动画执行完毕，开始绘制坦克
 		}
@@ -136,7 +196,7 @@ class TankObj extends MoverObj {
 	tankCollision(){
 		// 如果所有的NPC坦克都被干掉了，那么就不用检测坦克与坦克之间的碰撞了
 		if (bAllTankDie) { return true; }
-		
+
 		let xVal,
 			yVal,
 			bHitTankTest;

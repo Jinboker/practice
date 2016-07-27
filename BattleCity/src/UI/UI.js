@@ -21,7 +21,7 @@ let ui = {
 	//为1时表示关卡的UI
 	//为2时表示记分的UI
 	//为3时表示游戏结束
-	status : 2,
+	status : 0,
 
 	moveToTop : false
 };
@@ -45,6 +45,11 @@ m_can_2.getContext('2d').drawImage(oImg.enemyTank , 64 , 0 , 32 , 32 , 0 , 0 , 3
 m_can_3.getContext('2d').drawImage(oImg.enemyTank , 128 , 0 , 32 , 32 , 0 , 0 , 32 , 32);
 m_can_4.getContext('2d').drawImage(oImg.enemyTank , 192 , 0 , 32 , 32 , 0 , 0 , 32 , 32);
 
+let oScore = {
+	y : [210 , 250 , 290 , 330],
+	tankNum : [0 , 0 , 0 , 0]
+}
+
 // UI相关执行函数
 class UI {
 	constructor() {
@@ -64,23 +69,19 @@ class UI {
 		this.nextAble = false;          //是否允许进入下一个stage.status
 		this.bgWidth = 0;               //当幕布开始左右分开时，游戏界面的宽度的一半
 		// 计分界面的相关变量
-
+		this.sum = 0;                   //干掉的坦克总数
+		// 游戏结束界面
+		this.bSetGameOver = true;      //是否开始设置游戏结束界面
 		this.iStartMusicDelay = 80;     //在开始播放开始音乐过了后再过80个循环才拉开幕布会开始游戏
 	}
 
 	draw(){
 		switch (ui.status) {
-			case 0:
-				this.gameStart();
-				break;
-			case 1:
-				this.gameStage();
-				break;
-			case 2:
-				this.gameScore();
-				break;
-			default:
-				break;
+			case 0: this.gameStart(); break;
+			case 1: this.gameStage(); break;
+			case 2: this.gameScore(); break;
+			case 3: this.gameOver(); break;
+			default: break;
 		}
 	}
 
@@ -235,8 +236,8 @@ class UI {
 		cxt.bg.fillText("1-PLAYER", 50, 130);
 		cxt.bg.fillStyle = '#ea9e22';
 		cxt.bg.fillText("20000", 300, 50);
-		cxt.bg.fillText(3000, 110, 160);
-		cxt.bg.fillStyle = 'white';
+		cxt.bg.fillText(oScore.tankNum[0] * 100 + oScore.tankNum[1] * 200 + oScore.tankNum[2] * 300 + oScore.tankNum[3] * 400 +  iEatBouns * 500 , 110, 160);
+		cxt.bg.fillStyle = '#fff';
 		cxt.bg.fillText("STAGE  "+ stage.num , 190, 90);
 		cxt.bg.fillText("PTS", 120, 210);
 		cxt.bg.drawImage(m_canArrow ,  230 , 195 , 16 , 16);
@@ -251,13 +252,22 @@ class UI {
 		cxt.bg.drawImage(m_canArrow ,  230 , 315 , 16 , 16);
 		cxt.bg.drawImage(m_can_4 , 250 , 305 , 32 , 32);
 		cxt.bg.fillRect(180, 345, 168, 5);
-		cxt.bg.fillText("TOTAL", 90, 400);
+		cxt.bg.fillText("TOTAL", 90, 380);
+		this.sum = 0;
 		for (let i = 0; i < 4; i++) {
-			cxt.bg.fillText('1500', 40, 210);
-			cxt.bg.fillText('15' , 185 , 210);
+			cxt.bg.fillText(oScore.tankNum[i] * 100 , 40, oScore.y[i]);
+			cxt.bg.fillText(oScore.tankNum[i] , 195 , oScore.y[i]);
+			this.sum = this.sum + oScore.tankNum[i];
 		}
-		// uiScore.y = [210, 250, 290, 330];
-		cxt.bg.fillText(15, 185, 400); //总分
+		cxt.bg.fillText(this.sum, 195, 380); //总分
 		cxt.bg.restore();
+	}
+
+	gameOver(){
+		if (this.bSetGameOver) {
+			this.bSetGameOver = false;
+			cxt.bg.drawImage(oImg.ui, 0, 155, 376, 165, 140, 160, 376, 165);
+			oAud.over.play();
+		}
 	}
 }

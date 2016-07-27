@@ -1,3 +1,4 @@
+let iEatBouns = 0;         //玩家吃掉的奖励数
 /**
  * 玩家坦克对象，继承自TankObj
  */
@@ -96,5 +97,9 @@ class PlayerObj extends TankObj {
 			this.bShield = false;
 			this.iShieldNum = 200;
 		}
+	}
+
+	bonus(){
+
 	}
 }
