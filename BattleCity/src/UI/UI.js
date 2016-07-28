@@ -44,6 +44,16 @@ class UI {
 		this.gameOverInit();                 // 游戏结束界面相关变量初始化
 	}
 
+	draw(){
+		switch (ui.status) {
+			case 0: this.gameStart(); break;
+			case 1: this.gameStage(); break;
+			case 2: this.gameScore(); break;
+			case 3: this.gameOver(); break;
+			default: break;
+		}
+	}
+
 	gameStartInit(){
 		this.startY = cxt.h;                 // 开始画面上移的y值
 		this.modeChoose = 272;               // 开始画面上小坦克的纵向位置
@@ -63,16 +73,6 @@ class UI {
 
 	gameOverInit(){
 		this.bSetGameOver = true;            //是否开始设置游戏结束界面
-	}
-
-	draw(){
-		switch (ui.status) {
-			case 0: this.gameStart(); break;
-			case 1: this.gameStage(); break;
-			case 2: this.gameScore(); break;
-			case 3: this.gameOver(); break;
-			default: break;
-		}
 	}
 
 	// 最开始的UI界面
@@ -106,28 +106,25 @@ class UI {
 				this.iWheelPic = +!this.iWheelPic;
 			});
 			// 如果有按键按下则检测是哪一个按键并执行相应的操作
-			if (keyPressed) {
-				keyPressed = false;
-				switch (keyCode) {
-					// 向下
-					case 83: this.modeChoose < 332 ?  this.modeChoose += 30 : this.modeChoose = 272; break;
-					// 向上
-					case 87: this.modeChoose > 272 ?  this.modeChoose -= 30 : this.modeChoose = 332; break;
-					// 确认按键H
-					case 72:
-						stage.mode = (this.modeChoose - 272) / 30;    //确定选择的模式
-						if (stage.mode === 2) {
-							draw.ui = false;         //选择自定义模式那么关闭ui的绘制
-							draw.setMap = true;      //开启地图编辑模式
-							setMapInit = true;
-						}else {
-							ui.status = 1;           //下次循环直接进入下一个ui的状态
-							this.moveToTop = false;  //下次进入这个状态画面重新开始运动
-						}
-						cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
-						break;
-					default: break;
-				}
+			switch (keyCode) {
+				// 向下
+				case 83: this.modeChoose < 332 ?  this.modeChoose += 30 : this.modeChoose = 272; break;
+				// 向上
+				case 87: this.modeChoose > 272 ?  this.modeChoose -= 30 : this.modeChoose = 332; break;
+				// 确认按键H
+				case 72:
+					stage.mode = (this.modeChoose - 272) / 30;    //确定选择的模式
+					if (stage.mode === 2) {
+						draw.ui = false;         //选择自定义模式那么关闭ui的绘制
+						draw.setMap = true;      //开启地图编辑模式
+						setMapInit = true;
+					}else {
+						ui.status = 1;           //下次循环直接进入下一个ui的状态
+						this.moveToTop = false;  //下次进入这个状态画面重新开始运动
+					}
+					cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
+					break;
+				default: break;
 			}
 		}
 	}
@@ -146,15 +143,7 @@ class UI {
 				if (this.curtainHeight <= 228) {
 					this.curtainHeight += 15;
 				} else {
-					//改变背景颜色是为了bg层清除右边边框内容时不需要再重绘#666色的背景了，直接显示背景色就好了
-					gameBox.border.style.backgroundColor = '#666';
-					canRol.style.zIndex = '1';
-					cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
-					cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
-					cxt.role.save();
-					cxt.role.fillStyle = '#666';
-					cxt.role.fillRect(0 , 0 , cxt.l , cxt.l);
-					cxt.role.restore();
+					this.styleChange();
 					stage.status = 1;
 				}
 				break;
@@ -208,6 +197,18 @@ class UI {
 		}
 	}
 
+	styleChange(){
+		//改变背景颜色是为了bg层清除右边边框内容时不需要再重绘#666色的背景了，直接显示背景色就好了
+		gameBox.border.style.backgroundColor = '#666';
+		canRol.style.zIndex = '1';
+		cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
+		cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
+		cxt.role.save();
+		cxt.role.fillStyle = '#666';
+		cxt.role.fillRect(0 , 0 , cxt.l , cxt.l);
+		cxt.role.restore();
+	}
+
 	enterNextStage(){
 		oAud.start.play();
 		draw.map = true;                 //循环开始绘制背景地图
@@ -219,12 +220,14 @@ class UI {
 		if (this.bRestartGame) {
 			this.iDelayRestartGame = delay(this.iDelayRestartGame , 120 , () => {
 				this.bRestartGame = false;
+				ui.bInGame = true;
 				stage.num ++;
 				cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
 				cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
-				ui.status = 3;
-				gameStageInit();
-				stage.status = 0;
+				this.styleChange();
+				ui.status = 1;
+				this.gameStageInit();
+				stage.status = 1;
 			})
 		} else {
 			this.drawScore();
