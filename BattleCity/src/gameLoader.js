@@ -8,7 +8,6 @@ window.onload = function () {
  * 初始化
  */
 function init() {
-	// 初始化类
 	oClass = {
 		ui : new UI(),
 		tank : new TankObj(),

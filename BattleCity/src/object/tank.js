@@ -42,20 +42,24 @@ function drawTank() {
 		npcBornDelay --;
 		bHasTankDie = false;
 	}
+	// 渲染爆炸
+	explode();
 	// 如果全部的NPC都被干掉了，那么延迟180个循环后开始统计数据并进入下一关
 	if (bAllTankDie) {
 		iEnemyNum = 1;
 		iDelayEnterNextStage = delay(iDelayEnterNextStage , 180 , () => {
+			bAllTankDie = false;
 			draw.tank = false;
 			draw.ui = true;
-			bAllTankDie = false;
 			ui.status = 2;
-			gameBox.border.style.backgroundColor = 'black';
+			cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
+			cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
 			cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
+			cxt.bg.drawImage(oImg.score , 0 , 0 , 516 , 456);
+			oScore.totalScore = oScore.tankNum[0] * 100 + oScore.tankNum[1] * 200 + oScore.tankNum[2] * 300 + oScore.tankNum[3] * 400 +  iEatBouns * 500;
+			oScore.totalTank = oScore.tankNum[0] + oScore.tankNum[1] + oScore.tankNum[2] + oScore.tankNum[3];
 		});
 	}
-	// 渲染爆炸
-	explode();
 }
 
 /**
