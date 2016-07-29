@@ -20,9 +20,6 @@ function init() {
 
 	// UI初始化
 	oClass.ui.init();
-
-	// 坦克对象初始化
-	tankInit();
 }
 
 /*

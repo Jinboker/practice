@@ -1,7 +1,8 @@
 let oEnemy = {
 	maxTankAlive : 4,    //敌军坦克同一时间最多只能有四个
-	maxNum : 1,         //敌军坦克的总数是20个
-	num : 1              //当前画出来的是第几个坦克，因为坦克是从正中间开始刷新，因此从1开始计数
+	maxNum : 20,         //敌军坦克的总数是20个
+	num : 1,             //当前画出来的是第几个坦克，因为坦克是从正中间开始刷新，因此从1开始计数
+	iBornDelay : 30      //第一个NPC延迟30个循环后出生，以后的坦克延迟180个循环出生
 };
 
 let oEnemyData = [
@@ -18,7 +19,6 @@ let oEnemyData = [
 	// [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
-let npcBornDelay = 30;         //第一个NPC延迟60个循环后出生，以后的坦克延迟180个循环出生
 /**
  * 敌方坦克对象，继承自TankObj
  */
@@ -28,7 +28,7 @@ class EnemyObj extends TankObj {
 
 		this.iIndex = i;
 		this.iTankType = 0;              //当前坦克对象是玩家（0）还是NPC（1）
-		this.iEnemyType;             //敌军坦克的类型
+		this.iEnemyType;                 //敌军坦克的类型
 		this.iChangeDirDelay = 10;       //坦克碰到障碍物后暂停10个循环后再改变方向
 		this.bUiSet = true;              //UI界面右侧剩余坦克数的设置
 		this.OrderNum;                   //本次绘制的是第几个坦克
@@ -43,7 +43,7 @@ class EnemyObj extends TankObj {
 		this.iSpeed = (parseInt(this.iEnemyType/2) === 2) ? 2 : 1;
 		this.OrderNum = oEnemy.num;
 		oEnemy.num ++;
-		npcBornDelay += 180;
+		oEnemy.iBornDelay += 180;
 	}
 
 	draw(){

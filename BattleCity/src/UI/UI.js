@@ -106,25 +106,28 @@ class UI {
 				this.iWheelPic = +!this.iWheelPic;
 			});
 			// 如果有按键按下则检测是哪一个按键并执行相应的操作
-			switch (keyCode) {
-				// 向下
-				case 83: this.modeChoose < 332 ?  this.modeChoose += 30 : this.modeChoose = 272; break;
-				// 向上
-				case 87: this.modeChoose > 272 ?  this.modeChoose -= 30 : this.modeChoose = 332; break;
-				// 确认按键H
-				case 72:
-					stage.mode = (this.modeChoose - 272) / 30;    //确定选择的模式
-					if (stage.mode === 2) {
-						draw.ui = false;         //选择自定义模式那么关闭ui的绘制
-						draw.setMap = true;      //开启地图编辑模式
-						setMapInit = true;
-					}else {
-						ui.status = 1;           //下次循环直接进入下一个ui的状态
-						this.moveToTop = false;  //下次进入这个状态画面重新开始运动
-					}
-					cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
-					break;
-				default: break;
+			if (keyPressed) {
+				keyPressed = false;
+				switch (keyCode) {
+					// 向下
+					case 83: this.modeChoose < 332 ?  this.modeChoose += 30 : this.modeChoose = 272; break;
+					// 向上
+					case 87: this.modeChoose > 272 ?  this.modeChoose -= 30 : this.modeChoose = 332; break;
+					// 确认按键H
+					case 72:
+						stage.mode = (this.modeChoose - 272) / 30;    //确定选择的模式
+						if (stage.mode === 2) {
+							draw.ui = false;         //选择自定义模式那么关闭ui的绘制
+							draw.setMap = true;      //开启地图编辑模式
+							setMapInit = true;
+						}else {
+							ui.status = 1;           //下次循环直接进入下一个ui的状态
+							this.moveToTop = false;  //下次进入这个状态画面重新开始运动
+						}
+						cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
+						break;
+					default: break;
+				}
 			}
 		}
 	}
@@ -161,21 +164,23 @@ class UI {
 					this.iDelayEnterNext = delay(this.iDelayEnterNext , 30 , this.enterNextStage())
 				} else {
 					// 键盘选择
-					switch (keyCode) {
-						//向下
-						case 83: stage.num = stage.num < stage.max ? stage.num + 1 : 1; break;
-						//向上
-						case 87: stage.num = stage.num > 1 ? stage.num - 1 : stage.max; break;
-						//确认
-						case 72: this.enterNextStage(); break;
-						default: break;
+					if (keyPressed) {
+						keyPressed = false;
+						switch (keyCode) {
+							//向下
+							case 83: stage.num = stage.num < stage.max ? stage.num + 1 : 1; break;
+							//向上
+							case 87: stage.num = stage.num > 1 ? stage.num - 1 : stage.max; break;
+							//确认
+							case 72: this.enterNextStage(); break;
+							default: break;
+						}
 					}
 				}
 				break;
 			//关卡界面的等待
 			case 2:
 				this.iStartMusicDelay = delay(this.iStartMusicDelay , 80 , () => {
-					canRol.style.zIndex = '0';
 					cxt.misc.clearRect(35 , 20 , cxt.l , cxt.l);
 					stage.status = 3;
 				})
@@ -190,6 +195,7 @@ class UI {
 					draw.misc = true;              //循环开始绘制杂项
 					draw.enemyNum = true;          //循环开始绘制敌军坦克数量信息
 					draw.ui = false;               //停止绘制UI界面
+					canRol.style.zIndex = '';    //将role层放回到背景层下
 				}
 				break;
 			default:
@@ -213,12 +219,16 @@ class UI {
 		oAud.start.play();
 		draw.map = true;                 //循环开始绘制背景地图
 		stage.status = 2;
+		oEnemy.num = 1;                  //当前画出来的是第几个坦克，因为坦克是从正中间开始刷新，因此从1开始计数
+		tankInit();                      // 坦克对象初始化
 	}
 
 	// 计分的界面
 	gameScore(){
 		if (this.bRestartGame) {
 			this.iDelayRestartGame = delay(this.iDelayRestartGame , 120 , () => {
+				aTankArr = [null, null, null, null, null];       //坦克对象全部清空
+				oEnemy.iBornDelay = 30;                          //重置NPC出生的延迟
 				this.bRestartGame = false;
 				ui.bInGame = true;
 				stage.num ++;
@@ -226,8 +236,8 @@ class UI {
 				cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
 				this.styleChange();
 				ui.status = 1;
-				this.gameStageInit();
 				stage.status = 1;
+				this.gameStageInit();
 			})
 		} else {
 			this.drawScore();

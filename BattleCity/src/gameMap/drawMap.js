@@ -6,16 +6,14 @@ let roadMap = new Array(28);
 class DrawMap{
 	constructor(){
 		this.idata;      //当前需要绘制的一个地图格子的数据
-		for (let i = 0; i < 28; i++) {
-			roadMap[i] = [0 , 0 , 0 , 0 , 0 , 0 , 0 ,
-						  0 , 0 , 0 , 0 , 0 , 0 , 0 ,
-						  0 , 0 , 0 , 0 , 0 , 0 , 0 ,
-						  0 , 0 , 0 , 0 , 0 , 0 , 0 ];
-		}
 	}
 
 	draw(num){        //传入当前需要绘制的关卡数
 		draw.map = false;
+		// 初始化地图数据
+		for (let i = 0; i < 28; i++) {
+			roadMap[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		}
 		// 绘制地图
 		for (let i = 0; i < 13; i++) {
 			for(let j = 0; j < 13; j++){

@@ -252,7 +252,7 @@ class BulletObj extends MoverObj {
 			if (bHitTankTest) {
 				let oTank = aTankArr[i],
 					oBigExplode = new BigExplode(oTank.x + 16 , oTank.y + 16 , oTank.iDir);
-
+				!i && (aTankArr[i].iLife --);
 				aBigExplode.push(oBigExplode);
 				oTank.bAlive = false;
 				oTank.bBorned = false;

@@ -1,8 +1,8 @@
-let aTankArr = new Array,
-	iEnemyNum = 5;
+let aTankArr = new Array;
+const iEnemyNum = 5;
 
 /**
- * 初始化全部的坦克
+ * 创建坦克对象的实例
  */
 function tankInit() {
 	// 第一个是玩家坦克，后面四个是敌军坦克
@@ -12,8 +12,8 @@ function tankInit() {
 	}
 }
 
-let bHasTankDie = false,         //是否有坦克不是处于活着的状态
-	bAllTankDie = false,
+let bHasTankDie = true,          //是否有坦克不是处于活着的状态
+	bAllTankDie = false,         //所有的坦克是否都被干掉
 	iDelayEnterNextStage = 180;  //消灭所有的坦克后延迟180个循环后进入分数统计界面
 
 /**
@@ -31,27 +31,29 @@ function drawTank() {
 		} else {
 			if (i) {
 				bHasTankDie = true;
-				if (npcBornDelay || (oEnemy.num > oEnemy.maxNum)) { continue; }
+				if (oEnemy.iBornDelay || (oEnemy.num > oEnemy.maxNum)) { continue; }
 			} else {
 				(!aTankArr[0].iLife) && (draw.gameover = true);
 			}
 			aTankArr[i].init();
 		}
 	}
+	console.log(oEnemy.iBornDelay);
+	// 如果存在被干掉的坦克，那么需要用oEnemy.iBornDelay进行延迟坦克的出生
 	if (bHasTankDie) {
-		npcBornDelay --;
+		oEnemy.iBornDelay --;
 		bHasTankDie = false;
 	}
 	// 渲染爆炸
 	explode();
 	// 如果全部的NPC都被干掉了，那么延迟180个循环后开始统计数据并进入下一关
 	if (bAllTankDie) {
-		iEnemyNum = 1;
 		iDelayEnterNextStage = delay(iDelayEnterNextStage , 180 , () => {
 			bAllTankDie = false;
 			draw.tank = false;
 			draw.ui = true;
-			ui.status = 2;
+			ui.status = 2;                  //进入计分页面
+			oClass.ui.gameScoreInit();             //初始化计分页面的相关变量
 			cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
 			cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
 			cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
