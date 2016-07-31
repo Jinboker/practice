@@ -57,15 +57,6 @@ class PlayerObj extends TankObj {
 			this.move();     //重新确定坦克的坐标
 		}
 
-
-		// 开始/暂停，H键
-		if (keyInfo[72].pressed && oKeyUp.h) {
-			oKeyUp.h = false;
-			draw.tank = false;
-			draw.stop = true;
-			stopSet = true;
-		}
-
 		// 每次子弹消失后要经过20此循环后才能再次发射子弹
 		this.iBulletDelay > 0 && this.iBulletDelay --;
 		//发射子弹，J键，这里主要是为了防止J键一直按下的情况

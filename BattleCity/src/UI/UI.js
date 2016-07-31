@@ -7,9 +7,10 @@ let stage = {
 };
 
 let ui = {
-	status : 0,                             //0表开始UI，1表关卡UI，2表记分UI，3表游戏结束界面
+	status : 0,                             //0表开始UI，1表关卡UI，2表记分UI，3表游戏暂停，4表游戏0结束
 	moveToTop : false,                      //开始UI中图片是否运动到了顶部
-	bInGame : false                         //是否正在游戏，用来在一关结束后直接进入下一关
+	bInGame : false,                        //是否正在游戏中
+	bIntoNext : false                       //是否直接进入下一关
 };
 
 let oScore = {
@@ -17,7 +18,7 @@ let oScore = {
 	tankNum : [0 , 0 , 0 , 0],
 	totalScore : 0,
 	totalTank : 0
-}
+};
 
 // UI相关执行函数
 class UI {
@@ -35,6 +36,10 @@ class UI {
 
 		// 计分
 		this.iScoreDelay = 8;                //分数变化的速度，8个循环
+
+		// 暂停或者游戏结束
+		this.iTxtDelay = 20;                 //文字每过10个循环消失或者出现一次
+		this.iTxtStatus = 0;                 //文字的状态0 -> 1 -> 0 -> 1
 	}
 
 	init(){
@@ -49,7 +54,8 @@ class UI {
 			case 0: this.gameStart(); break;
 			case 1: this.gameStage(); break;
 			case 2: this.gameScore(); break;
-			case 3: this.gameOver(); break;
+			case 3: this.gameStop(); break;
+			case 4: this.gameOver(); break;
 			default: break;
 		}
 	}
@@ -83,7 +89,6 @@ class UI {
 			keyInfo[72].pressed ? this.startY = 96 : this.startY -= 3;
 			//更新开始界面的图片和文字
 			cxt.bg.save();
-			cxt.bg.font = "15px prstart";
 			cxt.bg.fillStyle = "white";
 			cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
 			cxt.bg.fillText("I-         00   HI-20000", 50, this.startY - 25);
@@ -160,7 +165,7 @@ class UI {
 				cxt.misc.fillText("STAGE  " + stage.num , 180 , 240);
 				cxt.misc.restore();
 				//看此时是否是正在游戏进行中
-				if (ui.bInGame) {
+				if (ui.bIntoNext) {
 					this.iDelayEnterNext = delay(this.iDelayEnterNext , 30 , this.enterNextStage())
 				} else {
 					// 键盘选择
@@ -191,11 +196,13 @@ class UI {
 				if (this.bgWidth < 208) {
 					this.bgWidth += 16;
 				} else {
+					enemyNum();                    //绘制右侧剩余敌军坦克数目
+					myInfo();                      //绘制己方生命数及关卡数
+					ui.bInGame = true;             //正在游戏中，可以暂停
+					canRol.style.zIndex = '';      //将role层放回到背景层下
 					draw.tank = true;              //循环开始绘制坦克
-					draw.misc = true;              //循环开始绘制杂项
-					draw.enemyNum = true;          //循环开始绘制敌军坦克数量信息
+					draw.misc = true;              //开始绘制杂项信息
 					draw.ui = false;               //停止绘制UI界面
-					canRol.style.zIndex = '';    //将role层放回到背景层下
 				}
 				break;
 			default:
@@ -230,7 +237,7 @@ class UI {
 				aTankArr = [null, null, null, null, null];       //坦克对象全部清空
 				oEnemy.iBornDelay = 30;                          //重置NPC出生的延迟
 				this.bRestartGame = false;
-				ui.bInGame = true;
+				ui.bIntoNext = true;
 				stage.num ++;
 				cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
 				cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
@@ -248,7 +255,6 @@ class UI {
 	drawScore(){
 		cxt.misc.save();
 		cxt.misc.clearRect(0 , 0 , 516 , 180); //这里必须要清除屏幕，不然prstart字体不会被应用！！！！
-		cxt.misc.font = "15px prstart";
 		cxt.misc.fillStyle = '#ea9e22';
 		cxt.misc.fillText(oScore.totalScore , 110, 160);
 		cxt.misc.fillStyle = '#fff';
@@ -273,6 +279,14 @@ class UI {
 		cxt.misc.restore();
 	}
 
+	gameStop(){
+		this.iTxtDelay = delay(this.iTxtDelay , 20 , () => {
+			this.iTxtStatus = +!this.iTxtStatus;
+			let sTxt = "GAME STOP";
+			this.drawText(this.iTxtStatus , sTxt);
+		})
+	}
+
 	gameOver(){
 		if (this.bSetGameOver) {
 			this.bSetGameOver = false;
@@ -280,4 +294,24 @@ class UI {
 			oAud.over.play();
 		}
 	}
+
+	drawText(bStatus , sTxt){
+		if (bStatus) {
+			cxt.misc.save();
+			cxt.misc.fillStyle = '#db2b00';
+			cxt.misc.fillText(sTxt , 180 , 235);
+			cxt.misc.restore();
+		} else {
+			cxt.misc.clearRect(175, 220, 150, 20);
+		}
+	}
+}
+
+
+// 游戏结束
+function gameOver(){
+	draw.gameover = false;
+	draw.tank = false;
+	cxt.bg.clearRect(227 , 404 , 32 , 32);
+	cxt.bg.drawImage(oImg.brick , 512 , 0 , 32 , 32 , 227 , 404 , 32, 32);
 }

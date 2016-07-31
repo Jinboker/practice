@@ -1,4 +1,5 @@
-let aTankArr = new Array;
+let aTankArr = [],
+	oPlayer;                    //用来表示玩家
 const iEnemyNum = 5;
 
 /**
@@ -6,7 +7,7 @@ const iEnemyNum = 5;
  */
 function tankInit() {
 	// 第一个是玩家坦克，后面四个是敌军坦克
-	aTankArr[0] = new PlayerObj(0);
+	oPlayer = aTankArr[0] = new PlayerObj(0);
 	for (let i = 1; i < iEnemyNum; i++) {
 		aTankArr[i] = new EnemyObj(i);
 	}
@@ -38,7 +39,6 @@ function drawTank() {
 			aTankArr[i].init();
 		}
 	}
-	console.log(oEnemy.iBornDelay);
 	// 如果存在被干掉的坦克，那么需要用oEnemy.iBornDelay进行延迟坦克的出生
 	if (bHasTankDie) {
 		oEnemy.iBornDelay --;
@@ -52,7 +52,8 @@ function drawTank() {
 			bAllTankDie = false;
 			draw.tank = false;
 			draw.ui = true;
-			ui.status = 2;                  //进入计分页面
+			ui.bInGame = false;                    //不在游戏中
+			ui.status = 2;                         //进入计分页面
 			oClass.ui.gameScoreInit();             //初始化计分页面的相关变量
 			cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
 			cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);

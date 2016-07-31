@@ -60,6 +60,19 @@ function keyInit() {
 				if (keyCode === 87 || keyCode === 83 || keyCode === 65 || keyCode === 68) {
 					keyDir_1 = keyCode;
 				}
+				//如果在游戏中按下H键那么就是暂停或者开始
+				if ((keyCode === 72) && ui.bInGame && oKeyUp.h) {
+					oKeyUp.h = false;
+					if (!draw.ui) {
+						ui.status = 3;
+						draw.ui = true;
+						draw.tank = false;
+					} else {
+						cxt.misc.clearRect(175, 220, 150, 20);
+						draw.ui = false;
+						draw.tank = true;
+					}
+				}
 				keyInfo[keyCode].pressed = true;
 			}
 			keyPressed = true;

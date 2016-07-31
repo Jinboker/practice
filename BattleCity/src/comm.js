@@ -49,12 +49,7 @@ let draw = {
 	tank : false,
 	bullet : false,
 	setMap : false,
-	map : false,
-	stop : false,
-	misc : false,
-	enemyNum : false,
-	info : false,
-	gameover : false
+	map : false
 };
 
 // 奖励类型

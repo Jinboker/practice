@@ -15,6 +15,12 @@ function init() {
 		drawMap : new DrawMap()
 	};
 
+	// 规定所用的字体及颜色
+	cxt.bg.font = "15px prstart";
+	cxt.bg.fillStyle = '#000';
+	cxt.misc.font = "15px prstart";
+
+
 	// 键盘按下事件函数
 	keyInit();
 
@@ -35,28 +41,8 @@ function gameLoop() {
 	//绘制地图（地图只有当UI界面的关卡选择界面准备结束的时候才会绘制一次）
 	draw.map && oClass.drawMap.draw(stage.num - 1);
 
-	//绘制一些杂项比如敌方坦克剩余数量，河流的流动，己方坦克生命数
-	if (draw.misc) {
-		//绘制敌方坦克剩余数量，这个只用在地图绘制完成后绘制一次就行
-		if (draw.enemyNum) {
-			draw.enemyNum = false;
-			enemyNum();
-		}
-		//河流
-		//己方坦克生命数
-		if (draw.info) {
-			draw.info = false;
-		}
-	}
-
 	//绘制坦克
 	draw.tank && drawTank();
-
-	// 游戏暂停
-	draw.stop && gameStop();
-
-	// 被子弹打到老家游戏结束
-	draw.gameover && gameOver();
 
 	// 循环执行函数
 	requestAnimFrame(gameLoop);
