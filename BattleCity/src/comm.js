@@ -104,7 +104,9 @@ function a() {
 function b() {
 	console.log('b');
 }
-
+function c() {
+	console.log('c');
+}
 // 提前定义好一些需要引入的图片，省掉画图时剪切的时间
 // let m_canArrow = document.createElement('canvas'),
 // 	m_can_1 = document.createElement('canvas'),

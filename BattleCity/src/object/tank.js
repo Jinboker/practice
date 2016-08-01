@@ -51,6 +51,7 @@ function drawTank() {
 		iDelayEnterNextStage = delay(iDelayEnterNextStage , 180 , () => {
 			bAllTankDie = false;
 			draw.tank = false;
+			draw.bullet = false;
 			draw.ui = true;
 			ui.bInGame = false;                    //不在游戏中
 			ui.status = 2;                         //进入计分页面
@@ -87,8 +88,8 @@ class TankObj extends MoverObj {
 		this.iWheelDelay = 5;
 
 		// 子弹相关
+		this.oBulletParam;                 //在发射子弹之时传递给子弹对象的相关参数
 		this.iBulletDelay = 20;            //子弹延迟20个循环
-		this.oBullet = new BulletObj();
 
 		this.barrierCollision();
 	}
@@ -128,10 +129,11 @@ class TankObj extends MoverObj {
 		});
 		// 根据当前方向重置相关的坐标参数
 		this.bMoveSet && this.moveSet();
-		// 只有当对象的位置可以整除16才会开始检查是否可以通行（this.oPass继承自mover对象，位于碰撞函数内）
+		// 只有当对象的位置可以整除16才会开始检查是否碰到砖块
 		!(this.x % 16) && !(this.y % 16) && (this.bHitBarrier = this.oHitBarrier[this.iDir]());
-		// 移动坦克的坐标
+		//检查是否碰到其他的坦克
 		this.bHitTank = this.tankCollision();
+		// 移动坦克的坐标
 		if (this.bHitBarrier && this.bHitTank) {
 			this.x += this.iSpeedX;
 			this.y += this.iSpeedY;
@@ -201,15 +203,12 @@ class TankObj extends MoverObj {
 
 	// 坦克与坦克之间的碰撞检测
 	tankCollision(){
-		// 如果所有的NPC坦克都被干掉了，那么就不用检测坦克与坦克之间的碰撞了
-		if (bAllTankDie) { return true; }
-
 		let xVal,
 			yVal,
 			bHitTankTest;
 
 		for (let i = 0; i < 5; i++) {
-			if ((this.iIndex === i) && !this.bBorned || !aTankArr[i].bBorned) { continue; }
+			if ((this.iIndex === i) || !aTankArr[i].bBorned) { continue; }
 			xVal = this.x - aTankArr[i].x;
 			yVal = this.y - aTankArr[i].y;
 			if (this.iDir % 2) {
@@ -224,9 +223,5 @@ class TankObj extends MoverObj {
 			if (bHitTankTest) { return false; }
 		}
 		return true;
-	}
-
-	shot(){
-		this.oBullet.draw();
 	}
 }

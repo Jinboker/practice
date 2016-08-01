@@ -30,8 +30,11 @@ let iKeyUp,
 	h : true,
 	j : true
 };
-//直接在keyInit函数里面调用，用来设置一些相关的按键信息
-function setKeyInfo() {
+
+/**
+ * 键盘事件函数
+ */
+function keyInit() {
 	// 给所有需要用到的按键添加表示是否被按下的属性
 	let aKey = [72 , 74 , 87 , 83 , 65 , 68 , 38 , 40 , 37 , 39 , 17],
 		len = aKey.length;
@@ -41,16 +44,13 @@ function setKeyInfo() {
 			pressed : false
 		}
 	}
-
 	// 添加角色1和角色2的上右下左属性
 	keyInfo[87].dir = keyInfo[38].dir = 0;
 	keyInfo[68].dir = keyInfo[39].dir = 1;
 	keyInfo[83].dir = keyInfo[40].dir = 2;
 	keyInfo[65].dir = keyInfo[37].dir = 3;
-}
 
-function keyInit() {
-	setKeyInfo();
+	// 事件绑定
 	addEventListener('keydown' , function (ev) {
 		keyCode = ev.keyCode;
 		// 如果不是对象则表明不是所需要的按键被按下，而所需要的值已经在setKeyInfo函数中设置了
@@ -68,7 +68,7 @@ function keyInit() {
 						draw.ui = true;
 						draw.tank = false;
 					} else {
-						cxt.misc.clearRect(175, 220, 150, 20);
+						cxt.misc.clearRect(170, 220, 150, 20);
 						draw.ui = false;
 						draw.tank = true;
 					}

@@ -14,13 +14,25 @@ m_canR.getContext('2d').drawImage(oImg.misc , 8 , 0 , 8 , 8 , 0 , 0 , 8 , 8);
 m_canD.getContext('2d').drawImage(oImg.misc , 16 , 0 , 8 , 8 , 0 , 0 , 8 , 8);
 m_canL.getContext('2d').drawImage(oImg.misc , 24 , 0 , 8 , 8 , 0 , 0 , 8 , 8);
 
-let oBrickStatus = new Object();
+let oBrickStatus = new Object(),           //砖头状态
+	aBullet = [];                          //子弹数组
+
+/**
+ * 绘制子弹
+ */
+function drawBullet() {
+	let len = aBullet.length;
+	for (let i = 0; i < len; i++) {
+		aBullet[i].bAlive && aBullet[i].draw();
+	}
+}
 
 // 子弹对象，继承自顶级对象mover
 class BulletObj extends MoverObj {
-	constructor() {
+	constructor(i) {
 		super();
 
+		this.iIndex = i;         //子弹索引
 		this.oImg                //子弹图片，已缓存
 		this.iRank;              //子弹的等级，为3时一枚子弹打掉16*16的砖块且能够击穿钢筋
 		this.iBulletType;        //子弹的类型（是玩家还是NPC）
@@ -29,13 +41,12 @@ class BulletObj extends MoverObj {
 		this.barrierCollision();
 	}
 
-	init(x , y , dir , type , iIndex , rank = 0){
-		this.bAlive = true;
+	init(x , y , dir , type , rank = 0){
 		this.x = x;
 		this.y = y;
 		this.iDir = dir;
 		this.iBulletType = type;
-		this.iIndex = iIndex;
+		this.bAlive = true;
 		this.iRank = rank;
 		this.iSpeed = rank ? 5 : 4;    //如果坦克的iRank是0，那么子弹一次移动4像素，如果不是0，一次移动5像素
 
@@ -224,9 +235,6 @@ class BulletObj extends MoverObj {
 
 	// 子弹与坦克之间的碰撞检测
 	tankCollision(){
-		// 如果所有的NPC坦克都被干掉了，那么就不用检测碰撞了
-		if (bAllTankDie) { return true; }
-
 		let iStart,
 			iOver;
 		//如果this.iBulletType为真，那么表示子弹是由NPC发射的，否则就是玩家发射的
@@ -234,12 +242,14 @@ class BulletObj extends MoverObj {
 
 		let xVal,
 			yVal,
+			oTank,
 			bHitTankTest;
 
 		for (let i = iStart; i < iOver; i++) {
-			if (this.iIndex === i || !aTankArr[i].bBorned) { continue; }
-			xVal = this.x - aTankArr[i].x;
-			yVal = this.y - aTankArr[i].y;
+			oTank = aTankArr[i];
+			if ((this.iIndex === i) || !oTank.bBorned) { continue; }
+			xVal = this.x - oTank.x;
+			yVal = this.y - oTank.y;
 			if (this.iDir % 2) {
 				bHitTankTest = (this.iDir -1)
 				? (xVal < 32 && xVal > 0 && yVal > -8 && yVal < 32)
@@ -250,16 +260,16 @@ class BulletObj extends MoverObj {
 				: (yVal < 32 && yVal > 0 && xVal > -8 && xVal < 32);
 			}
 			if (bHitTankTest) {
-				let oTank = aTankArr[i],
-					oBigExplode = new BigExplode(oTank.x + 16 , oTank.y + 16 , oTank.iDir);
-				if (!i) {
-					aTankArr[i].iLife --;
+				let oBigExplode = new BigExplode(oTank.x + 16 , oTank.y + 16 , oTank.iDir);
+				if (i) {
+					this.getScore(oTank.iEnemyType);
+				} else {
+					oTank.iLife --;
 					myInfo();                      //更新己方生命数
 				}
 				aBigExplode.push(oBigExplode);
-				oTank.bAlive = false;
-				oTank.bBorned = false;
-				this.getScore(aTankArr[i].iEnemyType);
+				oTank.bAlive = false;              //坦克死亡
+				oTank.bBorned = false;             //坦克未出生
 				return false;
 			}
 		}
@@ -269,10 +279,12 @@ class BulletObj extends MoverObj {
 	// 统计被子弹击杀的坦克类型，用来在结束后统计分数
 	getScore(num){
 		switch (parseInt(num / 2)) {
-			case 0: oScore.tankNum[0] ++; break;
-			case 1: oScore.tankNum[1] ++; break;
-			case 2: oScore.tankNum[2] ++; break;
-			default: oScore.tankNum[3] ++; break;
+			case 0: oScore.tankNum[0] ++; console.log(oScore.tankNum[0]); break;
+			case 1: oScore.tankNum[1] ++; console.log(oScore.tankNum[1]); break;
+			case 2: oScore.tankNum[2] ++; console.log(oScore.tankNum[2]); break;
+			case 3:
+			case 4: oScore.tankNum[3] ++; console.log(oScore.tankNum[3]); break;
+			default: break;
 		}
 	}
 

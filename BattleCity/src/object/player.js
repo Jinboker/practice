@@ -7,14 +7,18 @@ class PlayerObj extends TankObj {
 		super();
 
 		this.iIndex = 0;
-		this.iRank = 0;                 //默认坦克等级为0，玩家坦克可以通过吃星星升级
-		this.iTankType = 0;             //当前坦克对象是玩家（0）还是NPC（1）
-		this.iLife = 2;                 //玩家默认有两条命
+		this.iRank = 0;                  //默认坦克等级为0，玩家坦克可以通过吃星星升级
+		this.iTankType = 0;              //当前坦克对象是玩家（0）还是NPC（1）
+		this.iLife = 2;                  //玩家默认有两条命
 
 		// 防护罩相关
-		this.iShieldNum = 200;          //防护罩循环的次数，默认是200，如果吃了防护罩奖励那么就是1000
+		this.iShieldNum = 200;           //防护罩循环的次数，默认是200，如果吃了防护罩奖励那么就是1000
 		this.iShieldDelay = 3;
 		this.iShieldPic = 0;
+
+		// 子弹相关
+		this.oBullet = new BulletObj(i); //新建一个子弹对象
+		aBullet.push(this.oBullet);      //将子弹对象添加到数组中
 	}
 
 	init(){
@@ -36,9 +40,6 @@ class PlayerObj extends TankObj {
 
 		// 按键判断，再执行相应的操作
 		this.btn();
-
-		//如果子弹存活，那么绘制子弹
-		this.oBullet.bAlive && this.shot();
 
 		// 绘制坦克
 		cxt.role.drawImage(oImg.myTank , 0 ,  this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);
@@ -65,7 +66,7 @@ class PlayerObj extends TankObj {
 			oKeyUp.j = false;
 			if (!this.oBullet.bAlive) {
 				//这里的参数0表示这是玩家的坦克
-				this.oBullet.init(this.x , this.y , this.iDir , 0 , this.iIndex , this.iRank);
+				this.oBullet.init(this.x , this.y , this.iDir , 0 , this.iRank);
 				oAud.att.play();
 			}
 		}

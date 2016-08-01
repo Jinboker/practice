@@ -3,11 +3,16 @@ let aBigExplode = new Array(),
 	aBoom = [aBigExplode , aSmallExplode];
 
 function explode() {
+	// i为0时是大爆炸，为1时是小爆炸
 	for (let i = 0; i < 2; i++) {
 		boomLoop(aBoom[i]);
 	}
 }
 
+/**
+ * 循环绘制爆炸
+ * @param  {[array]} aBoomArr [储存大小爆炸的数组]
+ */
 function boomLoop(aBoomArr) {
 	let len = aBoomArr.length;
 	if (len) {

@@ -198,9 +198,11 @@ class UI {
 				} else {
 					enemyNum();                    //绘制右侧剩余敌军坦克数目
 					myInfo();                      //绘制己方生命数及关卡数
+					oScore.tankNum = [0, 0, 0, 0]; //击杀坦克数目重置
 					ui.bInGame = true;             //正在游戏中，可以暂停
 					canRol.style.zIndex = '';      //将role层放回到背景层下
 					draw.tank = true;              //循环开始绘制坦克
+					draw.bullet = true;            //循环开始绘制子弹
 					draw.misc = true;              //开始绘制杂项信息
 					draw.ui = false;               //停止绘制UI界面
 				}
@@ -273,18 +275,15 @@ class UI {
 				cxt.misc.fillText(oScore.totalTank , 195, 380);
 				this.bRestartGame = true;
 				// 如果此时draw.gameover为真的表明游戏结束了，因此需要条状到gameOver()并重新开始游戏
-				draw.gameover && (ui.status = 3);
+				draw.gameover && (ui.status = 4);
 			}
 		});
 		cxt.misc.restore();
 	}
 
 	gameStop(){
-		this.iTxtDelay = delay(this.iTxtDelay , 20 , () => {
-			this.iTxtStatus = +!this.iTxtStatus;
-			let sTxt = "GAME STOP";
-			this.drawText(this.iTxtStatus , sTxt);
-		})
+		let sTxt = "GAME STOP";
+		this.drawText(sTxt);
 	}
 
 	gameOver(){
@@ -295,23 +294,26 @@ class UI {
 		}
 	}
 
-	drawText(bStatus , sTxt){
-		if (bStatus) {
-			cxt.misc.save();
-			cxt.misc.fillStyle = '#db2b00';
-			cxt.misc.fillText(sTxt , 180 , 235);
-			cxt.misc.restore();
-		} else {
-			cxt.misc.clearRect(175, 220, 150, 20);
-		}
+	drawText(sTxt){
+		this.iTxtDelay = delay(this.iTxtDelay , 20 , () => {
+			this.iTxtStatus = +!this.iTxtStatus;
+			if (this.iTxtStatus) {
+				cxt.misc.save();
+				cxt.misc.fillStyle = '#db2b00';
+				cxt.misc.fillText(sTxt , 175 , 235);
+				cxt.misc.restore();
+			} else {
+				cxt.misc.clearRect(170, 220, 150, 20);
+			}
+		});
 	}
 }
-
 
 // 游戏结束
 function gameOver(){
 	draw.gameover = false;
 	draw.tank = false;
+	draw.bullet = false;
 	cxt.bg.clearRect(227 , 404 , 32 , 32);
 	cxt.bg.drawImage(oImg.brick , 512 , 0 , 32 , 32 , 227 , 404 , 32, 32);
 }

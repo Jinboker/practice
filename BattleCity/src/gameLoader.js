@@ -20,7 +20,6 @@ function init() {
 	cxt.bg.fillStyle = '#000';
 	cxt.misc.font = "15px prstart";
 
-
 	// 键盘按下事件函数
 	keyInit();
 
@@ -43,6 +42,9 @@ function gameLoop() {
 
 	//绘制坦克
 	draw.tank && drawTank();
+
+	//绘制子弹
+	draw.bullet && drawBullet();
 
 	// 循环执行函数
 	requestAnimFrame(gameLoop);

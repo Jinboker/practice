@@ -2,7 +2,7 @@ let oEnemy = {
 	maxTankAlive : 4,    //敌军坦克同一时间最多只能有四个
 	maxNum : 20,         //敌军坦克的总数是20个
 	num : 1,             //当前画出来的是第几个坦克，因为坦克是从正中间开始刷新，因此从1开始计数
-	iBornDelay : 30      //第一个NPC延迟30个循环后出生，以后的坦克延迟180个循环出生
+	iBornDelay : 30      //第一个NPC延迟30个循环后出生，以后的坦克延迟150个循环出生
 };
 
 let oEnemyData = [
@@ -32,6 +32,10 @@ class EnemyObj extends TankObj {
 		this.iChangeDirDelay = 10;       //坦克碰到障碍物后暂停10个循环后再改变方向
 		this.bUiSet = true;              //UI界面右侧剩余坦克数的设置
 		this.OrderNum;                   //本次绘制的是第几个坦克
+
+		// 子弹相关
+		this.oBullet = new BulletObj(i); //新建一个子弹对象
+		aBullet.push(this.oBullet);      //将子弹对象添加到数组中
 	}
 
 	init(){
@@ -43,7 +47,15 @@ class EnemyObj extends TankObj {
 		this.iSpeed = (parseInt(this.iEnemyType/2) === 2) ? 2 : 1;
 		this.OrderNum = oEnemy.num;
 		oEnemy.num ++;
-		oEnemy.iBornDelay += 180;
+		oEnemy.iBornDelay += 150;
+		// 设置传递给子弹对象的参数
+		this.oBulletParam = {
+			x : this.x,                           //当前坐标
+			y : this.y,                           //当前坐标
+			dir : this.iDir,                      //当前方向
+			type : 1,                             //0是玩家，1是NPC
+			tankType : this.iEnemyType            //表玩家或者NPC的类型
+		}
 	}
 
 	draw(){
@@ -58,7 +70,7 @@ class EnemyObj extends TankObj {
 		// 每次遇到障碍物后经过10个循环后改变方向
 		(!this.bHitBarrier || !this.bHitTank) ? this.changeDir() : this.iChangeDirDelay = 10;
 
-		//绘制子弹
+		//是否准备发射子弹
 		this.shot();
 
 		// 移动坦克
@@ -75,19 +87,14 @@ class EnemyObj extends TankObj {
 		});
 	}
 
-	/**
-	 * 覆盖-------绘制子弹
-	 */
 	shot(){
-		if (this.oBullet.bAlive) {
-			this.oBullet.draw();
-		} else {
+		if (!this.oBullet.bAlive) {
 			this.iBulletDelay > 0 && this.iBulletDelay --;
 			if (!this.iBulletDelay) {
 				// 默认的延迟是20个循环，这里进行重置
 				this.setBulletDelay();
 				//这里的参数1表示这是NPC的坦克
-				!this.oBullet.bAlive && this.oBullet.init(this.x , this.y , this.iDir , 1 , this.iIndex);
+				!this.oBullet.bAlive && this.oBullet.init(this.x , this.y , this.iDir , 1);
 			}
 		}
 	}
