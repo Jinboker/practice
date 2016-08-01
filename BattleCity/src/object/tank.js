@@ -50,6 +50,7 @@ function drawTank() {
 	if (bAllTankDie) {
 		iDelayEnterNextStage = delay(iDelayEnterNextStage , 180 , () => {
 			bAllTankDie = false;
+			aTankArr = [];                         //清空坦克数组
 			draw.tank = false;
 			draw.bullet = false;
 			draw.ui = true;
@@ -74,7 +75,6 @@ class TankObj extends MoverObj {
 		super();
 
 		this.iIndex;                       //当前坦克在aTankArr中的索引值
-		this.iType = 1;                    //当前移动对象为坦克
 		this.bAlive = false;               //坦克一开始都是未出生
 
 		//渲染出生时候的动画
@@ -88,7 +88,6 @@ class TankObj extends MoverObj {
 		this.iWheelDelay = 5;
 
 		// 子弹相关
-		this.oBulletParam;                 //在发射子弹之时传递给子弹对象的相关参数
 		this.iBulletDelay = 20;            //子弹延迟20个循环
 
 		this.barrierCollision();

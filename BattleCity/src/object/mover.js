@@ -4,7 +4,6 @@ class MoverObj {
 		this.x;
 		this.y;
 		this.bAlive;              //对象是否存活
-		this.iType;               //用来判断当前对象到底是子弹还是坦克（0表示子弹1表示坦克）
 		this.iDir;                //方向0：上，1：右，2：下，3：左
 		this.iSpeed;              //速度
 		this.iSpeedX;             //横坐标上的速度

@@ -17,7 +17,7 @@ class PlayerObj extends TankObj {
 		this.iShieldPic = 0;
 
 		// 子弹相关
-		this.oBullet = new BulletObj(i); //新建一个子弹对象
+		this.oBullet = new BulletObj(0); //新建一个子弹对象
 		aBullet.push(this.oBullet);      //将子弹对象添加到数组中
 	}
 

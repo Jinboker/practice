@@ -28,7 +28,7 @@ class EnemyObj extends TankObj {
 
 		this.iIndex = i;
 		this.iTankType = 0;              //当前坦克对象是玩家（0）还是NPC（1）
-		this.iEnemyType;                 //敌军坦克的类型
+		this.iType;                 //敌军坦克的类型
 		this.iChangeDirDelay = 10;       //坦克碰到障碍物后暂停10个循环后再改变方向
 		this.bUiSet = true;              //UI界面右侧剩余坦克数的设置
 		this.OrderNum;                   //本次绘制的是第几个坦克
@@ -43,19 +43,11 @@ class EnemyObj extends TankObj {
 		this.iDir = 2;
 		this.x = (oEnemy.num % 3) * 192;
 		this.y = 0;
-		this.iEnemyType = oEnemyData[stage.num - 1][oEnemy.num - 1];
-		this.iSpeed = (parseInt(this.iEnemyType/2) === 2) ? 2 : 1;
+		this.iType = oEnemyData[stage.num - 1][oEnemy.num - 1];
+		this.iSpeed = (parseInt(this.iType/2) === 2) ? 2 : 1;
 		this.OrderNum = oEnemy.num;
 		oEnemy.num ++;
 		oEnemy.iBornDelay += 150;
-		// 设置传递给子弹对象的参数
-		this.oBulletParam = {
-			x : this.x,                           //当前坐标
-			y : this.y,                           //当前坐标
-			dir : this.iDir,                      //当前方向
-			type : 1,                             //0是玩家，1是NPC
-			tankType : this.iEnemyType            //表玩家或者NPC的类型
-		}
 	}
 
 	draw(){
@@ -77,7 +69,7 @@ class EnemyObj extends TankObj {
 		this.move();
 
 		// 绘制坦克
-		cxt.role.drawImage(oImg.enemyTank , 32 * this.iEnemyType ,  this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);
+		cxt.role.drawImage(oImg.enemyTank , 32 * this.iType ,  this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 
 	changeDir(){

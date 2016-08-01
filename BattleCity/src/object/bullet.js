@@ -32,34 +32,29 @@ class BulletObj extends MoverObj {
 	constructor(i) {
 		super();
 
-		this.iIndex = i;         //子弹索引
+		this.iIndex = i;         //子弹索引，用来确定是哪个坦克发射出来的子弹
 		this.oImg                //子弹图片，已缓存
 		this.iRank;              //子弹的等级，为3时一枚子弹打掉16*16的砖块且能够击穿钢筋
 		this.iBulletType;        //子弹的类型（是玩家还是NPC）
-		this.iType = 0;          //当前运动对象为子弹
 
 		this.barrierCollision();
 	}
 
-	init(x , y , dir , type , rank = 0){
-		this.x = x;
-		this.y = y;
-		this.iDir = dir;
-		this.iBulletType = type;
+	init(...values){
+		[this.x , this.y , this.iDir , this.iBulletType , this.iRank = 0] = values;
 		this.bAlive = true;
-		this.iRank = rank;
-		this.iSpeed = rank ? 5 : 4;    //如果坦克的iRank是0，那么子弹一次移动4像素，如果不是0，一次移动5像素
+		this.iSpeed = this.iRank ? 5 : 4;    //如果坦克的iRank是0，那么子弹一次移动4像素，如果不是0，一次移动5像素
 
 		// 1、3
-		if (dir%2) {
+		if (this.iDir%2) {
 			this.y += 12;
-			this.x += 24*(+!(dir-1));
-			this.oImg = (dir - 1) ? m_canL : m_canR;
+			this.x += 24*(+!(this.iDir-1));
+			this.oImg = (this.iDir - 1) ? m_canL : m_canR;
 		// 0 , 2
 		} else {
 			this.x += 12;
-			this.y += 24*dir/2;
-			this.oImg = (dir/2) ? m_canD : m_canT;
+			this.y += 24*this.iDir/2;
+			this.oImg = (this.iDir/2) ? m_canD : m_canT;
 		}
 		this.speedSet();
 	}
@@ -225,10 +220,7 @@ class BulletObj extends MoverObj {
 		 * @return {[boolean]}             [返回子弹是否撞到了墙壁或者障碍物的布尔值]
 		 */
 		this.boomInit = function (bHitBarrier) {
-			if (!bHitBarrier) {
-				let oSmallExplode = new SmallExplode(this.x , this.y , this.iDir);
-				aSmallExplode.push(oSmallExplode);
-			}
+			if (!bHitBarrier) { aSmallExplode.push(new SmallExplode(this.x , this.y , this.iDir)); }
 			return bHitBarrier;
 		}
 	}
@@ -260,20 +252,31 @@ class BulletObj extends MoverObj {
 				: (yVal < 32 && yVal > 0 && xVal > -8 && xVal < 32);
 			}
 			if (bHitTankTest) {
-				let oBigExplode = new BigExplode(oTank.x + 16 , oTank.y + 16 , oTank.iDir);
 				if (i) {
-					this.getScore(oTank.iEnemyType);
+					this.getScore(oTank.iType);
+					(oTank.iType > 7) || (oTank.iType % 2) ? this.hitTankSmallBoom(oTank) : this.hitTankBigBoom(oTank);
 				} else {
 					oTank.iLife --;
 					myInfo();                      //更新己方生命数
+					this.hitTankBigBoom(oTank);
 				}
-				aBigExplode.push(oBigExplode);
-				oTank.bAlive = false;              //坦克死亡
-				oTank.bBorned = false;             //坦克未出生
 				return false;
 			}
 		}
 		return true;
+	}
+
+	// 坦克被子弹击中的小爆炸
+	hitTankSmallBoom(obj){
+		aSmallExplode.push(new SmallExplode(obj.x + 16, obj.y + 16, obj.iDir));
+		obj.iType --;
+	}
+
+	// 坦克被子弹击中的大爆炸
+	hitTankBigBoom(obj){
+		aBigExplode.push(new BigExplode(obj.x + 16 , obj.y + 16 , obj.iDir));
+		obj.bAlive = false;              //坦克死亡
+		obj.bBorned = false;             //坦克未出生
 	}
 
 	// 统计被子弹击杀的坦克类型，用来在结束后统计分数
