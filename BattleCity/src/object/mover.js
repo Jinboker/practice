@@ -8,9 +8,6 @@ class MoverObj {
 		this.iSpeed;              //速度
 		this.iSpeedX;             //横坐标上的速度
 		this.iSpeedY;             //纵坐标上的速度
-		this.bMoveSet = true;     //对象重置后重新设置一下移动相关的函数（坦克在改变方向后也需要重新设置）
-		this.bHitBarrier = false; //是否碰到了障碍物
-		this.bHitTank = false;    //是否碰到了坦克
 	}
 
 	//根据方向重置当前速度参数

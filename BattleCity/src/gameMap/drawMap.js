@@ -8,7 +8,11 @@ class DrawMap{
 		this.idata;      //当前需要绘制的一个地图格子的数据
 	}
 
-	draw(num){        //传入当前需要绘制的关卡数
+	/**
+	 * [渲染地图并确定路径数据]
+	 * @param  {[number]} num [当前需要绘制的关卡数]
+	 */
+	draw(num){
 		draw.map = false;
 		// 初始化地图数据
 		for (let i = 0; i < 28; i++) {
@@ -28,7 +32,7 @@ class DrawMap{
 	}
 
 	// roadMap值的意义：
- 	// undefined ：正常，可以通过
+ 	// 0 ：无障碍
  	// 1 ：砖块
  	// 2 ：钢筋
  	// 3 : 冰路

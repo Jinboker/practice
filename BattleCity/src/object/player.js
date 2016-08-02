@@ -8,7 +8,6 @@ class PlayerObj extends TankObj {
 
 		this.iIndex = 0;
 		this.iRank = 0;                  //默认坦克等级为0，玩家坦克可以通过吃星星升级
-		this.iTankType = 0;              //当前坦克对象是玩家（0）还是NPC（1）
 		this.iLife = 2;                  //玩家默认有两条命
 
 		// 防护罩相关
@@ -29,6 +28,8 @@ class PlayerObj extends TankObj {
 		this.iSpeed = 2;
 		this.bShield = true;            //是否开启防护罩
 		this.keyDirSave = 0;            //保存当前按下的方向键，用来判断是否有改变坦克的方向
+
+		this.moveSet();
 	}
 
 	draw(){
@@ -53,7 +54,7 @@ class PlayerObj extends TankObj {
 			// 看看是否有按下不同的方向键改变了坦克的方向，如果改变方向后重新设置move相关
 			if (this.keyDirSave != keyDir_1) {
 				this.keyDirSave = keyDir_1;
-				this.bMoveSet = true;
+				this.moveSet();
 			}
 			this.move();     //重新确定坦克的坐标
 		}

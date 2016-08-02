@@ -27,8 +27,7 @@ class EnemyObj extends TankObj {
 		super();
 
 		this.iIndex = i;
-		this.iTankType = 0;              //当前坦克对象是玩家（0）还是NPC（1）
-		this.iType;                 //敌军坦克的类型
+		this.iType;                      //敌军坦克的类型
 		this.iChangeDirDelay = 10;       //坦克碰到障碍物后暂停10个循环后再改变方向
 		this.bUiSet = true;              //UI界面右侧剩余坦克数的设置
 		this.OrderNum;                   //本次绘制的是第几个坦克
@@ -48,6 +47,8 @@ class EnemyObj extends TankObj {
 		this.OrderNum = oEnemy.num;
 		oEnemy.num ++;
 		oEnemy.iBornDelay += 150;
+
+		this.moveSet();
 	}
 
 	draw(){
@@ -75,7 +76,7 @@ class EnemyObj extends TankObj {
 	changeDir(){
 		this.iChangeDirDelay = delay(this.iChangeDirDelay , 10 , () => {
 			this.iDir = parseInt(Math.random()*4);
-			this.bMoveSet = true;
+			this.moveSet();
 		});
 	}
 
@@ -95,5 +96,4 @@ class EnemyObj extends TankObj {
 		let aDelay = [20 , 40 , 60];
 		this.iBulletDelay = aDelay[parseInt(Math.random()*3)];
 	}
-
 }

@@ -60,13 +60,11 @@ class BulletObj extends MoverObj {
 	}
 
 	draw(){
-		if (this.oHitBarrier[this.iDir]() && this.tankCollision()) {
-		// if (this.oHitBarrier[this.iDir]() && this.tankCollision() && this.bulletCollision()) {
+		if (this.oHitBarrier[this.iDir]() && this.tankCollision() && this.bulletCollision()) {
 			this.x += this.iSpeedX;
 			this.y += this.iSpeedY;
 			cxt.role.drawImage(this.oImg , this.x , this.y , 8 , 8);
 		} else {
-			this.bMoveSet = true;
 			this.bAlive = false;
 		}
 	}
@@ -129,9 +127,12 @@ class BulletObj extends MoverObj {
 				   break;
 			  // 钢筋
 			  case 2:
-				  if (that.iType === 3) {
-					  roadMap[row][col] = 0;
-					  cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
+				  if (!that.iBulletType) {
+					  if (aTankArr[0].iRank === 3) {
+						  roadMap[row][col] = 0;
+						  cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
+					  }
+					  oAud.attOver.play();
 				  }
 				  return false;
 				  break;
@@ -269,6 +270,7 @@ class BulletObj extends MoverObj {
 	// 坦克被子弹击中的小爆炸
 	hitTankSmallBoom(obj){
 		aSmallExplode.push(new SmallExplode(obj.x + 16, obj.y + 16, obj.iDir));
+		oAud.attOver.play();
 		obj.iType --;
 	}
 
@@ -293,19 +295,20 @@ class BulletObj extends MoverObj {
 
 	// 子弹与子弹的碰撞
 	bulletCollision(){
-		// 如果子弹是NPC的子弹，或者所有的NPC都被干掉了，就不需要检测子弹的碰撞了
-		if (!!this.iBulletType && !aTankArr[0].oBullet.bAlive && bAllTankDie) { return true; }
+		// 如果子弹是NPC的子弹或者玩家子弹不存在，则不必检测子弹的碰撞
+		if (!!this.iBulletType || !aTankArr[0].oBullet.bAlive) { return true; }
 
-		let xVal,
-			yVal;
 		for (let i = 1; i < 5; i++) {
 			// 如果子弹不存在，不进行检测
 			if (!aTankArr[i].oBullet.bAlive) { continue; }
-			xVal = Math.abs(this.x - aTankArr[i].oBullet.x);
-			yVal = Math.abs(this.y - aTankArr[i].oBullet.y);
+
+			let oTank = aTankArr[i],
+				xVal = Math.abs(this.x - oTank.oBullet.x),
+				yVal = Math.abs(this.y - oTank.oBullet.y);
+
+			// 如果玩家子弹与NPC子弹之间的横纵坐标之差的绝对值都小于等于8，那么表明两发子弹碰到一起了
 			if (xVal <= 8 && yVal <= 8) {
-				aTankArr[i].oBullet.bAlive = false;
-				aTankArr[i].oBullet.bMoveSet = true;
+				oTank.oBullet.bAlive = false;
 				return false;
 			}
 		}

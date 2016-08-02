@@ -87,6 +87,10 @@ class TankObj extends MoverObj {
 		this.iWheelPic = 0;
 		this.iWheelDelay = 5;
 
+		// 碰撞相关
+		this.bHitBarrier = false;          //是否碰到了障碍物
+		this.bHitTank = false;             //是否碰到了坦克
+
 		// 子弹相关
 		this.iBulletDelay = 20;            //子弹延迟20个循环
 
@@ -94,7 +98,6 @@ class TankObj extends MoverObj {
 	}
 
 	bornInit(){
-		this.bMoveSet = true;
 		this.bAlive = true;
 		this.bBorned = false;
 	}
@@ -126,8 +129,6 @@ class TankObj extends MoverObj {
 		this.iWheelDelay = delay(this.iWheelDelay , 5 , () => {
 			this.iWheelPic = +!this.iWheelPic;
 		});
-		// 根据当前方向重置相关的坐标参数
-		this.bMoveSet && this.moveSet();
 		// 只有当对象的位置可以整除16才会开始检查是否碰到砖块
 		!(this.x % 16) && !(this.y % 16) && (this.bHitBarrier = this.oHitBarrier[this.iDir]());
 		//检查是否碰到其他的坦克
@@ -140,7 +141,6 @@ class TankObj extends MoverObj {
 	}
 
 	moveSet(){
-		this.bMoveSet = false;
 		// 在坦克转换方向后重新定位坦克的位置，使坦克当前移动方向的左边正好能够整除16，这样就正好对齐了砖块的契合处
 		this.iDir % 2 ? this.y = Math.round(this.y / 16) * 16 : this.x = Math.round(this.x / 16) * 16;
 		this.speedSet();
