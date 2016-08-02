@@ -28,6 +28,7 @@ class PlayerObj extends TankObj {
 		this.iSpeed = 2;
 		this.bShield = true;            //是否开启防护罩
 		this.keyDirSave = 0;            //保存当前按下的方向键，用来判断是否有改变坦克的方向
+		this.bMoveAble = true;          //玩家是否可以运动和发射子弹
 
 		this.moveSet();
 	}
@@ -39,8 +40,11 @@ class PlayerObj extends TankObj {
 		// 防护罩（刚出生时候或者吃了防护罩的奖励）
 		this.bShield && this.shield();
 
+		// 如果奖励对象的实例存在，那么进行奖励对象的碰撞检测
+		oBonus && this.bonusCollision();
+
 		// 按键判断，再执行相应的操作
-		this.btn();
+		this.bMoveAble && this.btn();
 
 		// 绘制坦克
 		cxt.role.drawImage(oImg.myTank , 0 ,  this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);
@@ -89,7 +93,59 @@ class PlayerObj extends TankObj {
 		}
 	}
 
-	bonus(){
+	//玩家坦克与奖励的碰撞
+	bonusCollision(){
+		let xVal = Math.abs(this.x - oBonus.x),
+			yVal = Math.abs(this.y - oBonus.y);
 
+		if (xVal < 32 && yVal < 32) {
+			cxt.misc.clearRect(35 + oBonus.x, 20 + oBonus.y, 32, 32);
+			this.bonusType();
+			oBonus = null;
+		}
+	}
+
+	// 确定奖励类型
+	bonusType(){
+		switch (oBonus.iType) {
+			// 钢锹
+			case 0:
+				oAud.miscSound.play();
+				break;
+			// 星星
+			case 1:
+				oAud.life.play();
+				break;
+			// 坦克
+			case 2:
+				oAud.life.play();
+				if (this.iLife < 5) { this.iLife ++; }
+				break;
+			// 钢盔
+			case 3:
+				oAud.miscSound.play();
+				this.bShield = true;
+				this.iShieldNum = 1000;
+				break;
+			// 炸弹
+			case 4:
+				oAud.bomb.play();
+				for (let i = 1; i < 5; i++) {
+					let obj = aTankArr[i];
+					if (!obj.bBorned) { continue; }
+					aBigExplode.push(new BigExplode(obj.x + 16 , obj.y + 16 , obj.iDir));
+					obj.bAlive = false;              //坦克死亡
+					obj.bBorned = false;             //坦克未出生
+				}
+				break;
+			// 定时
+			case 5:
+				oAud.miscSound.play();
+				oEnemy.bMoveAble = false;            //所有的NPC坦克都被定住，不会移动也不会发射子弹
+				iTimerDelay = 800;                   //800个循环后NPC重新开始运动
+				break;
+			default:
+				break;
+		}
 	}
 }

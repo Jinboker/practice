@@ -67,11 +67,14 @@ function keyInit() {
 						ui.status = 3;
 						draw.ui = true;
 						draw.tank = false;
+						draw.bullet = false;
 					} else {
 						cxt.misc.clearRect(170, 220, 150, 20);
 						draw.ui = false;
 						draw.tank = true;
+						draw.bullet = true;
 					}
+					oAud.pause.play();
 				}
 				keyInfo[keyCode].pressed = true;
 			}

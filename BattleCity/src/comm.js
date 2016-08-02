@@ -37,10 +37,13 @@ let oAud = {
 	move : document.getElementById('move'),
 	eMove : document.getElementById('eMove'),
 	att : document.getElementById('attack'),
+	explode : document.getElementById('explode'),
 	attOver : document.getElementById('attackOver'),
 	eat : document.getElementById('eat'),
-	boom : document.getElementById('boom'),
-	bonus : document.getElementById('bonus')
+	bomb : document.getElementById('bomb'),
+	miscSound : document.getElementById('miscSound'),
+	life : document.getElementById('life'),
+	pause : document.getElementById('pause')
 }
 
 // 控制是否更新某些模块
@@ -53,7 +56,7 @@ let draw = {
 };
 
 // 奖励类型
-let oBonus = {
+let oBonusType = {
 	home : false,
 	star : false,
 	life : false,

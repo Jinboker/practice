@@ -2,11 +2,12 @@ let oEnemy = {
 	maxTankAlive : 4,    //敌军坦克同一时间最多只能有四个
 	maxNum : 20,         //敌军坦克的总数是20个
 	num : 1,             //当前画出来的是第几个坦克，因为坦克是从正中间开始刷新，因此从1开始计数
-	iBornDelay : 30      //第一个NPC延迟30个循环后出生，以后的坦克延迟150个循环出生
+	iBornDelay : 30,     //第一个NPC延迟30个循环后出生，以后的坦克延迟150个循环出生
+	bMoveAble : true     //定时为假则NPC不会运动
 };
 
 let oEnemyData = [
-	[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 4, 4],
+	[1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 4, 4],
 	[8, 8, 4, 5, 4, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 2, 0, 1, 0],
 	[5, 4, 0, 2, 8, 0, 0, 2, 1, 0, 4, 4, 2, 0, 2, 0, 8, 0, 5, 0],
 	[0, 0, 3, 0, 8, 2, 4, 4, 5, 0, 9, 0, 2, 8, 8, 2, 1, 0, 1, 0],
@@ -60,14 +61,20 @@ class EnemyObj extends TankObj {
 			return;
 		}
 
-		// 每次遇到障碍物后经过10个循环后改变方向
-		(!this.bHitBarrier || !this.bHitTank) ? this.changeDir() : this.iChangeDirDelay = 10;
+		// 玩家在吃了定时后oEnemy.bMoveAble为假，NPC无法移动和发射子弹
+		if (oEnemy.bMoveAble) {
+			a();
+			// 每次遇到障碍物后经过10个循环后改变方向
+			(!this.bHitBarrier || !this.bHitTank) ? this.changeDir() : this.iChangeDirDelay = 10;
 
-		//是否准备发射子弹
-		this.shot();
+			//是否准备发射子弹
+			this.shot();
 
-		// 移动坦克
-		this.move();
+			// 移动坦克
+			this.move();
+		} else {
+			b();
+		}
 
 		// 绘制坦克
 		cxt.role.drawImage(oImg.enemyTank , 32 * this.iType ,  this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);

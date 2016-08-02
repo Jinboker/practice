@@ -68,6 +68,7 @@ class MapEditor{
 			mapData[0] = this.setMapData;
 			draw.setMap = false;
 			draw.ui = true;
+			canRol.style.zIndex = '';
 			gameBox.border.style.backgroundColor = '';
 			cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
 			cxt.role.clearRect(this.x , this.y , 32 , 32);
@@ -82,6 +83,7 @@ class MapEditor{
 		// 初始化相关设置
 		if (setMapInit) {
 			setMapInit = false;
+			canRol.style.zIndex = '1';
 			gameBox.border.style.backgroundColor = '#666';
 			cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
 			for (let i = 0; i < 13; i++) {

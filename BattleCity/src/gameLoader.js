@@ -46,6 +46,12 @@ function gameLoop() {
 	//绘制子弹
 	draw.bullet && drawBullet();
 
+	// 如果奖励对象的实例不为空，那么绘制奖励对象
+	oBonus && oBonus.draw();
+
+	// 定时器
+	iTimerDelay ? iTimerDelay -- : oEnemy.bMoveAble = true; 
+
 	// 循环执行函数
 	requestAnimFrame(gameLoop);
 }

@@ -12,11 +12,25 @@
 			font-family: prstart;
 			src: url('font/prstart.ttf');
 		}
-		#game-box-border {
+		.game {
 			position: relative;
+			margin: 100px auto;
+			width: 530px;
+			height: 470px;
+		}
+		#text {
+			position: absolute;
+			left: -150px;
+			height: 456px;
+			width: 150px;
+		}
+		#text p {
+			padding-top: 180px;
+		}
+		#game-box-border {
+			position: absolute;
 			width: 516px;
 			height: 456px;
-			margin: 100px auto;
 			background-color: #000;
 			border: #630 solid 4px;
 		}
@@ -48,14 +62,23 @@
 	</style>
 </head>
 <body>
-	<div id="game-box-border">
-		<div id="game-box"></div>
-		<!-- 角色层 -->
-		<canvas id="canvas-role" width="416" height="416"></canvas>
-		<!-- 背景层 -->
-		<canvas id="canvas-bg" width="516" height="456"></canvas>
-		<!-- 杂项层（包括爆炸效果等） -->
-		<canvas id="canvas-misc" width="516" height="456"></canvas>
+	<div class="game">
+		<div id="text">
+			<p>
+				方向键：WASD <br><br>
+				AB键：HJ <br><br>
+				可进行单人模式及自定义地图模式
+			</p>
+		</div>
+		<div id="game-box-border">
+			<div id="game-box"></div>
+			<!-- 角色层 -->
+			<canvas id="canvas-role" width="416" height="416"></canvas>
+			<!-- 背景层 -->
+			<canvas id="canvas-bg" width="516" height="456"></canvas>
+			<!-- 杂项层（包括爆炸效果等） -->
+			<canvas id="canvas-misc" width="516" height="456"></canvas>
+		</div>
 	</div>
 	<!-- 提前缓存图片 -->
 	<div class="hide">
@@ -70,10 +93,13 @@
 	</div>
 	<!-- 提前缓存音频文件 -->
 	<div class="hide">
+		<audio src="src/sound/bonus/life.mp3" id="life"></audio>
+		<audio src="src/sound/bonus/bomb.mp3" id="bomb"></audio>
+		<audio src="src/sound/bonus/misc.mp3" id="miscSound"></audio>
 		<audio src="src/sound/attack.mp3" id="attack"></audio>
+		<audio src="src/sound/explode.mp3" id="explode"></audio>
 		<audio src="src/sound/attackOver.mp3" id="attackOver"></audio>
-		<audio src="src/sound/bonus.mp3" id="bonus"></audio>
-		<audio src="src/sound/boom.mp3" id="boom"></audio>
+		<audio src="src/sound/pause.mp3" id="pause"></audio>
 		<audio src="src/sound/eat.mp3" id="eat"></audio>
 		<audio src="src/sound/over.mp3" id="over"></audio>
 		<audio src="src/sound/start.mp3" id="start"></audio>

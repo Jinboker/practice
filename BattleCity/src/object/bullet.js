@@ -255,11 +255,26 @@ class BulletObj extends MoverObj {
 			if (bHitTankTest) {
 				if (i) {
 					this.getScore(oTank.iType);
-					(oTank.iType > 7) || (oTank.iType % 2) ? this.hitTankSmallBoom(oTank) : this.hitTankBigBoom(oTank);
+					if (oTank.iType % 2) {
+						// 如果奖励对象已经存在，那么先清掉相关区域的图像
+						oBonus && cxt.misc.clearRect(35 + oBonus.x, 20 + oBonus.y, 32, 32);
+						// 新建奖励对象
+						oBonus = new Bonus();
+						oBonus.init(stage.num - 1);
+						this.hitTankSmallBoom(oTank);
+					} else {
+						if (oTank.iType === 8) {
+							this.hitTankSmallBoom(oTank);
+						}
+						this.hitTankBigBoom(oTank);
+					}
 				} else {
-					oTank.iLife --;
-					myInfo();                      //更新己方生命数
-					this.hitTankBigBoom(oTank);
+					// 如果玩家没有防护罩，那么扣掉生命值重新刷新坦克
+					if (!oTank.bShield) {
+						oTank.iLife --;
+						myInfo();                      //更新己方生命数
+						this.hitTankBigBoom(oTank);
+					}
 				}
 				return false;
 			}
@@ -276,6 +291,7 @@ class BulletObj extends MoverObj {
 
 	// 坦克被子弹击中的大爆炸
 	hitTankBigBoom(obj){
+		oAud.explode.play();
 		aBigExplode.push(new BigExplode(obj.x + 16 , obj.y + 16 , obj.iDir));
 		obj.bAlive = false;              //坦克死亡
 		obj.bBorned = false;             //坦克未出生

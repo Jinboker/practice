@@ -1,6 +1,6 @@
+const iEnemyNum = 5;            //同时存在的最大坦克数（包括玩家及NPC）
 let aTankArr = [],
 	oPlayer;                    //用来表示玩家
-const iEnemyNum = 5;
 
 /**
  * 创建坦克对象的实例
@@ -50,13 +50,14 @@ function drawTank() {
 	if (bAllTankDie) {
 		iDelayEnterNextStage = delay(iDelayEnterNextStage , 180 , () => {
 			bAllTankDie = false;
-			aTankArr = [];                         //清空坦克数组
+			aTankArr = [];                            //清空坦克数组
+			oBonus = null;                            //清空奖励对象
 			draw.tank = false;
 			draw.bullet = false;
 			draw.ui = true;
-			ui.bInGame = false;                    //不在游戏中
-			ui.status = 2;                         //进入计分页面
-			oClass.ui.gameScoreInit();             //初始化计分页面的相关变量
+			ui.bInGame = false;                       //不在游戏中
+			ui.status = 2;                            //进入计分页面
+			oClass.ui.gameScoreInit();                //初始化计分页面的相关变量
 			cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
 			cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
 			cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
