@@ -47,7 +47,7 @@ class PlayerObj extends TankObj {
 		this.bMoveAble && this.btn();
 
 		// 绘制坦克
-		cxt.role.drawImage(oImg.myTank , 0 ,  this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);
+		cxt.role.drawImage(oImg.myTank , this.iRank * 32 ,  this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);
 	}
 
 	//按键判断
@@ -115,11 +115,18 @@ class PlayerObj extends TankObj {
 			// 星星
 			case 1:
 				oAud.life.play();
+				// this.iRank的最大值是3
+				if (this.iRank < 3) {
+					this.iRank ++;
+				}
 				break;
 			// 坦克
 			case 2:
 				oAud.life.play();
-				if (this.iLife < 5) { this.iLife ++; }
+				if (this.iLife < 5) {
+					this.iLife ++;
+					myInfo();
+				}
 				break;
 			// 钢盔
 			case 3:

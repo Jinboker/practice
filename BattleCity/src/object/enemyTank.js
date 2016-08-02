@@ -7,7 +7,7 @@ let oEnemy = {
 };
 
 let oEnemyData = [
-	[1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 4, 4],
+	[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 4, 4],
 	[8, 8, 4, 5, 4, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 2, 0, 1, 0],
 	[5, 4, 0, 2, 8, 0, 0, 2, 1, 0, 4, 4, 2, 0, 2, 0, 8, 0, 5, 0],
 	[0, 0, 3, 0, 8, 2, 4, 4, 5, 0, 9, 0, 2, 8, 8, 2, 1, 0, 1, 0],
@@ -63,7 +63,6 @@ class EnemyObj extends TankObj {
 
 		// 玩家在吃了定时后oEnemy.bMoveAble为假，NPC无法移动和发射子弹
 		if (oEnemy.bMoveAble) {
-			a();
 			// 每次遇到障碍物后经过10个循环后改变方向
 			(!this.bHitBarrier || !this.bHitTank) ? this.changeDir() : this.iChangeDirDelay = 10;
 
@@ -72,8 +71,6 @@ class EnemyObj extends TankObj {
 
 			// 移动坦克
 			this.move();
-		} else {
-			b();
 		}
 
 		// 绘制坦克

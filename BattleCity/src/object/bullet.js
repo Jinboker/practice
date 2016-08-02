@@ -253,27 +253,33 @@ class BulletObj extends MoverObj {
 				: (yVal < 32 && yVal > 0 && xVal > -8 && xVal < 32);
 			}
 			if (bHitTankTest) {
+				// i大于0则表示NPC坦克
 				if (i) {
 					this.getScore(oTank.iType);
 					if (oTank.iType % 2) {
-						// 如果奖励对象已经存在，那么先清掉相关区域的图像
-						oBonus && cxt.misc.clearRect(35 + oBonus.x, 20 + oBonus.y, 32, 32);
-						// 新建奖励对象
-						oBonus = new Bonus();
-						oBonus.init(stage.num - 1);
+						if (oTank.iType < 6 || (oTank.iType === 9)) {
+							// 如果奖励对象已经存在，那么先清掉相关区域的图像
+							oBonus && cxt.misc.clearRect(35 + oBonus.x, 20 + oBonus.y, 32, 32);
+							// 新建奖励对象
+							oBonus = new Bonus();
+							oBonus.init(stage.num - 1);
+						}
 						this.hitTankSmallBoom(oTank);
 					} else {
-						if (oTank.iType === 8) {
-							this.hitTankSmallBoom(oTank);
-						}
-						this.hitTankBigBoom(oTank);
+						(oTank.iType === 8) ? this.hitTankSmallBoom(oTank) : this.hitTankBigBoom(oTank);
 					}
+				// i小于0则表示玩家坦克
 				} else {
 					// 如果玩家没有防护罩，那么扣掉生命值重新刷新坦克
 					if (!oTank.bShield) {
-						oTank.iLife --;
-						myInfo();                      //更新己方生命数
-						this.hitTankBigBoom(oTank);
+						if (oTank.iRank === 3) {
+							oTank.iRank --;
+							this.hitTankSmallBoom(oTank);
+						} else {
+							oTank.iLife --;
+							myInfo();                      //更新己方生命数
+							this.hitTankBigBoom(oTank);
+						}
 					}
 				}
 				return false;
