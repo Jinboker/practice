@@ -63,11 +63,11 @@ class PlayerObj extends TankObj {
 			this.move();     //重新确定坦克的坐标
 		}
 
-		// 每次子弹消失后要经过20此循环后才能再次发射子弹
+		// 每次子弹消失后要经过15次循环后才能再次发射子弹
 		this.iBulletDelay > 0 && this.iBulletDelay --;
 		//发射子弹，J键，这里主要是为了防止J键一直按下的情况
 		if (!this.iBulletDelay && keyInfo[74].pressed && oKeyUp.j) {
-			this.iBulletDelay = 20;
+			this.iBulletDelay = 15;
 			oKeyUp.j = false;
 			if (!this.oBullet.bAlive) {
 				//这里的参数0表示这是玩家的坦克
@@ -102,6 +102,7 @@ class PlayerObj extends TankObj {
 			cxt.misc.clearRect(35 + oBonus.x, 20 + oBonus.y, 32, 32);
 			this.bonusType();
 			oBonus = null;
+			iEatBouns ++;
 		}
 	}
 

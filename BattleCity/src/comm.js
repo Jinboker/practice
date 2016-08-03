@@ -11,6 +11,14 @@ let cxt = {
 	h : 456               //canBg的高度
 }
 
+// 分数
+let oScore = {
+	y : [210 , 250 , 290 , 330],
+	tankNum : [0 , 0 , 0 , 0],
+	totalScore : 0,
+	totalTank : 0
+};
+
 // 部分类
 let oClass = {
 	ui : null,
@@ -29,12 +37,11 @@ let oImg = {
 	boom : document.getElementById('boom'),
 	score: document.getElementById('getScore')
 };
+
 //所有的音频
 let oAud = {
 	start : document.getElementById('start'),
 	over : document.getElementById('over'),
-	move : document.getElementById('move'),
-	eMove : document.getElementById('eMove'),
 	att : document.getElementById('attack'),
 	explode : document.getElementById('explode'),
 	attOver : document.getElementById('attackOver'),
@@ -48,7 +55,7 @@ let oAud = {
 // 控制是否更新某些模块
 let draw = {
 	ui : true,
-	tank : false,
+	obj : false,
 	bullet : false,
 	setMap : false,
 	map : false

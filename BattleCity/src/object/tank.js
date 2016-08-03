@@ -1,5 +1,6 @@
 const iEnemyNum = 5;            //同时存在的最大坦克数（包括玩家及NPC）
 let aTankArr = [],
+	bGameOver = false,          //游戏结束
 	oPlayer;                    //用来表示玩家
 
 /**
@@ -15,57 +16,64 @@ function tankInit() {
 
 let bHasTankDie = true,          //是否有坦克不是处于活着的状态
 	bAllTankDie = false,         //所有的坦克是否都被干掉
-	iDelayEnterNextStage = 180;  //消灭所有的坦克后延迟180个循环后进入分数统计界面
+	iDelayEnterScore = 180;      //消灭所有的坦克后延迟180个循环后进入分数统计界面
 
 /**
  * 绘制坦克
  */
 function drawTank() {
 	cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
-	for (let i = 0; i < iEnemyNum; i++) {
-		if (aTankArr[i].bAlive) {
-			aTankArr[i].draw();
-			if (oEnemy.num > oEnemy.maxNum) {
-				bAllTankDie = true;
-				i && (bAllTankDie = false);
-			}
-		} else {
-			if (i) {
-				bHasTankDie = true;
-				if (oEnemy.iBornDelay || (oEnemy.num > oEnemy.maxNum)) { continue; }
-			} else {
-				(!aTankArr[0].iLife) && (draw.gameover = true);
-			}
-			aTankArr[i].init();
-		}
-	}
+
+	// 渲染玩家坦克
+	oPlayer.bAlive ? oPlayer.draw() : oPlayer.init();
+
+	// 渲染NPC坦克
+	drawNPC();
+
 	// 如果存在被干掉的坦克，那么需要用oEnemy.iBornDelay进行延迟坦克的出生
-	if (bHasTankDie) {
-		oEnemy.iBornDelay --;
-		bHasTankDie = false;
-	}
+	if (bHasTankDie) { oEnemy.iBornDelay --; bHasTankDie = false; }
+
 	// 渲染爆炸
 	explode();
+
 	// 如果全部的NPC都被干掉了，那么延迟180个循环后开始统计数据并进入下一关
-	if (bAllTankDie) {
-		iDelayEnterNextStage = delay(iDelayEnterNextStage , 180 , () => {
-			bAllTankDie = false;
-			aTankArr = [];                            //清空坦克数组
-			oBonus = null;                            //清空奖励对象
-			oHome.bChange = false;                    //老家障碍不再绘制
-			draw.tank = false;
-			draw.ui = true;
-			ui.bInGame = false;                       //不在游戏中
-			ui.status = 2;                            //进入计分页面
-			oClass.ui.gameScoreInit();                //初始化计分页面的相关变量
-			cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
-			cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
-			cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
-			cxt.bg.drawImage(oImg.score , 0 , 0 , 516 , 456);
-			oScore.totalScore = oScore.tankNum[0] * 100 + oScore.tankNum[1] * 200 + oScore.tankNum[2] * 300 + oScore.tankNum[3] * 400 +  iEatBouns * 500;
-			oScore.totalTank = oScore.tankNum[0] + oScore.tankNum[1] + oScore.tankNum[2] + oScore.tankNum[3];
-		});
+	bAllTankDie && enterScore()
+}
+
+function drawNPC() {
+	let oTank;
+	for (let i = 1; i < iEnemyNum; i++) {
+		oTank = aTankArr[i];
+		if (oTank.bAlive) {
+			oTank.draw();
+			(oEnemy.num > oEnemy.maxNum) && (bAllTankDie = false);
+		} else {
+			bHasTankDie = true;
+			if (oEnemy.iBornDelay || (oEnemy.num > oEnemy.maxNum)) { continue; }
+			oTank.init();
+		}
 	}
+}
+
+function enterScore() {
+	iDelayEnterScore = delay(iDelayEnterScore , 180 , () => {
+		bAllTankDie = false;
+		aTankArr = [];                                       //清空坦克数组
+		aBullet = [];                                        //清空子弹数组
+		oBonus = null;                                       //清空奖励对象
+		oHome.bChange = false;                               //老家障碍不再绘制
+		draw.obj = false;
+		draw.ui = true;
+		ui.bInGame = false;                                  //不在游戏中
+		ui.status = 2;                                       //进入计分页面
+		oClass.ui.gameScoreInit();                           //初始化计分页面的相关变量
+		cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
+		cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
+		cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
+		cxt.bg.drawImage(oImg.score , 0 , 0 , 516 , 456);
+		oScore.totalScore = oScore.tankNum[0] * 100 + oScore.tankNum[1] * 200 + oScore.tankNum[2] * 300 + oScore.tankNum[3] * 400 +  iEatBouns * 500;
+		oScore.totalTank = oScore.tankNum[0] + oScore.tankNum[1] + oScore.tankNum[2] + oScore.tankNum[3];
+	});
 }
 
 /**
@@ -93,7 +101,7 @@ class TankObj extends MoverObj {
 		this.bHitTank = false;             //是否碰到了坦克
 
 		// 子弹相关
-		this.iBulletDelay = 20;            //子弹延迟20个循环
+		this.iBulletDelay = 15;            //子弹延迟15个循环
 
 		this.barrierCollision();
 	}

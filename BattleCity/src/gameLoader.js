@@ -40,13 +40,11 @@ function gameLoop() {
 	draw.map && oClass.drawMap.draw(stage.num - 1);
 
 	//当可以绘制游戏之时开始处理坦克，子弹，奖励的相关代码
-	if (draw.tank) {
+	if (draw.obj) {
 		drawTank();                        //绘制坦克
 		drawBullet();                      //绘制子弹
 		bonus();                           //绘制奖励及处理玩家吃掉奖励后的游戏变化
 	}
-	// draw.tank && drawTank();
-	// draw.bullet && drawBullet();
 
 	// 循环执行函数
 	requestAnimFrame(gameLoop);

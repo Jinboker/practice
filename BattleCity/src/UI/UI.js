@@ -1,31 +1,25 @@
-// 关卡相关
-let stage = {
-	mode : 0,                               //0表单人模式，1表双人模式，2表自定义地图模式
-	status : 0,                             //0表幕布上下合拢，1表关卡选择界面，2表关卡等待界面，3表左右幕布拉开
-	num : 1,                                //当前关卡数
-	max : 10                                //最大关卡数
-};
+let stage = new Object(),
+	ui = new Object();
 
-let ui = {
-	status : 0,                             //0表开始UI，1表关卡UI，2表记分UI，3表游戏暂停，4表游戏0结束
-	moveToTop : false,                      //开始UI中图片是否运动到了顶部
-	bInGame : false,                        //是否正在游戏中
-	bIntoNext : false                       //是否直接进入下一关
-};
+function paraInit() {
+	ui = {
+		status : 0,                             //0表开始UI，1表关卡UI，2表记分UI，3表游戏暂停，4表游戏结束
+		moveToTop : false,                      //开始UI中图片是否运动到了顶部
+		bInGame : false,                        //是否正在游戏中
+		bIntoNext : false                       //是否直接进入下一关
+	};
 
-let oScore = {
-	y : [210 , 250 , 290 , 330],
-	tankNum : [0 , 0 , 0 , 0],
-	totalScore : 0,
-	totalTank : 0
-};
+	stage = {
+		mode : 0,                               //0表单人模式，1表双人模式，2表自定义地图模式
+		status : 0,                             //0表幕布上下合拢，1表关卡选择界面，2表关卡等待界面，3表左右幕布拉开
+		num : 1,                                //当前关卡数
+		max : 10                                //最大关卡数
+	};
+}
 
 // UI相关执行函数
 class UI {
 	constructor() {
-		this.bRestartGame = false;           //是否重新开始游戏
-		this.iDelayRestartGame = 120;        //重新开始游戏所需要遍历的循环次数
-
 		// 开始界面
 		this.iWheelDelay = 5;                //坦克轮胎隔5个循环改变一次
 		this.iWheelPic = 0;                  //wheel表示轮子的变化0 -> 1 -> 0 -> 1
@@ -34,15 +28,23 @@ class UI {
 		this.iStartMusicDelay = 80;          //开始播放开始音乐，80个循环后拉开幕布
 		this.iDelayEnterNext = 30;           //如果正在游戏，那么30个循环后进入下一关
 
-		// 计分
-		this.iScoreDelay = 8;                //分数变化的速度，8个循环
-
-		// 暂停或者游戏结束
+		// 暂停
 		this.iTxtDelay = 20;                 //文字每过10个循环消失或者出现一次
 		this.iTxtStatus = 0;                 //文字的状态0 -> 1 -> 0 -> 1
+
+		// 计分
+		this.iScoreDelay = 8;                //分数变化的速度，8个循环
+		this.bEnterNextStage = false;        //进入下一关
+
+		//游戏结束
+		this.iOverStatus = 0;                //0表文字上移，1表等待，2表结束页面
+		this.iOverY = 456;                   //文字的Y坐标
+
+		this.iDelay = 120;                   //积分和游戏结束里面比较长的延时都是这个
 	}
 
 	init(){
+		paraInit();
 		this.gameStartInit();                // 开始的UI的相关变量初始化
 		this.gameStageInit();                // 关卡选择界面的相关变量初始化
 		this.gameScoreInit();                // 计分界面的相关变量初始化
@@ -79,6 +81,13 @@ class UI {
 
 	gameOverInit(){
 		this.bSetGameOver = true;            //是否开始设置游戏结束界面
+	}
+
+	startInit(){
+		iEatBouns = 0;                                   //吃掉的奖励数重置
+		oScore.tankNum = [0, 0, 0, 0];                   //击杀坦克数目重置
+		oEnemy.iBornDelay = 30;                          //重置NPC出生的延迟
+		cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
 	}
 
 	// 最开始的UI界面
@@ -164,7 +173,7 @@ class UI {
 				cxt.misc.clearRect(0 , 0 , cxt.l , cxt.l);
 				cxt.misc.fillText("STAGE  " + stage.num , 180 , 240);
 				cxt.misc.restore();
-				//看此时是否是正在游戏进行中
+				//看此时是否是可以直接进入下一关
 				if (ui.bIntoNext) {
 					this.iDelayEnterNext = delay(this.iDelayEnterNext , 30 , this.enterNextStage())
 				} else {
@@ -198,10 +207,10 @@ class UI {
 				} else {
 					enemyNum();                    //绘制右侧剩余敌军坦克数目
 					myInfo();                      //绘制己方生命数及关卡数
-					oScore.tankNum = [0, 0, 0, 0]; //击杀坦克数目重置
 					ui.bInGame = true;             //正在游戏中，可以暂停
+					ui.bIntoNext = false;          //无法直接进入下一关
 					canRol.style.zIndex = '';      //将role层放回到背景层下
-					draw.tank = true;              //循环开始绘制坦克
+					draw.obj = true;               //循环开始绘制坦克子弹等
 					draw.bullet = true;            //循环开始绘制子弹
 					draw.misc = true;              //开始绘制杂项信息
 					draw.ui = false;               //停止绘制UI界面
@@ -234,19 +243,23 @@ class UI {
 
 	// 计分的界面
 	gameScore(){
-		if (this.bRestartGame) {
-			this.iDelayRestartGame = delay(this.iDelayRestartGame , 120 , () => {
-				aTankArr = [null, null, null, null, null];       //坦克对象全部清空
-				oEnemy.iBornDelay = 30;                          //重置NPC出生的延迟
-				this.bRestartGame = false;
-				ui.bIntoNext = true;
-				stage.num ++;
-				cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
-				cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
-				this.styleChange();
-				ui.status = 1;
-				stage.status = 1;
-				this.gameStageInit();
+		if (this.bEnterNextStage) {
+			this.iDelay = delay(this.iDelay , 120 , this.bEnterNextStage = () => {
+				// bGameOver为真表明游戏结束，跳转到gameOver()并重新开始游戏
+				if (bGameOver) {
+					this.drawOverPic();
+					ui.status = 4;
+					this.iOverStatus = 2;
+				} else {
+					ui.bIntoNext = true;
+					stage.num ++;
+					ui.status = 1;
+					stage.status = 1;
+					this.styleChange();
+					this.gameStageInit();
+					this.startInit();
+				}
+				return false;
 			})
 		} else {
 			this.drawScore();
@@ -273,47 +286,62 @@ class UI {
 			this.bTankScoreAdd && (this.iTankScore = (this.iTankScore < 4) ? this.iTankScore + 1 : this.bDrawTotal = true);
 			if (this.bDrawTotal) {
 				cxt.misc.fillText(oScore.totalTank , 195, 380);
-				this.bRestartGame = true;
-				// 如果此时draw.gameover为真的表明游戏结束了，因此需要条状到gameOver()并重新开始游戏
-				draw.gameover && (ui.status = 4);
+				this.bEnterNextStage = true;
 			}
 		});
 		cxt.misc.restore();
 	}
 
 	gameStop(){
-		let sTxt = "GAME STOP";
-		this.drawText(sTxt);
-	}
-
-	gameOver(){
-		if (this.bSetGameOver) {
-			this.bSetGameOver = false;
-			cxt.bg.drawImage(oImg.ui, 0, 155, 376, 165, 140, 160, 376, 165);
-			oAud.over.play();
-		}
-	}
-
-	drawText(sTxt){
 		this.iTxtDelay = delay(this.iTxtDelay , 20 , () => {
 			this.iTxtStatus = +!this.iTxtStatus;
 			if (this.iTxtStatus) {
 				cxt.misc.save();
 				cxt.misc.fillStyle = '#db2b00';
-				cxt.misc.fillText(sTxt , 175 , 235);
+				cxt.misc.fillText("GAME STOP" , 175 , 235);
 				cxt.misc.restore();
 			} else {
 				cxt.misc.clearRect(170, 220, 150, 20);
 			}
 		});
 	}
-}
 
-// 游戏结束
-function gameOver(){
-	draw.gameover = false;
-	draw.tank = false;
-	draw.bullet = false;
-	cxt.bg.clearRect(227 , 404 , 32 , 32);
-	cxt.bg.drawImage(oImg.brick , 512 , 0 , 32 , 32 , 227 , 404 , 32, 32);
+	gameOver(){
+		switch (this.iOverStatus) {
+			// 文字上移
+			case 0:
+				cxt.misc.clearRect(170, this.iOverY - 15, 150, 20);
+				this.iOverY -= 4;
+				cxt.misc.save();
+				cxt.misc.fillStyle = '#db2b00';
+				cxt.misc.fillText("GAME OVER" , 175 , this.iOverY);
+				cxt.misc.restore();
+				if (this.iOverY < 236) {
+					this.iOverStatus = 1;
+					iDelayEnterScore = 100;                  // 100个循环后进入分数统计页面
+				}
+				break;
+			// 等待进入分数统计界面
+			case 1: enterScore(); break;
+			// 准备重新开始游戏
+			case 2:
+				this.iDelay = delay(this.iDelay, 120, () => {
+					cxt.bg.clearRect(134, 148, 248, 160);
+					this.init();
+					this.startInit();
+					ui.status = 0;
+				});
+				break;
+			default:
+				break;
+		}
+	}
+
+	drawOverPic(){
+		oAud.over.play();
+		cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
+		cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
+		gameBox.border.style.backgroundColor = '';
+		cxt.bg.drawImage(oImg.ui, 0, 160, 248, 160, 134, 148, 248, 160);
+	}
 }

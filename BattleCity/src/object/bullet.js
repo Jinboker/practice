@@ -112,7 +112,10 @@ class BulletObj extends MoverObj {
 				  break;
 			  // 子弹过老家那么游戏结束
 			  case 5:
-				  draw.gameover = true;
+				  that.gameOver();
+				  oPlayer.bMoveAble = false;       // 玩家无法移动
+				  cxt.bg.clearRect(227 , 404 , 32 , 32);
+				  cxt.bg.drawImage(oImg.brick , 512 , 0 , 32 , 32 , 227 , 404 , 32, 32);
 				  return false;
 				  break;
 			  // 河流跟冰路直接过（默认是3和4）
@@ -200,6 +203,12 @@ class BulletObj extends MoverObj {
 		}
 	}
 
+	gameOver(){
+		ui.status = 4;                   //游戏结束界面
+		draw.ui = true;                  //绘制UI
+		bGameOver = true;                //游戏结束
+	}
+
 	// 子弹与坦克之间的碰撞检测
 	tankCollision(){
 		let iStart, iOver;
@@ -248,8 +257,8 @@ class BulletObj extends MoverObj {
 							this.hitTankSmallBoom(oTank);
 						} else {
 							oTank.iLife --;
-							oTank.iRank = 0;               //坦克等级降至最低
-							myInfo();                      //更新己方生命数
+							oTank.iRank = 0;                   //坦克等级降至最低
+							oTank.iLife >= 0 ? myInfo() : this.gameOver();
 							this.hitTankBigBoom(oTank);
 						}
 					}

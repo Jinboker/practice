@@ -7,7 +7,7 @@ let oEnemy = {
 };
 
 let oEnemyData = [
-	[1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 4, 4],
+	[0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 4, 4],
 	[8, 8, 4, 5, 4, 0, 0, 0, 0, 0, 0, 1, 0, 0, 2, 0, 2, 0, 1, 0],
 	[5, 4, 0, 2, 8, 0, 0, 2, 1, 0, 4, 4, 2, 0, 2, 0, 8, 0, 5, 0],
 	[0, 0, 3, 0, 8, 2, 4, 4, 5, 0, 9, 0, 2, 8, 8, 2, 1, 0, 1, 0],
@@ -87,7 +87,7 @@ class EnemyObj extends TankObj {
 		if (!this.oBullet.bAlive) {
 			this.iBulletDelay > 0 && this.iBulletDelay --;
 			if (!this.iBulletDelay) {
-				// 默认的延迟是20个循环，这里进行重置
+				// 默认的延迟是15个循环，这里进行重置
 				this.setBulletDelay();
 				//这里的参数1表示这是NPC的坦克
 				!this.oBullet.bAlive && this.oBullet.init(this.x , this.y , this.iDir , 1);
