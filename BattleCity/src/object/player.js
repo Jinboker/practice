@@ -111,6 +111,7 @@ class PlayerObj extends TankObj {
 			// 钢锹
 			case 0:
 				oAud.miscSound.play();
+				oBonus.oHomeInit();
 				break;
 			// 星星
 			case 1:
@@ -137,6 +138,7 @@ class PlayerObj extends TankObj {
 			// 炸弹
 			case 4:
 				oAud.bomb.play();
+				// 已经出生的坦克全部炸掉
 				for (let i = 1; i < 5; i++) {
 					let obj = aTankArr[i];
 					if (!obj.bBorned) { continue; }

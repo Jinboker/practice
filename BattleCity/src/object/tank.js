@@ -52,8 +52,8 @@ function drawTank() {
 			bAllTankDie = false;
 			aTankArr = [];                            //清空坦克数组
 			oBonus = null;                            //清空奖励对象
+			oHome.bChange = false;                    //老家障碍不再绘制
 			draw.tank = false;
-			draw.bullet = false;
 			draw.ui = true;
 			ui.bInGame = false;                       //不在游戏中
 			ui.status = 2;                            //进入计分页面

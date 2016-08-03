@@ -10,7 +10,6 @@ window.onload = function () {
 function init() {
 	oClass = {
 		ui : new UI(),
-		tank : new TankObj(),
 		mapEditor : new MapEditor(),
 		drawMap : new DrawMap()
 	};
@@ -40,17 +39,14 @@ function gameLoop() {
 	//绘制地图（地图只有当UI界面的关卡选择界面准备结束的时候才会绘制一次）
 	draw.map && oClass.drawMap.draw(stage.num - 1);
 
-	//绘制坦克
-	draw.tank && drawTank();
-
-	//绘制子弹
-	draw.bullet && drawBullet();
-
-	// 如果奖励对象的实例不为空，那么绘制奖励对象
-	oBonus && oBonus.draw();
-
-	// 定时器
-	iTimerDelay ? iTimerDelay -- : oEnemy.bMoveAble = true; 
+	//当可以绘制游戏之时开始处理坦克，子弹，奖励的相关代码
+	if (draw.tank) {
+		drawTank();                        //绘制坦克
+		drawBullet();                      //绘制子弹
+		bonus();                           //绘制奖励及处理玩家吃掉奖励后的游戏变化
+	}
+	// draw.tank && drawTank();
+	// draw.bullet && drawBullet();
 
 	// 循环执行函数
 	requestAnimFrame(gameLoop);

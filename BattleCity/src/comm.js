@@ -11,10 +11,9 @@ let cxt = {
 	h : 456               //canBg的高度
 }
 
-// 所有的类
+// 部分类
 let oClass = {
 	ui : null,
-	tank : null,
 	mapEditor : null,
 	drawMap : null
 };

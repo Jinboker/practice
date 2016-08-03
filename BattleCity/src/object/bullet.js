@@ -1,19 +1,3 @@
-// 提前定义四个子弹的canvas，省掉画图时剪切的时间
-let m_canT = document.createElement('canvas'),
-	m_canR = document.createElement('canvas'),
-	m_canD = document.createElement('canvas'),
-	m_canL = document.createElement('canvas');
-
-m_canT.width = m_canT.height =
-m_canR.width = m_canR.height =
-m_canD.width = m_canD.height =
-m_canL.width = m_canL.height = 8;
-
-m_canT.getContext('2d').drawImage(oImg.misc , 0 , 0 , 8 , 8 , 0 , 0 , 8 , 8);
-m_canR.getContext('2d').drawImage(oImg.misc , 8 , 0 , 8 , 8 , 0 , 0 , 8 , 8);
-m_canD.getContext('2d').drawImage(oImg.misc , 16 , 0 , 8 , 8 , 0 , 0 , 8 , 8);
-m_canL.getContext('2d').drawImage(oImg.misc , 24 , 0 , 8 , 8 , 0 , 0 , 8 , 8);
-
 let oBrickStatus = new Object(),           //砖头状态
 	aBullet = [];                          //子弹数组
 
@@ -49,12 +33,10 @@ class BulletObj extends MoverObj {
 		if (this.iDir%2) {
 			this.y += 12;
 			this.x += 24*(+!(this.iDir-1));
-			this.oImg = (this.iDir - 1) ? m_canL : m_canR;
 		// 0 , 2
 		} else {
 			this.x += 12;
 			this.y += 24*this.iDir/2;
-			this.oImg = (this.iDir/2) ? m_canD : m_canT;
 		}
 		this.speedSet();
 	}
@@ -63,7 +45,7 @@ class BulletObj extends MoverObj {
 		if (this.oHitBarrier[this.iDir]() && this.tankCollision() && this.bulletCollision()) {
 			this.x += this.iSpeedX;
 			this.y += this.iSpeedY;
-			cxt.role.drawImage(this.oImg , this.x , this.y , 8 , 8);
+			cxt.role.drawImage(oImg.misc, this.iDir * 8, 0, 8, 8, this.x, this.y, 8, 8);
 		} else {
 			this.bAlive = false;
 		}
@@ -71,11 +53,7 @@ class BulletObj extends MoverObj {
 
 	//子弹与障碍物之间的碰撞检测
 	barrierCollision(){
-		let iRow,
-			iCol,
-			arr = [2],
-			bHitBarrier,
-			that = this;
+		let iRow, iCol, arr = [2], bHitBarrier, that = this;
 
 		this.oHitBarrier = {
 			0 : () => {
@@ -99,8 +77,7 @@ class BulletObj extends MoverObj {
 			}
 		}
 
-		let iRowVal,
-			iColVal;
+		let iRowVal, iColVal;
 
 		function hit(...values) {
 			for (let i = 0; i < 2; i++) {
@@ -111,10 +88,7 @@ class BulletObj extends MoverObj {
 			return arr[0] && arr[1];
 		}
 
-		let num,
-			row,
-			col,
-			j;
+		let num, row, col, j;
 
 		function barrierVal(...values) {
 			[num , row , col , j] = values;
@@ -158,8 +132,8 @@ class BulletObj extends MoverObj {
 		* @return 同上
 		*/
 		function bulletBrickRoad() {
-			iBrickObjIndex = row * 16 + col;
-			if (oBrickStatus[iBrickObjIndex]) {
+			iBrickObjIndex = row * 28 + col;
+			if (!!oBrickStatus[iBrickObjIndex]) {
 				return hitBrick();
 			} else{
 				oBrickStatus[iBrickObjIndex] = [1 , 1 , 1 , 1];
@@ -228,15 +202,11 @@ class BulletObj extends MoverObj {
 
 	// 子弹与坦克之间的碰撞检测
 	tankCollision(){
-		let iStart,
-			iOver;
+		let iStart, iOver;
 		//如果this.iBulletType为真，那么表示子弹是由NPC发射的，否则就是玩家发射的
 		[iStart , iOver] = this.iBulletType ? [0 , 1] : [1 , 5];
 
-		let xVal,
-			yVal,
-			oTank,
-			bHitTankTest;
+		let xVal, yVal, oTank, bHitTankTest;
 
 		for (let i = iStart; i < iOver; i++) {
 			oTank = aTankArr[i];
@@ -272,11 +242,13 @@ class BulletObj extends MoverObj {
 				} else {
 					// 如果玩家没有防护罩，那么扣掉生命值重新刷新坦克
 					if (!oTank.bShield) {
+						// 如果玩家坦克等级是最高级，那么被子弹打一下不会死
 						if (oTank.iRank === 3) {
 							oTank.iRank --;
 							this.hitTankSmallBoom(oTank);
 						} else {
 							oTank.iLife --;
+							oTank.iRank = 0;               //坦克等级降至最低
 							myInfo();                      //更新己方生命数
 							this.hitTankBigBoom(oTank);
 						}
@@ -305,14 +277,14 @@ class BulletObj extends MoverObj {
 
 	// 统计被子弹击杀的坦克类型，用来在结束后统计分数
 	getScore(num){
-		switch (parseInt(num / 2)) {
-			case 0: oScore.tankNum[0] ++; console.log(oScore.tankNum[0]); break;
-			case 1: oScore.tankNum[1] ++; console.log(oScore.tankNum[1]); break;
-			case 2: oScore.tankNum[2] ++; console.log(oScore.tankNum[2]); break;
-			case 3:
-			case 4: oScore.tankNum[3] ++; console.log(oScore.tankNum[3]); break;
-			default: break;
-		}
+		// switch (parseInt(num / 2)) {
+		// 	case 0: oScore.tankNum[0] ++; console.log(oScore.tankNum[0]); break;
+		// 	case 1: oScore.tankNum[1] ++; console.log(oScore.tankNum[1]); break;
+		// 	case 2: oScore.tankNum[2] ++; console.log(oScore.tankNum[2]); break;
+		// 	case 3:
+		// 	case 4: oScore.tankNum[3] ++; console.log(oScore.tankNum[3]); break;
+		// 	default: break;
+		// }
 	}
 
 	// 子弹与子弹的碰撞

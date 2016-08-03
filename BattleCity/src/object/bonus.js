@@ -1,5 +1,59 @@
-let oBonus = null,                                    //用来保存奖励对象的实例
-	iTimerDelay = 0;                                  //玩家吃掉定时奖励后NPC经历过iTimerDelay个循环后才能运动
+let oBonus = null,                  //用来保存奖励对象的实例
+	oHome = new Object();           //用来存储控制老家周围障碍改变的相关变量
+	iTimerDelay = 0;                //玩家吃掉定时奖励后NPC经历过iTimerDelay个循环后才能运动
+
+/**
+ * 循环检查执行奖励的相关代码
+ */
+function bonus() {
+	// 如果奖励对象的实例不为空，那么绘制奖励对象
+	oBonus && oBonus.draw();
+
+	// 定时器
+	iTimerDelay ? iTimerDelay -- : oEnemy.bMoveAble = true;
+
+	// 改变老家周围障碍
+	oHome.bChange && homeChange();
+}
+
+/**
+ * 改变老家周围障碍
+ */
+function homeChange() {
+	// 一定时间过后重新渲染障碍
+	oHome.iDelay = delay(oHome.iDelay, oHome.iMax, () => {
+		let iData, iRow, iCol, iHomeData = aHomeData[oHome.iType];
+		//清空障碍
+		cxt.bg.clearRect(227, 372, 32, 32);
+		cxt.bg.clearRect(195, 372, 32, 64);
+		cxt.bg.clearRect(259, 372, 32, 64);
+		// 重绘障碍
+		for (let i = 0; i < 5; i++) {
+			iRow = aHomePosi[i][0];
+			iCol = aHomePosi[i][1];
+			iData = mapData[stage.num-1][iRow][iCol] = iHomeData[i];
+			cxt.bg.drawImage(oImg.brick, 32*iData, 0, 32, 32, 35+32*iCol, 20+32*iRow, 32, 32);
+			// 在开始和结束时根据当前障碍的值重新确定路径
+			if (oHome.iNum === 10 || oHome.iNum === -1) {
+				oClass.drawMap.road(iRow, iCol, iData);
+			}
+		}
+		oHome.bChangeType = true;
+	});
+	// 根据当前oHome.iNum的值来判断是否老家保护是否完结
+	if (oHome.bChangeType) {
+		oHome.bChangeType = false;
+		if (oHome.iNum < 0) {
+			oHome.bChange = false;
+
+		} else {
+			// 如果oHome.iNum != 10，那么老家周围的障碍开始闪烁
+			(oHome.iNum != 10) && (oHome.iDelay = oHome.iMax = 10);
+			oHome.iNum --;
+			oHome.iType = +!oHome.iType;
+		}
+	}
+}
 
 /**
  * 奖励对象
@@ -20,8 +74,8 @@ class Bonus {
 	 */
 	init(num){
 		let data;
-		this.iType = parseInt(Math.random()*6);         //随机确定奖励类型
-		// this.iType = 1;
+		// this.iType = parseInt(Math.random()*6);         //随机确定奖励类型
+		this.iType = 0;
 		do {
 			this.iRow = parseInt(Math.random()*10 + 1);
 			this.iCol = parseInt(Math.random()*12);
@@ -30,6 +84,18 @@ class Bonus {
 			data = mapData[num][this.iRow][this.iCol];
 		// 如果随机出来的位置不位于空白地块或者砖块上的话，重新确定位置
 		} while ((data != 0) && (data != 1) && (data != 2) && (data != 3) && (data != 4));
+	}
+
+	// 初始化oHome对象
+	oHomeInit(){
+		oHome = {
+			bChange : true,
+			bChangeType : false,
+			iType : 0,
+			iDelay : 0,
+			iMax : 800,
+			iNum : 10
+		};
 	}
 
 	draw(){
