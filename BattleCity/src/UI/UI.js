@@ -335,7 +335,7 @@ class UI {
 					this.init();
 					this.startInit();
 					ui.status = 0;
-					bGameOver = true;
+					bGameOver = false;
 					iPlayerLife = 2,                     //重置玩家生命
 					iPlayerRank = 0;                     //重置玩家等级
 				});
