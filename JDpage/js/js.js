@@ -296,7 +296,7 @@ MoveFocus.prototype = {
 
         this.width = this.aPicLi[0].offsetWidth;
         innerPic.style.left = -this.width + 'px';
-        innerPic.style.width = this.width*(this.len+2) + 100 + 'px';  
+        innerPic.style.width = this.width*(this.len+2) + 100 + 'px';
         // 将第一张图及最后一张图分别复制到这一串图的尾部跟头部，用来做无缝滚动（简单方式是直接将innerHTML自身赋值一遍就行）
         innerPic.innerHTML = this.aPicLi[this.len-1].outerHTML + innerPic.innerHTML + this.aPicLi[0].outerHTML;
     },
@@ -307,7 +307,7 @@ MoveFocus.prototype = {
             clearInterval(that.timer);
         } , function () {
             that.autoPlay();
-        });    
+        });
     },
 
     autoPlay : function () {
@@ -327,9 +327,11 @@ MoveFocus.prototype = {
 
         this.moveAble = true;
         // 鼠标移入焦点图区域的时候按钮显示
-        classHover(this.obj , function () {
-            toggleClass(oBtn , 'is-hide');
-        });
+        hover(this.obj , function () {
+            removeClass(oBtn, 'is-hide');
+        } , function () {
+            addClass(oBtn, 'is-hide');
+        })
         // 点击切换图片
         myAddEvent(oPrev , 'click' , function () {
             // that.moveAble在图片运动时会被设置为假，只有运动结束后才会被设置为真，这是为了防止用户短时间内多次点击按钮触发运动
@@ -376,7 +378,7 @@ MoveFocus.prototype = {
             hover(this.aNav[i] , function () {
                 if (this.className != 'is-current') {
                     var _this = this;
-                    
+
                     timer = setTimeout(function () {
                         that.key = _this.index;
                         that.change(_this);
@@ -579,7 +581,7 @@ myReady(function () {
             } , function () {
                 clearTimeout(timer);
             });
-        } 
+        }
     }
 
     for (i = 0; i < len; i++) {
@@ -598,7 +600,7 @@ myReady(function () {
         i = null;
 
     // 焦点图
-    var slider = new OpacityMove(oDoc.querySelector('.js-big-slider')); 
+    var slider = new OpacityMove(oDoc.querySelector('.js-big-slider'));
     slider.entrance();
 
     // 生活服务鼠标移入后显示
@@ -637,12 +639,12 @@ myReady(function () {
                             });
                         });
                     }
-                } , 100);                
+                } , 100);
             }
         } , function () {
             clearTimeout(timer);
             // 点击关闭后bStop为假，mouseenter事件不会触发，必须触发一次mouseleave事件后才会为真
-            (!bStop)&&(bStop = true);            
+            (!bStop)&&(bStop = true);
         });
     }
 
@@ -669,7 +671,7 @@ myReady(function () {
     var aGoBackBtn = oDoc.querySelectorAll('.js-go-back-btn'),
         aTicketBack = oDoc.querySelectorAll('.js-ticket-back'),
         len = aGoBackBtn.length;
-    
+
     for (i = 0; i < len; i++) {
         aGoBackBtn[i].index = i;
         myAddEvent(aGoBackBtn[i] , 'click' , function () {
@@ -701,7 +703,7 @@ myReady(function () {
             oHours -= 12;
         }
         var oHoursValue = 'rotate(' + (oHours*30 + oMin/2) + 'deg)';
-        
+
         oClock_h.style.transform = oHoursValue;
         oClock_m.style.transform = oMinValue;
         oClock_s.style.transform = oSenValue;
@@ -752,7 +754,7 @@ myReady(function () {
     });
 
     //热门晒单的自动播放
-    var hsSlider = new HotSheet(oDoc.querySelector('.js-hot-sheet-slider')); 
+    var hsSlider = new HotSheet(oDoc.querySelector('.js-hot-sheet-slider'));
 
     hsSlider.init();
     hsSlider.autoPlay();
@@ -799,7 +801,7 @@ myReady(function () {
         oDoc.documentElement.scrollTop = oDoc.body.scrollTop = 0;
     });
 });
- 
+
 /**
  * 楼层索引相关
  */
@@ -816,7 +818,7 @@ myReady(function () {
     function elevatorPosition() {
         oElevator.style.left = parseInt((oDoc.body.clientWidth - 1280)/2) + 'px';
     }
-  
+
     elevatorPosition();
     window.onresize = delayTrigger(elevatorPosition , 100);
 
