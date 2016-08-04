@@ -1,14 +1,17 @@
-let iEatBouns = 0;         //玩家吃掉的奖励数
+let iEatBouns = 0,                       //玩家吃掉的奖励数
+	iPlayerLife = 2,                     //玩家的生命数
+	iPlayerRank = 0;                     //玩家的等级
+	
 /**
  * 玩家坦克对象，继承自TankObj
  */
 class PlayerObj extends TankObj {
-	constructor() {
+	constructor(iLife, iRank) {
 		super();
 
 		this.iIndex = 0;
-		this.iRank = 0;                  //默认坦克等级为0，玩家坦克可以通过吃星星升级
-		this.iLife = 2;                  //玩家默认有两条命
+		this.iRank = iRank;              //默认坦克等级为0，玩家坦克可以通过吃星星升级
+		this.iLife = iLife;              //玩家的生命数，默认是两条
 
 		// 防护罩相关
 		this.iShieldNum = 200;           //防护罩循环的次数，默认是200，如果吃了防护罩奖励那么就是1000
@@ -117,10 +120,8 @@ class PlayerObj extends TankObj {
 			// 星星
 			case 1:
 				oAud.life.play();
-				// this.iRank的最大值是3
-				if (this.iRank < 3) {
-					this.iRank ++;
-				}
+				// iRank的最大值是3
+				(this.iRank < 3) && (this.iRank ++);
 				break;
 			// 坦克
 			case 2:

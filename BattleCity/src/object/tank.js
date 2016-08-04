@@ -8,7 +8,7 @@ let aTankArr = [],
  */
 function tankInit() {
 	// 第一个是玩家坦克，后面四个是敌军坦克
-	oPlayer = aTankArr[0] = new PlayerObj(0);
+	oPlayer = aTankArr[0] = new PlayerObj(iPlayerLife, iPlayerRank);
 	for (let i = 1; i < iEnemyNum; i++) {
 		aTankArr[i] = new EnemyObj(i);
 	}
@@ -25,7 +25,7 @@ function drawTank() {
 	cxt.role.clearRect(0 , 0 , cxt.l , cxt.l);
 
 	// 渲染玩家坦克
-	oPlayer.bAlive ? oPlayer.draw() : oPlayer.init();
+	drawPlayer();
 
 	// 渲染NPC坦克
 	drawNPC();
@@ -40,13 +40,23 @@ function drawTank() {
 	bAllTankDie && enterScore()
 }
 
+function drawPlayer() {
+	if (oPlayer.bAlive) {
+		oPlayer.draw();
+		// 如果敌军坦克数目已经到了最大，只要所有的坦克都被干掉了bAllTankDie无法为假，直接进入计分界面
+		(oEnemy.num > oEnemy.maxNum) && (bAllTankDie = true);
+	} else {
+		(oPlayer.iLife >= 0) && oPlayer.init();
+	}
+}
+
 function drawNPC() {
 	let oTank;
 	for (let i = 1; i < iEnemyNum; i++) {
 		oTank = aTankArr[i];
 		if (oTank.bAlive) {
 			oTank.draw();
-			(oEnemy.num > oEnemy.maxNum) && (bAllTankDie = false);
+			bAllTankDie = false;
 		} else {
 			bHasTankDie = true;
 			if (oEnemy.iBornDelay || (oEnemy.num > oEnemy.maxNum)) { continue; }
@@ -58,6 +68,10 @@ function drawNPC() {
 function enterScore() {
 	iDelayEnterScore = delay(iDelayEnterScore , 180 , () => {
 		bAllTankDie = false;
+		iPlayerLife = oPlayer.iLife;                         //更新玩家生命
+		iPlayerRank = oPlayer.iRank;                         //更新玩家等级
+		console.log(iPlayerLife);
+		console.log(iPlayerRank);
 		aTankArr = [];                                       //清空坦克数组
 		aBullet = [];                                        //清空子弹数组
 		oBonus = null;                                       //清空奖励对象
@@ -157,9 +171,7 @@ class TankObj extends MoverObj {
 
 	//坦克与障碍物之间的碰撞检测
 	barrierCollision(){
-		let iRow,
-			iCol,
-			arr = [2];
+		let iRow, iCol, arr = [2];
 
 		this.oHitBarrier = {
 			0 : () => {
@@ -183,8 +195,7 @@ class TankObj extends MoverObj {
 			}
 		}
 
-		let iRowVal,
-			iColVal;
+		let iRowVal, iColVal;
 
 		function hit(...values) {
 			for (let i = 0; i < 2; i++) {
@@ -199,10 +210,7 @@ class TankObj extends MoverObj {
 			switch (num) {
 				case 0: return true; break;
 				// 砖块钢筋河流老家无法通过
-				case 1:
-				case 2:
-				case 4:
-				case 5: return false; break;
+				case 1: case 2: case 4: case 5: return false; break;
 				// 冰路中间有相应的代码（默认就是3了）
 				default: return true; break;
 			}
@@ -211,9 +219,7 @@ class TankObj extends MoverObj {
 
 	// 坦克与坦克之间的碰撞检测
 	tankCollision(){
-		let xVal,
-			yVal,
-			bHitTankTest;
+		let xVal, yVal, bHitTankTest;
 
 		for (let i = 0; i < 5; i++) {
 			if ((this.iIndex === i) || !aTankArr[i].bBorned) { continue; }

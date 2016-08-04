@@ -84,9 +84,9 @@ class UI {
 	}
 
 	startInit(){
-		iEatBouns = 0;                                   //吃掉的奖励数重置
-		oScore.tankNum = [0, 0, 0, 0];                   //击杀坦克数目重置
-		oEnemy.iBornDelay = 30;                          //重置NPC出生的延迟
+		iEatBouns = 0;                       //吃掉的奖励数重置
+		oScore.tankNum = [0, 0, 0, 0];       //击杀坦克数目重置
+		oEnemy.iBornDelay = 30;              //重置NPC出生的延迟
 		cxt.misc.clearRect(0 , 0 , cxt.w , cxt.h);
 	}
 
@@ -330,6 +330,8 @@ class UI {
 					this.init();
 					this.startInit();
 					ui.status = 0;
+					iPlayerLife = 2,                     //重置玩家生命
+					iPlayerRank = 0;                     //重置玩家等级
 				});
 				break;
 			default:
