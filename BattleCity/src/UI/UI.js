@@ -33,7 +33,7 @@ class UI {
 		this.iTxtStatus = 0;                 //文字的状态0 -> 1 -> 0 -> 1
 
 		// 计分
-		this.iScoreDelay = 8;                //分数变化的速度，8个循环
+		this.iScoreDelay = 5;                //分数变化的速度，5个循环
 		this.bEnterNextStage = false;        //进入下一关
 
 		//游戏结束
@@ -244,7 +244,8 @@ class UI {
 	// 计分的界面
 	gameScore(){
 		if (this.bEnterNextStage) {
-			this.iDelay = delay(this.iDelay , 120 , this.bEnterNextStage = () => {
+			this.iDelay = delay(this.iDelay , 120 , () => {
+				this.bEnterNextStage = false;
 				// bGameOver为真表明游戏结束，跳转到gameOver()并重新开始游戏
 				if (bGameOver) {
 					this.drawOverPic();
@@ -259,7 +260,6 @@ class UI {
 					this.gameStageInit();
 					this.startInit();
 				}
-				return false;
 			})
 		} else {
 			this.drawScore();
@@ -274,7 +274,7 @@ class UI {
 		cxt.misc.fillText(oScore.totalScore , 110, 160);
 		cxt.misc.fillStyle = '#fff';
 		cxt.misc.fillText("STAGE  "+ stage.num , 190, 90);
-		this.iScoreDelay = delay(this.iScoreDelay , 8 , () => {
+		this.iScoreDelay = delay(this.iScoreDelay , 5 , () => {
 			cxt.misc.clearRect(0 , 180 , 516 , 276);
 			for (let i = 0; i < this.iTankScore; i++) {
 				cxt.misc.fillText(this.iScoreNum[i] * 100 , 40, oScore.y[i]);
@@ -283,9 +283,15 @@ class UI {
 					(this.iScoreNum[i] != oScore.tankNum[i]) ? this.iScoreNum[i] ++ : this.bTankScoreAdd = true;
 				}
 			}
-			this.bTankScoreAdd && (this.iTankScore = (this.iTankScore < 4) ? this.iTankScore + 1 : this.bDrawTotal = true);
+			if (this.bTankScoreAdd) {
+				this.bTankScoreAdd = false;
+				this.iTankScore < 4 ? this.iTankScore ++ : this.bDrawTotal = true;
+			}
 			if (this.bDrawTotal) {
+				this.bDrawTotal = false;
 				cxt.misc.fillText(oScore.totalTank , 195, 380);
+				this.iTankScore = 1;
+				this.iScoreNum = [0, 0, 0, 0];
 				this.bEnterNextStage = true;
 			}
 		});

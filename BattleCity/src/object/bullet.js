@@ -211,62 +211,73 @@ class BulletObj extends MoverObj {
 
 	// 子弹与坦克之间的碰撞检测
 	tankCollision(){
-		let iStart, iOver;
-		//如果this.iBulletType为真，那么表示子弹是由NPC发射的，否则就是玩家发射的
-		[iStart , iOver] = this.iBulletType ? [0 , 1] : [1 , 5];
+		// 根据NPC的子弹检测玩家坦克，玩家子弹检测NPC坦克
+		return this.iBulletType ? this.NPCCollision() : this.playerCollision();
+	}
 
-		let xVal, yVal, oTank, bHitTankTest;
-
-		for (let i = iStart; i < iOver; i++) {
-			oTank = aTankArr[i];
-			if ((this.iIndex === i) || !oTank.bBorned) { continue; }
-			xVal = this.x - oTank.x;
-			yVal = this.y - oTank.y;
-			if (this.iDir % 2) {
-				bHitTankTest = (this.iDir -1)
-				? (xVal < 32 && xVal > 0 && yVal > -8 && yVal < 32)
-				: (xVal > -8 && xVal < 0 && yVal > -8 && yVal < 32);
-			} else {
-				bHitTankTest = this.iDir
-				? (yVal > -8 && yVal < 0 && xVal > -8 && xVal < 32)
-				: (yVal < 32 && yVal > 0 && xVal > -8 && xVal < 32);
-			}
-			if (bHitTankTest) {
-				// i大于0则表示NPC坦克
-				if (i) {
-					this.getScore(oTank.iType);
-					if (oTank.iType % 2) {
-						if (oTank.iType < 6 || (oTank.iType === 9)) {
-							// 如果奖励对象已经存在，那么先清掉相关区域的图像
-							oBonus && cxt.misc.clearRect(35 + oBonus.x, 20 + oBonus.y, 32, 32);
-							// 新建奖励对象
-							oBonus = new Bonus();
-							oBonus.init(stage.num - 1);
-						}
-						this.hitTankSmallBoom(oTank);
-					} else {
-						(oTank.iType === 8) ? this.hitTankSmallBoom(oTank) : this.hitTankBigBoom(oTank);
-					}
-				// i小于0则表示玩家坦克
+	// NPC的子弹与玩家的碰撞
+	NPCCollision(){
+		if (this.tankCollisionCondition(oPlayer)) {
+			// 如果玩家没有防护罩，那么扣掉生命值重新刷新坦克
+			if (!oPlayer.bShield) {
+				// 如果玩家坦克等级是最高级，那么被子弹打一下不会死
+				if (oPlayer.iRank === 3) {
+					oPlayer.iRank --;
+					this.hitTankSmallBoom(oPlayer);
 				} else {
-					// 如果玩家没有防护罩，那么扣掉生命值重新刷新坦克
-					if (!oTank.bShield) {
-						// 如果玩家坦克等级是最高级，那么被子弹打一下不会死
-						if (oTank.iRank === 3) {
-							oTank.iRank --;
-							this.hitTankSmallBoom(oTank);
-						} else {
-							oTank.iLife --;
-							oTank.iRank = 0;                   //坦克等级降至最低
-							oTank.iLife >= 0 ? myInfo() : this.gameOver();
-							this.hitTankBigBoom(oTank);
-						}
+					oPlayer.iLife --;
+					oPlayer.iRank = 0;                   //坦克等级降至最低
+					oPlayer.iLife >= 0 ? myInfo() : this.gameOver();
+					this.hitTankBigBoom(oPlayer);
+				}
+			}
+			return false;
+		}
+		return true;
+	}
+
+	// 玩家发射的子弹与NPC之间的碰撞
+	playerCollision(){
+		for (let i = 1; i < 5; i++) {
+			let oTank = aTankArr[i];
+			if ((this.iIndex === i) || !oTank.bBorned) { continue; }
+			if (this.tankCollisionCondition(oTank)) {
+				if ((oTank.iType % 2) || (oTank.iType === 8)) {
+					if (oTank.iType != 7) {
+						// 如果奖励对象已经存在，那么先清掉相关区域的图像
+						oBonus && cxt.misc.clearRect(35 + oBonus.x, 20 + oBonus.y, 32, 32);
+						// 新建奖励对象
+						oBonus = new Bonus();
+						oBonus.init(stage.num - 1);
 					}
+					this.hitTankSmallBoom(oTank);
+				} else {
+					this.getScore(oTank.iType);
+					this.hitTankBigBoom(oTank);
 				}
 				return false;
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * 坦克碰撞的条件
+	 * @param  {[object]}   oTank   [当前检查的坦克对象]
+	 * @return {[boolean]}          [为真就是子弹与坦克有了碰撞]
+	 */
+	tankCollisionCondition(oTank){
+		let x = this.x - oTank.x;
+		let y = this.y - oTank.y;
+		if (this.iDir % 2) {
+			return (this.iDir -1)
+			? (x < 32 && x > 0 && y > -8 && y < 32)
+			: (x > -8 && x < 0 && y > -8 && y < 32);
+		} else {
+			return this.iDir
+			? (y > -8 && y < 0 && x > -8 && x < 32)
+			: (y < 32 && y > 0 && x > -8 && x < 32);
+		}
 	}
 
 	// 坦克被子弹击中的小爆炸
@@ -286,14 +297,14 @@ class BulletObj extends MoverObj {
 
 	// 统计被子弹击杀的坦克类型，用来在结束后统计分数
 	getScore(num){
-		// switch (parseInt(num / 2)) {
-		// 	case 0: oScore.tankNum[0] ++; console.log(oScore.tankNum[0]); break;
-		// 	case 1: oScore.tankNum[1] ++; console.log(oScore.tankNum[1]); break;
-		// 	case 2: oScore.tankNum[2] ++; console.log(oScore.tankNum[2]); break;
-		// 	case 3:
-		// 	case 4: oScore.tankNum[3] ++; console.log(oScore.tankNum[3]); break;
-		// 	default: break;
-		// }
+		switch (parseInt(num / 2)) {
+			case 0: oScore.tankNum[0] ++; console.log(oScore.tankNum[0]); break;
+			case 1: oScore.tankNum[1] ++; console.log(oScore.tankNum[1]); break;
+			case 2: oScore.tankNum[2] ++; console.log(oScore.tankNum[2]); break;
+			case 3:
+			case 4: oScore.tankNum[3] ++; console.log(oScore.tankNum[3]); break;
+			default: break;
+		}
 	}
 
 	// 子弹与子弹的碰撞

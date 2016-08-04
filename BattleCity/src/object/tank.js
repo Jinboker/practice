@@ -70,11 +70,10 @@ function enterScore() {
 		bAllTankDie = false;
 		iPlayerLife = oPlayer.iLife;                         //更新玩家生命
 		iPlayerRank = oPlayer.iRank;                         //更新玩家等级
-		console.log(iPlayerLife);
-		console.log(iPlayerRank);
 		aTankArr = [];                                       //清空坦克数组
 		aBullet = [];                                        //清空子弹数组
 		oBonus = null;                                       //清空奖励对象
+		iTimerDelay = 0;                                     //重置定时器时间
 		oHome.bChange = false;                               //老家障碍不再绘制
 		draw.obj = false;
 		draw.ui = true;
