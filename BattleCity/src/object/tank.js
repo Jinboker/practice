@@ -37,7 +37,7 @@ function drawTank() {
 	explode();
 
 	// 如果全部的NPC都被干掉了，那么延迟180个循环后开始统计数据并进入下一关
-	bAllTankDie && enterScore()
+	bAllTankDie && enterScore();
 }
 
 function drawPlayer() {
@@ -68,6 +68,7 @@ function drawNPC() {
 function enterScore() {
 	iDelayEnterScore = delay(iDelayEnterScore , 180 , () => {
 		bAllTankDie = false;
+		oBrickStatus = new Object();                         //重置砖块状态
 		iPlayerLife = oPlayer.iLife;                         //更新玩家生命
 		iPlayerRank = oPlayer.iRank;                         //更新玩家等级
 		aTankArr = [];                                       //清空坦克数组
@@ -88,6 +89,8 @@ function enterScore() {
 		oScore.totalTank = oScore.tankNum[0] + oScore.tankNum[1] + oScore.tankNum[2] + oScore.tankNum[3];
 	});
 }
+
+
 
 /**
  * 坦克对象，继承自MoverObj
@@ -114,7 +117,7 @@ class TankObj extends MoverObj {
 		this.bHitTank = false;             //是否碰到了坦克
 
 		// 子弹相关
-		this.iBulletDelay = 15;            //子弹延迟15个循环
+		this.iBulletDelay;                //子弹小时候需要延迟iBulletDelay个循环才能再次发射
 
 		this.barrierCollision();
 	}

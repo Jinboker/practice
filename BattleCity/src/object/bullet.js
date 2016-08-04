@@ -102,10 +102,7 @@ class BulletObj extends MoverObj {
 			  // 钢筋
 			  case 2:
 				  if (!that.iBulletType) {
-					  if (aTankArr[0].iRank === 3) {
-						  roadMap[row][col] = 0;
-						  cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
-					  }
+					  (oPlayer.iRank === 3) && clearBigBarrier();
 					  oAud.attOver.play();
 				  }
 				  return false;
@@ -121,6 +118,11 @@ class BulletObj extends MoverObj {
 			  // 河流跟冰路直接过（默认是3和4）
 			  default: return true; break;
 			}
+		}
+
+		function clearBigBarrier(num) {
+			roadMap[row][col] = 0;
+			cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
 		}
 
 		let iBrickObjIndex;                 //如果子弹碰到砖块了，那么就将当前砖块的行列计算成oBrickStatus对象的属性名，用来读取对应砖块的属性
@@ -159,8 +161,13 @@ class BulletObj extends MoverObj {
 				 if (oBrickStatus[iBrickObjIndex][iBrickLayer + (1 - j) * 2]) {
 					 oBrickStatus[iBrickObjIndex][iBrickLayer] = 0;
 					 oBrickStatus[iBrickObjIndex][iBrickLayer + 2] = 0;
-					 cxt.bg.clearRect(35 + iBrickLayer * 8 + col * 16 , 20 + row * 16 , 8 , 16);
-					 clearBrick();
+					 // 如果子弹的等级大于等于2，那么一次直接清除16*16的砖块，否则就是按照最小8*8的来清除
+					 if (oPlayer.iRank >= 2) {
+						 clearBigBarrier();
+					 } else {
+						 cxt.bg.clearRect(35 + iBrickLayer * 8 + col * 16 , 20 + row * 16 , 8 , 16);
+						 clearBrick();
+					 }
 					 return false;
 				}
 			// 子弹方向为上下
@@ -169,8 +176,12 @@ class BulletObj extends MoverObj {
 				if (oBrickStatus[iBrickObjIndex][iBrickLayer * 2 + 1 - j]) {
 					oBrickStatus[iBrickObjIndex][iBrickLayer * 2] = 0;
 					oBrickStatus[iBrickObjIndex][iBrickLayer * 2 + 1] = 0;
-					cxt.bg.clearRect(35 + col * 16 , 20 + iBrickLayer * 8 + row * 16 , 16 , 8);
-					clearBrick();
+					if (oPlayer.iRank >= 2) {
+						clearBigBarrier();
+					} else {
+						cxt.bg.clearRect(35 + col * 16 , 20 + iBrickLayer * 8 + row * 16 , 16 , 8);
+						clearBrick();
+					}
 					return false;
 				}
 			}
@@ -204,6 +215,7 @@ class BulletObj extends MoverObj {
 	}
 
 	gameOver(){
+		iDelayEnterScore = 100;          // 100个循环后进入分数统计页面
 		ui.status = 4;                   //游戏结束界面
 		draw.ui = true;                  //绘制UI
 		bGameOver = true;                //游戏结束
@@ -298,11 +310,11 @@ class BulletObj extends MoverObj {
 	// 统计被子弹击杀的坦克类型，用来在结束后统计分数
 	getScore(num){
 		switch (parseInt(num / 2)) {
-			case 0: oScore.tankNum[0] ++; console.log(oScore.tankNum[0]); break;
-			case 1: oScore.tankNum[1] ++; console.log(oScore.tankNum[1]); break;
-			case 2: oScore.tankNum[2] ++; console.log(oScore.tankNum[2]); break;
+			case 0: oScore.tankNum[0] ++; break;
+			case 1: oScore.tankNum[1] ++; break;
+			case 2: oScore.tankNum[2] ++; break;
 			case 3:
-			case 4: oScore.tankNum[3] ++; console.log(oScore.tankNum[3]); break;
+			case 4: oScore.tankNum[3] ++; break;
 			default: break;
 		}
 	}

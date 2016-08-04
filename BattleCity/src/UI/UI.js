@@ -324,7 +324,6 @@ class UI {
 				cxt.misc.restore();
 				if (this.iOverY < 236) {
 					this.iOverStatus = 1;
-					iDelayEnterScore = 100;                  // 100个循环后进入分数统计页面
 				}
 				break;
 			// 等待进入分数统计界面
@@ -336,6 +335,7 @@ class UI {
 					this.init();
 					this.startInit();
 					ui.status = 0;
+					bGameOver = true;
 					iPlayerLife = 2,                     //重置玩家生命
 					iPlayerRank = 0;                     //重置玩家等级
 				});

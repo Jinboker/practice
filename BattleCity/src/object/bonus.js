@@ -72,8 +72,7 @@ class Bonus {
 	 */
 	init(num){
 		let data;
-		// this.iType = parseInt(Math.random()*6);         //随机确定奖励类型
-		this.iType = 5;
+		this.iType = parseInt(Math.random()*6);         //随机确定奖励类型
 		do {
 			this.iRow = parseInt(Math.random()*10 + 1);
 			this.iCol = parseInt(Math.random()*12);

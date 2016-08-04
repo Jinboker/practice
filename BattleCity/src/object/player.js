@@ -1,7 +1,7 @@
 let iEatBouns = 0,                       //玩家吃掉的奖励数
 	iPlayerLife = 2,                     //玩家的生命数
 	iPlayerRank = 0;                     //玩家的等级
-	
+
 /**
  * 玩家坦克对象，继承自TankObj
  */
@@ -21,6 +21,12 @@ class PlayerObj extends TankObj {
 		// 子弹相关
 		this.oBullet = new BulletObj(0); //新建一个子弹对象
 		aBullet.push(this.oBullet);      //将子弹对象添加到数组中
+
+		// 如果坦克等级大于等于2,那么一开始就需要多建立一个子弹对象
+		if (this.iRank >= 2) {
+			this.oBulletExtra = new BulletObj(0);
+			aBullet.push(this.oBulletExtra);
+		}
 	}
 
 	init(){
@@ -66,16 +72,21 @@ class PlayerObj extends TankObj {
 			this.move();     //重新确定坦克的坐标
 		}
 
-		// 每次子弹消失后要经过15次循环后才能再次发射子弹
+		// 每次发射子弹后最少要经过15次循环才能再次发射子弹
 		this.iBulletDelay > 0 && this.iBulletDelay --;
 		//发射子弹，J键，这里主要是为了防止J键一直按下的情况
 		if (!this.iBulletDelay && keyInfo[74].pressed && oKeyUp.j) {
-			this.iBulletDelay = 15;
 			oKeyUp.j = false;
+			this.iBulletDelay = 15;
 			if (!this.oBullet.bAlive) {
 				//这里的参数0表示这是玩家的坦克
 				this.oBullet.init(this.x , this.y , this.iDir , 0 , this.iRank);
 				oAud.att.play();
+			} else {
+				if ((this.iRank >= 2) && !this.oBulletExtra.bAlive) {
+					this.oBulletExtra.init(this.x , this.y , this.iDir , 0 , this.iRank);
+					oAud.att.play();
+				}
 			}
 		}
 	}
@@ -121,7 +132,14 @@ class PlayerObj extends TankObj {
 			case 1:
 				oAud.life.play();
 				// iRank的最大值是3
-				(this.iRank < 3) && (this.iRank ++);
+				if (this.iRank < 3) {
+					this.iRank ++;
+					// 如果玩家吃掉了两颗星星，那么玩家允许同时存在两颗子弹
+					if (this.iRank === 2) {
+						this.oBulletExtra = new BulletObj(0);
+						aBullet.push(this.oBulletExtra);
+					}
+				}
 				break;
 			// 坦克
 			case 2:

@@ -87,7 +87,7 @@ class EnemyObj extends TankObj {
 		if (!this.oBullet.bAlive) {
 			this.iBulletDelay > 0 && this.iBulletDelay --;
 			if (!this.iBulletDelay) {
-				// 默认的延迟是15个循环，这里进行重置
+				// 重置发射子弹的时间间隔，分别有20、40、60三档
 				this.setBulletDelay();
 				//这里的参数1表示这是NPC的坦克
 				!this.oBullet.bAlive && this.oBullet.init(this.x , this.y , this.iDir , 1);
@@ -97,6 +97,7 @@ class EnemyObj extends TankObj {
 
 	setBulletDelay(){
 		let aDelay = [20 , 40 , 60];
-		this.iBulletDelay = aDelay[parseInt(Math.random()*3)];
+		// 如果坦克的类型是2或者3，那么发射子弹的最小间隔是15（同玩家一样）
+		this.iBulletDelay = (parseInt(this.iType/2) === 1) ? 15 : aDelay[parseInt(Math.random()*3)];
 	}
 }
