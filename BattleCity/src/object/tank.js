@@ -221,22 +221,16 @@ class TankObj extends MoverObj {
 
 	// 坦克与坦克之间的碰撞检测
 	tankCollision(){
-		let xVal, yVal, bHitTankTest;
-
 		for (let i = 0; i < 5; i++) {
+			// 检测到自己或者当前坦克未存活则直接跳过
 			if ((this.iIndex === i) || !aTankArr[i].bBorned) { continue; }
-			xVal = this.x - aTankArr[i].x;
-			yVal = this.y - aTankArr[i].y;
+			let xVal = Math.abs(this.x - aTankArr[i].x),
+				yVal = Math.abs(this.y - aTankArr[i].y);
 			if (this.iDir % 2) {
-				bHitTankTest = (this.iDir -1)
-				? (xVal < 32 && xVal > 26 && Math.abs(yVal) < 32)
-				: (xVal > -32 && xVal < -26 && Math.abs(yVal) < 32);
+				if (xVal < 32 && xVal > 26 && yVal < 32) { return false; }
 			} else {
-				bHitTankTest = this.iDir
-				? (yVal > -32 && yVal < -26 && Math.abs(xVal) < 32)
-				: (yVal < 32 && yVal > 26 && Math.abs(xVal) < 32);
+				if (yVal < 32 && yVal > 26 && xVal < 32) { return false; }
 			}
-			if (bHitTankTest) { return false; }
 		}
 		return true;
 	}
