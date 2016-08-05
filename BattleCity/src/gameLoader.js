@@ -31,6 +31,7 @@ function init() {
  */
 function gameLoop() {
 	// 绘制游戏的UI界面
+	// 再次绘制。。。
 	draw.ui && oClass.ui.draw();
 
 	// 绘制自定义地图界面
