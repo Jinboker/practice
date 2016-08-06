@@ -1,7 +1,3 @@
-let iEatBouns = 0,                       //玩家吃掉的奖励数
-	iPlayerLife = 2,                     //玩家的生命数
-	iPlayerRank = 0;                     //玩家的等级
-
 /**
  * 玩家坦克对象，继承自TankObj
  */
@@ -10,17 +6,17 @@ class PlayerObj extends TankObj {
 		super();
 
 		this.iIndex = 0;
-		this.iRank = iRank;              //默认坦克等级为0，玩家坦克可以通过吃星星升级
-		this.iLife = iLife;              //玩家的生命数，默认是两条
+		this.iRank = iRank;              // 默认坦克等级为0，玩家坦克可以通过吃星星升级
+		this.iLife = iLife;              // 玩家的生命数，默认是两条
 
 		// 防护罩相关
-		this.iShieldNum = 200;           //防护罩循环的次数，默认是200，如果吃了防护罩奖励那么就是1000
+		this.iShieldNum = 200;           // 防护罩循环的次数，默认是200，如果吃了防护罩奖励那么就是1000
 		this.iShieldDelay = 3;
 		this.iShieldPic = 0;
 
 		// 子弹相关
-		this.oBullet = new BulletObj(0); //新建一个子弹对象
-		aBullet.push(this.oBullet);      //将子弹对象添加到数组中
+		this.oBullet = new BulletObj(0); // 新建一个子弹对象
+		aBullet.push(this.oBullet);      // 将子弹对象添加到数组中
 
 		// 如果坦克等级大于等于2,那么一开始就需要多建立一个子弹对象
 		if (this.iRank >= 2) {
@@ -35,9 +31,9 @@ class PlayerObj extends TankObj {
 		this.y = 384;
 		this.iDir = 0;
 		this.iSpeed = 2;
-		this.bShield = true;            //是否开启防护罩
-		this.keyDirSave = 0;            //保存当前按下的方向键，用来判断是否有改变坦克的方向
-		this.bMoveAble = true;          //玩家是否可以运动和发射子弹
+		this.bShield = true;            // 是否开启防护罩
+		this.keyDirSave = 0;            // 保存当前按下的方向键，用来判断是否有改变坦克的方向
+		this.bMoveAble = true;          // 玩家是否可以运动和发射子弹
 
 		this.moveSet();
 	}
@@ -56,10 +52,10 @@ class PlayerObj extends TankObj {
 		this.bMoveAble && this.btn();
 
 		// 绘制坦克
-		cxt.role.drawImage(oImg.myTank , this.iRank * 32 ,  this.iDir * 64 + this.iWheelPic * 32 , 32 , 32 , this.x , this.y , 32 , 32);
+		cxt.role.drawImage(oImg.myTank, this.iRank * 32,  this.iDir * 64 + this.iWheelPic * 32, 32, 32, this.x, this.y, 32, 32);
 	}
 
-	//按键判断
+	// 按键判断
 	btn(){
 		// 看是否按下了上下左右，为真则重新设置坦克坐标
 		if (keyInfo[keyDir_1].pressed) {
@@ -69,22 +65,22 @@ class PlayerObj extends TankObj {
 				this.keyDirSave = keyDir_1;
 				this.moveSet();
 			}
-			this.move();     //重新确定坦克的坐标
+			this.move();     // 重新确定坦克的坐标
 		}
 
 		// 每次发射子弹后最少要经过15次循环才能再次发射子弹
 		this.iBulletDelay > 0 && this.iBulletDelay --;
-		//发射子弹，J键，这里主要是为了防止J键一直按下的情况
+		// 发射子弹，J键，这里主要是为了防止J键一直按下的情况
 		if (!this.iBulletDelay && keyInfo[74].pressed && oKeyUp.j) {
 			oKeyUp.j = false;
 			this.iBulletDelay = 15;
 			if (!this.oBullet.bAlive) {
-				//这里的参数0表示这是玩家的坦克
-				this.oBullet.init(this.x , this.y , this.iDir , 0 , this.iRank);
+				// 这里的参数0表示这是玩家的坦克
+				this.oBullet.init(this.x, this.y, this.iDir, 0, this.iRank);
 				oAud.att.play();
 			} else {
 				if ((this.iRank >= 2) && !this.oBulletExtra.bAlive) {
-					this.oBulletExtra.init(this.x , this.y , this.iDir , 0 , this.iRank);
+					this.oBulletExtra.init(this.x, this.y, this.iDir, 0, this.iRank);
 					oAud.att.play();
 				}
 			}
@@ -97,17 +93,17 @@ class PlayerObj extends TankObj {
 		if (this.iShieldNum > 0) {
 			this.iShieldNum --;
 			// 调用延迟函数，经过3次循环后才改变防护罩的图片
-			this.iShieldDelay = delay(this.iShieldDelay , 3 , () => {
+			this.iShieldDelay = delay(this.iShieldDelay, 3, () => {
 				this.iShieldPic = +! this.iShieldPic;
 			});
-			cxt.role.drawImage(oImg.misc , 32 + this.iShieldPic * 32 , 0 , 32 , 32 , this.x , this.y , 32 , 32);
+			cxt.role.drawImage(oImg.misc, 32 + this.iShieldPic * 32, 0, 32, 32, this.x, this.y, 32, 32);
 		} else {
 			this.bShield = false;
 			this.iShieldNum = 200;
 		}
 	}
 
-	//玩家坦克与奖励的碰撞
+	// 玩家坦克与奖励的碰撞
 	bonusCollision(){
 		let xVal = Math.abs(this.x - oBonus.x),
 			yVal = Math.abs(this.y - oBonus.y);
@@ -162,16 +158,16 @@ class PlayerObj extends TankObj {
 				for (let i = 1; i < 5; i++) {
 					let obj = aTankArr[i];
 					if (!obj.bBorned) { continue; }
-					aBigExplode.push(new BigExplode(obj.x + 16 , obj.y + 16 , obj.iDir));
-					obj.bAlive = false;              //坦克死亡
-					obj.bBorned = false;             //坦克未出生
+					aBigExplode.push(new BigExplode(obj.x + 16, obj.y + 16, obj.iDir));
+					obj.bAlive = false;              // 坦克死亡
+					obj.bBorned = false;             // 坦克未出生
 				}
 				break;
 			// 定时
 			case 5:
 				oAud.miscSound.play();
-				oEnemy.bMoveAble = false;            //所有的NPC坦克都被定住，不会移动也不会发射子弹
-				iTimerDelay = 800;                   //800个循环后NPC重新开始运动
+				oEnemy.bMoveAble = false;            // 所有的NPC坦克都被定住，不会移动也不会发射子弹
+				iTimerDelay = 800;                   // 800个循环后NPC重新开始运动
 				break;
 			default:
 				break;

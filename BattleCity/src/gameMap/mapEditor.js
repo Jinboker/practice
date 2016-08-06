@@ -1,5 +1,3 @@
-let setMapInit = true;
-
 // 设置地图
 class MapEditor{
 	constructor(){
@@ -14,9 +12,9 @@ class MapEditor{
 
 		this.ensureMap = true;
 
-		this.drawTankAble = true;     //是否需要重绘坦克
+		this.drawTankAble = true;     // 是否需要重绘坦克
 
-		this.brickNum = 0;    //砖块改变的计数
+		this.brickNum = 0;    // 砖块改变的计数
 		this.brickNumSave = false;
 
 		this.move = new Array(87);
@@ -59,8 +57,8 @@ class MapEditor{
 			}
 			this.brickNum < 13 ? this.brickNum ++ : this.brickNum = 0;
 			this.brickNumSave = true;
-			cxt.bg.clearRect(35 + this.x , 20 + this.y , 32 , 32);
-			cxt.bg.drawImage(oImg.brick , 32*this.brickNum , 0 , 32 , 32 , 35 + this.x , 20 + this.y , 32 , 32);
+			cxt.bg.clearRect(35 + this.x, 20 + this.y, 32, 32);
+			cxt.bg.drawImage(oImg.brick, 32*this.brickNum, 0, 32, 32, 35 + this.x, 20 + this.y, 32, 32);
 			this.setMapData[this.y/32][this.x/32] = this.brickNum;
 		}
 		// 确认地图完成（H键）
@@ -70,8 +68,8 @@ class MapEditor{
 			draw.ui = true;
 			canRol.style.zIndex = '';
 			gameBox.border.style.backgroundColor = '';
-			cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
-			cxt.role.clearRect(this.x , this.y , 32 , 32);
+			cxt.bg.clearRect(0, 0, cxt.w, cxt.h);
+			cxt.role.clearRect(this.x, this.y, 32, 32);
 			this.ensureMap = false;
 			ui.status = 0;
 			ui.moveToTop = false;
@@ -85,19 +83,19 @@ class MapEditor{
 			setMapInit = false;
 			canRol.style.zIndex = '1';
 			gameBox.border.style.backgroundColor = '#666';
-			cxt.bg.clearRect(0 , 0 , cxt.w , cxt.h);
+			cxt.bg.clearRect(0, 0, cxt.w, cxt.h);
 			for (let i = 0; i < 13; i++) {
 				for(let j = 0; j < 13; j++){
-					this.setMapData[i][j] && cxt.bg.drawImage(oImg.brick , 32 * this.setMapData[i][j] , 0 , 32 , 32 , 35+32*j , 20+32*i , 32, 32);
+					this.setMapData[i][j] && cxt.bg.drawImage(oImg.brick, 32 * this.setMapData[i][j], 0, 32, 32, 35+32*j, 20+32*i, 32, 32);
 				}
 			}
 			this.ensureMap = true;
 		}
-		cxt.role.clearRect(this.x , this.y , 32 , 32);
+		cxt.role.clearRect(this.x, this.y, 32, 32);
 		// 如果有按键被按下
 		if (keyPressed) {
 			this.key();
 		}
-		this.ensureMap && cxt.role.drawImage(oImg.myTank , 0 , 0 , 32 , 32 , this.x , this.y , 32 , 32);
+		this.ensureMap && cxt.role.drawImage(oImg.myTank, 0, 0, 32, 32, this.x, this.y, 32, 32);
 	}
 }

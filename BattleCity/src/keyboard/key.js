@@ -1,47 +1,14 @@
-//键值表
-// var keyNum = {
-// 	start : 72,          //开始，暂停 H
-// 	fire1 : 74,           //发射子弹  J
-//
-// 	// 角色1的控制
-// 	up1 : 87,             //上
-// 	down1 : 83,           //下
-// 	left1 : 65,           //左
-// 	right1 : 68,          //右
-//
-// 	// 角色2的控制
-// 	up2 : 38,             //上
-// 	down2 : 40,           //下
-// 	left2 : 37,           //左
-// 	right2 : 39,          //右
-// 	fire2 : 17            //发射子弹
-// };
-
-// 游戏控制
-let keyPressed = false,            //是否有按键被按下
-	keyInfo = new Array(88),
-	keyCode = null,
-	keyDir_1 = 87,
-	keyDir_2 = null;
-
-// 按键松开
-let iKeyUp,
-	oKeyUp = {
-	h : true,
-	j : true
-};
-
 /**
  * 键盘事件函数
  */
 function keyInit() {
 	// 给所有需要用到的按键添加表示是否被按下的属性
-	let aKey = [72 , 74 , 87 , 83 , 65 , 68 , 38 , 40 , 37 , 39 , 17],
+	let aKey = [72, 74, 87, 83, 65, 68, 38, 40, 37, 39, 17],
 		len = aKey.length;
 
 	for (let i = 0; i < len; i++) {
 		keyInfo[aKey[i]] = {
-			pressed : false
+			pressed: false
 		}
 	}
 	// 添加角色1和角色2的上右下左属性
@@ -51,7 +18,7 @@ function keyInit() {
 	keyInfo[65].dir = keyInfo[37].dir = 3;
 
 	// 事件绑定
-	addEventListener('keydown' , function (ev) {
+	addEventListener('keydown', function (ev) {
 		keyCode = ev.keyCode;
 		// 如果不是对象则表明不是所需要的按键被按下，而所需要的值已经在setKeyInfo函数中设置了
 		if (typeof keyInfo[keyCode] === 'object') {
@@ -60,7 +27,7 @@ function keyInit() {
 				if (keyCode === 87 || keyCode === 83 || keyCode === 65 || keyCode === 68) {
 					keyDir_1 = keyCode;
 				}
-				//如果在游戏中按下H键那么就是暂停或者开始
+				// 如果在游戏中按下H键那么就是暂停或者开始
 				if ((keyCode === 72) && ui.bInGame && oKeyUp.h) {
 					oKeyUp.h = false;
 					if (!draw.ui) {
@@ -80,9 +47,9 @@ function keyInit() {
 			}
 			keyPressed = true;
 		}
-	} , false);
+	}, false);
 
-	addEventListener('keyup' , function (ev) {
+	addEventListener('keyup', function (ev) {
 		iKeyUp = ev.keyCode;
 		if (typeof keyInfo[iKeyUp] === 'object') {
 			// 如果H键跟J键松开，那么将oKeyUp中对应的属性置为真
@@ -90,5 +57,5 @@ function keyInit() {
 			(iKeyUp === 74) && (oKeyUp.j = true);
 			keyInfo[iKeyUp].pressed = false;
 		}
-	} , false);
+	}, false);
 }

@@ -1,17 +1,11 @@
-// 游戏入口
-window.onload = function () {
-	init();
-	gameLoop();
-}
-
 /**
  * 初始化
  */
 function init() {
 	oClass = {
-		ui : new UI(),
-		mapEditor : new MapEditor(),
-		drawMap : new DrawMap()
+		ui: new UI(),
+		mapEditor: new MapEditor(),
+		drawMap: new DrawMap()
 	};
 
 	// 规定所用的字体及颜色
@@ -31,22 +25,27 @@ function init() {
  */
 function gameLoop() {
 	// 绘制游戏的UI界面
-	// 再次绘制。。。
 	draw.ui && oClass.ui.draw();
 
 	// 绘制自定义地图界面
 	draw.setMap && oClass.mapEditor.draw();
 
-	//绘制地图（地图只有当UI界面的关卡选择界面准备结束的时候才会绘制一次）
+	// 绘制地图（地图只有当UI界面的关卡选择界面准备结束的时候才会绘制一次）
 	draw.map && oClass.drawMap.draw(stage.num - 1);
 
-	//当可以绘制游戏之时开始处理坦克，子弹，奖励的相关代码
+	// 当可以绘制游戏之时开始处理坦克，子弹，奖励的相关代码
 	if (draw.obj) {
-		drawTank();                        //绘制坦克
-		drawBullet();                      //绘制子弹
-		bonus();                           //绘制奖励及处理玩家吃掉奖励后的游戏变化
+		drawTank();                        // 绘制坦克
+		drawBullet();                      // 绘制子弹
+		bonus();                           // 绘制奖励及处理玩家吃掉奖励后的游戏变化
 	}
 
 	// 循环执行函数
 	requestAnimFrame(gameLoop);
+}
+
+// 游戏入口
+window.onload = function () {
+	init();
+	gameLoop();
 }

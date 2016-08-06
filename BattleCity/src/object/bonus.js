@@ -1,11 +1,7 @@
-let oBonus = null,                  //用来保存奖励对象的实例
-	oHome = new Object();           //用来存储控制老家周围障碍改变的相关变量
-	iTimerDelay = 0;                //玩家吃掉定时奖励后NPC经历过iTimerDelay个循环后才能运动
-
 /**
  * 循环检查执行奖励的相关代码
  */
-function bonus() {
+function bonus () {
 	// 如果奖励对象的实例不为空，那么绘制奖励对象
 	oBonus && oBonus.draw();
 
@@ -23,7 +19,7 @@ function homeChange() {
 	// 一定时间过后重新渲染障碍
 	oHome.iDelay = delay(oHome.iDelay, oHome.iMax, () => {
 		let iData, iRow, iCol, iHomeData = aHomeData[oHome.iType];
-		//清空障碍
+		// 清空障碍
 		cxt.bg.clearRect(227, 372, 32, 32);
 		cxt.bg.clearRect(195, 372, 32, 64);
 		cxt.bg.clearRect(259, 372, 32, 64);
@@ -61,10 +57,10 @@ class Bonus {
 		this.x;
 		this.y;
 		this.iType;
-		this.iRow;                                     //随机一个地图数组行的值
-		this.iCol;                                     //随机一个地图数组列的值
-		this.iStatus = 0;                              //奖励状态，有显示和消失两种状态
-		this.iDelay = 15;                              //每15次循环更新一次奖励状态
+		this.iRow;                                     // 随机一个地图数组行的值
+		this.iCol;                                     // 随机一个地图数组列的值
+		this.iStatus = 0;                              // 奖励状态，有显示和消失两种状态
+		this.iDelay = 15;                              // 每15次循环更新一次奖励状态
 	}
 
 	/**
@@ -72,33 +68,37 @@ class Bonus {
 	 */
 	init(num){
 		let data;
-		this.iType = parseInt(Math.random()*6);         //随机确定奖励类型
+		this.iType = parseInt(Math.random()*6);         // 随机确定奖励类型
 		do {
-			this.iRow = parseInt(Math.random()*10 + 1);
-			this.iCol = parseInt(Math.random()*12);
+			this.iRow = parseInt(Math.random()*10 + 1, 10);
+			this.iCol = parseInt(Math.random()*12, 10);
 			this.x = this.iCol * 32;
 			this.y = this.iRow * 32;
 			data = mapData[num][this.iRow][this.iCol];
 		// 如果随机出来的位置不位于空白地块或者砖块上的话，重新确定位置
-		} while ((data != 0) && (data != 1) && (data != 2) && (data != 3) && (data != 4));
+		} while ((data !== 0) && (data !== 1) && (data !== 2) && (data !== 3) && (data !== 4));
 	}
 
 	// 初始化oHome对象
 	oHomeInit(){
 		oHome = {
-			bChange : true,
-			bChangeType : false,
-			iType : 0,
-			iDelay : 0,
-			iMax : 800,
-			iNum : 10
+			bChange: true,
+			bChangeType: false,
+			iType: 0,
+			iDelay: 0,
+			iMax: 800,
+			iNum: 10
 		};
 	}
 
 	draw(){
-		this.iDelay = delay(this.iDelay , 10 , () => {
-			this.iStatus = + !this.iStatus;
-			this.iStatus ? cxt.misc.drawImage(oImg.bonus, 32*this.iType, 0, 32, 32, 35 + this.x, 20 + this.y, 32, 32) : cxt.misc.clearRect(35 + this.x, 20 + this.y, 32, 32);
+		this.iDelay = delay(this.iDelay, 10, () => {
+			this.iStatus = +!this.iStatus;
+			if (this.iStatus) {
+				cxt.misc.drawImage(oImg.bonus, 32*this.iType, 0, 32, 32, 35 + this.x, 20 + this.y, 32, 32);
+			} else {
+				cxt.misc.clearRect(35 + this.x, 20 + this.y, 32, 32);
+			}
 		})
 	}
 }

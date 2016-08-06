@@ -1,6 +1,3 @@
-let oBrickStatus = new Object(),           //砖头状态
-	aBullet = [];                          //子弹数组
-
 /**
  * 绘制子弹
  */
@@ -16,24 +13,24 @@ class BulletObj extends MoverObj {
 	constructor(i) {
 		super();
 
-		this.iIndex = i;         //子弹索引，用来确定是哪个坦克发射出来的子弹
-		this.oImg                //子弹图片，已缓存
-		this.iRank;              //子弹的等级，为3时一枚子弹打掉16*16的砖块且能够击穿钢筋
-		this.iBulletType;        //子弹的类型（是玩家还是NPC）
+		this.iIndex = i;         // 子弹索引，用来确定是哪个坦克发射出来的子弹
+		this.oImg                // 子弹图片，已缓存
+		this.iRank;              // 子弹的等级，为3时一枚子弹打掉16*16的砖块且能够击穿钢筋
+		this.iBulletType;        // 子弹的类型（是玩家还是NPC）
 
 		this.barrierCollision();
 	}
 
 	init(...values){
-		[this.x , this.y , this.iDir , this.iBulletType , this.iRank = 0] = values;
+		[this.x, this.y, this.iDir, this.iBulletType, this.iRank = 0] = values;
 		this.bAlive = true;
-		this.iSpeed = this.iRank ? 5 : 4;    //如果坦克的iRank是0，那么子弹一次移动4像素，如果不是0，一次移动5像素
+		this.iSpeed = this.iRank ? 5 : 4;    // 如果坦克的iRank是0，那么子弹一次移动4像素，如果不是0，一次移动5像素
 
 		// 1、3
 		if (this.iDir%2) {
 			this.y += 12;
 			this.x += 24*(+!(this.iDir-1));
-		// 0 , 2
+		// 0, 2
 		} else {
 			this.x += 12;
 			this.y += 24*this.iDir/2;
@@ -51,29 +48,29 @@ class BulletObj extends MoverObj {
 		}
 	}
 
-	//子弹与障碍物之间的碰撞检测
+	// 子弹与障碍物之间的碰撞检测
 	barrierCollision(){
 		let iRow, iCol, arr = [2], bHitBarrier, that = this;
 
 		this.oHitBarrier = {
-			0 : () => {
-				[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
-				return this.boomInit((hit(iRow , iCol , iRow , iCol + 1) && this.y > 0));
+			0: () => {
+				[iRow, iCol] = [parseInt(this.y / 16), parseInt(this.x / 16)];
+				return this.boomInit((hit(iRow, iCol, iRow, iCol + 1) && this.y > 0));
 			},
 
-			1 : () => {
-				[iRow , iCol] = [parseInt(this.y / 16) , parseInt((this.x + 8) / 16)];
-				return this.boomInit((hit(iRow , iCol , iRow + 1 , iCol) && this.x < 408));
+			1: () => {
+				[iRow, iCol] = [parseInt(this.y / 16), parseInt((this.x + 8) / 16)];
+				return this.boomInit((hit(iRow, iCol, iRow + 1, iCol) && this.x < 408));
 			},
 
-			2 : () => {
-				[iRow , iCol] = [parseInt((this.y + 8) / 16) , parseInt(this.x / 16)];
-				return this.boomInit((hit(iRow , iCol , iRow , iCol + 1) && this.y < 408));
+			2: () => {
+				[iRow, iCol] = [parseInt((this.y + 8) / 16), parseInt(this.x / 16)];
+				return this.boomInit((hit(iRow, iCol, iRow, iCol + 1) && this.y < 408));
 			},
 
-			3 : () => {
-				[iRow , iCol] = [parseInt(this.y / 16) , parseInt(this.x / 16)];
-				return this.boomInit((hit(iRow , iCol , iRow + 1 , iCol) && this.x > 0));
+			3: () => {
+				[iRow, iCol] = [parseInt(this.y / 16), parseInt(this.x / 16)];
+				return this.boomInit((hit(iRow, iCol, iRow + 1, iCol) && this.x > 0));
 			}
 		}
 
@@ -83,7 +80,7 @@ class BulletObj extends MoverObj {
 			for (let i = 0; i < 2; i++) {
 				iRowVal = values[2*i];
 				iColVal = values[2*i+1];
-				arr[i] = barrierVal(roadMap[iRowVal][iColVal] , iRowVal , iColVal , i)
+				arr[i] = barrierVal(roadMap[iRowVal][iColVal], iRowVal, iColVal, i)
 			}
 			return arr[0] && arr[1];
 		}
@@ -91,7 +88,7 @@ class BulletObj extends MoverObj {
 		let num, row, col, j;
 
 		function barrierVal(...values) {
-			[num , row , col , j] = values;
+			[num, row, col, j] = values;
 			switch (num) {
 			  // 如果是0，直接通过
 			  case 0: return true; break;
@@ -111,8 +108,8 @@ class BulletObj extends MoverObj {
 			  case 5:
 				  that.gameOver();
 				  oPlayer.bMoveAble = false;       // 玩家无法移动
-				  cxt.bg.clearRect(227 , 404 , 32 , 32);
-				  cxt.bg.drawImage(oImg.brick , 512 , 0 , 32 , 32 , 227 , 404 , 32, 32);
+				  cxt.bg.clearRect(227, 404, 32, 32);
+				  cxt.bg.drawImage(oImg.brick, 512, 0, 32, 32, 227, 404, 32, 32);
 				  return false;
 				  break;
 			  // 河流跟冰路直接过（默认是3和4）
@@ -122,10 +119,10 @@ class BulletObj extends MoverObj {
 
 		function clearBigBarrier(num) {
 			roadMap[row][col] = 0;
-			cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
+			cxt.bg.clearRect(35 + col * 16, 20 + row * 16, 16, 16);
 		}
 
-		let iBrickObjIndex;                 //如果子弹碰到砖块了，那么就将当前砖块的行列计算成oBrickStatus对象的属性名，用来读取对应砖块的属性
+		let iBrickObjIndex;                 // 如果子弹碰到砖块了，那么就将当前砖块的行列计算成oBrickStatus对象的属性名，用来读取对应砖块的属性
 		/**
 		* 一个16*16的砖块格子，可以分成如下的4个8*8的小格子：
 		* |  8*8  |  8*8  |
@@ -141,12 +138,12 @@ class BulletObj extends MoverObj {
 			if (!!oBrickStatus[iBrickObjIndex]) {
 				return hitBrick();
 			} else{
-				oBrickStatus[iBrickObjIndex] = [1 , 1 , 1 , 1];
+				oBrickStatus[iBrickObjIndex] = [1, 1, 1, 1];
 				return hitBrick();
 			}
 		}
 
-		let iBrickLayer;      //根据子弹的位置计算当前砖块还有几层（一般有两层）
+		let iBrickLayer;      // 根据子弹的位置计算当前砖块还有几层（一般有两层）
 		/**
 		* 子弹击中砖块后相应的处理函数
 		* @param  同上
@@ -165,7 +162,7 @@ class BulletObj extends MoverObj {
 					 if (oPlayer.iRank >= 2) {
 						 clearBigBarrier();
 					 } else {
-						 cxt.bg.clearRect(35 + iBrickLayer * 8 + col * 16 , 20 + row * 16 , 8 , 16);
+						 cxt.bg.clearRect(35 + iBrickLayer * 8 + col * 16, 20 + row * 16, 8, 16);
 						 clearBrick();
 					 }
 					 return false;
@@ -179,7 +176,7 @@ class BulletObj extends MoverObj {
 					if (oPlayer.iRank >= 2) {
 						clearBigBarrier();
 					} else {
-						cxt.bg.clearRect(35 + col * 16 , 20 + iBrickLayer * 8 + row * 16 , 16 , 8);
+						cxt.bg.clearRect(35 + col * 16, 20 + iBrickLayer * 8 + row * 16, 16, 8);
 						clearBrick();
 					}
 					return false;
@@ -198,7 +195,7 @@ class BulletObj extends MoverObj {
 				if (i === 3) {
 					oBrickStatus[iBrickObjIndex] = null;
 					roadMap[row][col] = 0;
-					cxt.bg.clearRect(35 + col * 16 , 20 + row * 16 , 16 , 16);
+					cxt.bg.clearRect(35 + col * 16, 20 + row * 16, 16, 16);
 				}
 			}
 		}
@@ -209,16 +206,16 @@ class BulletObj extends MoverObj {
 		 * @return {[boolean]}             [返回子弹是否撞到了墙壁或者障碍物的布尔值]
 		 */
 		this.boomInit = function (bHitBarrier) {
-			if (!bHitBarrier) { aSmallExplode.push(new SmallExplode(this.x , this.y , this.iDir)); }
+			if (!bHitBarrier) { aSmallExplode.push(new SmallExplode(this.x, this.y, this.iDir)); }
 			return bHitBarrier;
 		}
 	}
 
 	gameOver(){
 		iDelayEnterScore = 100;          // 100个循环后进入分数统计页面
-		ui.status = 4;                   //游戏结束界面
-		draw.ui = true;                  //绘制UI
-		bGameOver = true;                //游戏结束
+		ui.status = 4;                   // 游戏结束界面
+		draw.ui = true;                  // 绘制UI
+		bGameOver = true;                // 游戏结束
 	}
 
 	// 子弹与坦克之间的碰撞检测
@@ -238,7 +235,7 @@ class BulletObj extends MoverObj {
 					this.hitTankSmallBoom(oPlayer);
 				} else {
 					oPlayer.iLife --;
-					oPlayer.iRank = 0;                   //坦克等级降至最低
+					oPlayer.iRank = 0;                   // 坦克等级降至最低
 					oPlayer.iLife >= 0 ? myInfo() : this.gameOver();
 					this.hitTankBigBoom(oPlayer);
 				}
@@ -255,7 +252,7 @@ class BulletObj extends MoverObj {
 			if ((this.iIndex === i) || !oTank.bBorned) { continue; }
 			if (this.tankCollisionCondition(oTank)) {
 				if ((oTank.iType % 2) || (oTank.iType === 8)) {
-					if (oTank.iType != 7) {
+					if ((oTank.iType != 7) && (oTank.iType != 8)) {
 						// 如果奖励对象已经存在，那么先清掉相关区域的图像
 						oBonus && cxt.misc.clearRect(35 + oBonus.x, 20 + oBonus.y, 32, 32);
 						// 新建奖励对象
@@ -302,9 +299,9 @@ class BulletObj extends MoverObj {
 	// 坦克被子弹击中的大爆炸
 	hitTankBigBoom(obj){
 		oAud.explode.play();
-		aBigExplode.push(new BigExplode(obj.x + 16 , obj.y + 16 , obj.iDir));
-		obj.bAlive = false;              //坦克死亡
-		obj.bBorned = false;             //坦克未出生
+		aBigExplode.push(new BigExplode(obj.x + 16, obj.y + 16, obj.iDir));
+		obj.bAlive = false;              // 坦克死亡
+		obj.bBorned = false;             // 坦克未出生
 	}
 
 	// 统计被子弹击杀的坦克类型，用来在结束后统计分数

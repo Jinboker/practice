@@ -1,6 +1,7 @@
 // 敌军剩余数目
 function enemyNum() {
-	let x = 0 , y = 0;
+	let x = 0;
+	let y = 0;
 	for (let i = 0; i < oEnemy.maxNum; i++) {
 		if (i % 2) {
 			x ++;
