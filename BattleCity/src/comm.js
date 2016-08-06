@@ -64,6 +64,10 @@ let draw = {
 	map: false
 };
 
+// UI
+let	ui = {};
+let stage = {};
+
 // 奖励类型
 let oBonus = null;                  // 用来保存奖励对象的实例
 let oHome = {};                     // 用来存储控制老家周围障碍改变的相关变量

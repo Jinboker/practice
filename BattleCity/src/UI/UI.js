@@ -1,6 +1,6 @@
-let stage = new Object(),
-	ui = new Object();
-
+/**
+ * 初始化一些变量
+ */
 function paraInit() {
 	ui = {
 		status: 0,                             // 0表开始UI，1表关卡UI，2表记分UI，3表游戏暂停，4表游戏结束
