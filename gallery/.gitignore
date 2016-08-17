@@ -1,7 +1,9 @@
 .DS_Store
 node_modules/
 dist/
+static/
 npm-debug.log
 selenium-debug.log
 test/unit/coverage
 test/e2e/reports
+npm-debug.log.201001124
