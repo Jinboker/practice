@@ -34,9 +34,10 @@ export default {
 <style>
     .controller-nav {
         position: absolute;
-        left: 0;
+        left: 50%;
         bottom: 30px;
-        width: 100%;
+        margin-left: -300px;
+        width: 600px;
         height: 30px;
         line-height: 30px;
         text-align: center;

@@ -1,9 +1,7 @@
 <template>
     <div class="content">
-        <div class="wrap">
-            <img-sec></img-sec>
-            <controller-nav></controller-nav>
-        </div>
+        <img-sec></img-sec>
+        <controller-nav></controller-nav>
     </div>
 </template>
 
@@ -51,18 +49,9 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 .content {
+    position: relative;
     height: 100%;
     width: 100%;
     background-color: #fff;
-}
-
-.wrap {
-    position: absolute;
-    top: 50%;
-    margin-top: -400px;
-    width: 100%;
-    height: 800px;
-    background-color: #333;
-    overflow: hidden;
 }
 </style>
