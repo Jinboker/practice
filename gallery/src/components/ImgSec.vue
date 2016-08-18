@@ -1,19 +1,21 @@
 <template lang="html">
     <ul class="img-sec">
-        <!-- 循环添加图片 -->
-        <li class="photo-list"
+        <!-- 循环添加图片，photo-turn负责翻转 -->
+        <li class="photo-list "
             v-for="imgData in ImgDatas"
-            @click="photoTurnOver($index)"
-            :class="{ 'photo-center': centerClass === $index }"
+            :class="{ 'photo-center': centerClass === $index, 'photo-turn-back': turnClass === $index }"
+            @click="turnOver($index, $event)"
         >
-            <div class="side side-front">
-                <div class="photo-ct">
-                    <img :src="imgData.url" :alt="imgData.title">
+            <div class="photo-turn">
+                <div class="side side-front">
+                    <div class="photo-ct">
+                        <img :src="imgData.url" :alt="imgData.title">
+                    </div>
+                    <p class="photo-title">{{ imgData.title }}</p>
                 </div>
-                <p class="photo-title">{{ imgData.title }}</p>
-            </div>
-            <div class="side side-back">
-                <p class="photo-desc">{{ imgData.desc }}</p>
+                <div class="side side-back">
+                    <p class="photo-desc">{{ imgData.desc }}</p>
+                </div>
             </div>
         </li>
     </ul>
@@ -31,12 +33,21 @@ export default {
     data() {
         return {
             ImgDatas,
-            centerClass: 0
+            centerClass: 0,
+            turnClass: null
         }
     },
     methods: {
-        photoTurnOver(iIndex) {
+        turnOver(iIndex, ev) {
             this.centerClass = iIndex;
+            let cls = ev.currentTarget.className;
+            if ( /photo-turn-back/.test( cls ) ) {
+                // cls = cls.replace(/photo-turn-back/, ' ');
+                this.turnClass = null;
+            } else {
+                // cls = cls + ' photo-turn-back';
+                this.turnClass = iIndex;
+            }
         }
     }
 };
@@ -57,21 +68,23 @@ export default {
         position: absolute;
         top: 0;
         left: 0;
-        margin: -160px 0 0 -130px;
         width: 260px;
         height: 320px;
         z-index: 1;
-        background-color: #eee;
         box-shadow: 0 0 1px rgba(0, 0, 0, .01);
         cursor: pointer;
         overflow: hidden;
 
         transition: all .5s;
+
+        perspective: 1800px;
     }
     .photo-list .side {
+        position: absolute;
         width: 100%;
         height: 100%;
         padding: 20px;
+        background-color: #eee;
         box-sizing: border-box;
         overflow: hidden;
     }
@@ -92,15 +105,8 @@ export default {
         font-size: 16px;
         line-height: 50px;
     }
-    .side-front {
-        display: black;
-    }
 
     /*海报背面的样式*/
-    .side-back {
-        display: none;
-    }
-
     .side-back .photo-desc {
         text-align: center;
         color: #666;
@@ -113,8 +119,32 @@ export default {
     .img-sec .photo-center {
         left: 50%;
         top: 50%;
-
-        transform: rotate(0deg);
+        margin: -160px 0 0 -130px;
+        z-index: 88;
     }
 
+    /*3d旋转*/
+    .photo-turn {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+
+        transition: all .5s;
+    }
+    .side-back {
+        transform: rotateY(180deg);
+    }
+    .side-front {
+        transform: rotateY(0deg);
+    }
+    .photo-list .side {
+        backface-visibility:hidden;
+    }
+    .photo-turn-front .photo-turn {
+        transform: rotateY(0deg);
+    }
+    .photo-turn-back .photo-turn {
+        transform: rotateY(180deg);
+    }
 </style>
