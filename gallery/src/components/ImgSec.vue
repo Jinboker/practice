@@ -3,7 +3,7 @@
         <!-- 循环添加图片，photo-turn负责翻转 -->
         <li class="photo-list "
             v-for="imgData in ImgDatas"
-            :class="{ 'photo-center': centerClass === $index, 'photo-turn-back': turnClass === $index }"
+            :class="{ 'photo-center': centerClass === $index }"
             @click="turnOver($index, $event)"
         >
             <div class="photo-turn">
@@ -33,21 +33,20 @@ export default {
     data() {
         return {
             ImgDatas,
-            centerClass: 0,
-            turnClass: null
+            centerClass: 0
         }
     },
     methods: {
         turnOver(iIndex, ev) {
-            this.centerClass = iIndex;
             let cls = ev.currentTarget.className;
-            if ( /photo-turn-back/.test( cls ) ) {
-                // cls = cls.replace(/photo-turn-back/, ' ');
-                this.turnClass = null;
-            } else {
-                // cls = cls + ' photo-turn-back';
-                this.turnClass = iIndex;
-            }
+
+            cls = /photo-turn-back/.test(cls)
+            ? cls.replace(/photo-turn-back/, '')
+            : cls = cls + ' photo-turn-back';
+
+            ev.currentTarget.className = cls;
+
+            this.centerClass = iIndex;
         }
     }
 };
