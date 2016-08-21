@@ -14,7 +14,7 @@
                     <p class="photo-title">{{ imgData.title }}</p>
                 </div>
                 <div class="side side-back">
-                    <p class="photo-desc">{{ imgData.desc }}</p>
+                    <p class="photo-desc">{{{ imgData.desc }}}</p>
                 </div>
             </div>
         </li>
@@ -72,7 +72,6 @@ export default {
         z-index: 1;
         box-shadow: 0 0 1px rgba(0, 0, 0, .01);
         cursor: pointer;
-        overflow: hidden;
 
         transition: all .5s;
 
@@ -107,10 +106,9 @@ export default {
 
     /*海报背面的样式*/
     .side-back .photo-desc {
-        text-align: center;
+        text-align: left;
         color: #666;
-        font-weight: bold;
-        font-size: 20px;
+        font-size: 14px;
         line-height: 1.5em;
     }
 
