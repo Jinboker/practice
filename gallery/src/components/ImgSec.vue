@@ -3,7 +3,7 @@
         <!-- 循环添加图片，photo-turn负责翻转 -->
         <li class="photo-list "
             v-for="imgData in ImgDatas"
-            :class="{ 'photo-center': centerClass === $index }"
+            :class="{ 'photo-center': centerClass === $index, 'photo-turn-back': turnClass === $index }"
             @click="turnOver($index, $event)"
         >
             <div class="photo-turn">
@@ -29,24 +29,30 @@ for (let i = 0; i < ImgDatas.length; i++) {
     ImgDatas[i].url = require('../images/' + ImgDatas[i].fileName);
 }
 
+// 重置所有图片的位置
+function resPosi() {
+    console.log(1)
+}
+
 export default {
     data() {
         return {
             ImgDatas,
-            centerClass: 0
+            centerClass: 0,
+            turnClass: null
         }
     },
     methods: {
         turnOver(iIndex, ev) {
-            let cls = ev.currentTarget.className;
-
-            cls = /photo-turn-back/.test(cls)
-            ? cls.replace(/photo-turn-back/, '')
-            : cls = cls + ' photo-turn-back';
-
-            ev.currentTarget.className = cls;
-
-            this.centerClass = iIndex;
+            if (this.centerClass === iIndex) {
+                // 当前显示的图片的翻转
+                this.turnClass = (this.turnClass === iIndex) ? null : iIndex;
+            } else {
+                // 全部图片位置重置
+                this.centerClass = iIndex;
+                this.turnClass = null;
+                resPosi();
+            }
         }
     }
 };
