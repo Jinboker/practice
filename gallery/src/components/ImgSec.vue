@@ -31,7 +31,12 @@ for (let i = 0; i < ImgDatas.length; i++) {
 
 // 重置所有图片的位置
 function resPosi() {
-    console.log(1)
+    console.log(1);
+}
+
+// 计算左右分区的范围
+function range() {
+
 }
 
 export default {
@@ -61,11 +66,9 @@ export default {
 
 <style lang="css">
     .img-sec {
-        position: absolute;
-        top: 50%;
-        margin-top: -400px;
+        position: relative;
         width: 100%;
-        height: 800px;
+        height: 100%;
         background-color: #333;
         overflow: hidden;
     }
@@ -81,7 +84,7 @@ export default {
 
         transition: all .5s;
 
-        perspective: 1800px;
+        perspective: 800px;
     }
     .photo-list .side {
         position: absolute;
@@ -143,9 +146,6 @@ export default {
     }
     .photo-list .side {
         backface-visibility:hidden;
-    }
-    .photo-turn-front .photo-turn {
-        transform: rotateY(0deg);
     }
     .photo-turn-back .photo-turn {
         transform: rotateY(180deg);

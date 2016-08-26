@@ -49,9 +49,15 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 .content {
-    position: relative;
-    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    margin-top: -300px;
     width: 100%;
-    background-color: #fff;
+    height: 600px;
+    
+    /*position: relative;
+    height: 100%;
+    width: 100%;*/
 }
 </style>

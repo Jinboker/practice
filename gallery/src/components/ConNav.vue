@@ -1,7 +1,7 @@
 <template lang="html">
 <ul class="controller-nav">
     <li v-for="navStatus in aNavStatus"
-        v-bind:class="{ 'js-click': i === $index }"
+        v-bind:class="{ 'nav-current': i === $index }"
         v-on:click="navOverTurn($index)"
     ></li>
 </ul>
@@ -55,11 +55,14 @@ export default {
         transition: all .5s;
     }
     /*按钮被点击*/
-    .controller-nav .js-click {
+    .controller-nav .nav-current {
         transform: scale(1);
     }
-    .controller-nav .js-click::after {
-        display: inline-block;
+    .controller-nav .nav-current::after {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 100%;
         text-align: center;
         line-height: 30px;
         content: "\e600";
