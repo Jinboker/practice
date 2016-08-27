@@ -1,8 +1,8 @@
 <template lang="html">
 <ul class="controller-nav">
     <li v-for="navStatus in aNavStatus"
-        v-bind:class="{ 'nav-current': i === $index }"
-        v-on:click="navOverTurn($index)"
+        v-bind:class="{ 'nav-current': i === $index, 'nav-turn-back': turnClass === $index }"
+        v-on:click="turnOver($index, $event)"
     ></li>
 </ul>
 </template>
@@ -20,12 +20,18 @@ export default {
     data() {
         return {
             aNavStatus,
-            i: 0
+            i: 0,
+            turnClass: null
         }
     },
     methods: {
-        navOverTurn(iIndex) {
-            this.i = iIndex;
+        turnOver(iIndex, ev) {
+            if (this.i === iIndex) {
+                this.turnClass = (this.turnClass === iIndex) ? null : iIndex;
+            } else {
+                this.i = iIndex;
+                this.turnClass = null;
+            }
         }
     }
 };
@@ -54,7 +60,7 @@ export default {
         transform: scale(.5);
         transition: all .5s;
     }
-    /*按钮被点击*/
+    /*按钮被点击一次*/
     .controller-nav .nav-current {
         transform: scale(1);
     }
@@ -69,5 +75,10 @@ export default {
         font-family: "icons-turn-arrow";
         font-size: 80%;
         color: #fff;
+    }
+    /*点击第二次*/
+    .controller-nav .nav-turn-back {
+        background-color: #555;
+        transform: rotateY(180deg);
     }
 </style>
