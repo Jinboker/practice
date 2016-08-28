@@ -112,7 +112,7 @@ class TankObj extends MoverObj {
 		this.bHitTank = false;             // 是否碰到了坦克
 
 		// 子弹相关
-		this.iBulletDelay;                // 子弹小时候需要延迟iBulletDelay个循环才能再次发射
+		this.iBulletDelay;                 // 子弹小时候需要延迟iBulletDelay个循环才能再次发射
 
 		this.barrierCollision();
 	}

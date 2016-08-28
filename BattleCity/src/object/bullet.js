@@ -16,7 +16,7 @@ class BulletObj extends MoverObj {
 		this.iIndex = i;         // 子弹索引，用来确定是哪个坦克发射出来的子弹
 		this.oImg                // 子弹图片，已缓存
 		this.iRank;              // 子弹的等级，为3时一枚子弹打掉16*16的砖块且能够击穿钢筋
-		this.iBulletType;        // 子弹的类型（是玩家还是NPC）
+		this.iBulletType;        // 子弹的类型（0是玩家，1是NPC）
 
 		this.barrierCollision();
 	}
@@ -130,8 +130,6 @@ class BulletObj extends MoverObj {
 		* |  8*8  |  8*8  |
 		* 这是因为如果坦克子弹不是最高等级，那么一次最多只能打掉两个8*8的格子
 		* 如果将每个砖块视为一个含有四个数组项的数组，如果数组项为1，表示对应的8*8的格子没有被打掉
-		* @param  同上
-		* @return 同上
 		*/
 		function bulletBrickRoad() {
 			iBrickObjIndex = row * 28 + col;
@@ -146,8 +144,6 @@ class BulletObj extends MoverObj {
 		let iBrickLayer;      // 根据子弹的位置计算当前砖块还有几层（一般有两层）
 		/**
 		* 子弹击中砖块后相应的处理函数
-		* @param  同上
-		* @return 同上
 		*/
 		function hitBrick() {
 			// 子弹方向为左右
@@ -158,8 +154,8 @@ class BulletObj extends MoverObj {
 				 if (oBrickStatus[iBrickObjIndex][iBrickLayer + (1 - j) * 2]) {
 					 oBrickStatus[iBrickObjIndex][iBrickLayer] = 0;
 					 oBrickStatus[iBrickObjIndex][iBrickLayer + 2] = 0;
-					 // 如果子弹的等级大于等于2，那么一次直接清除16*16的砖块，否则就是按照最小8*8的来清除
-					 if (oPlayer.iRank >= 2) {
+					 // 如果玩家子弹的等级大于等于2，那么一次直接清除16*16的砖块，否则就是按照最小8*8的来清除
+					 if ( (oPlayer.iRank >= 2) && !that.iBulletType ) {
 						 clearBigBarrier();
 					 } else {
 						 cxt.bg.clearRect(35 + iBrickLayer * 8 + col * 16, 20 + row * 16, 8, 16);
@@ -173,7 +169,7 @@ class BulletObj extends MoverObj {
 				if (oBrickStatus[iBrickObjIndex][iBrickLayer * 2 + 1 - j]) {
 					oBrickStatus[iBrickObjIndex][iBrickLayer * 2] = 0;
 					oBrickStatus[iBrickObjIndex][iBrickLayer * 2 + 1] = 0;
-					if (oPlayer.iRank >= 2) {
+					if ( (oPlayer.iRank >= 2) && !that.iBulletType ) {
 						clearBigBarrier();
 					} else {
 						cxt.bg.clearRect(35 + col * 16, 20 + iBrickLayer * 8 + row * 16, 16, 8);
@@ -187,7 +183,6 @@ class BulletObj extends MoverObj {
 
 		/**
 		* 当一个16*16的格子里的装块全部被打掉后，清除相关对象，并将相应的roadMap数组项置0
-		* @param  同上
 		*/
 		function clearBrick() {
 			for (let i = 0; i < 4; i++) {
