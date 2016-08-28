@@ -324,14 +324,14 @@ class UI {
 				cxt.misc.fillStyle = '#db2b00';
 				cxt.misc.fillText("GAME OVER", 175, this.iOverY);
 				cxt.misc.restore();
-				if (this.iOverY < 236) {
+				if (this.iOverY <= 236) {
 					this.iOverStatus = 1;
 				}
 				break;
 			// 等待进入分数统计界面
 			case 1:
 				cxt.misc.fillStyle = '#db2b00';
-				cxt.misc.clearRect(170, 221, 150, 20);
+				cxt.misc.clearRect(170, this.iOverY - 15, 150, 20);
 				cxt.misc.fillText("GAME OVER", 175, 236);
 				cxt.misc.restore();
 				enterScore();
