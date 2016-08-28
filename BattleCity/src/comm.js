@@ -87,7 +87,7 @@ let oBonusType = {
 // 这里建立一个28*28的roadMap数组而不是建立一个26*26的主要因为子弹的问题
 // 子弹图片只有8*8，而坦克是32*32，如果还是用26*26的数组去判断，子弹运动到边界路劲数组就不够用了
 let roadMap     = new Array(28);
-let setMapInit  = true;              // 初始化地图设置
+let setMapInit  = true;                         // 初始化地图设置
 // 老家周围一圈砖块的位置
 const aHomePosi = [
     [11, 5],
@@ -101,6 +101,8 @@ const aHomeData = [
     [20, 9, 19, 8, 10],
     [18, 4, 17, 3, 5]
 ];
+// 自定义地图
+let bChangeMap = false;                         //看进入地图编辑模式后是否有改变过地图
 
 // 游戏控制
 let keyPressed = false;                         // 是否有按键被按下

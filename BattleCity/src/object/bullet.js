@@ -248,7 +248,7 @@ class BulletObj extends MoverObj {
 			if (this.iIndex === i) { continue; }
 			if (this.tankCollisionCondition(oTank)) {
 				if ((oTank.iType % 2) || (oTank.iType === 8)) {
-					if ((oTank.iType != 7) && (oTank.iType != 8)) {
+					if ((oTank.iType !== 7) && (oTank.iType !== 8)) {
 						// 如果奖励对象已经存在，那么先清掉相关区域的图像
 						oBonus && cxt.misc.clearRect(35 + oBonus.x, 20 + oBonus.y, 32, 32);
 						// 新建奖励对象

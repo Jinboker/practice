@@ -7,7 +7,9 @@
 	<style media="screen">
 		body {
 			margin: 0;
+			color: #87968e;
 			background-color: #660;
+			font-family: "Helvetica Neue",Helvetica,Arial,'Microsoft YaHei',sans-serif,'Lato', Calibri;
 		}
 		@font-face {
 			font-family: prstart;
@@ -21,12 +23,14 @@
 		}
 		#text {
 			position: absolute;
-			left: -150px;
+			left: -200px;
 			height: 456px;
-			width: 150px;
+			width: 200px;
 		}
 		#text p {
-			padding-top: 180px;
+			font-size: 1.17em;
+			font-weight: bold;
+			padding-top: 150px;
 		}
 		#game-box-border {
 			position: absolute;
@@ -66,8 +70,8 @@
 	<div class="game">
 		<div id="text">
 			<p>
-				方向键：WASD <br><br>
-				AB键：HJ <br><br>
+				方向键：W A S D <br><br>
+				AB键：H J <br><br>
 				可进行单人模式及自定义地图模式
 			</p>
 		</div>
@@ -114,13 +118,13 @@
 	<script type="text/javascript" src='src/keyboard/key.js'></script>
 
 	<!-- 游戏对象相关 -->
-	<script type="text/javascript" src='src/object/explode.js'></script>         <!-- 爆炸 -->
-	<script type="text/javascript" src='src/object/bonus.js'></script>           <!-- 奖励 -->
-	<script type="text/javascript" src='src/object/mover.js'></script>           <!-- 顶级移动对象 -->
-	<script type="text/javascript" src='src/object/bullet.js'></script>          <!-- 子弹对象及相关函数 -->
-	<script type="text/javascript" src='src/object/tank.js'></script>            <!-- 坦克对象及相关函数 -->
-	<script type="text/javascript" src='src/object/player.js'></script>          <!-- 玩家坦克对象 -->
-	<script type="text/javascript" src='src/object/enemyTank.js'></script>       <!-- NPC坦克对象 -->
+	<script type="text/javascript" src='src/object/explode.js'></script>
+	<script type="text/javascript" src='src/object/bonus.js'></script>
+	<script type="text/javascript" src='src/object/mover.js'></script>
+	<script type="text/javascript" src='src/object/bullet.js'></script>
+	<script type="text/javascript" src='src/object/tank.js'></script>
+	<script type="text/javascript" src='src/object/player.js'></script>
+	<script type="text/javascript" src='src/object/enemyTank.js'></script>
 
 	<!-- UI相关 -->
 	<script type="text/javascript" src='src/UI/UI.js'></script>

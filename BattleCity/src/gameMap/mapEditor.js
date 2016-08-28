@@ -4,20 +4,22 @@ class MapEditor{
 		this.x = 0;
 		this.y = 0;
 
-		this.setMapData = new Array(13);
+		// 设置初始的地图数据，全部为空
+		this.setMapData = [13];
 		for (let i = 0; i < 13; i++) {
-			this.setMapData[i] = new Array(13);
+			this.setMapData[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 		}
-		this.setMapData[12][6] = 15;         // 设置老家的砖块
+
+		// 设置老家的砖块图形
+		this.setMapData[12][6] = 15;
+
 
 		this.ensureMap = true;
-
 		this.drawTankAble = true;     // 是否需要重绘坦克
-
-		this.brickNum = 0;    // 砖块改变的计数
+		this.brickNum = 0;            // 砖块改变的计数
 		this.brickNumSave = false;
 
-		this.move = new Array(87);
+		this.move = {};
 		this.tankMove();
 	}
 
