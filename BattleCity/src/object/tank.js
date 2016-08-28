@@ -9,12 +9,39 @@ function tankInit() {
 	}
 }
 
-let bHasTankDie = true,          // 是否有坦克不是处于活着的状态
-	bAllTankDie = false,         // 所有的坦克是否都被干掉
-	iDelayEnterScore = 180;      // 消灭所有的坦克后延迟180个循环后进入分数统计界面
+/**
+ * 绘制玩家坦克的函数
+ */
+function drawPlayer() {
+	if (oPlayer.bAlive) {
+		oPlayer.draw();
+		// 如果敌军坦克数目已经到了最大，只要所有的坦克都被干掉了bAllTankDie无法为假，直接进入计分界面
+		(oEnemy.num > oEnemy.maxNum) && (bAllTankDie = true);
+	} else {
+		(oPlayer.iLife >= 0) && oPlayer.init();
+	}
+}
 
 /**
- * 绘制坦克
+ * 绘制NPC坦克的函数
+ */
+function drawNPC() {
+	let oTank;
+	for (let i = 1; i < iEnemyNum; i++) {
+		oTank = aTankArr[i];
+		if (oTank.bAlive) {
+			oTank.draw();
+			bAllTankDie = false;
+		} else {
+			bHasTankDie = true;
+			if (oEnemy.iBornDelay || (oEnemy.num > oEnemy.maxNum)) { continue; }
+			oTank.init();
+		}
+	}
+}
+
+/**
+ * 循环绘制坦克
  */
 function drawTank() {
 	cxt.role.clearRect(0, 0, cxt.l, cxt.l);
@@ -34,58 +61,6 @@ function drawTank() {
 	// 如果全部的NPC都被干掉了，那么延迟180个循环后开始统计数据并进入下一关
 	bAllTankDie && enterScore();
 }
-
-function drawPlayer() {
-	if (oPlayer.bAlive) {
-		oPlayer.draw();
-		// 如果敌军坦克数目已经到了最大，只要所有的坦克都被干掉了bAllTankDie无法为假，直接进入计分界面
-		(oEnemy.num > oEnemy.maxNum) && (bAllTankDie = true);
-	} else {
-		(oPlayer.iLife >= 0) && oPlayer.init();
-	}
-}
-
-function drawNPC() {
-	let oTank;
-	for (let i = 1; i < iEnemyNum; i++) {
-		oTank = aTankArr[i];
-		if (oTank.bAlive) {
-			oTank.draw();
-			bAllTankDie = false;
-		} else {
-			bHasTankDie = true;
-			if (oEnemy.iBornDelay || (oEnemy.num > oEnemy.maxNum)) { continue; }
-			oTank.init();
-		}
-	}
-}
-
-function enterScore() {
-	iDelayEnterScore = delay(iDelayEnterScore, 180, () => {
-		bAllTankDie = false;
-		oBrickStatus = new Object();                         // 重置砖块状态
-		iPlayerLife = oPlayer.iLife;                         // 更新玩家生命
-		iPlayerRank = oPlayer.iRank;                         // 更新玩家等级
-		aTankArr = [];                                       // 清空坦克数组
-		aBullet = [];                                        // 清空子弹数组
-		oBonus = null;                                       // 清空奖励对象
-		iTimerDelay = 0;                                     // 重置定时器时间
-		oHome.bChange = false;                               // 老家障碍不再绘制
-		draw.obj = false;
-		draw.ui = true;
-		ui.bInGame = false;                                  // 不在游戏中
-		ui.status = 2;                                       // 进入计分页面
-		oClass.ui.gameScoreInit();                           // 初始化计分页面的相关变量
-		cxt.misc.clearRect(0, 0, cxt.w, cxt.h);
-		cxt.bg.clearRect(0, 0, cxt.w, cxt.h);
-		cxt.role.clearRect(0, 0, cxt.l, cxt.l);
-		cxt.bg.drawImage(oImg.score, 0, 0, 516, 456);
-		oScore.totalScore = oScore.tankNum[0] * 100 + oScore.tankNum[1] * 200 + oScore.tankNum[2] * 300 + oScore.tankNum[3] * 400 +  iEatBouns * 500;
-		oScore.totalTank = oScore.tankNum[0] + oScore.tankNum[1] + oScore.tankNum[2] + oScore.tankNum[3];
-	});
-}
-
-
 
 /**
  * 坦克对象，继承自MoverObj
@@ -112,7 +87,7 @@ class TankObj extends MoverObj {
 		this.bHitTank = false;             // 是否碰到了坦克
 
 		// 子弹相关
-		this.iBulletDelay;                 // 子弹小时候需要延迟iBulletDelay个循环才能再次发射
+		this.iBulletDelay;                // 子弹小时候需要延迟iBulletDelay个循环才能再次发射
 
 		this.barrierCollision();
 	}

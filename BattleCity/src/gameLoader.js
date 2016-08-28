@@ -39,7 +39,7 @@ function gameLoop() {
 		drawBullet();                      // 绘制子弹
 		bonus();                           // 绘制奖励及处理玩家吃掉奖励后的游戏变化
 	}
-
+	console.log(oClass.ui.iOverStatus);
 	// 循环执行函数
 	requestAnimFrame(gameLoop);
 }

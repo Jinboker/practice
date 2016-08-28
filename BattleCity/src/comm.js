@@ -7,9 +7,9 @@ const cxt = {
     role: canRol.getContext('2d'),
     bg: canBg.getContext('2d'),
     misc: canMisc.getContext('2d'),
-    l: 416, // l表示canRol的长与宽
-    w: 516, // canBg的宽度
-    h: 456 // canBg的高度
+    l: 416,                                            // l表示canRol的长与宽
+    w: 516,                                            // canBg的宽度
+    h: 456                                             // canBg的高度
 };
 // 用来控制画布所在区域的背景
 const gameBox = {
@@ -88,20 +88,22 @@ let oBonusType = {
 // 子弹图片只有8*8，而坦克是32*32，如果还是用26*26的数组去判断，子弹运动到边界路劲数组就不够用了
 let roadMap     = new Array(28);
 let setMapInit  = true;              // 初始化地图设置
+// 老家周围一圈砖块的位置
 const aHomePosi = [
     [11, 5],
     [11, 6],
     [11, 7],
     [12, 5],
     [12, 7]
-]; // 老家周围一圈砖块的位置
+];
+// 砖块的地图数据
 const aHomeData = [
     [20, 9, 19, 8, 10],
     [18, 4, 17, 3, 5]
-]; // 砖块的地图数据
+];
 
 // 游戏控制
-let keyPressed = false; // 是否有按键被按下
+let keyPressed = false;                         // 是否有按键被按下
 let keyInfo    = new Array(88);
 let keyCode    = null;
 let keyDir_1   = 87;
@@ -115,16 +117,16 @@ let oKeyUp = {
 };
 
 // 子弹相关
-let oBrickStatus = {}; // 砖头状态
-let aBullet      = []; // 子弹数组
+let oBrickStatus = {};                           // 砖头状态
+let aBullet      = [];                           // 子弹数组
 
 // NPC相关
 let oEnemy = {
-    maxTankAlive: 4, // 敌军坦克同一时间最多只能有四个
-    maxNum: 20, // 敌军坦克的总数是20个
-    num: 1, // 当前画出来的是第几个坦克，因为坦克是从正中间开始刷新，因此从1开始计数
-    iBornDelay: 30, // 第一个NPC延迟30个循环后出生，以后的坦克延迟150个循环出生
-    bMoveAble: true // 定时为假则NPC不会运动
+    maxTankAlive: 4,                        // 敌军坦克同一时间最多只能有四个
+    maxNum: 20,                             // 敌军坦克的总数是20个
+    num: 1,                                 // 当前画出来的是第几个坦克，因为坦克是从正中间开始刷新，因此从1开始计数
+    iBornDelay: 30,                         // 第一个NPC延迟30个循环后出生，以后的坦克延迟150个循环出生
+    bMoveAble: true                         // 定时为假则NPC不会运动
 };
 const oEnemyData = [
     [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 4, 4],
@@ -140,20 +142,25 @@ const oEnemyData = [
 ];
 
 // 爆炸相关
-let aBigExplode   = []; // 存储大爆炸的数组
-let aSmallExplode = []; // 存储小爆炸的数组
-let aBoom         = [aBigExplode, aSmallExplode]; // 爆炸数组
+let aBigExplode   = [];                               // 存储大爆炸的数组
+let aSmallExplode = [];                               // 存储小爆炸的数组
+let aBoom         = [aBigExplode, aSmallExplode];     // 爆炸数组
 
 // 玩家相关
-let iEatBouns   = 0; // 玩家吃掉的奖励数
-let iPlayerLife = 2; // 玩家的生命数
-let iPlayerRank = 0; // 玩家的等级
+let iEatBouns   = 0;                                  // 玩家吃掉的奖励数
+let iPlayerLife = 2;                                  // 玩家的生命数
+let iPlayerRank = 0;                                  // 玩家的等级
 
 // 绘制坦克相关
-const iEnemyNum = 5; // 同时存在的最大坦克数（包括玩家及NPC）
+const iEnemyNum = 5;                                  // 同时存在的最大坦克数（包括玩家及NPC）
 let aTankArr    = [];
-let bGameOver   = false; // 游戏结束
-let oPlayer; // 用来表示玩家
+let bGameOver   = false;                              // 游戏结束
+let oPlayer;                                          // 用来表示玩家
+
+// 进入计分界面的相关条件参数
+let bHasTankDie = true;                               // 是否有坦克不是处于活着的状态
+let	bAllTankDie = false;                              // 所有的坦克是否都被干掉
+let iDelayEnterScore = 180;                           // 消灭所有的坦克后延迟180个循环后进入分数统计界面
 
 /**
  * 动画回调函数
@@ -180,4 +187,32 @@ function delay(num, delayNum, fn) {
         fn();
     }
     return num;
+}
+
+/**
+ * 等待180个循环进入统计分数的界面，同时重置所有的数据
+ */
+function enterScore() {
+	iDelayEnterScore = delay(iDelayEnterScore, 180, () => {
+		bAllTankDie = false;
+		oBrickStatus = new Object();                         // 重置砖块状态
+		iPlayerLife = oPlayer.iLife;                         // 更新玩家生命
+		iPlayerRank = oPlayer.iRank;                         // 更新玩家等级
+		aTankArr = [];                                       // 清空坦克数组
+		aBullet = [];                                        // 清空子弹数组
+		oBonus = null;                                       // 清空奖励对象
+		iTimerDelay = 0;                                     // 重置定时器时间
+		oHome.bChange = false;                               // 老家障碍不再绘制
+		draw.obj = false;
+		draw.ui = true;
+		ui.bInGame = false;                                  // 不在游戏中
+		ui.status = 2;                                       // 进入计分页面
+		oClass.ui.gameScoreInit();                           // 初始化计分页面的相关变量
+		cxt.misc.clearRect(0, 0, cxt.w, cxt.h);
+		cxt.bg.clearRect(0, 0, cxt.w, cxt.h);
+		cxt.role.clearRect(0, 0, cxt.l, cxt.l);
+		cxt.bg.drawImage(oImg.score, 0, 0, 516, 456);
+		oScore.totalScore = oScore.tankNum[0] * 100 + oScore.tankNum[1] * 200 + oScore.tankNum[2] * 300 + oScore.tankNum[3] * 400 +  iEatBouns * 500;
+		oScore.totalTank = oScore.tankNum[0] + oScore.tankNum[1] + oScore.tankNum[2] + oScore.tankNum[3];
+	});
 }

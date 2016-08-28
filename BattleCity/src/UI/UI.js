@@ -65,6 +65,7 @@ class UI {
 	gameStartInit(){
 		this.startY = cxt.h;                 // 开始画面上移的y值
 		this.modeChoose = 272;               // 开始画面上小坦克的纵向位置
+
 	}
 
 	gameStageInit(){
@@ -87,6 +88,8 @@ class UI {
 		iEatBouns = 0;                       // 吃掉的奖励数重置
 		oScore.tankNum = [0, 0, 0, 0];       // 击杀坦克数目重置
 		oEnemy.iBornDelay = 30;              // 重置NPC出生的延迟
+		this.iOverStatus = 0;                // 重置游戏结束后的文字状态
+		this.iOverY = 456;                   // 重置gameover文字的Y坐标
 		cxt.misc.clearRect(0, 0, cxt.w, cxt.h);
 	}
 
@@ -327,7 +330,13 @@ class UI {
 				}
 				break;
 			// 等待进入分数统计界面
-			case 1: enterScore(); break;
+			case 1:
+				cxt.misc.fillStyle = '#db2b00';
+				cxt.misc.clearRect(170, 221, 150, 20);
+				cxt.misc.fillText("GAME OVER", 175, 236);
+				cxt.misc.restore();
+				enterScore();
+				break;
 			// 准备重新开始游戏
 			case 2:
 				this.iDelay = delay(this.iDelay, 120, () => {
