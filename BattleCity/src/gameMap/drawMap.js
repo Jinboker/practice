@@ -57,34 +57,38 @@ class DrawMap{
 				roadMap[2*i+1][2*j+1] = 1;
 				break;
 			case 2:
-				roadMap[2*i][2*j] =
-				roadMap[2*i][2*j+1] = 1;
+				// 这里之所以要设0是为了自定义地图时，给老家周围自定义了32*32的砖块
+				// 在吃掉钢锹后老家砖块变薄后重新确定路径
+				roadMap[2*i+1][2*j] = roadMap[2*i+1][2*j+1] = 0;
+				roadMap[2*i][2*j] = roadMap[2*i][2*j+1] = 1;
 				break;
 			case 3:
-				roadMap[2*i][2*j+1] =
-				roadMap[2*i+1][2*j+1] = 1;
+				roadMap[2*i][2*j] = roadMap[2*i+1][2*j] = 0;
+				roadMap[2*i][2*j+1] = roadMap[2*i+1][2*j+1] = 1;
 				// 将砖块状态清空，主要是在吃了钢锹奖励后需要重置老家周围一圈砖块的状态
 				// 下面的4、5、17、18同此
 				oBrickStatus[(2*i)*28+(2*j+1)] = null;
 				oBrickStatus[(2*i+1)*28+(2*j+1)] = null;
 				break;
 			case 4:
-				roadMap[2*i+1][2*j] =
-				roadMap[2*i+1][2*j+1] = 1;
+				roadMap[2*i][2*j] = roadMap[2*i][2*j+1] = 0;
+				roadMap[2*i+1][2*j] = roadMap[2*i+1][2*j+1] = 1;
 				oBrickStatus[(2*i+1)*28+(2*j)] = null;
 				oBrickStatus[(2*i+1)*28+(2*j+1)] = null;
 				break;
 			case 5:
-				roadMap[2*i][2*j] =
-				roadMap[2*i+1][2*j] = 1;
+				roadMap[2*i][2*j+1] = roadMap[2*i+1][2*j+1] = 0;
+				roadMap[2*i][2*j] = roadMap[2*i+1][2*j] = 1;
 				oBrickStatus[(2*i)*28+(2*j)] = null;
 				oBrickStatus[(2*i+1)*28+(2*j)] = null;
 				break;
 			case 17:
+				roadMap[2*i][2*j] = roadMap[2*i][2*j+1] = roadMap[2*i+1][2*j+1] = 0;
 				roadMap[2*i+1][2*j] = 1;
 				oBrickStatus[(2*i+1)*28+(2*j)] = null;
 				break;
 			case 18:
+				roadMap[2*i][2*j] = roadMap[2*i][2*j+1] = roadMap[2*i+1][2*j] = 0;
 				roadMap[2*i+1][2*j+1] = 1;
 				oBrickStatus[(2*i+1)*28+(2*j+1)] = null;
 				break;
@@ -96,25 +100,27 @@ class DrawMap{
 				roadMap[2*i+1][2*j+1] = 2;
 				break;
 			case 7:
-				roadMap[2*i][2*j] =
-				roadMap[2*i][2*j+1] = 2;
+				roadMap[2*i+1][2*j] = roadMap[2*i+1][2*j+1] = 0;
+				roadMap[2*i][2*j] = roadMap[2*i][2*j+1] = 2;
 				break;
 			case 8:
-				roadMap[2*i][2*j+1] =
-				roadMap[2*i+1][2*j+1] = 2;
+				roadMap[2*i][2*j] = roadMap[2*i+1][2*j] = 0;
+				roadMap[2*i][2*j+1] = roadMap[2*i+1][2*j+1] = 2;
 				break;
 			case 9:
-				roadMap[2*i+1][2*j] =
-				roadMap[2*i+1][2*j+1] = 2;
+				roadMap[2*i][2*j] = roadMap[2*i][2*j+1] = 0;
+				roadMap[2*i+1][2*j] = roadMap[2*i+1][2*j+1] = 2;
 				break;
 			case 10:
-				roadMap[2*i][2*j] =
-				roadMap[2*i+1][2*j] = 2;
+				roadMap[2*i][2*j+1] = roadMap[2*i+1][2*j+1] = 0;
+				roadMap[2*i][2*j] = roadMap[2*i+1][2*j] = 2;
 				break;
 			case 19:
+				roadMap[2*i][2*j] = roadMap[2*i][2*j+1] = roadMap[2*i+1][2*j+1] = 0;
 				roadMap[2*i+1][2*j] = 2;
 				break;
 			case 20:
+				roadMap[2*i][2*j] = roadMap[2*i][2*j+1] = roadMap[2*i+1][2*j] = 0;
 				roadMap[2*i+1][2*j+1] = 2;
 				break;
 			// 13表河流，坦克无法越过，但是子弹可以过去
