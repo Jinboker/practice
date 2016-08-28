@@ -60,8 +60,8 @@ function keyInit() {
 	}, false);
 
 	// 移动端事件绑定
-	addEventListener('touchstart', function (ev) {
-		alert.log(ev.target.getAttribute('value'));
+	oVirtualKey.addEventListener('touchstart', function (ev) {
+		alert(ev.target.getAttribute('value'));
 	}, false);
 
 	// addEventListener('touchend ', function (ev) {
