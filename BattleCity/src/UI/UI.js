@@ -344,8 +344,10 @@ class UI {
 					this.startInit();
 					ui.status = 0;
 					bGameOver = false;
-					iPlayerLife = 2,                     // 重置玩家生命
-					iPlayerRank = 0;                     // 重置玩家等级
+					iPlayerLife = 2,                           // 重置玩家生命
+					iPlayerRank = 0;                           // 重置玩家等级
+					// 如果第一关地图数据有自定义过，那么重置
+					(mapData[0] !== mapDataStage_1) && (mapData[0] = mapDataStage_1);
 				});
 				break;
 			default:

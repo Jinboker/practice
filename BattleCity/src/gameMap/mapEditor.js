@@ -53,6 +53,7 @@ class MapEditor{
 		}
 		// 更换地形(J键)
 		if (keyCode === 74) {
+			bChangeMap = true;                       //地图有被改变
 			if (this.x === 192 && this.y === 384) {
 				keyPressed = false;
 				return;
@@ -65,7 +66,11 @@ class MapEditor{
 		}
 		// 确认地图完成（H键）
 		if (keyCode === 72) {
-			mapData[0] = this.setMapData;
+			// 如果地图有被改变过，那么将新的地图数据覆盖默认的数据
+			if (bChangeMap) {
+				mapData[0] = this.setMapData;
+				bChangeMap = false;
+			}
 			draw.setMap = false;
 			draw.ui = true;
 			canRol.style.zIndex = '';

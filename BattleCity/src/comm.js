@@ -196,6 +196,8 @@ function delay(num, delayNum, fn) {
  */
 function enterScore() {
 	iDelayEnterScore = delay(iDelayEnterScore, 180, () => {
+        draw.obj = false;
+		draw.ui = true;
 		bAllTankDie = false;
 		oBrickStatus = new Object();                         // 重置砖块状态
 		iPlayerLife = oPlayer.iLife;                         // 更新玩家生命
@@ -205,8 +207,6 @@ function enterScore() {
 		oBonus = null;                                       // 清空奖励对象
 		iTimerDelay = 0;                                     // 重置定时器时间
 		oHome.bChange = false;                               // 老家障碍不再绘制
-		draw.obj = false;
-		draw.ui = true;
 		ui.bInGame = false;                                  // 不在游戏中
 		ui.status = 2;                                       // 进入计分页面
 		oClass.ui.gameScoreInit();                           // 初始化计分页面的相关变量
