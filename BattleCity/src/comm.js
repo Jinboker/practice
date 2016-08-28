@@ -41,6 +41,16 @@ const oAud = {
     pause: document.getElementById('pause')
 };
 
+// 移动端的虚拟按键
+let oVirKey = {
+    up: document.getElementsByClassName('btn_u'),
+    right: document.getElementsByClassName('btn_r'),
+    down: document.getElementsByClassName('btn_d'),
+    left: document.getElementsByClassName('btn_l'),
+    a: document.getElementsByClassName('btn_a'),
+    b: document.getElementsByClassName('btn_b')
+}
+
 // 分数
 let oScore = {
     y: [210, 250, 290, 330],

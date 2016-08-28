@@ -17,7 +17,7 @@ function keyInit() {
 	keyInfo[83].dir = keyInfo[40].dir = 2;
 	keyInfo[65].dir = keyInfo[37].dir = 3;
 
-	// 事件绑定
+	// PC端事件绑定
 	addEventListener('keydown', function (ev) {
 		keyCode = ev.keyCode;
 		// 如果不是对象则表明不是所需要的按键被按下，而所需要的值已经在setKeyInfo函数中设置了
@@ -58,4 +58,13 @@ function keyInit() {
 			keyInfo[iKeyUp].pressed = false;
 		}
 	}, false);
+
+	// 移动端事件绑定
+	addEventListener('touchstart', function (ev) {
+		alert.log(ev.target.getAttribute('value'));
+	}, false);
+
+	// addEventListener('touchend ', function (ev) {
+	//
+	// }, false);
 }

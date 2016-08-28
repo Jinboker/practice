@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<meta name="viewport" content="user-scalable=0">
 	<title>坦克大战</title>
 	<style media="screen">
 		body {
@@ -63,9 +64,59 @@
 		.hide {
 			display: none;
 		}
+
+		/*手机平板*/
+		@media screen and (min-width: 768px) {
+			#key {
+				/*display: none;*/
+			}
+		}
+		/*按键*/
+		#key {
+			position: absolute;
+			top: 800px;
+			left: 50%;
+			margin-left: -400px;
+			width: 800px;
+			height: 400px;
+		}
+		#key button {
+			position: absolute;
+			width: 100px;
+			height: 100px;
+			border: none;
+			outline:none;
+			border-radius: 50%;
+			color: #87968e;
+			font-size: 40px;
+		}
+		.btn_u {
+			top: 0;
+			left: 150px;
+		}
+		.btn_r {
+			top: 150px;
+			left: 0;
+		}
+		.btn_d {
+			top: 300px;
+			left: 150px;
+		}
+		.btn_l {
+			top: 150px;
+			left: 300px;
+		}
+		.btn_a {
+			top: 100px;
+			left: 650px;
+		}
+		.btn_b {
+			top: 250px;
+			left: 500px;
+		}
 	</style>
 </head>
-<body>
+<body onselectstart="return false">
 	<div class="game">
 		<div id="text">
 			<p>
@@ -83,6 +134,14 @@
 			<!-- 杂项层（包括爆炸效果等） -->
 			<canvas id="canvas-misc" width="516" height="456"></canvas>
 		</div>
+	</div>
+	<div id="key">
+		<button type="button" value="87" class="btn_u">上</button>
+		<button type="button" value="68" class="btn_r">右</button>
+		<button type="button" value="83" class="btn_d">下</button>
+		<button type="button" value="65" class="btn_l">左</button>
+		<button type="button" value="74" class="btn_a">A</button>
+		<button type="button" value="72" class="btn_b">B</button>
 	</div>
 	<!-- 提前缓存图片 -->
 	<div class="hide">
