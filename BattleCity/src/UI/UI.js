@@ -65,7 +65,6 @@ class UI {
 	gameStartInit(){
 		this.startY = cxt.h;                 // 开始画面上移的y值
 		this.modeChoose = 272;               // 开始画面上小坦克的纵向位置
-
 	}
 
 	gameStageInit(){

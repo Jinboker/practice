@@ -221,7 +221,8 @@ class BulletObj extends MoverObj {
 
 	// NPC的子弹与玩家的碰撞
 	NPCCollision(){
-		if (this.tankCollisionCondition(oPlayer)) {
+		// 如果玩家已经没有生命那么就不必进行检查了
+		if ((oPlayer.iLife >= 0) && this.tankCollisionCondition(oPlayer)) {
 			// 如果玩家没有防护罩，那么扣掉生命值重新刷新坦克
 			if (!oPlayer.bShield) {
 				// 如果玩家坦克等级是最高级，那么被子弹打一下不会死
@@ -244,7 +245,7 @@ class BulletObj extends MoverObj {
 	playerCollision(){
 		for (let i = 1; i < 5; i++) {
 			let oTank = aTankArr[i];
-			if ((this.iIndex === i) || !oTank.bBorned) { continue; }
+			if (this.iIndex === i) { continue; }
 			if (this.tankCollisionCondition(oTank)) {
 				if ((oTank.iType % 2) || (oTank.iType === 8)) {
 					if ((oTank.iType != 7) && (oTank.iType != 8)) {
@@ -266,11 +267,12 @@ class BulletObj extends MoverObj {
 	}
 
 	/**
-	 * 坦克碰撞的条件
+	 * 子弹与坦克碰撞判断
 	 * @param  {[object]}   oTank   [当前检查的坦克对象]
 	 * @return {[boolean]}          [为真就是子弹与坦克有了碰撞]
 	 */
 	tankCollisionCondition(oTank){
+		if (!oTank.bBorned) { return false; }
 		let x = this.x - oTank.x;
 		let y = this.y - oTank.y;
 		if (this.iDir % 2) {
