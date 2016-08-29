@@ -77,6 +77,8 @@ function eventBind(num, ...aEv) {
 			}, false);
 		} else {
 			oVirtualKey.addEventListener(aEv[i], function (ev) {
+				// 禁止btn上的click事件
+				ev.preventDefault();
 				keyCode = +ev.target.getAttribute('value');
 				if (ev.type === 'touchstart') {
 					keyDown(keyCode);
