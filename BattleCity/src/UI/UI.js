@@ -236,7 +236,7 @@ class UI {
 	}
 
 	enterNextStage(){
-		oAud.start.play();
+		bPC && oAud.start.play();
 		draw.map = true;                 // 循环开始绘制背景地图
 		stage.status = 2;
 		oEnemy.num = 1;                  // 当前画出来的是第几个坦克，因为坦克是从正中间开始刷新，因此从1开始计数
@@ -356,7 +356,7 @@ class UI {
 	}
 
 	drawOverPic(){
-		oAud.over.play();
+		bPC && oAud.over.play();
 		cxt.bg.clearRect(0, 0, cxt.w, cxt.h);
 		cxt.misc.clearRect(0, 0, cxt.w, cxt.h);
 		gameBox.border.style.backgroundColor = '';

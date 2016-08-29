@@ -9,9 +9,9 @@ function init() {
 	};
 
 	// 规定所用的字体及颜色
-	cxt.bg.font = "15px prstart";
+	cxt.bg.font      = "15px prstart";
 	cxt.bg.fillStyle = '#000';
-	cxt.misc.font = "15px prstart";
+	cxt.misc.font    = "15px prstart";
 
 	// 键盘按下事件函数
 	keyEvent();

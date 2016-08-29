@@ -1,3 +1,6 @@
+/**
+ * 需要用到的按键的相关参数的初始化
+ */
 function keyInit() {
 	// 给所有需要用到的按键添加表示是否被按下的属性
 	let aKey = [72, 74, 87, 83, 65, 68, 38, 40, 37, 39, 17],
@@ -15,14 +18,18 @@ function keyInit() {
 	keyInfo[65].dir = keyInfo[37].dir = 3;
 }
 
-function keyDown(keyCode) {
+/**
+ * 按键被按下后应该执行的操作
+ * @param  {[number]} iKeyVal [被按下的按键的键值或者value]
+ */
+function keyDown(iKeyVal) {
 	// 当按键一直被按住的时候不会一直执行
-	if (!keyInfo[keyCode].pressed) {
-		if (keyCode === 87 || keyCode === 83 || keyCode === 65 || keyCode === 68) {
-			keyDir_1 = keyCode;
+	if (!keyInfo[iKeyVal].pressed) {
+		if (iKeyVal === 87 || iKeyVal === 83 || iKeyVal === 65 || iKeyVal === 68) {
+			keyDir_1 = iKeyVal;
 		}
 		// 如果在游戏中按下H键那么就是暂停或者开始
-		if ((keyCode === 72) && ui.bInGame && oKeyUp.h) {
+		if ((iKeyVal === 72) && ui.bInGame && oKeyUp.h) {
 			oKeyUp.h = false;
 			if (!draw.ui) {
 				ui.status = 3;
@@ -35,43 +42,33 @@ function keyDown(keyCode) {
 				draw.obj = true;
 				draw.bullet = true;
 			}
-			oAud.pause.play();
+			bPC && oAud.pause.play();
 		}
-		keyInfo[keyCode].pressed = true;
+		keyInfo[iKeyVal].pressed = true;
 	}
 	keyPressed = true;
 }
 
-function keyUp(keyCode) {
+/**
+ * 按键松开后应该执行的操作
+ * @param  {[number]} iKeyVal [松开的按键的键值或者value]
+ */
+function keyUp(iKeyVal) {
 	// 如果H键跟J键松开，那么将oKeyUp中对应的属性置为真
-	(keyCode === 72) && (oKeyUp.h = true);
-	(keyCode === 74) && (oKeyUp.j = true);
-	keyInfo[keyCode].pressed = false;
+	(iKeyVal === 72) && (oKeyUp.h = true);
+	(iKeyVal === 74) && (oKeyUp.j = true);
+	keyInfo[iKeyVal].pressed = false;
 }
 
-// function PCEv(...aEvent) {
-// 	for (let i = 0; i < 2; i++) {
-// 		addEventListener(, function (ev) {
-// 			keyCode = ev.keyCode;
-// 			// 如果不是对象则表明不是所需要的按键被按下，而所需要的值已经在setKeyInfo函数中设置了
-// 			(typeof keyInfo[keyCode] === 'object') && keyDown(keyCode);
-// 		}, false);
-// 	}
-//
-// }
-//
-// function mobileEv() {
-//
-// 	oVirtualKey.addEventListener(, function (ev) {
-// 		keyCode = ev.target.getAttribute('value');
-// 		keyDown(keyCode);
-// 	}, false);
-// }
-
-function eventBind(num, ...sEv) {
+/**
+ * 按键事件绑定函数
+ * @param  {[number]} num [1表示PC端的事件，0表移动端]
+ * @param  {[array]}  aEv [需要绑定的事件名称的数组]
+ */
+function eventBind(num, ...aEv) {
 	for (let i = 0; i < 2; i++) {
 		if (num) {
-			addEventListener(sEv[i], function (ev) {
+			addEventListener(aEv[i], function (ev) {
 				keyCode = ev.keyCode;
 				// 如果不是对象则表明不是所需要的按键被按下，而所需要的值已经在setKeyInfo函数中设置了
 				if (typeof keyInfo[keyCode] === 'object') {
@@ -79,9 +76,15 @@ function eventBind(num, ...sEv) {
 				}
 			}, false);
 		} else {
-			oVirtualKey.addEventListener(sEv[i], function (ev) {
-				keyCode = ev.target.getAttribute('value');
-				(ev.type === 'touchstart') ? keyDown(keyCode) : keyUp(keyCode);
+			oVirtualKey.addEventListener(aEv[i], function (ev) {
+				keyCode = +ev.target.getAttribute('value');
+				if (ev.type === 'touchstart') {
+					keyDown(keyCode);
+
+				} else {
+					keyUp(keyCode);
+				}
+				// (ev.type === 'touchstart') ? keyDown(keyCode) : keyUp(keyCode);
 			}, false);
 		}
 	}
@@ -91,35 +94,12 @@ function eventBind(num, ...sEv) {
  * 键盘事件函数
  */
 function keyEvent() {
+	// 按键相关参数初始化
 	keyInit();
 
 	// PC端事件绑定
 	eventBind(1, 'keydown', 'keyup');
-	// addEventListener('keydown', function (ev) {
-	// 	keyCode = ev.keyCode;
-	// 	// 如果不是对象则表明不是所需要的按键被按下，而所需要的值已经在setKeyInfo函数中设置了
-	// 	if (typeof keyInfo[keyCode] === 'object') {
-	// 		keyDown(keyCode);
-	// 	}
-	// }, false);
-	//
-	// addEventListener('keyup', function (ev) {
-	// 	keyCode = ev.keyCode;
-	// 	if (typeof keyInfo[keyCode] === 'object') {
-	// 		keyUp(keyCode);
-	// 	}
-	// }, false);
 
 	// 移动端事件绑定
 	eventBind(0, 'touchstart', 'touchend');
-	// oVirtualKey.addEventListener('touchstart', function (ev) {
-	// 	// alert(ev.target.getAttribute('value'));
-	// 	keyCode = ev.target.getAttribute('value');
-	// 	keyDown(keyCode);
-	// }, false);
-	//
-	// addEventListener('touchend ', function (ev) {
-	// 	keyCode = ev.target.getAttribute('value');
-	// 	keyUp(keyCode);
-	// }, false);
 }

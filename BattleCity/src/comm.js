@@ -167,6 +167,13 @@ let bHasTankDie = true;                               // 是否有坦克不是�
 let	bAllTankDie = false;                              // 所有的坦克是否都被干掉
 let iDelayEnterScore = 180;                           // 消灭所有的坦克后延迟180个循环后进入分数统计界面
 
+// 判断是否为PC端
+let bPC;
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+    bPC = false;
+} else {
+    bPC = true;
+}
 /**
  * 动画回调函数
  */

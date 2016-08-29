@@ -77,11 +77,11 @@ class PlayerObj extends TankObj {
 			if (!this.oBullet.bAlive) {
 				// 这里的参数0表示这是玩家的坦克
 				this.oBullet.init(this.x, this.y, this.iDir, 0, this.iRank);
-				oAud.att.play();
+				bPC && oAud.att.play();
 			} else {
 				if ((this.iRank >= 2) && !this.oBulletExtra.bAlive) {
 					this.oBulletExtra.init(this.x, this.y, this.iDir, 0, this.iRank);
-					oAud.att.play();
+					bPC && oAud.att.play();
 				}
 			}
 		}
@@ -121,12 +121,12 @@ class PlayerObj extends TankObj {
 		switch (oBonus.iType) {
 			// 钢锹
 			case 0:
-				oAud.miscSound.play();
+				bPC && oAud.miscSound.play();
 				oBonus.oHomeInit();
 				break;
 			// 星星
 			case 1:
-				oAud.life.play();
+				bPC && oAud.life.play();
 				// iRank的最大值是3
 				if (this.iRank < 3) {
 					this.iRank ++;
@@ -139,7 +139,7 @@ class PlayerObj extends TankObj {
 				break;
 			// 坦克
 			case 2:
-				oAud.life.play();
+				bPC && oAud.life.play();
 				if (this.iLife < 5) {
 					this.iLife ++;
 					myInfo();
@@ -147,13 +147,13 @@ class PlayerObj extends TankObj {
 				break;
 			// 钢盔
 			case 3:
-				oAud.miscSound.play();
+				bPC && oAud.miscSound.play();
 				this.bShield = true;
 				this.iShieldNum = 1000;
 				break;
 			// 炸弹
 			case 4:
-				oAud.bomb.play();
+				bPC && oAud.bomb.play();
 				// 已经出生的坦克全部炸掉
 				for (let i = 1; i < 5; i++) {
 					let obj = aTankArr[i];
@@ -165,7 +165,7 @@ class PlayerObj extends TankObj {
 				break;
 			// 定时
 			case 5:
-				oAud.miscSound.play();
+				bPC && oAud.miscSound.play();
 				oEnemy.bMoveAble = false;            // 所有的NPC坦克都被定住，不会移动也不会发射子弹
 				iTimerDelay = 800;                   // 800个循环后NPC重新开始运动
 				break;

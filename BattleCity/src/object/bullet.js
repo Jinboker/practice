@@ -100,7 +100,7 @@ class BulletObj extends MoverObj {
 			  case 2:
 				  if (!that.iBulletType) {
 					  (oPlayer.iRank === 3) && clearBigBarrier();
-					  oAud.attOver.play();
+					  bPC && oAud.attOver.play();
 				  }
 				  return false;
 				  break;
@@ -289,13 +289,13 @@ class BulletObj extends MoverObj {
 	// 坦克被子弹击中的小爆炸
 	hitTankSmallBoom(obj){
 		aSmallExplode.push(new SmallExplode(obj.x + 16, obj.y + 16, obj.iDir));
-		oAud.attOver.play();
+		bPC && oAud.attOver.play();
 		obj.iType --;
 	}
 
 	// 坦克被子弹击中的大爆炸
 	hitTankBigBoom(obj){
-		oAud.explode.play();
+		bPC && oAud.explode.play();
 		aBigExplode.push(new BigExplode(obj.x + 16, obj.y + 16, obj.iDir));
 		obj.bAlive = false;              // 坦克死亡
 		obj.bBorned = false;             // 坦克未出生
