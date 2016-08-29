@@ -14,7 +14,7 @@ function init() {
 	cxt.misc.font = "15px prstart";
 
 	// 键盘按下事件函数
-	keyInit();
+	keyEvent();
 
 	// UI初始化
 	oClass.ui.init();
@@ -39,7 +39,7 @@ function gameLoop() {
 		drawBullet();                      // 绘制子弹
 		bonus();                           // 绘制奖励及处理玩家吃掉奖励后的游戏变化
 	}
-	
+
 	// 循环执行函数
 	requestAnimFrame(gameLoop);
 }

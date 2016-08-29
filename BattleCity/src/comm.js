@@ -109,7 +109,7 @@ let bChangeMap = false;                         //看进入地图编辑模式后
 
 // 游戏控制
 let keyPressed = false;                         // 是否有按键被按下
-let keyInfo    = new Array(88);
+let keyInfo    = [88];
 let keyCode    = null;
 let keyDir_1   = 87;
 let keyDir_2   = null;
