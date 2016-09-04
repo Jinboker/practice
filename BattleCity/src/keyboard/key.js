@@ -67,6 +67,7 @@ function keyUp(iKeyVal) {
  */
 function eventBind(num, ...aEv) {
 	for (let i = 0; i < 2; i++) {
+		// PC端
 		if (num) {
 			addEventListener(aEv[i], function (ev) {
 				keyCode = ev.keyCode;
@@ -75,18 +76,13 @@ function eventBind(num, ...aEv) {
 					(ev.type === 'keydown') ? keyDown(keyCode) : keyUp(keyCode);
 				}
 			}, false);
+		// 移动端
 		} else {
 			oVirtualKey.addEventListener(aEv[i], function (ev) {
 				// 禁止btn上的click事件
 				ev.preventDefault();
 				keyCode = +ev.target.getAttribute('value');
-				if (ev.type === 'touchstart') {
-					keyDown(keyCode);
-
-				} else {
-					keyUp(keyCode);
-				}
-				// (ev.type === 'touchstart') ? keyDown(keyCode) : keyUp(keyCode);
+				(ev.type === 'touchstart') ? keyDown(keyCode) : keyUp(keyCode);
 			}, false);
 		}
 	}
