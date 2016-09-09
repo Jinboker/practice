@@ -55,9 +55,5 @@ body {
     margin-top: -300px;
     width: 100%;
     height: 600px;
-    
-    /*position: relative;
-    height: 100%;
-    width: 100%;*/
 }
 </style>

@@ -4,6 +4,7 @@
         <li class="photo-list "
             v-for="imgData in ImgDatas"
             :class="{ 'photo-center': centerClass === $index, 'photo-turn-back': turnClass === $index }"
+            :style="imgData.posi"
             @click="turnOver($index, $event)"
         >
             <div class="photo-turn">
@@ -31,9 +32,14 @@ for (let i = 0; i < ImgDatas.length; i++) {
 
 // 重置所有图片的位置
 function resPosi() {
-    console.log(1);
+    for (let i = 0, len = ImgDatas.length; i < len; i++) {
+        ImgDatas[i].posi = {
+            top: parseInt(Math.random() * 200) + 'px',
+            left: parseInt(Math.random() * 1000) + 'px'
+        }
+    }
 }
-
+resPosi();
 // 计算左右分区的范围
 function range() {
 
