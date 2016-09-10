@@ -1,10 +1,9 @@
 <template>
     <div class="content">
-        <img-sec></img-sec>
-        <controller-nav></controller-nav>
+        <img-sec v-bind:center-class="one" v-bind:turn-class="two"></img-sec>
+        <controller-nav v-bind:center-class="one" v-bind:turn-class="two"></controller-nav>
     </div>
 </template>
-
 <script>
 
 import ImgSec from './components/ImgSec.vue'
@@ -14,6 +13,20 @@ export default {
     components: {
         "img-sec": ImgSec,
         "controller-nav": ConNav
+    },
+    data() {
+        return {
+            one: 0,
+            two: null
+        }
+    },
+    events: {
+        'clickOne': function (index) {
+            this.one = index;
+        },
+        'clickTwo': function (index) {
+            this.two = index;
+        }
     }
 }
 

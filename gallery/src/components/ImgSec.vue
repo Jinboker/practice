@@ -5,7 +5,7 @@
             v-for="imgData in ImgDatas"
             :class="{ 'photo-center': centerClass === $index, 'photo-turn-back': turnClass === $index }"
             :style="imgData.posi"
-            @click="turnOver($index, $event)"
+            @click="turnOver($index)"
         >
             <div class="photo-turn">
                 <div class="side side-front">
@@ -31,43 +31,48 @@ for (let i = 0; i < ImgDatas.length; i++) {
 }
 
 // 重置所有图片的位置
-function resPosi() {
+function resPosi(index) {
     for (let i = 0, len = ImgDatas.length; i < len; i++) {
-        ImgDatas[i].posi = {
-            top: parseInt(Math.random() * 200) + 'px',
-            left: parseInt(Math.random() * 1000) + 'px'
+        if (i === index) {
+            ImgDatas[i].posi = null;
+        } else {
+            ImgDatas[i].posi = {
+                top: parseInt(Math.random() * 200) + 'px',
+                left: parseInt(Math.random() * 1800 - 200) + 'px',
+                transform: 'rotate(' + parseInt(Math.random()*360) + 'deg)'
+            }
         }
     }
 }
-resPosi();
-// 计算左右分区的范围
-function range() {
-
-}
+resPosi(0);
 
 export default {
     data() {
         return {
-            ImgDatas,
-            centerClass: 0,
-            turnClass: null
+            ImgDatas
+        }
+    },
+    props: ['centerClass', 'turnClass'],
+    watch: {
+        'turnClass': function () {
+            this.$dispatch('clickTwo', this.turnClass);
+        },
+        'centerClass': function () {
+            this.turnClass = null;
+            this.$dispatch('clickOne', this.centerClass);
+            resPosi(this.centerClass);
         }
     },
     methods: {
-        turnOver(iIndex, ev) {
+        turnOver(iIndex) {
             if (this.centerClass === iIndex) {
-                // 当前显示的图片的翻转
                 this.turnClass = (this.turnClass === iIndex) ? null : iIndex;
             } else {
-                // 全部图片位置重置
                 this.centerClass = iIndex;
-                this.turnClass = null;
-                resPosi();
             }
         }
     }
 };
-
 </script>
 
 <style lang="css">

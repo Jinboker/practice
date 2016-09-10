@@ -1,8 +1,8 @@
 <template lang="html">
 <ul class="controller-nav">
     <li v-for="navStatus in aNavStatus"
-        v-bind:class="{ 'nav-current': i === $index, 'nav-turn-back': turnClass === $index }"
-        v-on:click="turnOver($index, $event)"
+        v-bind:class="{ 'nav-current': centerClass === $index, 'nav-turn-back': turnClass === $index }"
+        v-on:click="turnOver($index)"
     ></li>
 </ul>
 </template>
@@ -19,18 +19,25 @@ for (let i = 0; i < 16; i++) {
 export default {
     data() {
         return {
-            aNavStatus,
-            i: 0,
-            turnClass: null
+            aNavStatus
+        }
+    },
+    props: ['centerClass', 'turnClass'],
+    watch: {
+        'turnClass': function () {
+            this.$dispatch('clickTwo', this.turnClass);
+        },
+        'centerClass': function () {
+            this.turnClass = null;
+            this.$dispatch('clickOne', this.centerClass);
         }
     },
     methods: {
-        turnOver(iIndex, ev) {
-            if (this.i === iIndex) {
+        turnOver(iIndex) {
+            if (this.centerClass === iIndex) {
                 this.turnClass = (this.turnClass === iIndex) ? null : iIndex;
             } else {
-                this.i = iIndex;
-                this.turnClass = null;
+                this.centerClass = iIndex;
             }
         }
     }
