@@ -1,4 +1,1 @@
-# game
-demo
-
-BattleCity: 85版本坦克大战
+自己写的游戏。。。
