@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/jinboker/game-simulator/issues"
   },
-  "homepage": "https://github.com/jinboker/game-simulator#readme"
+  "homepage": "https://github.com/jinboker/game-simulator#readme",
+  "devDependencies": {
+    "webpack": "^1.13.3"
+  }
 }
