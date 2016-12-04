@@ -1,4 +1,5 @@
 let webpack = require('webpack');
+let HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: __dirname + '/src/main.ts',
@@ -31,6 +32,9 @@ module.exports = {
     // 这个插件是用来添加头部信息的
     new webpack.BannerPlugin("Copyright Flying Unicorns inc."),
     // 压缩代码
-    new webpack.optimize.UglifyJsPlugin()
+    new webpack.optimize.UglifyJsPlugin(),
+    new HtmlWebpackPlugin({
+      template: __dirname + "/index.tpl"
+    })
   ]
 }
