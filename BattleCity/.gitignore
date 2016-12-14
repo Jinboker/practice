@@ -1,0 +1,15 @@
+*.log
+
+npm-debug.log
+
+.cache
+
+.DS_Store
+
+.idea
+
+build
+
+node_modules
+
+dist

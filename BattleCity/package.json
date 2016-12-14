@@ -1,0 +1,19 @@
+{
+  "name": "battle-city",
+  "version": "1.0.0",
+  "description": "FC game BattleCity",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jinboker",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "^6.20.0",
+    "babel-preset-es2015": "^6.18.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-to-base64": "^1.0.3",
+    "typescript": "^2.1.4"
+  }
+}
