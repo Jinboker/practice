@@ -9,6 +9,7 @@ const babel = require('gulp-babel');
 const autoprefixer = require('gulp-autoprefixer');
 const sass = require('gulp-sass');
 const eslint = require('gulp-eslint');
+const htmlmin = require('gulp-htmlmin');
 // const toBase64 = require('gulp-to-base64');
 
 gulp.task('connect', function () {
@@ -19,14 +20,16 @@ gulp.task('connect', function () {
 
 gulp.task('minify', function () {
   gulp.src('src/entry.js')
-    .pipe(webpack(require('./webpack.config.js')))
     .pipe(eslint())
+    .pipe(webpack(require('./webpack.config.js')))
+    .pipe(uglify())
     .pipe(gulp.dest('dist'))
     .pipe(connect.reload());
 });
 
 gulp.task('html', function () {
   gulp.src('src/index.html')
+    .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest('dist'))
     .pipe(connect.reload());
 });
@@ -47,3 +50,9 @@ gulp.task('watch', function () {
 });
 
 gulp.task('default', [ 'minify', 'html', 'sass', 'watch', 'connect']);
+
+gulp.task('merge', () => {
+  return gulp.src('dist/index.html')
+    .pipe(inlinesource())
+    .pipe(gulp.dest('dist/min'));
+});

@@ -10,6 +10,11 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         query: { presets: ['es2015'] }
+      },
+      {
+        test: /\.json$/,
+        exclude: /node_modules/,
+        loader: 'json'
       }
     ]
   }
