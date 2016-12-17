@@ -1,3 +1,5 @@
-let a = 6;
-
-console.log(a);
+// 游戏入口
+window.onload = function () {
+  // init();
+  // gameLoop();
+}
