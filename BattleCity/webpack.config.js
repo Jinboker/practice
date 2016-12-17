@@ -1,17 +1,16 @@
-let webpack = require('webpack');
-let HtmlWebpackPlugin = require('html-webpack-plugin');
-
 module.exports = {
-  entry: __dirname + 'main.ts',
-
+  entry: './src/entry.js',
   output: {
-    path: __dirname + '/dist/',
-    filename: 'bundle-[hash].js'
+    filename: "bundle.js"
   },
-
   module: {
     loaders: [
-
+      {
+        loader: 'babel',
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        query: { presets: ['es2015'] }
+      }
     ]
   }
 }
