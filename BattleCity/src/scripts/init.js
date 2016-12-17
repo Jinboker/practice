@@ -1,23 +1,20 @@
 // 导入所有图片和音频的base64资源
-import res from '../asset/resource.json';
+import jRes from '../asset/resource.json';
+import { oRes } from './variable';
 
 /**
  * 初始化游戏
  */
 function init () {
-  let img = {};
+  // 存储所有的图片和音频数据对象
+  let _resKey = ['img', 'audio'];
 
-  for (let key in res.img) {
-    img[key] = document.createElement('img');
-    img[key].src = res.img[key];
-  }
-
-  let aud = {};
-
-  for (let key in res.audio) {
-    aud[key] = document.createElement('audio');
-    aud[key].src = res.audio[key];
-  }
+  _resKey.forEach((n) => {
+    for (let _key in jRes[n]) {
+      oRes[n][_key] = document.createElement(n);
+      oRes[n][_key].src = jRes[n][_key];
+    }
+  });
 }
 
 export { init };

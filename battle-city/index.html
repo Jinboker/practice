@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="user-scalable=0">
+	<title>坦克大战</title>
+	<style media="screen">
+		body {
+			margin: 0;
+			color: #87968e;
+			background-color: #660;
+			font-family: "Helvetica Neue",Helvetica,Arial,'Microsoft YaHei',sans-serif,'Lato', Calibri;
+		}
+		@font-face {
+			font-family: prstart;
+			src: url('font/prstart.ttf');
+		}
+		.game {
+			position: relative;
+			margin: 100px auto;
+			width: 530px;
+			height: 470px;
+		}
+		#text {
+			position: absolute;
+			left: -200px;
+			height: 456px;
+			width: 200px;
+		}
+		#text p {
+			font-size: 1.17em;
+			font-weight: bold;
+			padding-top: 150px;
+		}
+		#game-box-border {
+			position: absolute;
+			width: 516px;
+			height: 456px;
+			background-color: #000;
+			border: #630 solid 4px;
+		}
+		#game-box {
+			position: absolute;
+			top: 20px;
+			left: 35px;
+			width: 416px;
+			height: 416px;
+			background-color: #000;
+		}
+		#canvas-bg,
+		#canvas-misc {
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		#canvas-misc {
+			z-index: 2;
+		}
+		#canvas-role {
+			position: absolute;
+			top: 20px;
+			left: 35px;
+		}
+		.hide {
+			display: none;
+		}
+
+		/*手机平板*/
+		@media screen and (min-width: 1000px) {
+			#key {
+				display: none;
+			}
+		}
+		/*按键*/
+		#key {
+			position: absolute;
+			top: 800px;
+			left: 50%;
+			margin-left: -400px;
+			width: 800px;
+			height: 0;
+		}
+		#key button {
+			position: absolute;
+			width: 150px;
+			height: 150px;
+			border-radius: 30px;
+			outline:none;
+			color: #87968e;
+			font-size: 40px;
+		}
+		.btn_u {
+			top: 0;
+			left: 200px;
+		}
+		.btn_r {
+			top: 200px;
+			left: 400px;
+		}
+		.btn_d {
+			top: 200px;
+			left: 200px;
+		}
+		.btn_l {
+			top: 200px;
+			left: 0;
+		}
+		.btn_a {
+			top: 0;
+			right: 0;
+		}
+		.btn_b {
+			top: 250px;
+			right: 0;
+		}
+	</style>
+</head>
+<body onselectstart="return false">
+	<div class="game">
+		<div id="text">
+			<p>
+				方向键：W A S D <br><br>
+				AB键：H J <br><br>
+				可进行单人模式及自定义地图模式
+			</p>
+		</div>
+		<div id="game-box-border">
+			<div id="game-box"></div>
+			<!-- 角色层 -->
+			<canvas id="canvas-role" width="416" height="416"></canvas>
+			<!-- 背景层 -->
+			<canvas id="canvas-bg" width="516" height="456"></canvas>
+			<!-- 杂项层（包括爆炸效果等） -->
+			<canvas id="canvas-misc" width="516" height="456"></canvas>
+		</div>
+	</div>
+	<div id="key">
+		<button type="button" value="87" class="btn_u">上</button>
+		<button type="button" value="68" class="btn_r">右</button>
+		<button type="button" value="83" class="btn_d">下</button>
+		<button type="button" value="65" class="btn_l">左</button>
+		<button type="button" value="74" class="btn_a">A</button>
+		<button type="button" value="72" class="btn_b">B</button>
+	</div>
+	<!-- 提前缓存图片 -->
+	<div class="hide">
+		<img src="src/image/UI.png" id="UI">
+		<img src="src/image/myTank.png" id="myTank">
+		<img src="src/image/enemyTank.png" id="enemyTank">
+		<img src="src/image/bonus.png" id="bonus">
+		<img src="src/image/Misc.png" id="Misc">
+		<img src="src/image/brick.png" id="brick">
+		<img src="src/image/Boom.png" id="boom">
+		<img src="src/image/getScore.png" id="getScore">
+	</div>
+	<!-- 提前缓存音频文件 -->
+	<div class="hide">
+		<audio src="src/sound/bonus/life.mp3" id="life"></audio>
+		<audio src="src/sound/bonus/bomb.mp3" id="bomb"></audio>
+		<audio src="src/sound/bonus/misc.mp3" id="miscSound"></audio>
+		<audio src="src/sound/attack.mp3" id="attack"></audio>
+		<audio src="src/sound/explode.mp3" id="explode"></audio>
+		<audio src="src/sound/attackOver.mp3" id="attackOver"></audio>
+		<audio src="src/sound/pause.mp3" id="pause"></audio>
+		<audio src="src/sound/eat.mp3" id="eat"></audio>
+		<audio src="src/sound/over.mp3" id="over"></audio>
+		<audio src="src/sound/start.mp3" id="start"></audio>
+	</div>
+
+
+	<!-- 全局变量及公用函数 -->
+	<script type="text/javascript" src='src/comm.js'></script>
+
+	<!-- 键盘事件 -->
+	<script type="text/javascript" src='src/keyboard/key.js'></script>
+
+	<!-- 游戏对象相关 -->
+	<script type="text/javascript" src='src/object/explode.js'></script>
+	<script type="text/javascript" src='src/object/bonus.js'></script>
+	<script type="text/javascript" src='src/object/mover.js'></script>
+	<script type="text/javascript" src='src/object/bullet.js'></script>
+	<script type="text/javascript" src='src/object/tank.js'></script>
+	<script type="text/javascript" src='src/object/player.js'></script>
+	<script type="text/javascript" src='src/object/enemyTank.js'></script>
+
+	<!-- UI相关 -->
+	<script type="text/javascript" src='src/UI/UI.js'></script>
+
+	<!-- 游戏地图相关 -->
+	<script type="text/javascript" src='src/gameMap/drawMap.js'></script>
+	<script type="text/javascript" src='src/gameMap/mapEditor.js'></script>
+	<script type="text/javascript" src='src/gameMap/mapData.js'></script>
+	<script type="text/javascript" src='src/gameMap/misc.js'></script>
+
+	<!-- 游戏入口 -->
+	<script type="text/javascript" src='src/gameLoader.js'></script>
+</body>
+</html>
