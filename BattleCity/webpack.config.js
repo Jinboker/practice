@@ -1,20 +1,22 @@
 module.exports = {
-  entry: './src/entry.js',
+  entry: './src/entry.ts',
   output: {
     filename: "bundle.js"
+  },
+  resolve: {
+    extensions: ['', '.webpack.js', '.web.js', '.ts', '.tsx', '.js', '.json']
   },
   module: {
     loaders: [
       {
-        loader: 'babel',
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        query: { presets: ['es2015'] }
-      },
-      {
         test: /\.json$/,
         exclude: /node_modules/,
         loader: 'json'
+      },
+      {
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        loader: "babel-loader?presets[]=es2015!ts-loader"
       }
     ]
   }
