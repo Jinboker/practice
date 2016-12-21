@@ -1,5 +1,3 @@
-import { init } from './script/init';
+import { startGame } from './script/start';
 
-window.onload = () => {
-  init();
-};
+(() => startGame())();
