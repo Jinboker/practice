@@ -1,8 +1,5 @@
 import { init } from './scripts/init';
 
-// 游戏入口
-window.onload = function () {
+window.onload = () => {
   init();
-  console.log(typeof init);
-  // gameLoop();
-}
+};

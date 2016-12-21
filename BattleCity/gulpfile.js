@@ -19,10 +19,10 @@ gulp.task('connect', function () {
 });
 
 gulp.task('minify', function () {
-  gulp.src('src/entry.ts')
+  gulp.src('src/entry.js')
     .pipe(eslint())
     .pipe(webpack(require('./webpack.config.js')))
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(gulp.dest('dist'))
     .pipe(connect.reload());
 });
@@ -45,7 +45,7 @@ gulp.task('sass', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch('src/**/*.ts', ['minify']);
+  gulp.watch('src/**/*.js', ['minify']);
   gulp.watch('src/style/*.scss', ['sass']);
 });
 

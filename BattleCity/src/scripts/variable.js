@@ -1,7 +1,7 @@
 // 所有的图片和音频存储在此
-let oRes = {
+let res = {
   img: {},
   audio: {}
 }
 
-export { oRes };
+export { res };
