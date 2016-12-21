@@ -14,7 +14,8 @@ const htmlmin = require('gulp-htmlmin');
 
 gulp.task('connect', function () {
   connect.server({
-    livereload: true
+    livereload: true,
+    port: 1111
   });
 });
 

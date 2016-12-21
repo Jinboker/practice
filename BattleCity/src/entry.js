@@ -1,4 +1,4 @@
-import { init } from './scripts/init';
+import { init } from './script/init';
 
 window.onload = () => {
   init();
