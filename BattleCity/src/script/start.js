@@ -1,4 +1,5 @@
-// import { requestAnimFrame } from './comm';
+import { requestAnimFrame } from './comm';
+import { drawGame } from './drawGame';
 
 /**
  * 初始化游戏环境
@@ -8,10 +9,10 @@ function init () {
 }
 
 /**
- * 游戏主循环函数
+ * game loop fn
  */
 function loop () {
-  console.log(1);
+  drawGame();
   // requestAnimFrame(loop());
 }
 

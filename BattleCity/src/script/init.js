@@ -1,0 +1,5 @@
+function gameInit () {
+
+}
+
+export { gameInit }

@@ -1,12 +1,14 @@
-let gameState = {
-  // chooseMode, enterStage, playGame, getScore
-  gameInterfaceState: 'chooseMode',
-  // chooseStage, noChooseStage
-  enterStageState: 'chooseStage',
-  // normal, construct
-  enterGameState: '',
+let state = {
+  // mode, stage, play, over
+  gameState: 'mode',
+  // chooseAble, noChoose
+  stageState: 'choose',
+  // fight, construct
+  playState: '',
   // nextStage, gameOver
-  getScoreState: ''
+  overState: ''
 };
 
-export { gameState };
+
+
+export { state };

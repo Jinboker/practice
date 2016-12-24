@@ -30,7 +30,10 @@ gulp.task('minify', function () {
 
 gulp.task('html', function () {
   gulp.src('src/index.html')
-    .pipe(htmlmin({collapseWhitespace: true}))
+    .pipe(htmlmin({
+      collapseWhitespace: true,
+      removeComments: true
+    }))
     .pipe(gulp.dest('dist'))
     .pipe(connect.reload());
 });

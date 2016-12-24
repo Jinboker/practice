@@ -1,31 +1,39 @@
-import { gameState } from './var';
+import { state } from './var';
 
 /**
- * enable to choose stage
+ * start new game
  */
-function chooseStage (able) {
-  if (gameState.enterStageState !== able) {
-    gameState.enterStageState = able;
-  }
+function newGame () {
+  state.gameState = 'mode';
 }
 
 /**
- * enter game interface, prepare to render map
- * @param [mode] play mode or construct mode
+ * enter stage interface
+ * @param [chooseAble] [boolean] enable to choose stage
  */
-function enterGame (mode) {
+function enterStage (chooseAble) {
+  state.gameState = 'stage';
+  state.stageState = chooseAble;
+}
+
+/**
+ * enter game interface and render map
+ * @param [mode] [string] fight mode or construct mode
+ */
+function playGame (mode) {
   if (mode === 'construct') {
+    state.playGameState = mode;
     return ;
   }
 }
 
 /**
  * enter score interface, if game over ,restart game
- * @param [gameOver] whether game over
+ * @param [gameOver] [boolean] whether game over
  */
-function getScore (gameOver) {
-  if (gameOver === 'gameOver') {
-    gameState.getScoreState = 'gameOver';
+function over (gameOver) {
+  if (gameOver) {
+    state.getScoreState = 'gameOver';
     return ;
   }
 }
@@ -33,9 +41,10 @@ function getScore (gameOver) {
 let stateCtr = (() => {
   let operations = {};
 
-  operations.enterGame = mode => enterGame(mode);
-  operations.getScore = gameOver => getScore(gameOver);
-  operations.enterStage = able => chooseStage(able);
+  operations.newGame = () => newGame();
+  operations.enterStage = chooseAble => enterStage(chooseAble);
+  operations.playGame = mode => playGame(mode);
+  operations.getScore = gameOver => over(gameOver);
 
   let ReceiveMessage = (...arg) => {
     let msg = Array.prototype.shift.call(arg);

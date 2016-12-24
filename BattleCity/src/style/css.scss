@@ -1,24 +1,50 @@
-html, body, div {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font: inherit;
-  font-size: 100%;
-  vertical-align: baseline;
-}
-
-html {
-  line-height: 1;
-}
-
-body {
-  color: #87968e;
-  font-family: prstart;
-}
-
 @font-face {
   font-family: prstart;
   src: url('../asset/font/prstart.ttf');
 }
+
+html, body, div {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  font-family: prstart;
+  font-size: 15px;
+  color: #000;
+}
+
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #eef6e7;
+  overflow: hidden;
+}
+
+@media only screen and (min-width: 768px) {
+  #game {
+    top: 50%;
+    width: 516px;
+    height: 456px;
+    margin: 0 auto;
+    transform: translate(0, -50%);
+  }
+}
+
+#game {
+  position: relative;
+
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: black;
+  }
+}
+
 
 
