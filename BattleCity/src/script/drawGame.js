@@ -1,6 +1,62 @@
 import { state } from './var';
+import { res } from './data';
+import { can, W, S, H, inputKey } from './var';
+import { delay } from './comm';
+
+const DELAY_TOTAL_COUNT = 5;
+
+let cxt = can.cxt;
+let delayNum = 5;
+let drawModeParam = {
+  getToTop: false,
+  frameY: cxt.h,
+  pointY: 285,
+  wheelPicX: 0
+};
 
 function drawMode () {
+  if (drawModeParam.getToTop) {
+    if (inputKey.hasPressed) {
+      inputKey.hasPressed = false;
+      switch (true) {
+        case inputKey[W]:
+          console.log(W);
+          break;
+        case inputKey[S]:
+          console.log(S);
+          break;
+        case inputKey[H]:
+          console.log(H);
+          break;
+        default:
+          break;
+      }
+    }
+
+    delayNum = delay(delayNum, DELAY_TOTAL_COUNT, () => {
+      drawModeParam.wheelPicX = (+!drawModeParam.wheelPicX) * 32;
+    });
+    cxt.bg.clearRect(140, 260, 32, 120);
+    cxt.bg.drawImage(res.img.player, 0,  64 + drawModeParam.wheelPicX, 32, 32, 140, drawModeParam.pointY, 32, 32);
+  } else {
+    drawModeParam.frameY -= 3;
+    cxt.bg.save();
+    cxt.bg.fillStyle = "white";
+    cxt.bg.clearRect(0, 0, cxt.w, cxt.h);
+    cxt.bg.fillText("I-         00   HI-20000", 70, drawModeParam.frameY);
+    cxt.bg.fillText("1 PLAYER", 190, drawModeParam.frameY + 220);
+    cxt.bg.fillText("2 PLAYERS", 190, drawModeParam.frameY + 250);
+    cxt.bg.fillText("CONSTRUCTION", 190, drawModeParam.frameY + 280);
+    cxt.bg.drawImage(res.img.ui, 0, 0, 376, 160, 70, drawModeParam.frameY + 25, 376, 160);
+    cxt.bg.restore();
+  }
+
+  if (drawModeParam.frameY <= 75) {
+    drawModeParam.getToTop = true;
+  }
+}
+
+let drawStageParam = {
 
 }
 
@@ -8,9 +64,17 @@ function drawStage () {
 
 }
 
+let drawPlayParam = {
+
+};
+
 function drawPlay () {
 
 }
+
+let drawOverParam = {
+
+};
 
 function drawOver () {
 

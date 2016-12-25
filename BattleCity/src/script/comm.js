@@ -1,6 +1,3 @@
-/**
- * 动画回调函数
- */
 const requestAnimFrame = (function() {
   return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
     function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
@@ -8,4 +5,15 @@ const requestAnimFrame = (function() {
     };
 })();
 
-export { requestAnimFrame };
+function delay (count, totalCount, fn) {
+  if (count) {
+    count--;
+  } else {
+    count = totalCount;
+    fn();
+  }
+
+  return count;
+}
+
+export { requestAnimFrame, delay };
