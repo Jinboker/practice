@@ -41,6 +41,7 @@ const J = 74;
 // which key has been pressed
 let inputKey = {
   hasPressed: false,
+  pressedKeyCode: null,
   [W]: false,
   [A]: false,
   [S]: false,

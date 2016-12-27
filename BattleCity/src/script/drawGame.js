@@ -3,10 +3,10 @@ import { res } from './data';
 import { can, W, S, H, inputKey } from './var';
 import { delay } from './comm';
 
-const DELAY_TOTAL_COUNT = 5;
+const DELAY_TOTAL_COUNT = 8;
 
 let cxt = can.cxt;
-let delayNum = 5;
+let delayNum = DELAY_TOTAL_COUNT;
 let drawModeParam = {
   getToTop: false,
   frameY: cxt.h,
@@ -16,21 +16,8 @@ let drawModeParam = {
 
 function drawMode () {
   if (drawModeParam.getToTop) {
-    if (inputKey.hasPressed) {
-      inputKey.hasPressed = false;
-      switch (true) {
-        case inputKey[W]:
-          console.log(W);
-          break;
-        case inputKey[S]:
-          console.log(S);
-          break;
-        case inputKey[H]:
-          console.log(H);
-          break;
-        default:
-          break;
-      }
+    switch(true) {
+
     }
 
     delayNum = delay(delayNum, DELAY_TOTAL_COUNT, () => {
@@ -39,7 +26,9 @@ function drawMode () {
     cxt.bg.clearRect(140, 260, 32, 120);
     cxt.bg.drawImage(res.img.player, 0,  64 + drawModeParam.wheelPicX, 32, 32, 140, drawModeParam.pointY, 32, 32);
   } else {
-    drawModeParam.frameY -= 3;
+    // if press key H, then frame change to top
+    inputKey[H] ? drawModeParam.frameY = 75 : drawModeParam.frameY -= 3;
+
     cxt.bg.save();
     cxt.bg.fillStyle = "white";
     cxt.bg.clearRect(0, 0, cxt.w, cxt.h);
