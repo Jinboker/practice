@@ -21,6 +21,7 @@ function enterStage (chooseAble) {
  * @param [mode] [string] fight mode or construct mode
  */
 function playGame (mode) {
+  state.gameState = 'play';
   if (mode === 'construct') {
     state.playGameState = mode;
     return ;

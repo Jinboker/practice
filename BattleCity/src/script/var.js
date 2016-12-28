@@ -2,8 +2,7 @@
 let state = {
   // mode, stage, play, over
   gameState: 'mode',
-  // chooseAble, noChoose
-  stageState: 'choose',
+  changeStageAble: true,
   // fight, construct
   playState: '',
   // nextStage, gameOver
@@ -50,4 +49,9 @@ let inputKey = {
   [J]: false
 };
 
-export { state, can, W, A, S, D, H, J, inputKey };
+let game = {
+  stage: 1,
+  maxStage: 10
+};
+
+export { state, can, inputKey, game };

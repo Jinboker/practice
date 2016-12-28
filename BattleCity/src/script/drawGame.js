@@ -1,32 +1,65 @@
 import { state } from './var';
 import { res } from './data';
-import { can, W, S, H, inputKey } from './var';
-import { delay } from './comm';
+import { can, inputKey, game } from './var';
+import { delay, doPressKeyFn, resetObj } from './comm';
+import { stateCtr } from './stateControl';
 
+const W = 87;
+const S = 83;
+const H = 72;
 const DELAY_TOTAL_COUNT = 8;
 
 let cxt = can.cxt;
 let delayNum = DELAY_TOTAL_COUNT;
+
+// draw mode
+const MIN_POINT_Y = 285;
+const MAX_POINT_Y = 345;
+
 let drawModeParam = {
   getToTop: false,
   frameY: cxt.h,
-  pointY: 285,
+  pointY: MIN_POINT_Y,
   wheelPicX: 0
 };
 
+drawModeParam[W] = () => {
+  drawModeParam.pointY > MIN_POINT_Y
+    ? drawModeParam.pointY -= 30
+    : drawModeParam.pointY = MAX_POINT_Y;
+};
+drawModeParam[S] = () => {
+  drawModeParam.pointY < MAX_POINT_Y
+    ? drawModeParam.pointY += 30
+    : drawModeParam.pointY = MIN_POINT_Y;
+};
+drawModeParam[H] = () => {
+  let mode = (drawModeParam.pointY - MIN_POINT_Y) / 30 === 2
+    ? ['playGame', 'construct']
+    : ['enterStage', true];
+
+  stateCtr.ReceiveMessage(...mode);
+};
+
+function initDrawParam () {
+  let keyArr = ['getToTop', 'frameY', 'pointY'];
+  let valArr = [false, cxt.h, MIN_POINT_Y];
+
+  drawModeParam = resetObj(keyArr, valArr, drawModeParam);
+}
+
 function drawMode () {
   if (drawModeParam.getToTop) {
-    switch(true) {
-
-    }
+    doPressKeyFn(drawModeParam);
 
     delayNum = delay(delayNum, DELAY_TOTAL_COUNT, () => {
       drawModeParam.wheelPicX = (+!drawModeParam.wheelPicX) * 32;
     });
+
     cxt.bg.clearRect(140, 260, 32, 120);
     cxt.bg.drawImage(res.img.player, 0,  64 + drawModeParam.wheelPicX, 32, 32, 140, drawModeParam.pointY, 32, 32);
   } else {
-    // if press key H, then frame change to top
+    // if press key H, move to top
     inputKey[H] ? drawModeParam.frameY = 75 : drawModeParam.frameY -= 3;
 
     cxt.bg.save();
@@ -42,15 +75,54 @@ function drawMode () {
 
   if (drawModeParam.frameY <= 75) {
     drawModeParam.getToTop = true;
+    inputKey.hasPressed = false;
   }
 }
 
+// draw stage
 let drawStageParam = {
+  process: 0,
+  halfCurtain: 0
+};
 
+drawStageParam[W] = () => {
+  game.stage = game.stage > 1 ? game.stage-- : game.maxStage;
+};
+drawStageParam[S] = () => {
+  game.stage = game.stage < game.maxStage ? game.stage++ : 1;
+};
+drawStageParam[H] = () => {
+  console.log(1);
+};
+
+function initDrawStageParam () {
+  drawStageParam = {
+  };
 }
 
 function drawStage () {
+  switch (drawStageParam.process) {
+    case 0:
+      cxt.bg.save();
+      cxt.bg.fillStyle = '#666';
+      cxt.bg.fillRect(0, 0, cxt.w, drawStageParam.halfCurtain);
+      cxt.bg.fillRect(0, cxt.h - drawStageParam.halfCurtain, cxt.w, drawStageParam.halfCurtain);
+      cxt.bg.restore();
 
+      drawStageParam.halfCurtain <= 228
+        ? drawStageParam.halfCurtain += 15
+        : drawStageParam.process = 1;
+      break;
+    case 1:
+      cxt.misc.save();
+      cxt.misc.clearRect(0, 0, cxt.w, cxt.h);
+      cxt.misc.fillText(`STAGE  ${game.stage}`, 180, 218);
+      cxt.misc.restore();
+
+      state.changeStageAble && doPressKeyFn(drawStageParam);
+      break;
+    default: break;
+  }
 }
 
 let drawPlayParam = {
@@ -58,7 +130,7 @@ let drawPlayParam = {
 };
 
 function drawPlay () {
-
+  console.log(2);
 }
 
 let drawOverParam = {

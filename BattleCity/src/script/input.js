@@ -2,6 +2,7 @@ import { inputKey } from './var';
 
 function keyDown (key) {
   if (!inputKey[key]) {
+    inputKey.hasPressed = true;
     inputKey.pressedKeyCode = key;
     inputKey[key] = true;
   }
