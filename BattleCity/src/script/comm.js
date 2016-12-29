@@ -25,11 +25,10 @@ function doPressKeyFn (pressKeyObj) {
   }
 }
 
-function resetObj (arr_1, arr_2, obj) {
-  arr_1.forEach((n) => {
-    obj[n] = arr_2[n];
+function initDrawParam (arr_1, arr_2, paramObj) {
+  arr_1.forEach((ele, index) => {
+    paramObj[ele] = arr_2[index];
   });
-  return obj;
 }
 
-export { requestAnimFrame, delay, doPressKeyFn, resetObj };
+export { requestAnimFrame, delay, doPressKeyFn, initDrawParam };

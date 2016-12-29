@@ -1,7 +1,7 @@
 import { state } from './var';
 import { res } from './data';
 import { can, inputKey, game } from './var';
-import { delay, doPressKeyFn, resetObj } from './comm';
+import { delay, doPressKeyFn, initDrawParam } from './comm';
 import { stateCtr } from './stateControl';
 
 const W = 87;
@@ -12,7 +12,7 @@ const DELAY_TOTAL_COUNT = 8;
 let cxt = can.cxt;
 let delayNum = DELAY_TOTAL_COUNT;
 
-// draw mode
+/**************************** draw mode ***********************************/
 const MIN_POINT_Y = 285;
 const MAX_POINT_Y = 345;
 
@@ -41,11 +41,11 @@ drawModeParam[H] = () => {
   stateCtr.ReceiveMessage(...mode);
 };
 
-function initDrawParam () {
+function initDrawModeParam () {
   let keyArr = ['getToTop', 'frameY', 'pointY'];
   let valArr = [false, cxt.h, MIN_POINT_Y];
 
-  drawModeParam = resetObj(keyArr, valArr, drawModeParam);
+  initDrawParam(keyArr, valArr, drawModeParam);
 }
 
 function drawMode () {
@@ -79,7 +79,9 @@ function drawMode () {
   }
 }
 
-// draw stage
+/**************************** draw stage ***********************************/
+const HALF_CURTAIN = cxt.h / 2;
+
 let drawStageParam = {
   process: 0,
   halfCurtain: 0
@@ -92,7 +94,7 @@ drawStageParam[S] = () => {
   game.stage = game.stage < game.maxStage ? game.stage++ : 1;
 };
 drawStageParam[H] = () => {
-  console.log(1);
+  drawStageParam.process = 2;
 };
 
 function initDrawStageParam () {
@@ -109,7 +111,7 @@ function drawStage () {
       cxt.bg.fillRect(0, cxt.h - drawStageParam.halfCurtain, cxt.w, drawStageParam.halfCurtain);
       cxt.bg.restore();
 
-      drawStageParam.halfCurtain <= 228
+      drawStageParam.halfCurtain <= HALF_CURTAIN
         ? drawStageParam.halfCurtain += 15
         : drawStageParam.process = 1;
       break;
@@ -121,10 +123,11 @@ function drawStage () {
 
       state.changeStageAble && doPressKeyFn(drawStageParam);
       break;
-    default: break;
+    default: break;;
   }
 }
 
+/**************************** draw play ***********************************/
 let drawPlayParam = {
 
 };
@@ -133,6 +136,7 @@ function drawPlay () {
   console.log(2);
 }
 
+/**************************** draw over ***********************************/
 let drawOverParam = {
 
 };
@@ -141,6 +145,7 @@ function drawOver () {
 
 }
 
+/**************************** draw game ***********************************/
 function drawGame () {
   switch (state.gameState) {
     case 'mode': drawMode(); break;
