@@ -3,6 +3,7 @@ import { res } from './data';
 import { can, inputKey, game } from './var';
 import { delay, doPressKeyFn, initDrawParam } from './comm';
 import { stateCtr } from './stateControl';
+import { drawMap } from './map';
 
 const W = 87;
 const S = 83;
@@ -122,6 +123,9 @@ function drawStage () {
       cxt.misc.restore();
 
       state.changeStageAble && doPressKeyFn(drawStageParam);
+      break;
+    case 2:
+      drawMap(game.stage - 1);
       break;
     default: break;;
   }
