@@ -9,6 +9,8 @@ const W = 87;
 const S = 83;
 const H = 72;
 const DELAY_TOTAL_COUNT = 8;
+const PLAY_SCREEN_OFFSET_X = 35;
+const PLAY_SCREEN_OFFSET_Y = 20;
 
 let cxt = can.cxt;
 let delayNum = DELAY_TOTAL_COUNT;
@@ -95,12 +97,23 @@ drawStageParam[S] = () => {
   game.stage = game.stage < game.maxStage ? game.stage++ : 1;
 };
 drawStageParam[H] = () => {
+  drawMap(game.stage - 1);
+  changeBgBeforeEnterPlay();
   drawStageParam.process = 2;
 };
 
 function initDrawStageParam () {
   drawStageParam = {
   };
+}
+
+function changeBgBeforeEnterPlay () {
+  cxt.bg.clearRect(PLAY_SCREEN_OFFSET_X, PLAY_SCREEN_OFFSET_Y, game.playScreenL, game.playScreenL);
+  cxt.misc.save();
+  cxt.misc.clearRect(0, 0, cxt.w, cxt.h);
+  cxt.misc.fillStyle = '#666';
+  cxt.misc.fillRect(0, 0, cxt.w, cxt.h);
+  cxt.misc.restore();
 }
 
 function drawStage () {
@@ -117,15 +130,17 @@ function drawStage () {
         : drawStageParam.process = 1;
       break;
     case 1:
-      cxt.misc.save();
       cxt.misc.clearRect(0, 0, cxt.w, cxt.h);
       cxt.misc.fillText(`STAGE  ${game.stage}`, 180, 218);
-      cxt.misc.restore();
 
-      state.changeStageAble && doPressKeyFn(drawStageParam);
+      if (state.changeStageAble) {
+        doPressKeyFn(drawStageParam);
+      } else {
+
+      }
       break;
     case 2:
-      drawMap(game.stage - 1);
+
       break;
     default: break;;
   }

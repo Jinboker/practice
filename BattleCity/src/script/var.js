@@ -50,6 +50,7 @@ let inputKey = {
 };
 
 let game = {
+  playScreenL: 416,
   stage: 1,
   maxStage: 10
 };
