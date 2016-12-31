@@ -1,16 +1,11 @@
 import { state } from './var';
 import { res } from './data';
-import { can, inputKey, game } from './var';
-import { delay, doPressKeyFn, initDrawParam } from './comm';
+import { can, W, S, H, inputKey, game, PLAY_OFFSET_X, PLAY_OFFSET_Y } from './var';
+import { delay, doPressKeyFn, initDrawParam, cleanCxt } from './comm';
 import { stateCtr } from './stateControl';
 import { drawMap } from './map';
 
-const W = 87;
-const S = 83;
-const H = 72;
 const DELAY_TOTAL_COUNT = 8;
-const PLAY_SCREEN_OFFSET_X = 35;
-const PLAY_SCREEN_OFFSET_Y = 20;
 
 let cxt = can.cxt;
 let delayNum = DELAY_TOTAL_COUNT;
@@ -39,9 +34,9 @@ drawModeParam[S] = () => {
 drawModeParam[H] = () => {
   let mode = (drawModeParam.pointY - MIN_POINT_Y) / 30 === 2
     ? ['playGame', 'construct']
-    : ['enterStage', true];
+    : ['enterStage', 'changeAble'];
 
-  stateCtr.ReceiveMessage(...mode);
+  stateCtr.receiveMessage(...mode);
 };
 
 function initDrawModeParam () {
@@ -53,21 +48,21 @@ function initDrawModeParam () {
 
 function drawMode () {
   if (drawModeParam.getToTop) {
-    doPressKeyFn(drawModeParam);
-
     delayNum = delay(delayNum, DELAY_TOTAL_COUNT, () => {
       drawModeParam.wheelPicX = (+!drawModeParam.wheelPicX) * 32;
     });
 
     cxt.bg.clearRect(140, 260, 32, 120);
     cxt.bg.drawImage(res.img.player, 0,  64 + drawModeParam.wheelPicX, 32, 32, 140, drawModeParam.pointY, 32, 32);
+
+    doPressKeyFn(drawModeParam);
   } else {
     // if press key H, move to top
     inputKey[H] ? drawModeParam.frameY = 75 : drawModeParam.frameY -= 3;
 
+    cleanCxt('bg');
     cxt.bg.save();
     cxt.bg.fillStyle = "white";
-    cxt.bg.clearRect(0, 0, cxt.w, cxt.h);
     cxt.bg.fillText("I-         00   HI-20000", 70, drawModeParam.frameY);
     cxt.bg.fillText("1 PLAYER", 190, drawModeParam.frameY + 220);
     cxt.bg.fillText("2 PLAYERS", 190, drawModeParam.frameY + 250);
@@ -87,33 +82,37 @@ const HALF_CURTAIN = cxt.h / 2;
 
 let drawStageParam = {
   process: 0,
-  halfCurtain: 0
+  halfCurtain: 0,
+  enterPlayDelay: 80,
+  halfPlayScreen: 0
 };
 
 drawStageParam[W] = () => {
-  game.stage = game.stage > 1 ? game.stage-- : game.maxStage;
+  game.stage = game.stage > 1 ? game.stage - 1 : game.maxStage;
 };
 drawStageParam[S] = () => {
-  game.stage = game.stage < game.maxStage ? game.stage++ : 1;
+  game.stage = game.stage < game.maxStage ? game.stage + 1 : 1;
 };
 drawStageParam[H] = () => {
-  drawMap(game.stage - 1);
-  changeBgBeforeEnterPlay();
+  res.audio.start.play();
   drawStageParam.process = 2;
 };
 
 function initDrawStageParam () {
-  drawStageParam = {
-  };
+  let keyArr = ['getToTop', 'frameY', 'pointY'];
+  let valArr = [false, cxt.h, MIN_POINT_Y];
+
+  initDrawParam(keyArr, valArr, drawStageParam);
 }
 
-function changeBgBeforeEnterPlay () {
-  cxt.bg.clearRect(PLAY_SCREEN_OFFSET_X, PLAY_SCREEN_OFFSET_Y, game.playScreenL, game.playScreenL);
+function doBeforeEnterPlay () {
+  cxt.bg.clearRect(PLAY_OFFSET_X, PLAY_OFFSET_Y, game.playScreenL, game.playScreenL);
+  cleanCxt('misc');
   cxt.misc.save();
-  cxt.misc.clearRect(0, 0, cxt.w, cxt.h);
   cxt.misc.fillStyle = '#666';
   cxt.misc.fillRect(0, 0, cxt.w, cxt.h);
   cxt.misc.restore();
+  drawMap(game.stage - 1);
 }
 
 function drawStage () {
@@ -130,17 +129,29 @@ function drawStage () {
         : drawStageParam.process = 1;
       break;
     case 1:
-      cxt.misc.clearRect(0, 0, cxt.w, cxt.h);
+      cxt.misc.clearRect(180, 210, 220, 40);
       cxt.misc.fillText(`STAGE  ${game.stage}`, 180, 218);
 
       if (state.changeStageAble) {
         doPressKeyFn(drawStageParam);
       } else {
-
+        console.log(2);
       }
       break;
     case 2:
+      drawStageParam.enterPlayDelay = delay(drawStageParam.enterPlayDelay, 80, () => {
+        doBeforeEnterPlay();
+        drawStageParam.process = 3;
+      });
+      break;
+    case 3:
+      cxt.misc.clearRect(PLAY_OFFSET_X + 208 - drawStageParam.halfPlayScreen, PLAY_OFFSET_Y, 2 * drawStageParam.halfPlayScreen, game.playScreenL);
 
+      if (drawStageParam.halfPlayScreen < 208) {
+        drawStageParam.halfPlayScreen += 15;
+      } else {
+        stateCtr.receiveMessage('playGame', 'fight');
+      }
       break;
     default: break;;
   }
@@ -151,8 +162,12 @@ let drawPlayParam = {
 
 };
 
+let delayA = 100;
+
 function drawPlay () {
-  console.log(2);
+  delayA = delay(delayA, 100, () => {
+    stateCtr.receiveMessage('thisStageOver', 'nextStage');
+  });
 }
 
 /**************************** draw over ***********************************/
@@ -161,7 +176,7 @@ let drawOverParam = {
 };
 
 function drawOver () {
-
+  console.log(1);
 }
 
 /**************************** draw game ***********************************/

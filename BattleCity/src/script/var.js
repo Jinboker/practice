@@ -1,12 +1,9 @@
 // game state
 let state = {
-  // mode, stage, play, over
-  gameState: 'mode',
-  changeStageAble: true,
-  // fight, construct
-  playState: '',
-  // nextStage, gameOver
-  overState: ''
+  gameState: 'mode',           // mode, stage, play, over
+  stageState: '',              // changeAble, noChange
+  playState: '',               // fight, construct
+  overState: ''                // nextStage, gameOver
 };
 
 // canvas
@@ -55,4 +52,10 @@ let game = {
   maxStage: 10
 };
 
-export { state, can, inputKey, game };
+const PLAY_OFFSET_X = 35;
+const PLAY_OFFSET_Y = 20;
+
+export {
+  state, can, W, A, S, D, H, J, inputKey, game,
+  PLAY_OFFSET_X, PLAY_OFFSET_Y
+};

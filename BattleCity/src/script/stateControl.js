@@ -1,4 +1,5 @@
 import { state } from './var';
+import { cleanCxt } from './comm';
 
 /**
  * start new game
@@ -9,11 +10,11 @@ function newGame () {
 
 /**
  * enter stage interface
- * @param [chooseAble] [boolean] enable to choose stage
+ * @param [mode] [string] whether could change stage
  */
-function enterStage (chooseAble) {
+function enterStage (mode) {
   state.gameState = 'stage';
-  state.stageState = chooseAble;
+  state.stageState = mode;
 }
 
 /**
@@ -22,39 +23,39 @@ function enterStage (chooseAble) {
  */
 function playGame (mode) {
   state.gameState = 'play';
+  state.playGameState = mode;
+
   if (mode === 'construct') {
-    state.playGameState = mode;
-    return ;
+    cleanCxt('bg');
   }
 }
 
 /**
  * enter score interface, if game over ,restart game
- * @param [gameOver] [boolean] whether game over
+ * @param [mode] [string] game over or next stage
  */
-function over (gameOver) {
-  if (gameOver) {
-    state.getScoreState = 'gameOver';
-    return ;
-  }
+function thisStageOver (mode) {
+  state.gameState = 'over';
+  state.getScoreState = mode;
+  cleanCxt('all');
 }
 
 let stateCtr = (() => {
   let operations = {};
 
   operations.newGame = () => newGame();
-  operations.enterStage = chooseAble => enterStage(chooseAble);
+  operations.enterStage = mode => enterStage(mode);
   operations.playGame = mode => playGame(mode);
-  operations.getScore = gameOver => over(gameOver);
+  operations.thisStageOver = mode => thisStageOver(mode);
 
-  let ReceiveMessage = (...arg) => {
+  let receiveMessage = (...arg) => {
     let msg = Array.prototype.shift.call(arg);
 
     operations[msg].apply(this, arg);
   };
 
   return {
-    ReceiveMessage: ReceiveMessage
+    receiveMessage: receiveMessage
   }
 })();
 

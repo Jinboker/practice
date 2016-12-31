@@ -1,4 +1,6 @@
-import { inputKey } from './var';
+import { inputKey, can } from './var';
+
+let cxt = can.cxt;
 
 const requestAnimFrame = (function() {
   return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
@@ -31,4 +33,12 @@ function initDrawParam (arr_1, arr_2, paramObj) {
   });
 }
 
-export { requestAnimFrame, delay, doPressKeyFn, initDrawParam };
+function cleanCxt(...type) {
+  let typeArr = type[0] === 'all' ? ['role', 'bg', 'misc'] : type;
+
+  typeArr.forEach((n) => {
+    cxt[n].clearRect(0, 0, cxt.w, cxt.h);
+  });
+}
+
+export { requestAnimFrame, delay, doPressKeyFn, initDrawParam, cleanCxt };
