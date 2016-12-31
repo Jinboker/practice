@@ -1,6 +1,5 @@
-import { inputKey, can } from './var';
-
-let cxt = can.cxt;
+import { inputKey } from './var';
+import * as CONST from './const';
 
 const requestAnimFrame = (function() {
   return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
@@ -37,7 +36,7 @@ function cleanCxt(...type) {
   let typeArr = type[0] === 'all' ? ['role', 'bg', 'misc'] : type;
 
   typeArr.forEach((n) => {
-    cxt[n].clearRect(0, 0, cxt.w, cxt.h);
+    CONST[`CXT_${n.toUpperCase()}`].clearRect(0, 0, CONST.CXT_W, CONST.CXT_H);
   });
 }
 

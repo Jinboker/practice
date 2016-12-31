@@ -1,16 +1,14 @@
-import { can } from './var';
+import { CXT_BG, CXT_MISC } from './const';
 import { keyBoardInit } from './input';
 
-let cxt = can.cxt;
-
 function gameInit () {
-  cxt.bg.font      = "15px prstart";
-  cxt.bg.fillStyle = '#000';
-  cxt.bg.textBaseline="top";
+  CXT_BG.font      = "15px prstart";
+  CXT_BG.fillStyle = '#000';
+  CXT_BG.textBaseline="top";
 
-  cxt.misc.font = "20px prstart";
-  cxt.misc.fillStyle = '#000';
-  cxt.misc.textBaseline="top";
+  CXT_MISC.font = "20px prstart";
+  CXT_MISC.fillStyle = '#000';
+  CXT_MISC.textBaseline="top";
 
   keyBoardInit(true, 'keydown', 'keyup');
 }
