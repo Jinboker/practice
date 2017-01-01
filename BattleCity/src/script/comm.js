@@ -40,4 +40,6 @@ function cleanCxt(...type) {
   });
 }
 
-export { requestAnimFrame, delay, doPressKeyFn, initDrawParam, cleanCxt };
+export {
+  requestAnimFrame, delay, doPressKeyFn, initDrawParam, cleanCxt
+};

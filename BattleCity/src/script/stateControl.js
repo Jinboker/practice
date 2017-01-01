@@ -5,7 +5,7 @@ import { cleanCxt } from './comm';
  * start new game
  */
 function newGame () {
-  state.gameState = 'mode';
+  state.gameState = 'start';
 }
 
 /**

@@ -1,6 +1,6 @@
 // game state
 let state = {
-  gameState: 'mode',           // mode, stage, play, over
+  gameState: 'start',           // start, stage, play, over
   stageState: '',              // changeAble, noChange
   playState: '',               // fight, construct
   overState: ''                // nextStage, gameOver
@@ -22,6 +22,4 @@ let game = {
   stage: 1
 };
 
-export {
-  state, inputKey, game
-};
+export { state, inputKey, game };

@@ -5,6 +5,8 @@ import { delay, doPressKeyFn, initDrawParam, cleanCxt } from './comm';
 import { stateCtr } from './stateControl';
 import { drawMap } from './map';
 
+let drawType = {};
+
 const DELAY_TOTAL_COUNT = 8;
 
 let delayNum = DELAY_TOTAL_COUNT;
@@ -13,65 +15,65 @@ let delayNum = DELAY_TOTAL_COUNT;
 const MIN_POINT_Y = 285;
 const MAX_POINT_Y = 345;
 
-let drawModeParam = {
+let drawStartParam = {
   getToTop: false,
   frameY: CXT_H,
   pointY: MIN_POINT_Y,
   wheelPicX: 0
 };
 
-drawModeParam[W] = () => {
-  drawModeParam.pointY > MIN_POINT_Y
-    ? drawModeParam.pointY -= 30
-    : drawModeParam.pointY = MAX_POINT_Y;
+drawStartParam[W] = () => {
+  drawStartParam.pointY > MIN_POINT_Y
+    ? drawStartParam.pointY -= 30
+    : drawStartParam.pointY = MAX_POINT_Y;
 };
-drawModeParam[S] = () => {
-  drawModeParam.pointY < MAX_POINT_Y
-    ? drawModeParam.pointY += 30
-    : drawModeParam.pointY = MIN_POINT_Y;
+drawStartParam[S] = () => {
+  drawStartParam.pointY < MAX_POINT_Y
+    ? drawStartParam.pointY += 30
+    : drawStartParam.pointY = MIN_POINT_Y;
 };
-drawModeParam[H] = () => {
-  let mode = (drawModeParam.pointY - MIN_POINT_Y) / 30 === 2
+drawStartParam[H] = () => {
+  let mode = (drawStartParam.pointY - MIN_POINT_Y) / 30 === 2
     ? ['playGame', 'construct']
     : ['enterStage', 'changeAble'];
 
   stateCtr.receiveMessage(...mode);
 };
 
-function initDrawModeParam () {
+function initDrawStartParam () {
   let keyArr = ['getToTop', 'frameY', 'pointY'];
   let valArr = [false, CXT_H, MIN_POINT_Y];
 
-  initDrawParam(keyArr, valArr, drawModeParam);
+  initDrawParam(keyArr, valArr, drawStartParam);
 }
 
-function drawMode () {
-  if (drawModeParam.getToTop) {
+drawType.start = () => {
+  if (drawStartParam.getToTop) {
     delayNum = delay(delayNum, DELAY_TOTAL_COUNT, () => {
-      drawModeParam.wheelPicX = (+!drawModeParam.wheelPicX) * 32;
+      drawStartParam.wheelPicX = (+!drawStartParam.wheelPicX) * 32;
     });
 
     CXT_BG.clearRect(140, 260, 32, 120);
-    CXT_BG.drawImage(res.img.player, 0,  64 + drawModeParam.wheelPicX, 32, 32, 140, drawModeParam.pointY, 32, 32);
+    CXT_BG.drawImage(res.img.player, 0,  64 + drawStartParam.wheelPicX, 32, 32, 140, drawStartParam.pointY, 32, 32);
 
-    doPressKeyFn(drawModeParam);
+    doPressKeyFn(drawStartParam);
   } else {
     // if press key H, move to top
-    inputKey[H] ? drawModeParam.frameY = 75 : drawModeParam.frameY -= 3;
+    inputKey[H] ? drawStartParam.frameY = 75 : drawStartParam.frameY -= 3;
 
     cleanCxt('bg');
     CXT_BG.save();
     CXT_BG.fillStyle = "white";
-    CXT_BG.fillText("I-         00   HI-20000", 70, drawModeParam.frameY);
-    CXT_BG.fillText("1 PLAYER", 190, drawModeParam.frameY + 220);
-    CXT_BG.fillText("2 PLAYERS", 190, drawModeParam.frameY + 250);
-    CXT_BG.fillText("CONSTRUCTION", 190, drawModeParam.frameY + 280);
-    CXT_BG.drawImage(res.img.ui, 0, 0, 376, 160, 70, drawModeParam.frameY + 25, 376, 160);
+    CXT_BG.fillText("I-         00   HI-20000", 70, drawStartParam.frameY);
+    CXT_BG.fillText("1 PLAYER", 190, drawStartParam.frameY + 220);
+    CXT_BG.fillText("2 PLAYERS", 190, drawStartParam.frameY + 250);
+    CXT_BG.fillText("CONSTRUCTION", 190, drawStartParam.frameY + 280);
+    CXT_BG.drawImage(res.img.ui, 0, 0, 376, 160, 70, drawStartParam.frameY + 25, 376, 160);
     CXT_BG.restore();
   }
 
-  if (drawModeParam.frameY <= 75) {
-    drawModeParam.getToTop = true;
+  if (drawStartParam.frameY <= 75) {
+    drawStartParam.getToTop = true;
     inputKey.hasPressed = false;
   }
 }
@@ -114,7 +116,7 @@ function doBeforeEnterPlay () {
   drawMap(game.stage - 1);
 }
 
-function drawStage () {
+drawType.stage = () => {
   switch (drawStageParam.process) {
     case 0:
       CXT_BG.save();
@@ -163,7 +165,7 @@ let drawPlayParam = {
 
 let delayA = 100;
 
-function drawPlay () {
+drawType.play = () => {
   delayA = delay(delayA, 100, () => {
     stateCtr.receiveMessage('thisStageOver', 'nextStage');
   });
@@ -174,19 +176,11 @@ let drawOverParam = {
 
 };
 
-function drawOver () {
+drawType.over = () => {
   console.log(1);
 }
 
 /**************************** draw game ***********************************/
-function drawGame () {
-  switch (state.gameState) {
-    case 'mode': drawMode(); break;
-    case 'stage': drawStage(); break;
-    case 'play': drawPlay(); break;
-    case 'over': drawOver(); break;
-    default: break;
-  }
-}
+let drawGame = () => drawType[state.gameState]();
 
 export { drawGame };
