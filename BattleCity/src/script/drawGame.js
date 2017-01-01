@@ -162,12 +162,9 @@ let drawPlayParam = {
 
 };
 
-let delayA = 100;
 
 drawType.play = () => {
-  delayA = delay(delayA, 100, () => {
-    stateCtr.receiveMessage('thisStageOver', 'nextStage');
-  });
+  console.log('play');
 }
 
 /**************************** draw over ***********************************/

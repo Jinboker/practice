@@ -1,28 +1,28 @@
-import { positionAfterMove } from '../objectFn/move';
+import { positionAfterMove } from '../factoryCommFn/move';
 import { CXT_ROLE } from '../const';
 
 class Mover {
-  constructor() {
-    this.x;
-    this.y;
-    this.direction;
+  constructor (x, y, direction) {
+    this.x = x;
+    this.y = y;
+    this.direction = direction;
+    this.moveAble = true;
     this.speed;
-    this.position = [this.x, this.y];
   }
 
-  collision(position) {
+  isCollision (position) {
 
   }
 
-  move() {
-    this.position = positionAfterMove(this.x, this.y, this.direction, this.speed);
+  move () {
+    let _position = positionAfterMove(this.x, this.y, this.direction, this.speed);
 
-    return this.collision(this.position);
+    !this.isCollision(..._position) && ([this.x, this.y] = _position);
   }
 
-  draw() {
-    !this.move() && (this.position = [this.x, this.y]);
-    CXT_ROLE.drawImage();
+  draw () {
+    this.moveAble && this.move();
+    CXT_ROLE.drawImage(...this.drawImgParam);
   }
 }
 
