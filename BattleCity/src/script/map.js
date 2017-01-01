@@ -1,6 +1,5 @@
-import { mapData } from './data';
-import { res } from './data';
-import { can } from './var';
+import { mapData, res } from './data';
+import { CXT_BG } from './const';
 
 let roadMap = (() => {
   let arr = [];
@@ -130,7 +129,7 @@ function drawMap (stage) {
     for(let j = 0; j < 13; j++){
       let dataItem = mapData[stage][i][j];
       if (dataItem) {
-        can.cxt.bg.drawImage(res.img.brick, 32 * dataItem, 0, 32, 32, 35+32*j, 20+32*i, 32, 32);
+        CXT_BG.drawImage(res.img.brick, 32 * dataItem, 0, 32, 32, 35+32*j, 20+32*i, 32, 32);
         ensureRoadMap(i, j, dataItem);
       }
     }

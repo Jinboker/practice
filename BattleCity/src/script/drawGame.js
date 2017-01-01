@@ -1,20 +1,18 @@
 import { W, S, H, CXT_BG, CXT_MISC, CXT_W, CXT_H, SCREEN_L, OFFSET_X, OFFSET_Y } from './const';
 import { state, inputKey, game } from './var';
-import { res } from './data';
+import { res, npcData } from './data';
 import { delay, doPressKeyFn, initDrawParam, cleanCxt } from './comm';
-import { stateCtr } from './stateControl';
+import { stateCtr } from './control';
 import { drawMap } from './map';
 
 let drawType = {};
 
-const DELAY_TOTAL_COUNT = 8;
-
-let delayNum = DELAY_TOTAL_COUNT;
-
 /**************************** draw mode ***********************************/
 const MIN_POINT_Y = 285;
 const MAX_POINT_Y = 345;
+const DELAY_TOTAL_COUNT = 8;
 
+let delayNum = DELAY_TOTAL_COUNT;
 let drawStartParam = {
   getToTop: false,
   frameY: CXT_H,
@@ -65,8 +63,8 @@ drawType.start = () => {
     CXT_BG.save();
     CXT_BG.fillStyle = "white";
     CXT_BG.fillText("I-         00   HI-20000", 70, drawStartParam.frameY);
-    CXT_BG.fillText("1 PLAYER", 190, drawStartParam.frameY + 220);
-    CXT_BG.fillText("2 PLAYERS", 190, drawStartParam.frameY + 250);
+    CXT_BG.fillText("NORMAL MODE", 190, drawStartParam.frameY + 220);
+    CXT_BG.fillText("CRAZY MODE", 190, drawStartParam.frameY + 250);
     CXT_BG.fillText("CONSTRUCTION", 190, drawStartParam.frameY + 280);
     CXT_BG.drawImage(res.img.ui, 0, 0, 376, 160, 70, drawStartParam.frameY + 25, 376, 160);
     CXT_BG.restore();
@@ -80,6 +78,7 @@ drawType.start = () => {
 
 /**************************** draw stage ***********************************/
 const HALF_CURTAIN = CXT_H / 2;
+const MAX_STAGE = npcData.length;
 
 let drawStageParam = {
   process: 0,
@@ -89,10 +88,10 @@ let drawStageParam = {
 };
 
 drawStageParam[W] = () => {
-  game.stage = game.stage > 1 ? game.stage - 1 : game.maxStage;
+  game.stage = game.stage > 1 ? game.stage - 1 : MAX_STAGE;
 };
 drawStageParam[S] = () => {
-  game.stage = game.stage < game.maxStage ? game.stage + 1 : 1;
+  game.stage = game.stage < MAX_STAGE ? game.stage + 1 : 1;
 };
 drawStageParam[H] = () => {
   res.audio.start.play();
@@ -133,7 +132,7 @@ drawType.stage = () => {
       CXT_MISC.clearRect(180, 210, 220, 40);
       CXT_MISC.fillText(`STAGE  ${game.stage}`, 180, 218);
 
-      if (state.changeStageAble) {
+      if (state.stageState === 'changeAble') {
         doPressKeyFn(drawStageParam);
       } else {
         console.log(2);
