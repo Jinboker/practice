@@ -24,3 +24,5 @@ export const OFFSET_X = 35;
 export const OFFSET_Y = 20;
 
 export const MAX_STAGE = 10;
+
+export const DIR = { U: 0, R: 1, D: 2, L: 3 };

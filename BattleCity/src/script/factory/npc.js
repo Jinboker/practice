@@ -6,7 +6,8 @@ let npcImg = res.img.npc;
 class Npc extends Tank {
   constructor (x, y, direction) {
     super(x, y, direction);
-    this.drawImgParam = [npcImg];
+
+    this.drawObjParam.unshift(npcImg);
   }
 }
 

@@ -6,7 +6,12 @@ let bulletImg = res.img.misc;
 class Bullet extends Mover {
   constructor (x, y, direction) {
     super(x, y, direction);
-    this.drawImgParam = [bulletImg];
+    this.drawObjParam = [bulletImg];
+  }
+
+  draw () {
+    this.move();
+    this.drawObj();
   }
 }
 
