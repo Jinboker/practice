@@ -1,5 +1,8 @@
 import { CXT_BG, CXT_MISC } from './const';
 import { keyBoardInit } from './input';
+import { obj } from './var';
+import { Player } from './factory/player';
+import { Npc } from './factory/npc';
 
 function gameInit () {
   CXT_BG.font      = "15px prstart";
@@ -13,4 +16,12 @@ function gameInit () {
   keyBoardInit(true, 'keydown', 'keyup');
 }
 
-export { gameInit }
+function objInit () {
+  obj.player = new Player(32 * 4, 32 * 12, 'U', 'player');
+  //
+  // for (let i = 0; i < 5; i++) {
+  //   obj.npc.push(new Npc());
+  // }
+}
+
+export { gameInit, objInit }

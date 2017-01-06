@@ -15,7 +15,7 @@ class Tank extends Mover {
     this.wheelPic = 0;
     this.drawObjParam = [
       this.rank * 32, DIR[direction] * 64 + this.wheelPic * 32, 32, 32,
-      this.x, this.y, 32, 32
+      this.X, this.Y, 32, 32
     ];
   }
 
@@ -23,14 +23,17 @@ class Tank extends Mover {
     if (!this.hasShield) { return; }
 
     CXT_ROLE.drawImage(
-      shieldImg, 32 + this.shieldPic * 32, 0, 32, 32, this.x, this.y, 32, 32
+      shieldImg, 32 + this.shieldPic * 32, 0, 32, 32,
+      this.X, this.Y, 32, 32
     );
   }
 
-  draw () {
-    this.move();
+  resetPosition () {
+
+  }
+
+  doBeforeDrawObj () {
     this.shield();
-    this.drawObj();
   }
 }
 

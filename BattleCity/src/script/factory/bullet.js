@@ -8,11 +8,6 @@ class Bullet extends Mover {
     super(x, y, direction);
     this.drawObjParam = [bulletImg];
   }
-
-  draw () {
-    this.move();
-    this.drawObj();
-  }
 }
 
 export { Bullet };

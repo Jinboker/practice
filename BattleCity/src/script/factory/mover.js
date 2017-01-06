@@ -3,8 +3,10 @@ import { CXT_ROLE, OFFSET_X, OFFSET_Y } from '../const';
 
 class Mover {
   constructor (x, y, direction) {
-    this.x = x + OFFSET_X;
-    this.y = y + OFFSET_Y;
+    this.x = x;
+    this.y = y;
+    this.X = x + OFFSET_X;
+    this.Y = y + OFFSET_Y;
     this.direction = direction;
     this.moveAble = true;
     this.rank = 0;
@@ -19,12 +21,16 @@ class Mover {
   move () {
     if (!this.moveAble) { return; }
 
-    let _position = positionAfterMove(this.x, this.y, this.direction, this.speed);
+    this.resetPosition();
 
-    !this.isCollision(..._position) && ([this.x, this.y] = _position);
+    let _position = positionAfterMove(this.X, this.Y, this.direction, this.speed);
+
+    !this.isCollision(..._position) && ([this.X, this.Y] = _position);
   }
 
-  drawObj () {
+  draw () {
+    this.move();
+    this.doBeforeDrawObj();
     CXT_ROLE.drawImage(...this.drawObjParam);
   }
 }

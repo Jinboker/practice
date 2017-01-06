@@ -1,9 +1,13 @@
 import { inputKey } from './var';
 import * as CONST from './const';
 
-const requestAnimFrame = (function() {
-  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
-    function( /* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
+const requestAnimFrame = (() => {
+  return window.requestAnimationFrame
+    || window.webkitRequestAnimationFrame
+    || window.mozRequestAnimationFrame
+    || window.oRequestAnimationFrame
+    || window.msRequestAnimationFrame
+    || function(callback) {
       return window.setTimeout(callback, 1000 / 60);
     };
 })();
@@ -20,7 +24,9 @@ function delay (count, totalCount, fn) {
 }
 
 function doPressKeyFn (pressKeyObj) {
-  if (inputKey.hasPressed && typeof pressKeyObj[inputKey.pressedKeyCode] === "function") {
+  if ( inputKey.hasPressed
+    && typeof pressKeyObj[inputKey.pressedKeyCode] === "function"
+  ) {
     inputKey.hasPressed = false;
     pressKeyObj[inputKey.pressedKeyCode]();
   }

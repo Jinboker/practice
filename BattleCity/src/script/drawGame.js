@@ -1,9 +1,10 @@
 import { W, S, H, CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H, SCREEN_L, OFFSET_X, OFFSET_Y } from './const';
-import { state, inputKey, game } from './var';
+import { state, inputKey, game, obj } from './var';
 import { res, npcData } from './data';
 import { delay, doPressKeyFn, initDrawParam, cleanCxt } from './comm';
 import { stateCtr } from './control';
 import { drawMap } from './map';
+import { objInit } from './init';
 
 let drawType = {};
 
@@ -151,6 +152,7 @@ drawType.stage = () => {
         drawStageParam.halfPlayScreen += 15;
       } else {
         stateCtr.receiveMessage('playGame', 'fight');
+        objInit();
       }
       break;
     default: break;;
@@ -162,10 +164,9 @@ let drawPlayParam = {
 
 };
 
-
 drawType.play = () => {
   CXT_ROLE.clearRect(OFFSET_X, OFFSET_Y, SCREEN_L, SCREEN_L);
-  console.log('play');
+  obj.player.draw();
 }
 
 /**************************** draw over ***********************************/
