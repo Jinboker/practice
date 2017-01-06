@@ -29,7 +29,13 @@ class Tank extends Mover {
   }
 
   resetPosition () {
-
+    if (this.changeDirection()) {
+      this.direction === 'R' || this.direction === 'L'
+        ? this.y = Math.round(this.y / 16) * 16
+        : this.x = Math.round(this.x / 16) * 16;
+    } else {
+      this.moveAble = false;
+    }
   }
 
   doBeforeDrawObj () {

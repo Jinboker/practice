@@ -9,7 +9,7 @@ let state = {
 // which key has been pressed
 let inputKey = {
   hasPressed: false,
-  pressedKeyCode: null,
+  pressedKey: null,
   87: false,   // W
   65: false,   // A
   83: false,   // S

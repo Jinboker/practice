@@ -1,4 +1,4 @@
-import { W, S, H, CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H, SCREEN_L, OFFSET_X, OFFSET_Y } from './const';
+import { CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H, SCREEN_L, OFFSET_X, OFFSET_Y } from './const';
 import { state, inputKey, game, obj } from './var';
 import { res, npcData } from './data';
 import { delay, doPressKeyFn, initDrawParam, cleanCxt } from './comm';

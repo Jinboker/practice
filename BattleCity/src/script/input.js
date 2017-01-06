@@ -1,9 +1,19 @@
 import { inputKey } from './var';
+import { W, A, S, D, H, J } from './const';
+
+let codeToKey = {
+  [W]: 'W',
+  [A]: 'A',
+  [S]: 'S',
+  [D]: 'D',
+  [H]: 'H',
+  [J]: 'J'
+};
 
 function keyDown (key) {
   if (!inputKey[key]) {
     inputKey.hasPressed = true;
-    inputKey.pressedKeyCode = key;
+    inputKey.pressedKey = codeToKey[key];
     inputKey[key] = true;
   }
 }

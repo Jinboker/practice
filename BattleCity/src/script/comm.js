@@ -25,10 +25,10 @@ function delay (count, totalCount, fn) {
 
 function doPressKeyFn (pressKeyObj) {
   if ( inputKey.hasPressed
-    && typeof pressKeyObj[inputKey.pressedKeyCode] === "function"
+    && typeof pressKeyObj[inputKey.pressedKey] === "function"
   ) {
     inputKey.hasPressed = false;
-    pressKeyObj[inputKey.pressedKeyCode]();
+    pressKeyObj[inputKey.pressedKey]();
   }
 }
 
