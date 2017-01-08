@@ -1,21 +1,8 @@
 import { Tank } from './tank';
 import { res } from '../data';
 import { inputKey } from '../var';
-import { W, A, S, D } from '../const';
 
 let playImg = res.img.player;
-let directionToKeyCode = {
-  U: 'W',
-  R: 'D',
-  D: 'S',
-  L: 'A'
-};
-let keyCodeToDirection = {
-  W: 'U',
-  D: 'R',
-  S: 'D',
-  A: 'L'
-};
 
 class Player extends Tank {
   constructor (x, y, direction, type) {
@@ -27,11 +14,19 @@ class Player extends Tank {
     this.hasShield = true;
   }
 
-  changeDirection () {
-    let keyCode = inputKey.pressedKeyCode;
+  moveCtr () {
+    let pressedKey = inputKey.pressedKey;
+
+    if (inputKey.hasPressed) {
+
+    }
+  }
+
+  isChangeDirection () {
+    let keyCode = inputKey.pressedKey;
 
     if ( !inputKey.hasPressed
-      || keyCode === directionToKeyCode[this.direction]
+      || keyCode === this.direction
       || keyCode === 'H'
       || keyCode === 'J'
     ) {
@@ -39,9 +34,14 @@ class Player extends Tank {
       return false;
     }
 
-    this.moveAble = true;
-    this.direction = keyCodeToDirection[keyCode];
+    console.log('paa');
+
+    this.direction = keyCode;
     return true;
+  }
+
+  moveAble () {
+
   }
 }
 

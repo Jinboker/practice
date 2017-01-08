@@ -6,12 +6,11 @@ let shieldImg = res.img.misc;
 
 class Tank extends Mover {
   constructor (x, y, direction, type) {
-    super(x, y, direction);
+    super(x, y, direction, type);
 
     this.shieldLastNum;
     this.hasShield = false;
     this.shieldPic = 0;
-    this.type = type;
     this.wheelPic = 0;
     this.drawObjParam = [
       this.rank * 32, DIR[direction] * 64 + this.wheelPic * 32, 32, 32,
@@ -29,12 +28,10 @@ class Tank extends Mover {
   }
 
   resetPosition () {
-    if (this.changeDirection()) {
-      this.direction === 'R' || this.direction === 'L'
+    if (this.isChangeDirection()) {
+      this.direction === 'D' || this.direction === 'A'
         ? this.y = Math.round(this.y / 16) * 16
         : this.x = Math.round(this.x / 16) * 16;
-    } else {
-      this.moveAble = false;
     }
   }
 

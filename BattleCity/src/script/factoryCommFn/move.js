@@ -1,22 +1,22 @@
 let moveIncrement = {
-  U(speed) {
+  W_Key(speed) {
     return [0, -speed];
   },
-  R(speed) {
+  D_key(speed) {
     return [speed, 0];
   },
-  D(speed) {
+  S_key(speed) {
     return [0, speed];
   },
-  L(speed) {
+  A_key(speed) {
     return [-speed, 0];
   }
 };
 
-function positionAfterMove (x, y, direction, speed) {
-  let offsetArr = moveIncrement[direction](speed);
+function nextPosition (x, y, direction, speed) {
+  let offsetArr = moveIncrement[`${direction}_key`](speed);
 
   return [x + offsetArr[0], y + offsetArr[1]];
 }
 
-export { positionAfterMove };
+export { nextPosition };

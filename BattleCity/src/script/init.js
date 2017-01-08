@@ -17,7 +17,7 @@ function gameInit () {
 }
 
 function objInit () {
-  obj.player = new Player(4, 12, 'U', 'player');
+  obj.player = new Player(4, 12, 'W', 'player');
   //
   // for (let i = 0; i < 5; i++) {
   //   obj.npc.push(new Npc());

@@ -1,4 +1,4 @@
-import { CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H, SCREEN_L, OFFSET_X, OFFSET_Y } from './const';
+import { H, CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H, SCREEN_L, OFFSET_X, OFFSET_Y } from './const';
 import { state, inputKey, game, obj } from './var';
 import { res, npcData } from './data';
 import { delay, doPressKeyFn, initDrawParam, cleanCxt } from './comm';
@@ -21,17 +21,17 @@ let drawStartParam = {
   wheelPicX: 0
 };
 
-drawStartParam[W] = () => {
+drawStartParam.W = () => {
   drawStartParam.pointY > MIN_POINT_Y
     ? drawStartParam.pointY -= 30
     : drawStartParam.pointY = MAX_POINT_Y;
 };
-drawStartParam[S] = () => {
+drawStartParam.S = () => {
   drawStartParam.pointY < MAX_POINT_Y
     ? drawStartParam.pointY += 30
     : drawStartParam.pointY = MIN_POINT_Y;
 };
-drawStartParam[H] = () => {
+drawStartParam.H = () => {
   let mode = (drawStartParam.pointY - MIN_POINT_Y) / 30 === 2
     ? ['playGame', 'construct']
     : ['enterStage', 'changeAble'];
@@ -88,13 +88,13 @@ let drawStageParam = {
   halfPlayScreen: 0
 };
 
-drawStageParam[W] = () => {
+drawStageParam.W = () => {
   game.stage = game.stage > 1 ? game.stage - 1 : MAX_STAGE;
 };
-drawStageParam[S] = () => {
+drawStageParam.S = () => {
   game.stage = game.stage < MAX_STAGE ? game.stage + 1 : 1;
 };
-drawStageParam[H] = () => {
+drawStageParam.H = () => {
   res.audio.start.play();
   drawStageParam.process = 2;
 };
