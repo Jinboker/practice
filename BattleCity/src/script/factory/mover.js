@@ -10,7 +10,7 @@ class Mover {
     this.direction = direction;    // W A S D
     this.type = type;
     this.rank = 0;
-    this.moveAble;
+    this.isMove;
     this.drawObjParam;
     this.speed;
   }
@@ -19,16 +19,16 @@ class Mover {
     return false;
   }
 
-  move () {
-    let _nextPosition = nextPosition(this.X, this.Y, this.direction, this.speed);
+  moving () {
+    if (!this.moveCtr()) {
+      let _nextPosition = nextPosition(this.X, this.Y, this.direction, this.speed);
 
-    this.moveCtr()
-    && !this.isCollision(..._nextPosition)
-    && ([this.X, this.Y] = _nextPosition);
+      !this.isCollision(..._nextPosition) && ([this.X, this.Y] = _nextPosition);
+    }
   }
 
   draw () {
-    this.move();
+    this.moving();
     this.doBeforeDrawObj();
     CXT_ROLE.drawImage(...this.drawObjParam);
   }

@@ -39,10 +39,6 @@ class Player extends Tank {
     this.direction = keyCode;
     return true;
   }
-
-  moveAble () {
-
-  }
 }
 
 export { Player };

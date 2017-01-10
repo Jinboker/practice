@@ -1,14 +1,14 @@
 let moveIncrement = {
-  W_Key(speed) {
-    return [0, -speed];
-  },
-  D_key(speed) {
+  W_key: speed => {
     return [speed, 0];
   },
-  S_key(speed) {
+  D_key: speed => {
+    return [speed, 0];
+  },
+  S_key: speed => {
     return [0, speed];
   },
-  A_key(speed) {
+  A_key: speed => {
     return [-speed, 0];
   }
 };
