@@ -9,6 +9,10 @@ class Npc extends Tank {
 
     this.drawObjParam.unshift(npcImg);
   }
+
+  confirmMoveAble() {
+    return true;
+  }
 }
 
 export { Npc };

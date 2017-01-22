@@ -5,7 +5,7 @@ import { res } from '../data';
 let shieldImg = res.img.misc;
 
 class Tank extends Mover {
-  constructor (x, y, direction, type) {
+  constructor(x, y, direction, type) {
     super(x, y, direction, type);
 
     this.shieldLastNum;
@@ -18,7 +18,7 @@ class Tank extends Mover {
     ];
   }
 
-  shield () {
+  shield() {
     if (!this.hasShield) { return; }
 
     CXT_ROLE.drawImage(
@@ -27,7 +27,7 @@ class Tank extends Mover {
     );
   }
 
-  resetPosition () {
+  resetPosition() {
     if (this.isChangeDirection()) {
       this.direction === 'D' || this.direction === 'A'
         ? this.y = Math.round(this.y / 16) * 16
@@ -35,7 +35,7 @@ class Tank extends Mover {
     }
   }
 
-  doBeforeDrawObj () {
+  doBeforeDrawObj() {
     this.shield();
   }
 }

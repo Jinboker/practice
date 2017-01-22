@@ -5,7 +5,7 @@ import { inputKey } from '../var';
 let playImg = res.img.player;
 
 class Player extends Tank {
-  constructor (x, y, direction, type) {
+  constructor(x, y, direction, type) {
     super(x, y, direction, type);
 
     this.drawObjParam.unshift(playImg);
@@ -14,7 +14,11 @@ class Player extends Tank {
     this.hasShield = true;
   }
 
-  moveCtr () {
+  confirmMoveAble() {
+
+  }
+
+  moveCtr() {
     let pressedKey = inputKey.pressedKey;
 
     if (inputKey.hasPressed) {
@@ -22,7 +26,7 @@ class Player extends Tank {
     }
   }
 
-  isChangeDirection () {
+  isChangeDirection() {
     let keyCode = inputKey.pressedKey;
 
     if ( !inputKey.hasPressed

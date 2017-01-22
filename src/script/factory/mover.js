@@ -2,7 +2,7 @@ import { nextPosition } from '../factoryCommFn/move';
 import { CXT_ROLE, OFFSET_X, OFFSET_Y } from '../const';
 
 class Mover {
-  constructor (x, y, direction, type) {
+  constructor(x, y, direction, type) {
     this.x = x * 32;
     this.y = y * 32;
     this.X = this.x + OFFSET_X;
@@ -10,25 +10,24 @@ class Mover {
     this.direction = direction;    // W A S D
     this.type = type;
     this.rank = 0;
-    this.isMove;
     this.drawObjParam;
     this.speed;
   }
 
-  isCollision (position) {
+  isCollision(position) {
     return false;
   }
 
-  moving () {
-    if (!this.moveCtr()) {
-      let _nextPosition = nextPosition(this.X, this.Y, this.direction, this.speed);
+  move() {
+    if (this.confirmMoveAble()) { return ; }
 
-      !this.isCollision(..._nextPosition) && ([this.X, this.Y] = _nextPosition);
-    }
+    let _nextPosition = nextPosition(this.X, this.Y, this.direction, this.speed);
+
+    !this.isCollision(..._nextPosition) && ([this.X, this.Y] = _nextPosition);
   }
 
-  draw () {
-    this.moving();
+  draw() {
+    this.move();
     this.doBeforeDrawObj();
     CXT_ROLE.drawImage(...this.drawObjParam);
   }
