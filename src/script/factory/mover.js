@@ -1,5 +1,19 @@
-import { nextPosition } from '../factoryCommFn/move';
 import { CXT_ROLE, OFFSET_X, OFFSET_Y } from '../const';
+
+let moveIncrement = {
+  W(speed) {
+    return [speed, 0];
+  },
+  D(speed) {
+    return [speed, 0];
+  },
+  S(speed) {
+    return [0, speed];
+  },
+  A(speed) {
+    return [-speed, 0];
+  }
+};
 
 class Mover {
   constructor(x, y, direction, type) {
@@ -25,9 +39,15 @@ class Mover {
 
     let _nextPosition = changeDirectionAble
       ? this.resetPosition()
-      : nextPosition(this.X, this.Y, this.direction, this.speed);
+      : this.nextPosition(this.X, this.Y, this.direction, this.speed);
 
     !this.isCollision(..._nextPosition) && ([this.X, this.Y] = _nextPosition);
+  }
+
+  nextPosition(x, y, direction, speed) {
+    let offsetArr = moveIncrement[`${direction}_key`](speed);
+
+    return [x + offsetArr[0], y + offsetArr[1]];
   }
 
   draw() {
