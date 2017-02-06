@@ -19,9 +19,17 @@ class Mover {
   }
 
   move() {
-    if (!this.moveAble()) { return; }
+    let [moveAble, changeDirectionAble] = this.moveState();
 
-    let _nextPosition = nextPosition(this.X, this.Y, this.direction, this.speed);
+    if (!moveAble) {return;}
+
+    let _nextPosition = null;
+
+    if (changeDirectionAble) {
+      this.resetPosition();
+    } else {
+      _nextPosition = nextPosition(this.X, this.Y, this.direction, this.speed);
+    }
 
     !this.isCollision(..._nextPosition) && ([this.X, this.Y] = _nextPosition);
   }

@@ -13,18 +13,17 @@ class Player extends Tank {
     this.hasShield = true;
   }
 
-  moveAble() {
+  moveState() {
     let pressedDirectionKey = inputKey.directionKey;
+    let moveAble = false;
+    let changDirectionAble = false;
 
-    if (!inputKey[pressedDirectionKey]) {
-      return false;
-    } else {
-      if (this.direction !== pressedDirectionKey) {
-        this.direction = pressedDirectionKey;
-        this.resetPosition();
-      }
-      return true;
+    if (inputKey[pressedDirectionKey]) {
+      moveAble = true;
+      (this.direction !== pressedDirectionKey) && (changDirectionAble = true);
     }
+
+    return [moveAble, changDirectionAble]
   }
 }
 
