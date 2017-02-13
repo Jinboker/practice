@@ -12,8 +12,14 @@ let codeToKey = {
 
 function keyDown (key) {
   if (!inputKey[key]) {
+    let _key = codeToKey[key];
+
+    _key !== 'H' && _Key !== 'J'
+      ? inputKey.directionKey = _key
+      : inputkey.funcKey = _key;
+
     inputKey.hasPressed = true;
-    inputKey.pressedKey = codeToKey[key];
+    inputKey.pressedKey = _key;
     inputKey[key] = true;
   }
 }

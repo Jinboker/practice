@@ -10,6 +10,8 @@ let state = {
 let inputKey = {
   hasPressed: false,
   pressedKey: null,
+  directionKey: null,
+  funcKey: null,
   87: false,   // W
   65: false,   // A
   83: false,   // S

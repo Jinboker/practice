@@ -71,6 +71,10 @@ function mix(...mixins) {
 }
 
 export {
-  requestAnimFrame, delay, doPressKeyFn, initDrawParam, cleanCxt,
+  requestAnimFrame,
+  delay,
+  doPressKeyFn,
+  initDrawParam,
+  cleanCxt,
   mix
 };

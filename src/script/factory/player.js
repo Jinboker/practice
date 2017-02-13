@@ -9,21 +9,12 @@ class Player extends Tank {
     super(x, y, direction, type);
 
     this.drawObjParam.unshift(playImg);
-    this.moveAble = false;
     this.shieldLastNum = 200;
     this.hasShield = true;
   }
 
-  confirmMoveAble() {
-
-  }
-
-  moveCtr() {
-    let pressedKey = inputKey.pressedKey;
-
-    if (inputKey.hasPressed) {
-
-    }
+  moveAble() {
+    if (!inputKey.hasPressed) { return false; }
   }
 
   isChangeDirection() {
@@ -37,8 +28,6 @@ class Player extends Tank {
       console.log('nnn');
       return false;
     }
-
-    console.log('paa');
 
     this.direction = keyCode;
     return true;
