@@ -19,7 +19,7 @@ class Mover {
   }
 
   move() {
-    if (!this.moveAble()) { return ; }
+    if (!this.moveAble()) { return; }
 
     let _nextPosition = nextPosition(this.X, this.Y, this.direction, this.speed);
 

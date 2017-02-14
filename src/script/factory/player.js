@@ -14,23 +14,17 @@ class Player extends Tank {
   }
 
   moveAble() {
-    if (!inputKey.hasPressed) { return false; }
-  }
+    let pressedDirectionKey = inputKey.directionKey;
 
-  isChangeDirection() {
-    let keyCode = inputKey.pressedKey;
-
-    if ( !inputKey.hasPressed
-      || keyCode === this.direction
-      || keyCode === 'H'
-      || keyCode === 'J'
-    ) {
-      console.log('nnn');
+    if (!inputKey[pressedDirectionKey]) {
       return false;
+    } else {
+      if (this.direction !== pressedDirectionKey) {
+        this.direction = pressedDirectionKey;
+        this.resetPosition();
+      }
+      return true;
     }
-
-    this.direction = keyCode;
-    return true;
   }
 }
 

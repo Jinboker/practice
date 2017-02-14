@@ -27,12 +27,11 @@ class Tank extends Mover {
     );
   }
 
+  // 坦克改变方向后需要重置位置
   resetPosition() {
-    if (this.isChangeDirection()) {
-      this.direction === 'D' || this.direction === 'A'
-        ? this.y = Math.round(this.y / 16) * 16
-        : this.x = Math.round(this.x / 16) * 16;
-    }
+    this.direction === 'D' || this.direction === 'A'
+      ? this.y = Math.round(this.y / 16) * 16
+      : this.x = Math.round(this.x / 16) * 16;
   }
 
   doBeforeDrawObj() {
