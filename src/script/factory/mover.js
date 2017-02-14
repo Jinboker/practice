@@ -1,18 +1,10 @@
 import { CXT_ROLE, OFFSET_X, OFFSET_Y } from '../const';
 
 let movePosition = {
-  W(speed) {
-    return [0, -speed];
-  },
-  D(speed) {
-    return [speed, 0];
-  },
-  S(speed) {
-    return [0, speed];
-  },
-  A(speed) {
-    return [-speed, 0];
-  }
+  W(speed) { return [0, -speed]; },
+  D(speed) { return [speed, 0]; },
+  S(speed) { return [0, speed]; },
+  A(speed) { return [-speed, 0]; }
 };
 
 class Mover {
@@ -28,15 +20,16 @@ class Mover {
   }
 
   isCollision(changeDirection, position) {
-    return this.tankCollision() && this.barrierCollision(position);
+    return false;
+    // return this.tankCollision() && this.barrierCollision(position);
   }
 
   tankCollision() {
-    return true;
+    return false;
   }
 
   barrierCollision(position) {
-    return true;
+    return false;
   }
 
   move() {
@@ -56,13 +49,13 @@ class Mover {
   toNextPosition() {
     let offsetArr = movePosition[`${this.direction}`](this.speed);
 
-    console.log(offsetArr);
     return [this.X + offsetArr[0], this.Y + offsetArr[1]];
   }
 
   draw() {
     this.move();
     // this.doBeforeDrawObj();
+    // console.log(this.drawObjParam);
     CXT_ROLE.drawImage(...this.drawObjParam);
   }
 }
