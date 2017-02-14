@@ -29,9 +29,13 @@ class Tank extends Mover {
 
   // 坦克改变方向后需要重置位置
   resetPosition() {
+    let x, y;
+
     this.direction === 'D' || this.direction === 'A'
-      ? this.y = Math.round(this.y / 16) * 16
-      : this.x = Math.round(this.x / 16) * 16;
+      ? y = Matn.round(this.y / 16) * 16
+      : x = Math.round(this.x / 16) * 16;
+
+    return [x, y];
   }
 
   doBeforeDrawObj() {

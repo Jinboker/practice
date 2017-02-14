@@ -23,13 +23,9 @@ class Mover {
 
     if (!moveAble) {return;}
 
-    let _nextPosition = null;
-
-    if (changeDirectionAble) {
-      this.resetPosition();
-    } else {
-      _nextPosition = nextPosition(this.X, this.Y, this.direction, this.speed);
-    }
+    let _nextPosition = changeDirectionAble
+      ? this.resetPosition()
+      : nextPosition(this.X, this.Y, this.direction, this.speed);
 
     !this.isCollision(..._nextPosition) && ([this.X, this.Y] = _nextPosition);
   }
