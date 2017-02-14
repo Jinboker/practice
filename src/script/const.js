@@ -1,11 +1,3 @@
-// keyboard code
-export const W = 87;
-export const A = 65;
-export const S = 83;
-export const D = 68;
-export const H = 72;
-export const J = 74;
-
 // export const
 // canvas
 // export const CAN_ROLE = document.getElementById('role');
@@ -25,4 +17,4 @@ export const OFFSET_Y = 20;
 
 export const MAX_STAGE = 10;
 
-export const DIR = { U: 0, R: 1, D: 2, L: 3 };
+export const DIR = { W: 0, D: 1, S: 2, A: 3 };

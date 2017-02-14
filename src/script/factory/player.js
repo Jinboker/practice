@@ -11,6 +11,7 @@ class Player extends Tank {
     this.drawObjParam.unshift(playImg);
     this.shieldLastNum = 200;
     this.hasShield = true;
+    this.speed = 4;
   }
 
   moveState() {
@@ -20,7 +21,10 @@ class Player extends Tank {
 
     if (inputKey[pressedDirectionKey]) {
       moveAble = true;
-      (this.direction !== pressedDirectionKey) && (changDirectionAble = true);
+      if (this.direction !== pressedDirectionKey) {
+        changDirectionAble = true;
+        this.direction = pressedDirectionKey;
+      }
     }
 
     return [moveAble, changDirectionAble]

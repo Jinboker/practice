@@ -32,7 +32,7 @@ class Tank extends Mover {
     let x, y;
 
     this.direction === 'D' || this.direction === 'A'
-      ? y = Matn.round(this.y / 16) * 16
+      ? y = Math.round(this.y / 16) * 16
       : x = Math.round(this.x / 16) * 16;
 
     return [x, y];

@@ -12,12 +12,12 @@ let inputKey = {
   pressedKey: null,
   directionKey: null,
   funcKey: null,
-  87: false,   // W
-  65: false,   // A
-  83: false,   // S
-  68: false,   // D
-  72: false,   // H
-  74: false    // J
+  W: false,
+  A: false,
+  S: false,
+  D: false,
+  H: false,
+  J: false
 };
 
 let game = {
@@ -31,3 +31,11 @@ let obj = {
 };
 
 export { state, inputKey, game, obj };
+
+//
+// 87: false,   // W
+//   65: false,   // A
+//   83: false,   // S
+//   68: false,   // D
+//   72: false,   // H
+//   74: false,    // J

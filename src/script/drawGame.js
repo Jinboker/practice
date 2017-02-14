@@ -1,4 +1,4 @@
-import { H, CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H, SCREEN_L, OFFSET_X, OFFSET_Y } from './const';
+import { CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H, SCREEN_L, OFFSET_X, OFFSET_Y } from './const';
 import { state, inputKey, game, obj } from './var';
 import { res, npcData } from './data';
 import { delay, doPressKeyFn, initDrawParam, cleanCxt } from './comm';
@@ -58,7 +58,7 @@ drawType.start = () => {
     doPressKeyFn(drawStartParam);
   } else {
     // if press key H, move to top
-    inputKey[H] ? drawStartParam.frameY = 75 : drawStartParam.frameY -= 3;
+    inputKey['H'] ? drawStartParam.frameY = 75 : drawStartParam.frameY -= 3;
 
     cleanCxt('bg');
     CXT_BG.save();

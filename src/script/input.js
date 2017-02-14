@@ -1,25 +1,22 @@
 import { inputKey } from './var';
-import { W, A, S, D, H, J } from './const';
 
 let codeToKey = {
-  [W]: 'W',
-  [A]: 'A',
-  [S]: 'S',
-  [D]: 'D',
-  [H]: 'H',
-  [J]: 'J'
+  87: 'W',
+  65: 'A',
+  83: 'S',
+  68: 'D',
+  72: 'H',
+  74: 'J'
 };
 
 function keyDown (key) {
   if (!inputKey[key]) {
-    let _key = codeToKey[key];
-
-    _key !== 'H' && _Key !== 'J'
-      ? inputKey.directionKey = _key
-      : inputkey.funcKey = _key;
+    key !== 'H' && key !== 'J'
+      ? inputKey.directionKey = key
+      : inputKey.funcKey = key;
 
     inputKey.hasPressed = true;
-    inputKey.pressedKey = _key;
+    inputKey.pressedKey = key;
     inputKey[key] = true;
   }
 }
@@ -32,10 +29,10 @@ function keyUp (key) {
 function keyBoardInit (isPc, ...eventArray) {
   eventArray.forEach((n) => {
     addEventListener(n, (ev) => {
-      let key = ev.keyCode;
+      let key = codeToKey[ev.keyCode];
 
-      if (typeof inputKey[key] === 'boolean') {
-        (ev.type === 'keydown') ? keyDown(key) : keyUp(key);
+      if (typeof key !== 'undefined') {
+        ev.type === 'keydown' ? keyDown(key) : keyUp(key);
       }
     }, false);
   });
