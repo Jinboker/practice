@@ -1,6 +1,6 @@
 import { CXT_ROLE, OFFSET_X, OFFSET_Y } from '../const';
 
-let moveIncrement = {
+let movePosition = {
   W(speed) {
     return [speed, 0];
   },
@@ -28,7 +28,7 @@ class Mover {
     this.speed;
   }
 
-  isCollision(position) {
+  isCollision(changeDirection, position) {
     return false;
   }
 
@@ -39,15 +39,17 @@ class Mover {
 
     let _nextPosition = changeDirectionAble
       ? this.resetPosition()
-      : this.nextPosition(this.X, this.Y, this.direction, this.speed);
+      : this.toNextPosition();
 
-    !this.isCollision(..._nextPosition) && ([this.X, this.Y] = _nextPosition);
+    if (!this.isCollision(changeDirectionAble, ..._nextPosition)) {
+      [this.X, this.Y] = _nextPosition;
+    }
   }
 
-  nextPosition(x, y, direction, speed) {
-    let offsetArr = moveIncrement[`${direction}_key`](speed);
+  toNextPosition() {
+    let offsetArr = movePosition[`${this.direction}`](this.speed);
 
-    return [x + offsetArr[0], y + offsetArr[1]];
+    return [this.X + offsetArr[0], this.Y + offsetArr[1]];
   }
 
   draw() {
