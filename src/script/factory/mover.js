@@ -1,5 +1,3 @@
-import { CXT_ROLE } from '../const';
-
 let movePosition = {
   W(speed) { return [0, -speed]; },
   D(speed) { return [speed, 0]; },

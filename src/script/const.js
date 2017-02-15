@@ -10,5 +10,6 @@ export const OFFSET_X = 35;
 export const OFFSET_Y = 20;
 
 export const MAX_STAGE = 10;
+export const WHEELE_CHANGE_FREQUENT = 6;
 
 export const DIR = { W: 0, D: 1, S: 2, A: 3 };

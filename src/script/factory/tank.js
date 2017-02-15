@@ -1,13 +1,16 @@
 import { Mover } from './mover';
 import { res } from '../data';
+import { delay } from '../comm';
+import { CXT_ROLE, OFFSET_X, OFFSET_Y, WHEELE_CHANGE_FREQUENT } from '../const';
 
-let shieldImg = res.img.misc;
+const SHIELD_IMG = res.img.misc;
+
+let wheelDelayNum = WHEELE_CHANGE_FREQUENT;
 
 class Tank extends Mover {
   constructor(x, y, direction, type) {
     super(x, y, direction, type);
 
-    this.shieldLastNum;
     this.hasShield = false;
     this.shieldPic = 0;
     this.wheelPic = 0;
@@ -17,7 +20,7 @@ class Tank extends Mover {
     if (!this.hasShield) { return; }
 
     CXT_ROLE.drawImage(
-      shieldImg, 32 + this.shieldPic * 32, 0, 32, 32,
+      SHIELD_IMG, 32 + this.shieldPic * 32, 0, 32, 32,
       this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32
     );
   }
@@ -27,15 +30,17 @@ class Tank extends Mover {
     let x = this.x;
     let y = this.y;
 
-    this.direction === 'D' || this.direction === 'A'
+    this.direction === 'W' || this.direction === 'S'
       ? x = Math.round(this.x / 16) * 16
       : y = Math.round(this.y / 16) * 16;
 
     return [x, y];
   }
 
-  doBeforeDrawObj() {
-    this.shield();
+  changeWheels() {
+    wheelDelayNum = delay(wheelDelayNum, WHEELE_CHANGE_FREQUENT, () => {
+      this.wheelPic = +!this.wheelPic;
+    });
   }
 }
 
