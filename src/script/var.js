@@ -31,11 +31,3 @@ let obj = {
 };
 
 export { state, inputKey, game, obj };
-
-//
-// 87: false,   // W
-//   65: false,   // A
-//   83: false,   // S
-//   68: false,   // D
-//   72: false,   // H
-//   74: false,    // J
