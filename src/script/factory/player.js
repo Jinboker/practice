@@ -9,8 +9,6 @@ class Player extends Tank {
   constructor(x, y, direction, type) {
     super(x, y, direction, type);
 
-    this.shieldLastNum = 200;
-    this.hasShield = true;
     this.speed = 2;
   }
 

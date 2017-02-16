@@ -1,28 +1,36 @@
 import { Mover } from './mover';
 import { res } from '../data';
 import { delay } from '../comm';
-import { CXT_ROLE, OFFSET_X, OFFSET_Y, WHEELE_CHANGE_FREQUENT } from '../const';
+import { CXT_ROLE, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT } from '../const';
 
 const SHIELD_IMG = res.img.misc;
-
-let wheelDelayNum = WHEELE_CHANGE_FREQUENT;
 
 class Tank extends Mover {
   constructor(x, y, direction, type) {
     super(x, y, direction, type);
 
-    this.hasShield = false;
+    this.hasShield = true;
     this.shieldPic = 0;
+    this.shieldDuration = 200;
+    this.shieldDelayNum = SHIELD_CHANGE_FREQUENT;
+
     this.wheelPic = 0;
+    this.wheelDelayNum = WHEEL_CHANGE_FREQUENT;
   }
 
   shield() {
     if (!this.hasShield) { return; }
 
-    CXT_ROLE.drawImage(
-      SHIELD_IMG, 32 + this.shieldPic * 32, 0, 32, 32,
-      this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32
-    );
+    if (this.shieldDuration > 0) {
+      this.shieldDuration --;
+      this.shieldDelayNum = delay(this.shieldDelayNum, SHIELD_CHANGE_FREQUENT, () => {
+        this.shieldPic = +! this.shieldPic;
+      });
+      CXT_ROLE.drawImage(SHIELD_IMG, 32 + this.shieldPic * 32, 0, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+    } else {
+      this.hasShield = false;
+      this.shieldDuration = 200;
+    }
   }
 
   // 坦克改变方向后需要重置位置
@@ -38,7 +46,7 @@ class Tank extends Mover {
   }
 
   changeWheels() {
-    wheelDelayNum = delay(wheelDelayNum, WHEELE_CHANGE_FREQUENT, () => {
+    this.wheelDelayNum = delay(this.wheelDelayNum, WHEEL_CHANGE_FREQUENT, () => {
       this.wheelPic = +!this.wheelPic;
     });
   }

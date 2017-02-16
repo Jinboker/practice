@@ -1,4 +1,4 @@
-import { CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H, SCREEN_L, OFFSET_X, OFFSET_Y, WHEELE_CHANGE_FREQUENT } from './const';
+import { CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H, SCREEN_L, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT } from './const';
 import { state, inputKey, game, obj } from './var';
 import { res, npcData } from './data';
 import { delay, doPressKeyFn, initDrawParam, cleanCxt } from './comm';
@@ -12,7 +12,7 @@ let drawType = {};
 const MIN_POINT_Y = 285;
 const MAX_POINT_Y = 345;
 
-let delayNum = WHEELE_CHANGE_FREQUENT;
+let delayNum = WHEEL_CHANGE_FREQUENT;
 let drawStartParam = {
   getToTop: false,
   frameY: CXT_H,
@@ -47,7 +47,7 @@ function initDrawStartParam () {
 
 drawType.start = () => {
   if (drawStartParam.getToTop) {
-    delayNum = delay(delayNum, WHEELE_CHANGE_FREQUENT, () => {
+    delayNum = delay(delayNum, WHEEL_CHANGE_FREQUENT, () => {
       drawStartParam.wheelPicX = (+!drawStartParam.wheelPicX) * 32;
     });
 
