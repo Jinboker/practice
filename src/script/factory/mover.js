@@ -19,6 +19,28 @@ class Mover {
     // return this.tankCollision() && this.barrierCollision(position);
   }
 
+  sureCoordinate() {
+    let coordinate = null;
+
+    switch (true) {
+      case this.direction === 'W':
+        coordinate = [parseInt((this.y - 1) / 16), parseInt(this.x / 16)];
+        break;
+      case this.direction === 'A':
+        coordinate = [parseInt(this.y / 16), parseInt(this.x / 16)];
+        break;
+      case this.direction === 'S':
+        coordinate = [parseInt(this.y / 16), parseInt(this.x / 16)];
+        break;
+      case this.direction === 'D':
+        coordinate = [parseInt(this.y / 16), parseInt((this.x - 1) / 16)];
+        break;
+      default: break;
+    }
+
+    return coordinate;
+  }
+
   tankCollision() {
     return false;
   }
