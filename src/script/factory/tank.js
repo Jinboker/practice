@@ -2,6 +2,7 @@ import { Mover } from './mover';
 import { res } from '../data';
 import { delay } from '../comm';
 import { CXT_ROLE, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT } from '../const';
+import { roadMap } from '../map';
 
 const SHIELD_IMG = res.img.misc;
 
@@ -18,28 +19,39 @@ class Tank extends Mover {
     this.wheelDelayNum = WHEEL_CHANGE_FREQUENT;
   }
 
-  // barrierCollisionCoordinate(position, direction) {
-  //   let baseCoordinate = [x / 16, y / 16];
-  //   let collisionCoordinate = null;
-  //
-  //   switch(true) {
-  //     case direction === 'W':
-  //       collisionCoordinate = [x / 16 + 1, (y - 1) / 16];
-  //       break;
-  //     case direction === 'A':
-  //       coordinate = [(x - 1) / 16, y / 16 + 1];
-  //       break;
-  //     case direction === 'S':
-  //       coordinate = [x / 16 + 1, y / 16 + 2];
-  //       break;
-  //     case direction === 'D':
-  //       coordinate = [x / 16 + 2, y / 16 + 1];
-  //       break;
-  //     default: break;
-  //   };
-  //
-  //   return coordinate;
-  // }
+  barrierCollision(position) {
+    let [x, y] = position;
+    let direction = this.direction;
+    let coord_x = parseInt(x / 16, 10);
+    let coord_y = parseInt(y / 16, 10);
+    let collisionCoordinate = [];
+
+    switch(true) {
+      case direction === 'W':
+        collisionCoordinate = [[coord_x, coord_y], [coord_x + 1, coord_y]];
+        break;
+      case direction === 'A':
+        collisionCoordinate = [[coord_x, coord_y], [coord_x, coord_y]];
+        break;
+      case direction === 'S':
+        collisionCoordinate = [[coord_x, coord_y + 2], [coord_x + 1, coord_y + 2]];
+        break;
+      case direction === 'D':
+        collisionCoordinate = [[coord_x + 2, coord_y], [coord_x + 2, coord_y + 1]];
+        break;
+      default: break;
+    };
+
+    return collisionCoordinate.every((ele) => {
+      switch (roadMap[ele[1]][ele[0]]) {
+        case 0: return true; break;
+        // 砖块钢筋河流老家无法通过
+        case 1: case 2: case 4: case 5: return false; break;
+        // 冰路中间有相应的代码（默认就是3了）
+        default: return true; break;
+      }
+    });
+  }
 
   shield() {
     if (!this.hasShield) { return; }
@@ -62,8 +74,8 @@ class Tank extends Mover {
     let y = this.y;
 
     this.direction === 'W' || this.direction === 'S'
-      ? x = Math.round(this.x / 16) * 16
-      : y = Math.round(this.y / 16) * 16;
+      ? y = Math.round(y / 16) * 16
+      : x = Math.round(x / 16) * 16;
 
     return [x, y];
   }

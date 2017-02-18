@@ -17,16 +17,14 @@ class Mover {
     this.rank = 0;
   }
 
+  // 如果换方向，是不用检测是否会跟障碍物撞到一起的
   isCollision(changeDirection, position) {
-    return false;
+    console.log(this.barrierCollision(position));
+    return !this.barrierCollision(position);
     // return this.tankCollision() && this.barrierCollision(position);
   }
 
   tankCollision() {
-    return false;
-  }
-
-  barrierCollision(position) {
     return false;
   }
 
