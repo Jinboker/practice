@@ -19,11 +19,8 @@ class Player extends Tank {
 
     if (inputKey[pressedDirectionKey]) {
       moveAble = true;
+      changDirectionAble = (this.direction !== pressedDirectionKey);
       this.changeWheels();
-      if (this.direction !== pressedDirectionKey) {
-        changDirectionAble = true;
-        this.direction = pressedDirectionKey;
-      }
     }
 
     return [moveAble, changDirectionAble]

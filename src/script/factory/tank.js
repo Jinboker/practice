@@ -18,6 +18,29 @@ class Tank extends Mover {
     this.wheelDelayNum = WHEEL_CHANGE_FREQUENT;
   }
 
+  // barrierCollisionCoordinate(position, direction) {
+  //   let baseCoordinate = [x / 16, y / 16];
+  //   let collisionCoordinate = null;
+  //
+  //   switch(true) {
+  //     case direction === 'W':
+  //       collisionCoordinate = [x / 16 + 1, (y - 1) / 16];
+  //       break;
+  //     case direction === 'A':
+  //       coordinate = [(x - 1) / 16, y / 16 + 1];
+  //       break;
+  //     case direction === 'S':
+  //       coordinate = [x / 16 + 1, y / 16 + 2];
+  //       break;
+  //     case direction === 'D':
+  //       coordinate = [x / 16 + 2, y / 16 + 1];
+  //       break;
+  //     default: break;
+  //   };
+  //
+  //   return coordinate;
+  // }
+
   shield() {
     if (!this.hasShield) { return; }
 
