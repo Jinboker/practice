@@ -20,10 +20,8 @@ class Tank extends Mover {
   }
 
   barrierCollision(position) {
-    let [x, y] = position;
     let direction = this.direction;
-    let coord_x = parseInt(x / 16, 10);
-    let coord_y = parseInt(y / 16, 10);
+    let [coord_x, coord_y] = [position[0] >> 4, position[1] >> 4];
     let collisionCoordinate = [];
 
     switch(true) {

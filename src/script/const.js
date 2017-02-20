@@ -14,3 +14,6 @@ export const WHEEL_CHANGE_FREQUENT = 6;
 export const SHIELD_CHANGE_FREQUENT = 4;
 
 export const DIR = { W: 0, D: 1, S: 2, A: 3 };
+
+export const TANK_WIDTH = 16;
+export const BULLITE_WIDTH = 4;

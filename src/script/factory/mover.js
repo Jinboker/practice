@@ -1,5 +1,7 @@
 import { inputKey } from '../var';
+import { TANK_WIDTH, BULLET_WIDTH } from '../const';
 
+let [halfTank, halfBullet] = [TANK_WIDTH >> 1, BULLET_WIDTH >> 1];
 let movePosition = {
   W(speed) { return [0, -speed]; },
   D(speed) { return [speed, 0]; },
@@ -32,11 +34,26 @@ class Mover {
   }
 
   sureCenter(position, type) {
-    let objCenter = type !== 'bullet'
-      ? [position[0] + 16, position[1] + 16]
-      : [position[0] + 4, position[1] + 4];
+    let direction = this.direction;
+    let distance = type !== 'bullet' ? halfTank : halfBullet;
+    // the center of the object
+    let [x, y] = [position[0] + distance, position[1] + distance];
 
-    return objCenter;
+    switch(true) {
+      case direction === 'W':
+        return [x - 16, y - distance, x, y - distance];
+        break;
+      case direction === 'A':
+        return [x + distance, y -16, x + distance, y];
+        break;
+      case direction === 'S':
+        return [x - 16, y + distance, x, y + distance];
+        break;
+      case direction === 'D':
+        return [x - distance, y - 16, x - distance, y];
+        break;
+      default: break;
+    };
   }
 
   move() {
