@@ -1,7 +1,7 @@
 import { Mover } from './mover';
 import { res } from '../data';
 import { delay } from '../comm';
-import { CXT_ROLE, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT } from '../const';
+import { CXT_ROLE, SCREEN_L, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT } from '../const';
 import { roadMap } from '../map';
 
 const SHIELD_IMG = res.img.misc;
@@ -28,16 +28,20 @@ class Tank extends Mover {
 
     switch(true) {
       case direction === 'W':
+        if (this.y === 0) {return false;}
         collisionCoordinate = [[coord_x, coord_y], [coord_x + 1, coord_y]];
         break;
       case direction === 'A':
+        if (this.x === 0) {return false;}
         collisionCoordinate = [[coord_x, coord_y], [coord_x, coord_y]];
         break;
       case direction === 'S':
-        collisionCoordinate = [[coord_x, coord_y + 2], [coord_x + 1, coord_y + 2]];
+        if (this.y === SCREEN_L - 32) {return false;}
+        collisionCoordinate = [[coord_x, coord_y + 1], [coord_x + 1, coord_y + 1]];
         break;
       case direction === 'D':
-        collisionCoordinate = [[coord_x + 2, coord_y], [coord_x + 2, coord_y + 1]];
+        if (this.x === SCREEN_L - 32) {return false;}
+        collisionCoordinate = [[coord_x + 1, coord_y], [coord_x + 1, coord_y + 1]];
         break;
       default: break;
     };

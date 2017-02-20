@@ -19,8 +19,11 @@ class Mover {
 
   // 如果换方向，是不用检测是否会跟障碍物撞到一起的
   isCollision(changeDirection, position) {
-    console.log(this.barrierCollision(position));
-    return !this.barrierCollision(position);
+    if (changeDirection) {
+      return false;
+    } {
+      return !this.barrierCollision(position);
+    }
     // return this.tankCollision() && this.barrierCollision(position);
   }
 
@@ -29,6 +32,7 @@ class Mover {
   }
 
   move() {
+    console.log(this.y);
     let [moveAble, changeDirectionAble] = this.moveState();
 
     if (!moveAble) {return;}
