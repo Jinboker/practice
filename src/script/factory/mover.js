@@ -31,6 +31,14 @@ class Mover {
     return false;
   }
 
+  sureCenter(position, type) {
+    let objCenter = type !== 'bullet'
+      ? [position[0] + 16, position[1] + 16]
+      : [position[0] + 4, position[1] + 4];
+
+    return objCenter;
+  }
+
   move() {
     console.log(this.y);
     let [moveAble, changeDirectionAble] = this.moveState();
