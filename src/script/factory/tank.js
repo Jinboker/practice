@@ -20,32 +20,14 @@ class Tank extends Mover {
   }
 
   barrierCollision(position) {
-    let direction = this.direction;
-    let [coord_x, coord_y] = [position[0] >> 4, position[1] >> 4];
-    let collisionCoordinate = [];
+    let collisionDot = this.confirmCollisionDot(position);
 
-    switch(true) {
-      case direction === 'W':
-        if (this.y === 0) {return false;}
-        collisionCoordinate = [[coord_x, coord_y], [coord_x + 1, coord_y]];
-        break;
-      case direction === 'A':
-        if (this.x === 0) {return false;}
-        collisionCoordinate = [[coord_x, coord_y], [coord_x, coord_y]];
-        break;
-      case direction === 'S':
-        if (this.y === SCREEN_L - 32) {return false;}
-        collisionCoordinate = [[coord_x, coord_y + 1], [coord_x + 1, coord_y + 1]];
-        break;
-      case direction === 'D':
-        if (this.x === SCREEN_L - 32) {return false;}
-        collisionCoordinate = [[coord_x + 1, coord_y], [coord_x + 1, coord_y + 1]];
-        break;
-      default: break;
-    };
+    if (!collisionDot) { return false; }
 
-    return collisionCoordinate.every((ele) => {
-      switch (roadMap[ele[1]][ele[0]]) {
+    return collisionDot.every((ele) => {
+      let [row, col] = [ele[1] >> 4, ele[0] >> 4];
+
+      switch (roadMap[row][col]) {
         case 0: return true; break;
         // 砖块钢筋河流老家无法通过
         case 1: case 2: case 4: case 5: return false; break;
