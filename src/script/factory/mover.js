@@ -11,7 +11,6 @@ let movePosition = {
 
 class Mover {
   constructor(x, y, direction, type) {
-    this.coordinate;
     this.x = x * 32;
     this.y = y * 32;
     this.direction = direction;    // W A S D
@@ -46,7 +45,7 @@ class Mover {
         break;
       case direction === 'A':
         if (this.x === 0) {return false;}
-        return [[x + distance, y - 16], [x + distance, y]];
+        return [[x - distance, y - 16], [x - distance, y]];
         break;
       case direction === 'S':
         if (this.y === SCREEN_L - distance * 2) {return false;}
@@ -54,7 +53,7 @@ class Mover {
         break;
       case direction === 'D':
         if (this.x === SCREEN_L - distance * 2) {return false;}
-        return [[x - distance, y - 16], [x - distance, y]];
+        return [[x + distance, y - 16], [x + distance, y]];
         break;
       default: break;
     };
