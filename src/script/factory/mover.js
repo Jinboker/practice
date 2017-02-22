@@ -1,5 +1,6 @@
 import { inputKey } from '../var';
 import { TANK_WIDTH, BULLET_WIDTH, SCREEN_L } from '../const';
+import { roadMap } from '../map';
 
 let [halfTank, halfBullet] = [TANK_WIDTH >> 1, BULLET_WIDTH >> 1];
 let movePosition = {
@@ -15,7 +16,6 @@ class Mover {
     this.y = y * 32;
     this.direction = direction;    // W A S D
     this.type = type;
-    this.rank = 1;
   }
 
   // 如果换方向，是不用检测是否会跟障碍物撞到一起的
@@ -26,6 +26,24 @@ class Mover {
       return !this.barrierCollision(position);
     }
     // return this.tankCollision() && this.barrierCollision(position);
+  }
+
+  barrierCollision(position) {
+    let collisionDot = this.confirmCollisionDot(position);
+
+    if (!collisionDot) { return false; }
+
+    return collisionDot.every((ele) => {
+      let [row, col] = [ele[1] >> 4, ele[0] >> 4];
+
+      switch (roadMap[row][col]) {
+        case 0: return true; break;
+        // 砖块钢筋河流老家无法通过
+        case 1: case 2: case 4: case 5: return false; break;
+        // 冰路中间有相应的代码（默认就是3了）
+        default: return true; break;
+      }
+    });
   }
 
   tankCollision() {

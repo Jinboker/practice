@@ -1,15 +1,15 @@
 import { Tank } from './tank';
 import { res } from '../data';
-import { DIR, CXT_ROLE, OFFSET_X, OFFSET_Y } from '../const';
 import { inputKey } from '../var';
 
-const PLAY_IMG = res.img.player;
+
 
 class Player extends Tank {
-  constructor(x, y, direction, type) {
+  constructor(x, y, direction, type, grade = 0) {
     super(x, y, direction, type);
 
     this.speed = 2;
+    this.grade = grade;
   }
 
   moveState() {
@@ -29,7 +29,7 @@ class Player extends Tank {
   draw() {
     this.move();
     this.shield();
-    CXT_ROLE.drawImage(PLAY_IMG, this.rank * 32, DIR[this.direction] * 64 + this.wheelPic * 32, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+    this.drawTank();
   }
 }
 

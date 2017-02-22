@@ -1,17 +1,15 @@
 import { Tank } from './tank';
-import { res } from '../data';
-
-let npcImg = res.img.npc;
 
 class Npc extends Tank {
-  constructor (x, y, direction) {
+  constructor (x, y, direction, grade = 0) {
     super(x, y, direction);
 
-    this.drawObjParam.unshift(npcImg);
+    this.grade = grade;
   }
 
-  moveAble() {
-    return true;
+  draw() {
+    this.move();
+    this.drawTank();
   }
 }
 

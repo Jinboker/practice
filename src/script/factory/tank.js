@@ -1,10 +1,11 @@
 import { Mover } from './mover';
 import { res } from '../data';
 import { delay } from '../comm';
-import { CXT_ROLE, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT } from '../const';
-import { roadMap } from '../map';
+import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT } from '../const';
 
 const SHIELD_IMG = res.img.misc;
+const PLAY_IMG = res.img.player;
+const NPC_IMG = res.img.npc;
 
 class Tank extends Mover {
   constructor(x, y, direction, type) {
@@ -17,24 +18,6 @@ class Tank extends Mover {
 
     this.wheelPic = 0;
     this.wheelDelayNum = WHEEL_CHANGE_FREQUENT;
-  }
-
-  barrierCollision(position) {
-    let collisionDot = this.confirmCollisionDot(position);
-
-    if (!collisionDot) { return false; }
-
-    return collisionDot.every((ele) => {
-      let [row, col] = [ele[1] >> 4, ele[0] >> 4];
-
-      switch (roadMap[row][col]) {
-        case 0: return true; break;
-        // 砖块钢筋河流老家无法通过
-        case 1: case 2: case 4: case 5: return false; break;
-        // 冰路中间有相应的代码（默认就是3了）
-        default: return true; break;
-      }
-    });
   }
 
   shield() {
@@ -69,6 +52,12 @@ class Tank extends Mover {
     this.wheelDelayNum = delay(this.wheelDelayNum, WHEEL_CHANGE_FREQUENT, () => {
       this.wheelPic = +!this.wheelPic;
     });
+  }
+
+  drawTank() {
+    let img = this.type === 'player' ? PLAY_IMG : NPC_IMG;
+    
+    CXT_ROLE.drawImage(img, this.grade * 32, DIR[this.direction] * 64 + this.wheelPic * 32, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }
 }
 
