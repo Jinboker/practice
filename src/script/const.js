@@ -1,4 +1,3 @@
-// export const
 // canvas
 export const CXT_ROLE = document.getElementById('role').getContext('2d');
 export const CXT_BG = document.getElementById('bg').getContext('2d');

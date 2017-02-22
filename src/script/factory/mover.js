@@ -15,7 +15,7 @@ class Mover {
     this.y = y * 32;
     this.direction = direction;    // W A S D
     this.type = type;
-    this.rank = 0;
+    this.rank = 1;
   }
 
   // 如果换方向，是不用检测是否会跟障碍物撞到一起的

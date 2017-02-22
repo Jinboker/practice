@@ -1,7 +1,7 @@
 import { Mover } from './mover';
 import { res } from '../data';
 import { delay } from '../comm';
-import { CXT_ROLE, SCREEN_L, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT } from '../const';
+import { CXT_ROLE, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT } from '../const';
 import { roadMap } from '../map';
 
 const SHIELD_IMG = res.img.misc;
@@ -58,8 +58,9 @@ class Tank extends Mover {
     let y = this.y;
 
     this.direction === 'W' || this.direction === 'S'
-      ? y = Math.round(y / 16) * 16
-      : x = Math.round(x / 16) * 16;
+      // 此处必须使用math.round进行四舍五入才能避免坦克转弯时候位置变动过大
+      ? y = Math.round(y / 16) << 4
+      : x = Math.round(x / 16) << 4;
 
     return [x, y];
   }
