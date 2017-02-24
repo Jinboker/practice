@@ -1,6 +1,7 @@
 import { Mover } from './mover';
 import { res } from '../data';
 import { delay } from '../comm';
+import { object } from '../var'
 import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT } from '../const';
 
 const SHIELD_IMG = res.img.misc;
@@ -58,6 +59,10 @@ class Tank extends Mover {
     let img = this.type === 'player' ? PLAY_IMG : NPC_IMG;
     
     CXT_ROLE.drawImage(img, this.grade * 32, DIR[this.direction] * 64 + this.wheelPic * 32, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+  }
+
+  newBullet() {
+    
   }
 }
 

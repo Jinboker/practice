@@ -1,10 +1,10 @@
-import { state, inputKey, game } from '../var';
+import { state, inputKey, game, object } from '../var';
 import { res, npcData } from '../data';
 import { CXT_H, CXT_W, CXT_BG, CXT_MISC, OFFSET_X, OFFSET_Y, SCREEN_L } from '../const';
 import { drawMap } from '../map';
-import { objInit } from '../init';
 import { stateCtr } from '../control';
 import { doAfterPressKey, delay, cleanCxt } from '../comm';
+import { Player } from '../factory/player';
 
 const HALF_CURTAIN = CXT_H >> 1;
 const MAX_STAGE = npcData.length;
@@ -63,7 +63,7 @@ function chooseStage() {
         halfPlayScreen += 15;
       } else {
         stateCtr.receiveMessage('playGame', 'fight');
-        objInit();
+        object.player = new Player(4, 12, 'W', 'player');
       }
       break;
     default: break;

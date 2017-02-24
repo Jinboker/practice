@@ -23,10 +23,10 @@ let game = {
   stage: 1
 };
 
-let obj = {
+let object = {
   player: null,
   npc: [],
   bullet: []
 };
 
-export { state, inputKey, game, obj };
+export { state, inputKey, game, object };
