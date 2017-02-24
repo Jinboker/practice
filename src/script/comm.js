@@ -12,14 +12,10 @@ const requestAnimFrame = (() => {
 })();
 
 function delay (count, totalCount, fn) {
-  if (count) {
-    count--;
-  } else {
-    count = totalCount;
-    fn();
-  }
+  if (count) { return count--; }
 
-  return count;
+  fn();
+  return totalCount;
 }
 
 let cxt = { CXT_ROLE, CXT_BG, CXT_MISC };
@@ -54,21 +50,9 @@ function doAfterPressKey (operate) {
   }
 }
 
-function mix(...mixins) {
-  class Mix {}
-
-  for (let mixin of mixins) {
-    copyProperties(Mix, mixin);
-    copyProperties(Mix.prototype, mixin.prototype);
-  }
-
-  return Mix;
-}
-
 export {
   requestAnimFrame,
   delay,
   cleanCxt,
-  mix,
   doAfterPressKey
 };

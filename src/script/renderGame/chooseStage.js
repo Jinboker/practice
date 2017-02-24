@@ -2,7 +2,7 @@ import { res, npcData } from '../data';
 import { drawMap } from '../map';
 import { stateCtr } from '../control';
 import { doAfterPressKey, delay, cleanCxt } from '../comm';
-import { Player } from '../factory/player';
+import { Player } from '../object/player';
 import { CXT_H, CXT_W, CXT_BG, CXT_MISC, OFFSET_X, OFFSET_Y, SCREEN_L, state, inputKey, game, object } from '../variables';
 
 const HALF_CURTAIN = CXT_H >> 1;
