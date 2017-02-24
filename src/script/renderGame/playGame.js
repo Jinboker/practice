@@ -1,4 +1,4 @@
-import { SCREEN_L, OFFSET_X, OFFSET_Y, CXT_ROLE } from '../const';
+import { SCREEN_L, OFFSET_X, OFFSET_Y, CXT_ROLE } from '../variables';
 import { drawPlayer, drawNpc } from './drawTank';
 import { drawBullet } from './drawBullet';
 

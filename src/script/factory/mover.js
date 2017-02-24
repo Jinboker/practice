@@ -1,5 +1,4 @@
-import { inputKey } from '../var';
-import { TANK_WIDTH, BULLET_WIDTH, SCREEN_L } from '../const';
+import { TANK_WIDTH, BULLET_WIDTH, SCREEN_L, inputKey } from '../variables';
 import { roadMap } from '../map';
 
 const [halfTank, halfBullet] = [TANK_WIDTH >> 1, BULLET_WIDTH >> 1];

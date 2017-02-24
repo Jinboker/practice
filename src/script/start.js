@@ -1,6 +1,6 @@
 import { requestAnimFrame } from './comm';
 import renderGame from './renderGame';
-import { CXT_BG, CXT_MISC } from './const';
+import { CXT_BG, CXT_MISC } from './variables';
 import { keyBoardInit } from './input';
 
 function gameLoop() {

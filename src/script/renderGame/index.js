@@ -1,4 +1,4 @@
-import { state } from '../var';
+import { state } from '../variables';
 import { chooseMode } from './chooseMode';
 import { chooseStage } from './chooseStage';
 import { playGame } from './playGame';

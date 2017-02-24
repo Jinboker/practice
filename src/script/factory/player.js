@@ -1,6 +1,6 @@
 import { Tank } from './tank';
 import { res } from '../data';
-import { inputKey } from '../var';
+import { inputKey } from '../variables';
 
 
 

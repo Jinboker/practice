@@ -1,8 +1,7 @@
 import { Mover } from './mover';
 import { res } from '../data';
 import { delay } from '../comm';
-import { object } from '../var'
-import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT } from '../const';
+import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT, object } from '../variables';
 
 const SHIELD_IMG = res.img.misc;
 const PLAY_IMG = res.img.player;

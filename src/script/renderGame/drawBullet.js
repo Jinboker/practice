@@ -1,4 +1,4 @@
-import { object } from '../var';
+import { object } from '../variables';
 
 let bulletArr = object.bullet;
 

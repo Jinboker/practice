@@ -1,10 +1,9 @@
-import { state, inputKey, game, object } from '../var';
 import { res, npcData } from '../data';
-import { CXT_H, CXT_W, CXT_BG, CXT_MISC, OFFSET_X, OFFSET_Y, SCREEN_L } from '../const';
 import { drawMap } from '../map';
 import { stateCtr } from '../control';
 import { doAfterPressKey, delay, cleanCxt } from '../comm';
 import { Player } from '../factory/player';
+import { CXT_H, CXT_W, CXT_BG, CXT_MISC, OFFSET_X, OFFSET_Y, SCREEN_L, state, inputKey, game, object } from '../variables';
 
 const HALF_CURTAIN = CXT_H >> 1;
 const MAX_STAGE = npcData.length;

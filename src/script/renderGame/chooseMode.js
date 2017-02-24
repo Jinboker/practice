@@ -1,8 +1,7 @@
-import { CXT_BG, CXT_H, WHEEL_CHANGE_FREQUENT } from '../const';
+import { CXT_BG, CXT_H, WHEEL_CHANGE_FREQUENT, inputKey } from '../variables';
 import { stateCtr } from '../control';
 import { delay, cleanCxt, doAfterPressKey } from '../comm';
 import { res } from '../data';
-import { inputKey } from '../var';
 
 
 const MIN_Y = 285;

@@ -1,6 +1,6 @@
 import { Mover } from './mover';
 import { res } from '../data';
-import { DIR, CXT_ROLE, OFFSET_X, OFFSET_Y } from '../const';
+import { DIR, CXT_ROLE, OFFSET_X, OFFSET_Y } from '../variables';
 
 const BULLET_IMG = res.img.misc;
 

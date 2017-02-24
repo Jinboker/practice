@@ -1,5 +1,4 @@
-import { inputKey } from './var';
-import * as CONST from './const';
+import { CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H, inputKey } from './variables';
 
 const requestAnimFrame = (() => {
   return window.requestAnimationFrame
@@ -23,11 +22,13 @@ function delay (count, totalCount, fn) {
   return count;
 }
 
+let cxt = { CXT_ROLE, CXT_BG, CXT_MISC };
+
 function cleanCxt(...type) {
   let typeArr = type[0] === 'all' ? ['role', 'bg', 'misc'] : type;
 
   typeArr.forEach((n) => {
-    CONST[`CXT_${n.toUpperCase()}`].clearRect(0, 0, CONST.CXT_W, CONST.CXT_H);
+    cxt[`CXT_${n.toUpperCase()}`].clearRect(0, 0, CXT_W, CXT_H);
   });
 }
 

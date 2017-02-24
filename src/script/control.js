@@ -1,4 +1,4 @@
-import { state } from './var';
+import { state } from './variables';
 import { cleanCxt } from './comm';
 
 /**

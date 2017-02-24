@@ -1,4 +1,4 @@
-import { inputKey } from './var';
+import { inputKey } from './variables';
 
 let codeToKey = {
   87: 'W',
