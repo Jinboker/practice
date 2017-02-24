@@ -23,21 +23,6 @@ function delay (count, totalCount, fn) {
   return count;
 }
 
-function doPressKeyFn (pressKeyObj) {
-  if ( inputKey.hasPressed
-    && typeof pressKeyObj[inputKey.pressedKey] === "function"
-  ) {
-    inputKey.hasPressed = false;
-    pressKeyObj[inputKey.pressedKey]();
-  }
-}
-
-function initDrawParam (arr_1, arr_2, paramObj) {
-  arr_1.forEach((ele, index) => {
-    paramObj[ele] = arr_2[index];
-  });
-}
-
 function cleanCxt(...type) {
   let typeArr = type[0] === 'all' ? ['role', 'bg', 'misc'] : type;
 
@@ -59,6 +44,15 @@ function copyProperties(target, source) {
   }
 }
 
+function doAfterPressKey (operate) {
+  if ( inputKey.hasPressed
+    && typeof operate[inputKey.pressedKey] === "function"
+  ) {
+    inputKey.hasPressed = false;
+    operate[inputKey.pressedKey]();
+  }
+}
+
 function mix(...mixins) {
   class Mix {}
 
@@ -73,8 +67,7 @@ function mix(...mixins) {
 export {
   requestAnimFrame,
   delay,
-  doPressKeyFn,
-  initDrawParam,
   cleanCxt,
-  mix
+  mix,
+  doAfterPressKey
 };

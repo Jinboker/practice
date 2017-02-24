@@ -1,9 +1,8 @@
-// game state
 let state = {
-  gameState: 'start',           // start, stage, play, over
-  stageState: '',              // changeAble, noChange
-  playState: '',               // fight, construct
-  overState: ''                // nextStage, gameOver
+  game: 'chooseMode',     // chooseMode, chooseStage, playGame, over
+  stage: '',              // changeAble, noChange
+  play: '',               // fight, construct
+  over: ''                // nextStage, gameOver
 };
 
 // which key has been pressed

@@ -1,12 +1,12 @@
 import { requestAnimFrame } from './comm';
-import { drawGame } from './drawGame';
 import { gameInit } from './init';
+import renderGame from './renderGame';
 
 /**
  * game loop fn
  */
 function loop () {
-  drawGame();
+  renderGame();
   requestAnimFrame(loop);
 }
 

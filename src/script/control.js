@@ -5,7 +5,7 @@ import { cleanCxt } from './comm';
  * start new game
  */
 function newGame () {
-  state.gameState = 'start';
+  state.game = 'chooseMode';
 }
 
 /**
@@ -13,8 +13,8 @@ function newGame () {
  * @param [mode] [string] whether could change stage
  */
 function enterStage (mode) {
-  state.gameState = 'stage';
-  state.stageState = mode;
+  state.game = 'chooseStage';
+  state.stage = mode;
 }
 
 /**
@@ -22,8 +22,8 @@ function enterStage (mode) {
  * @param [mode] [string] fight mode or construct mode
  */
 function playGame (mode) {
-  state.gameState = 'play';
-  state.playGameState = mode;
+  state.game = 'playGame';
+  state.play = mode
 
   if (mode === 'construct') {
     cleanCxt('bg');
@@ -35,8 +35,8 @@ function playGame (mode) {
  * @param [mode] [string] game over or next stage
  */
 function thisStageOver (mode) {
-  state.gameState = 'over';
-  state.getScoreState = mode;
+  state.game = 'gameOver';
+  state.over = mode;
   cleanCxt('all');
 }
 
