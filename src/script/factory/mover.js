@@ -2,8 +2,8 @@ import { inputKey } from '../var';
 import { TANK_WIDTH, BULLET_WIDTH, SCREEN_L } from '../const';
 import { roadMap } from '../map';
 
-let [halfTank, halfBullet] = [TANK_WIDTH >> 1, BULLET_WIDTH >> 1];
-let movePosition = {
+const [halfTank, halfBullet] = [TANK_WIDTH >> 1, BULLET_WIDTH >> 1];
+const movePosition = {
   W(speed) { return [0, -speed]; },
   D(speed) { return [speed, 0]; },
   S(speed) { return [0, speed]; },

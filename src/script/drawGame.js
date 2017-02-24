@@ -77,7 +77,7 @@ drawType.start = () => {
 }
 
 /**************************** draw stage ***********************************/
-const HALF_CURTAIN = CXT_H / 2;
+const HALF_CURTAIN = CXT_H >> 1;
 const MAX_STAGE = npcData.length;
 
 let drawStageParam = {
