@@ -12,33 +12,19 @@ const requestAnimFrame = (() => {
 })();
 
 function delay (count, totalCount, fn) {
-  if (count) { return count--; }
+  if (count) { return count - 1; }
 
   fn();
   return totalCount;
 }
 
-let cxt = { CXT_ROLE, CXT_BG, CXT_MISC };
-
 function cleanCxt(...type) {
   let typeArr = type[0] === 'all' ? ['role', 'bg', 'misc'] : type;
+  let cxt = { CXT_ROLE, CXT_BG, CXT_MISC };
 
   typeArr.forEach((n) => {
     cxt[`CXT_${n.toUpperCase()}`].clearRect(0, 0, CXT_W, CXT_H);
   });
-}
-
-function copyProperties(target, source) {
-  for (let key of Reflect.ownKeys(source)) {
-    if ( key !== "constructor"
-      && key !== "prototype"
-      && key !== "name"
-    ) {
-      let desc = Object.getOwnPropertyDescriptor(source, key);
-
-      Object.defineProperty(target, key, desc);
-    }
-  }
 }
 
 function doAfterPressKey (operate) {

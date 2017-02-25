@@ -1,6 +1,7 @@
 import { Mover } from './mover';
 import { res } from '../data';
 import { delay } from '../comm';
+import { stateCtr } from '../control';
 import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT, object } from '../variables';
 
 const SHIELD_IMG = res.img.misc;
@@ -61,7 +62,7 @@ class Tank extends Mover {
   }
 
   newBullet() {
-    
+    stateCtr.receiveMessage('newBullet', this.x, this.y, this.direction, 'bullet', this.grade);
   }
 }
 

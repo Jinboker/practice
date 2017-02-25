@@ -1,8 +1,5 @@
 import { Tank } from './tank';
-import { res } from '../data';
 import { inputKey } from '../variables';
-
-
 
 class Player extends Tank {
   constructor(x, y, direction, type, grade = 0) {
@@ -12,10 +9,20 @@ class Player extends Tank {
     this.grade = grade;
   }
 
-  moveState() {
-    let pressedDirectionKey = inputKey.directionKey;
+  stopGame() {
+    console.log(1);
+  }
+
+  gameCtrl() {
+    let pressedFuncKey = inputKey.funcKey;
+
+    if (inputKey[pressedFuncKey]) {
+      pressedFuncKey === 'H' ? this.stopGame() : this.newBullet();
+    }
+
     let moveAble = false;
     let changDirectionAble = false;
+    let pressedDirectionKey = inputKey.directionKey;
 
     if (inputKey[pressedDirectionKey]) {
       moveAble = true;
@@ -23,7 +30,11 @@ class Player extends Tank {
       this.changeWheels();
     }
 
-    return [moveAble, changDirectionAble]
+    return [moveAble, changDirectionAble];
+  }
+
+  moveState() {
+    return this.gameCtrl();
   }
 
   draw() {

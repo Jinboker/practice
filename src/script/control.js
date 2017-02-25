@@ -1,5 +1,6 @@
-import { state } from './variables';
+import { state, object } from './variables';
 import { cleanCxt } from './comm';
+import { Bullet } from './object/bullet';
 
 /**
  * start new game
@@ -40,6 +41,10 @@ function thisStageOver (mode) {
   cleanCxt('all');
 }
 
+function newBullet (param) {
+  object.bullet.push(new Bullet(...param));
+}
+
 let stateCtr = (() => {
   let operations = {};
 
@@ -47,6 +52,7 @@ let stateCtr = (() => {
   operations.enterStage = mode => enterStage(mode);
   operations.playGame = mode => playGame(mode);
   operations.thisStageOver = mode => thisStageOver(mode);
+  operations.newBullet = param => newBullet(param);
 
   let receiveMessage = (...arg) => {
     let msg = Array.prototype.shift.call(arg);
@@ -55,7 +61,7 @@ let stateCtr = (() => {
   };
 
   return {
-    receiveMessage: receiveMessage
+    receiveMessage
   }
 })();
 
