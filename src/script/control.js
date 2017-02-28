@@ -49,15 +49,15 @@ let stateCtr = (() => {
   let operations = {};
 
   operations.newGame = () => newGame();
-  operations.enterStage = mode => enterStage(mode);
-  operations.playGame = mode => playGame(mode);
-  operations.thisStageOver = mode => thisStageOver(mode);
+  operations.enterStage = mode => enterStage(...mode);
+  operations.playGame = mode => playGame(...mode);
+  operations.thisStageOver = mode => thisStageOver(...mode);
   operations.newBullet = param => newBullet(param);
 
   let receiveMessage = (...arg) => {
     let msg = Array.prototype.shift.call(arg);
 
-    operations[msg].apply(this, arg);
+    operations[msg](arg);
   };
 
   return {
