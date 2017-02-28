@@ -62,7 +62,7 @@ function chooseStage() {
         halfPlayScreen += 15;
       } else {
         stateCtr.receiveMessage('playGame', 'fight');
-        object.player = new Player(4, 12, 'W', 'player');
+        object.player = new Player(128, 384, 'W', 'player');
       }
       break;
     default: break;

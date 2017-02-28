@@ -11,8 +11,8 @@ const movePosition = {
 
 class Mover {
   constructor(x, y, direction, type) {
-    this.x = x * 32;
-    this.y = y * 32;
+    this.x = x;
+    this.y = y;
     this.direction = direction;    // W A S D
     this.type = type;
   }
