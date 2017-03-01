@@ -5,7 +5,7 @@ import { Bullet } from './object/bullet';
 /**
  * start new game
  */
-function newGame () {
+function newGame() {
   state.game = 'chooseMode';
 }
 
@@ -13,7 +13,7 @@ function newGame () {
  * enter stage interface
  * @param [mode] [string] whether could change stage
  */
-function enterStage (mode) {
+function enterStage(mode) {
   state.game = 'chooseStage';
   state.stage = mode;
 }
@@ -22,7 +22,7 @@ function enterStage (mode) {
  * enter game interface and render map
  * @param [mode] [string] fight mode or construct mode
  */
-function playGame (mode) {
+function playGame(mode) {
   state.game = 'playGame';
   state.play = mode
 
@@ -35,14 +35,18 @@ function playGame (mode) {
  * enter score interface, if game over ,restart game
  * @param [mode] [string] game over or next stage
  */
-function thisStageOver (mode) {
+function thisStageOver(mode) {
   state.game = 'gameOver';
   state.over = mode;
   cleanCxt('all');
 }
 
-function newBullet (param) {
+function newBullet(param) {
   object.bullet.push(new Bullet(...param));
+}
+
+function bulletDie(param) {
+
 }
 
 let stateCtr = (() => {
@@ -53,6 +57,7 @@ let stateCtr = (() => {
   operations.playGame = mode => playGame(...mode);
   operations.thisStageOver = mode => thisStageOver(...mode);
   operations.newBullet = param => newBullet(param);
+  operations.bulletDie = param => bulletDie(param);
 
   let receiveMessage = (...arg) => {
     let msg = Array.prototype.shift.call(arg);
