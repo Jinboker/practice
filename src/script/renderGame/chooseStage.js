@@ -1,6 +1,6 @@
 import { res, npcData } from '../data';
 import { drawMap } from '../map';
-import { stateCtr } from '../control';
+import { controller } from '../control';
 import { doAfterPressKey, delay, cleanCxt } from '../comm';
 import { Player } from '../object/player';
 import { CXT_H, CXT_W, CXT_BG, CXT_MISC, OFFSET_X, OFFSET_Y, SCREEN_L, state, inputKey, game, object } from '../variables';
@@ -61,7 +61,7 @@ function chooseStage() {
       if (halfPlayScreen < 208) {
         halfPlayScreen += 15;
       } else {
-        stateCtr.receiveMessage('playGame', 'fight');
+        controller.receiveMessage('playGame', 'fight');
         object.player = new Player(128, 384, 'W', 'player');
       }
       break;

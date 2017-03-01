@@ -5,8 +5,8 @@ import { DIR, CXT_ROLE, OFFSET_X, OFFSET_Y } from '../variables';
 const BULLET_IMG = res.img.misc;
 
 class Bullet extends Mover {
-  constructor (x, y, direction, type, grade) {
-    super(x, y, direction, type);
+  constructor (x, y, direction, type, index, grade) {
+    super(x, y, direction, type, index);
 
     // 根据坦克的等级确定子弹的速度
     this.speed = grade ? 5 : 4;

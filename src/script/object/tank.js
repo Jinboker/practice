@@ -1,7 +1,7 @@
 import { Mover } from './mover';
 import { res } from '../data';
 import { delay } from '../comm';
-import { stateCtr } from '../control';
+import { controller } from '../control';
 import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT, object } from '../variables';
 
 const SHIELD_IMG = res.img.misc;
@@ -9,8 +9,8 @@ const PLAY_IMG = res.img.player;
 const NPC_IMG = res.img.npc;
 
 class Tank extends Mover {
-  constructor(x, y, direction, type) {
-    super(x, y, direction, type);
+  constructor(x, y, direction, type, index) {
+    super(x, y, direction, type, index);
 
     this.hasShield = true;
     this.shieldPic = 0;
@@ -19,6 +19,8 @@ class Tank extends Mover {
 
     this.wheelPic = 0;
     this.wheelDelayNum = WHEEL_CHANGE_FREQUENT;
+
+    this.bulletAlive = false;
   }
 
   shield() {
@@ -62,7 +64,10 @@ class Tank extends Mover {
   }
 
   newBullet() {
-    stateCtr.receiveMessage('newBullet', this.x, this.y, this.direction, 'bullet', this.grade);
+    if (this.bulletAlive) {return;};
+
+    controller.receiveMessage('newBullet', this.x, this.y, this.direction, 'bullet', this.index, this.grade);
+    this.bulletAlive = true;
   }
 }
 

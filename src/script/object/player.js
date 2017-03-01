@@ -2,8 +2,8 @@ import { Tank } from './tank';
 import { inputKey } from '../variables';
 
 class Player extends Tank {
-  constructor(x, y, direction, type, grade = 0) {
-    super(x, y, direction, type);
+  constructor(x, y, direction, type, index, grade = 0) {
+    super(x, y, direction, type, index);
 
     this.speed = 2;
     this.grade = grade;

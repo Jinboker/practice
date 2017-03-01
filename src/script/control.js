@@ -26,9 +26,7 @@ function playGame(mode) {
   state.game = 'playGame';
   state.play = mode
 
-  if (mode === 'construct') {
-    cleanCxt('bg');
-  }
+  mode === 'construct' && cleanCxt('bg');
 }
 
 /**
@@ -46,10 +44,10 @@ function newBullet(param) {
 }
 
 function bulletDie(param) {
-
+  console.log(33);
 }
 
-let stateCtr = (() => {
+let controller = (() => {
   let operations = {};
 
   operations.newGame = () => newGame();
@@ -70,4 +68,4 @@ let stateCtr = (() => {
   }
 })();
 
-export { stateCtr };
+export { controller };

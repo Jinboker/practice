@@ -1,5 +1,5 @@
 import { CXT_BG, CXT_H, WHEEL_CHANGE_FREQUENT, inputKey } from '../variables';
-import { stateCtr } from '../control';
+import { controller } from '../control';
 import { delay, cleanCxt, doAfterPressKey } from '../comm';
 import { res } from '../data';
 
@@ -22,7 +22,7 @@ let operate = {
       ? ['playGame', 'construct']
       : ['enterStage', 'changeAble'];
 
-    stateCtr.receiveMessage(...mode);
+    controller.receiveMessage(...mode);
   }
 };
 

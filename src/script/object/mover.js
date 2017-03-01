@@ -1,5 +1,6 @@
 import { TANK_WIDTH, BULLET_WIDTH, SCREEN_L, inputKey } from '../variables';
 import { roadMap } from '../map';
+import { controller } from '../control';
 
 const movePosition = {
   W: speed => [0, -speed],
@@ -13,20 +14,21 @@ const collisionPoint = {
   S: (x, y, distance) => [[x - 16, y + distance], [x, y + distance]],
   D: (x, y, distance) => [[x + distance, y - 16], [x + distance, y]]
 };
-const collisionBorder = {
-  W: (x, y) => (y === 0),
-  A: (x, y) => (x === 0), 
-  S: (x, y) => (y === SCREEN_L - this.distanceToCenter * 2),
-  D: (x, y) => (x === SCREEN_L - this.distanceToCenter * 2)
-};
 
 class Mover {
-  constructor(x, y, direction, type) {
+  constructor(x, y, direction, type, index) {
     this.x = x;
     this.y = y;
     this.direction = direction;    // W A S D
     this.type = type;
+    this.index = index;
     this.distanceToCenter = type !== 'bullet' ? 16 : 4;
+    this.borderCollision = {
+      W: () => (this.y === 0),
+      A: () => (this.x === 0), 
+      S: () => (this.y === SCREEN_L - this.distanceToCenter * 2),
+      D: () => (this.x === SCREEN_L - this.distanceToCenter * 2) 
+    };
   }
 
   confirmCollisionPoint(position) {
@@ -39,8 +41,6 @@ class Mover {
   }
 
   barrierCollision(position) {
-    if (collisionBorder[this.direction](this.x, this.y)) {return false;}
-
     let collisionDot = this.confirmCollisionPoint(position);
 
     return collisionDot.every((ele) => {
@@ -58,6 +58,8 @@ class Mover {
 
   // 如果换方向，是不用检测是否会跟障碍物撞到一起的
   isCollision(changeDirection, position) {
+    if (this.borderCollision[this.direction]()) {return true;};
+
     if (changeDirection) {
       return false;
     } else {
@@ -70,7 +72,11 @@ class Mover {
     return false;
   }
 
-  
+  toNextPosition() {
+    let offsetArr = movePosition[`${this.direction}`](this.speed);
+
+    return [this.x + offsetArr[0], this.y + offsetArr[1]];
+  }
 
   move() {
     let [moveAble, changeDirectionAble] = this.moveState();
@@ -84,13 +90,9 @@ class Mover {
     if (!this.isCollision(changeDirectionAble, position)) {
       changeDirectionAble && (this.direction = inputKey.directionKey);
       [this.x, this.y] = position;
+    } else {
+      this.type === 'bullet' && controller.receiveMessage('bulletDie', this.index); 
     }
-  }
-
-  toNextPosition() {
-    let offsetArr = movePosition[`${this.direction}`](this.speed);
-
-    return [this.x + offsetArr[0], this.y + offsetArr[1]];
   }
 }
 
