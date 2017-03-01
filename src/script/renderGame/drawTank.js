@@ -1,21 +1,11 @@
 import { object } from '../variables';
 
+function drawTank() {
+  let tankArr = object.tank;
 
-
-function drawPlayer() {
-  let player = object.tank[0];
-
-  if (!player) {return;}
-  
-  player.draw();
-}
-
-function drawNpc() {
-  let npcArr = object.slice(1);
-
-  npcArr.forEach((ele) => {
-    ele && ele.draw();
+  tankArr.forEach(ele => {
+    ele.alive ? ele.draw() : ele = void 0;
   });
 }
 
-export { drawNpc, drawPlayer };
+export { drawTank };

@@ -92,7 +92,10 @@ class Mover {
       changeDirectionAble && (this.direction = inputKey.directionKey);
       [this.x, this.y] = position;
     } else {
-      this.type === 'bullet' && controller.receiveMessage('bulletDie', this.index); 
+      if (this.type === 'bullet') {
+       controller.receiveMessage('bulletDie', this.index); 
+       this.alive = false;
+      } 
     }
   }
 }
