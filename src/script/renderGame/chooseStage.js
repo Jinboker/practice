@@ -62,7 +62,7 @@ function chooseStage() {
         halfPlayScreen += 15;
       } else {
         controller.receiveMessage('playGame', 'fight');
-        object.player = new Player(128, 384, 'W', 'player');
+        object.tank[0] = new Player(128, 384, 'W', 'player', 0);
       }
       break;
     default: break;

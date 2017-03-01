@@ -43,8 +43,8 @@ function newBullet(param) {
   object.bullet.push(new Bullet(...param));
 }
 
-function bulletDie(param) {
-  console.log(33);
+function bulletDie(index) {
+  object.tank[index].bulletAlive = false;
 }
 
 let controller = (() => {
@@ -55,7 +55,7 @@ let controller = (() => {
   operations.playGame = mode => playGame(...mode);
   operations.thisStageOver = mode => thisStageOver(...mode);
   operations.newBullet = param => newBullet(param);
-  operations.bulletDie = param => bulletDie(param);
+  operations.bulletDie = index => bulletDie(index);
 
   let receiveMessage = (...arg) => {
     let msg = Array.prototype.shift.call(arg);

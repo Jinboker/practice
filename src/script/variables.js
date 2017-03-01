@@ -40,7 +40,6 @@ export let game = {
 };
 
 export let object = {
-  player: null,
-  npc: new Array(5).fill(null),
+  tank: new Array(6).fill(null),
   bullet: []
 };

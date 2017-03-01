@@ -22,6 +22,7 @@ class Mover {
     this.direction = direction;    // W A S D
     this.type = type;
     this.index = index;
+    this.alive = true;
     this.distanceToCenter = type !== 'bullet' ? 16 : 4;
     this.borderCollision = {
       W: () => (this.y === 0),
