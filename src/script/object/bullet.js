@@ -16,18 +16,13 @@ class Bullet extends Mover {
 
   init() {
     let resetDirection = {
-      W: [this.x + 16, this.y + 4],
-      A: [this.x + 4, this.y + 16],
-      S: [this.x + 16, this.y + 28],
-      D: [this.x + 28, this.y + 16]
-      // W() {return [this.x + 16, this.y + 4];},
-      // A() {return [this.x + 4, this.y + 16];},
-      // S() {return [this.x + 16, this.y + 28];},
-      // D() {return [this.x + 28, this.y + 16];}
+      W: [this.x + 12, this.y],
+      A: [this.x, this.y + 12],
+      S: [this.x + 12, this.y + 24],
+      D: [this.x + 24, this.y + 12]
     };
 
     [this.x, this.y] = resetDirection[this.direction];
-    console.log(this.x, this.y);
   }
 
   draw() {

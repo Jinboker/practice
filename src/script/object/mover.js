@@ -28,7 +28,7 @@ class Mover {
   }
 
   barrierCollision(position) {
-    let collisionDot = this.confirmCollisionDot(position);
+    let collisionDot = this.confirmCollisionPoint(position);
 
     if (!collisionDot) { return false; }
 
@@ -49,7 +49,7 @@ class Mover {
     return false;
   }
 
-  confirmCollisionDot(position) {
+  confirmCollisionPoint(position) {
     let direction = this.direction;
     let distance = this.type !== 'bullet' ? halfTank : halfBullet;
     // the center of the object

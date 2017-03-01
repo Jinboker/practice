@@ -1,17 +1,8 @@
 import { mapData, res } from './data';
 import { CXT_BG } from './variables';
 
-let arr28 = [];
-for (let i = 0; i < 28; i++) {
-  arr28[i] = 0;
-}
-
-let roadMap = [];
-arr28.forEach((ele, i) => {
-  roadMap[i] = [];
-  arr28.forEach((ele, j) => {
-    roadMap[i][j] = 0;
-  });
+let roadMap = new Array(28).fill(0).map(() => {
+  return new Array(28).fill(0);
 });
 
 function ensureRoadMap (i, j, data) {
