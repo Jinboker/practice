@@ -103,7 +103,7 @@ function ensureRoadMap (i, j, data) {
 }
 
 function drawMap (stage) {
-  // in construct mode, player may construct at the born position, clean it
+  // in construct mode, player may build at the born position, clean it
   if (stage === 0) {
     mapData[0][0][0] =
       mapData[0][0][6] =

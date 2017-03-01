@@ -1,12 +1,17 @@
 import { TANK_WIDTH, BULLET_WIDTH, SCREEN_L, inputKey } from '../variables';
 import { roadMap } from '../map';
 
-const [halfTank, halfBullet] = [TANK_WIDTH >> 1, BULLET_WIDTH >> 1];
 const movePosition = {
   W(speed) { return [0, -speed]; },
   D(speed) { return [speed, 0]; },
   S(speed) { return [0, speed]; },
   A(speed) { return [-speed, 0]; }
+};
+const collisionPoint = {
+  W(x, y, distance) {return [[x - 16, y - distance], [x, y - distance]];},
+  A(x, y, distance) {return [[x - distance, y - 16], [x - distance, y]];},
+  S(x, y, distance) {return [[x - 16, y + distance], [x, y + distance]];},
+  D(x, y, distance) {return [[x + distance, y - 16], [x + distance, y]];}
 };
 
 class Mover {
@@ -51,29 +56,12 @@ class Mover {
 
   confirmCollisionPoint(position) {
     let direction = this.direction;
-    let distance = this.type !== 'bullet' ? halfTank : halfBullet;
+    // half width of tank and bullet
+    let distanceToCenter = this.type !== 'bullet' ? 16 : 4;  
     // the center of the object
-    let [x, y] = [position[0] + distance, position[1] + distance];
+    let [x, y] = [position[0] + distanceToCenter, position[1] + distanceToCenter];
 
-    switch(true) {
-      case direction === 'W':
-        if (this.y === 0) {return false;}
-        return [[x - 16, y - distance], [x, y - distance]];
-        break;
-      case direction === 'A':
-        if (this.x === 0) {return false;}
-        return [[x - distance, y - 16], [x - distance, y]];
-        break;
-      case direction === 'S':
-        if (this.y === SCREEN_L - distance * 2) {return false;}
-        return [[x - 16, y + distance], [x, y + distance]];
-        break;
-      case direction === 'D':
-        if (this.x === SCREEN_L - distance * 2) {return false;}
-        return [[x + distance, y - 16], [x + distance, y]];
-        break;
-      default: break;
-    };
+    return collisionPoint[direction](x, y, distanceToCenter);
   }
 
   move() {

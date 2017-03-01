@@ -14,9 +14,6 @@ export const SHIELD_CHANGE_FREQUENT = 4;
 
 export const DIR = { W: 0, D: 1, S: 2, A: 3 };
 
-export const TANK_WIDTH = 32;
-export const BULLITE_WIDTH = 8;
-
 export let state = {
   game: 'chooseMode',     // chooseMode, chooseStage, playGame, over
   stage: '',              // changeAble, noChange
@@ -44,6 +41,6 @@ export let game = {
 
 export let object = {
   player: null,
-  npc: [],
+  npc: new Array(5).fill(null),
   bullet: []
 };
