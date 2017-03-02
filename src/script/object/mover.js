@@ -87,9 +87,8 @@ class Mover {
     let position = changeDirectionAble
       ? this.resetPosition()
       : this.toNextPosition();
-
+    
     if (!this.isCollision(changeDirectionAble, position)) {
-      changeDirectionAble && (this.direction = inputKey.directionKey);
       [this.x, this.y] = position;
     } else {
       if (this.type === 'bullet') {
@@ -97,6 +96,8 @@ class Mover {
        this.alive = false;
       } 
     }
+
+    changeDirectionAble && (this.direction = inputKey.directionKey);
   }
 }
 
