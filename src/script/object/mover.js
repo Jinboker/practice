@@ -24,29 +24,27 @@ class Mover {
     this.index = index;
     this.alive = true;
     this.distanceToCenter = type !== 'bullet' ? 16 : 4;
+    this.next_x = null;
+    this.next_y = null;
     this.borderCollision = {
-      W: () => (this.y <= 0),
-      A: () => (this.x <= 0), 
-      S: () => (this.y >= SCREEN_L - this.distanceToCenter * 2),
-      D: () => (this.x >= SCREEN_L - this.distanceToCenter * 2) 
+      W: () => (this.next_y <= 0),
+      A: () => (this.next_x <= 0), 
+      S: () => (this.next_y >= SCREEN_L - this.distanceToCenter * 2),
+      D: () => (this.next_x >= SCREEN_L - this.distanceToCenter * 2) 
     };
   }
 
-  confirmCollisionPoint(position) {
-    let direction = this.direction;
-    let distanceToCenter = this.distanceToCenter;
-    // the center of the object
-    let [x, y] = [position[0] + distanceToCenter, position[1] + distanceToCenter];
+  confirmCollisionPoint() {
+    let distance = this.distanceToCenter;
 
-    return collisionPoint[direction](x, y, distanceToCenter);
+    return collisionPoint[this.direction](this.next_x + distance, this.next_y + distance, distance);
   }
 
-  barrierCollision(position) {
-    let collisionDot = this.confirmCollisionPoint(position);
+  barrierCollision() {
+    let collisionDot = this.confirmCollisionPoint();
 
     return collisionDot.every((element) => {
-      if (element.some(ele => ele < 0)) {return false;}
-      
+      // if (element.some(ele => ele < 0)) {return false;}
       let [row, col] = [element[1] >> 4, element[0] >> 4];
 
       switch (roadMap[row][col]) {
@@ -60,13 +58,12 @@ class Mover {
   }
 
   // 如果换方向，是不用检测是否会跟障碍物撞到一起的
-  isCollision(changeDirection, position) {
+  isCollision(changeDirection) {
     if (changeDirection) {
       return false;
     } else {
-      if (this.borderCollision[this.direction]()) {return true;};
-
-      return !this.barrierCollision(position);
+      return this.borderCollision[this.direction]()
+          || !this.barrierCollision();
     }
     // return this.tankCollision() && this.barrierCollision(position);
   }
@@ -86,13 +83,13 @@ class Mover {
 
     if (!moveAble) {return;}
 
-    let position = changeDirectionAble
+    [this.next_x, this.next_y] = changeDirectionAble
       ? this.resetPosition()
       : this.toNextPosition();
     
-    if (!this.isCollision(changeDirectionAble, position)) {
+    if (!this.isCollision(changeDirectionAble)) {
       changeDirectionAble && (this.direction = inputKey.directionKey);
-      [this.x, this.y] = position;
+      [this.x, this.y] = [this.next_x, this.next_y];
     } else {
       if (this.type === 'bullet') {
        controller.receiveMessage('bulletDie', this.index); 
