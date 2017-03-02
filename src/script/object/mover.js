@@ -25,10 +25,10 @@ class Mover {
     this.alive = true;
     this.distanceToCenter = type !== 'bullet' ? 16 : 4;
     this.borderCollision = {
-      W: () => (this.y === 0),
-      A: () => (this.x === 0), 
-      S: () => (this.y === SCREEN_L - this.distanceToCenter * 2),
-      D: () => (this.x === SCREEN_L - this.distanceToCenter * 2) 
+      W: () => (this.y <= 0),
+      A: () => (this.x <= 0), 
+      S: () => (this.y >= SCREEN_L - this.distanceToCenter * 2),
+      D: () => (this.x >= SCREEN_L - this.distanceToCenter * 2) 
     };
   }
 
@@ -44,8 +44,10 @@ class Mover {
   barrierCollision(position) {
     let collisionDot = this.confirmCollisionPoint(position);
 
-    return collisionDot.every((ele) => {
-      let [row, col] = [ele[1] >> 4, ele[0] >> 4];
+    return collisionDot.every((element) => {
+      if (element.some(ele => ele < 0)) {return false;}
+      
+      let [row, col] = [element[1] >> 4, element[0] >> 4];
 
       switch (roadMap[row][col]) {
         case 0: return true; break;
@@ -59,11 +61,11 @@ class Mover {
 
   // 如果换方向，是不用检测是否会跟障碍物撞到一起的
   isCollision(changeDirection, position) {
-    if (this.borderCollision[this.direction]()) {return true;};
-
     if (changeDirection) {
       return false;
     } else {
+      if (this.borderCollision[this.direction]()) {return true;};
+
       return !this.barrierCollision(position);
     }
     // return this.tankCollision() && this.barrierCollision(position);
@@ -89,6 +91,7 @@ class Mover {
       : this.toNextPosition();
     
     if (!this.isCollision(changeDirectionAble, position)) {
+      changeDirectionAble && (this.direction = inputKey.directionKey);
       [this.x, this.y] = position;
     } else {
       if (this.type === 'bullet') {
@@ -96,8 +99,6 @@ class Mover {
        this.alive = false;
       } 
     }
-
-    changeDirectionAble && (this.direction = inputKey.directionKey);
   }
 }
 
