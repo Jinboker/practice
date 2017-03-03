@@ -1,6 +1,6 @@
 import { TANK_WIDTH, BULLET_WIDTH, SCREEN_L, inputKey } from '../variables';
-import { roadMap } from '../map';
 import { controller } from '../control';
+import { roadMap } from '../map';
 
 const movePosition = {
   W: speed => [0, -speed],
@@ -29,8 +29,8 @@ class Mover {
     this.borderCollision = {
       W: () => (this.next_y <= 0),
       A: () => (this.next_x <= 0), 
-      S: () => (this.next_y >= SCREEN_L - this.distanceToCenter * 2),
-      D: () => (this.next_x >= SCREEN_L - this.distanceToCenter * 2) 
+      S: () => (this.next_y >= SCREEN_L - (this.distanceToCenter << 1)),
+      D: () => (this.next_x >= SCREEN_L - (this.distanceToCenter << 1)) 
     };
   }
 
@@ -46,7 +46,7 @@ class Mover {
     return collisionDot.every((ele) => {
       let [row, col] = [ele[1] >> 4, ele[0] >> 4];
 
-      return this.hasBarrier(roadMap[row][col]);
+      return this.hasBarrier(roadMap[row][col], row, col);
     });
   }
 

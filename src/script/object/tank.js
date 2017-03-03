@@ -2,6 +2,7 @@ import { Mover } from './mover';
 import { res } from '../data';
 import { delay } from '../comm';
 import { controller } from '../control';
+import { roadMap } from '../map';
 import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT, FIRE_MIN_FREQUENT, object } from '../variables';
 
 const SHIELD_IMG = res.img.misc;
@@ -28,7 +29,7 @@ class Tank extends Mover {
     if (!this.shieldDuration) {return;}
 
     this.shieldDuration --;
-    delay(SHIELD_DELAY, () => (shieldPic = (+!shieldPic) * 32));
+    delay(SHIELD_DELAY, () => (shieldPic = (+!shieldPic) << 5));
     CXT_ROLE.drawImage(SHIELD_IMG, 32 + shieldPic, 0, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }
 
@@ -39,7 +40,7 @@ class Tank extends Mover {
       return true;
     }
 
-    return (roadType === 0);
+    return (roadType <= 1);
   }
 
   // 坦克改变方向后需要重置位置
@@ -56,7 +57,7 @@ class Tank extends Mover {
   }
 
   changeWheels() {
-    delay(WHEEL_DELAY, () => (wheelPic = (+!wheelPic) * 32));
+    delay(WHEEL_DELAY, () => (wheelPic = (+!wheelPic) << 5));
   }
 
   newBullet() {
@@ -71,7 +72,7 @@ class Tank extends Mover {
   drawTank() {
     let img = this.type === 'player' ? PLAY_IMG : NPC_IMG;
     
-    CXT_ROLE.drawImage(img, this.grade * 32, DIR[this.direction] * 64 + wheelPic, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+    CXT_ROLE.drawImage(img, this.grade << 5, (DIR[this.direction] << 6) + wheelPic, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }
 }
 
