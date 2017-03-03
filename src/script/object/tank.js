@@ -33,8 +33,8 @@ class Tank extends Mover {
   }
 
   hasBarrier(roadType) {
-    // roadType 为0表示无障碍能过，3为冰不能过（特殊处理），剩下都是不能通过的
-    if (roadType === 3) {
+    // roadType 为0表示无障碍，1为冰(要特殊处理)，剩下都不能通过
+    if (roadType === 1) {
       console.log('bing');
       return true;
     }

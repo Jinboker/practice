@@ -26,8 +26,9 @@ class Bullet extends Mover {
   }
 
   hasBarrier(roadType) {
-    console.log(roadType);
-    return true;
+    if (roadType <= 2) {return true;}
+
+    return false;
   }
 
   draw() {
