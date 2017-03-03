@@ -49,7 +49,9 @@ class Bullet extends Mover {
     console.log('home');
   }
 
-  hasBarrier(roadType, row, col) {
+  hasBarrier(row, col) {
+    let roadType = roadMap[row][col];
+
     if (roadType <= 2) {return true;}
 
     this[ROAD_TYPE[roadType]](row, col);

@@ -1,6 +1,5 @@
 import { TANK_WIDTH, BULLET_WIDTH, SCREEN_L, inputKey } from '../variables';
 import { controller } from '../control';
-import { roadMap } from '../map';
 
 const movePosition = {
   W: speed => [0, -speed],
@@ -43,11 +42,9 @@ class Mover {
   barrierCollision() {
     let collisionDot = this.confirmCollisionPoint();
 
-    return collisionDot.every((ele) => {
-      let [row, col] = [ele[1] >> 4, ele[0] >> 4];
-
-      return this.hasBarrier(roadMap[row][col], row, col);
-    });
+    return collisionDot
+      .map(ele => this.hasBarrier(ele[1] >> 4, ele[0] >> 4))  // 传入row和col
+      .every(ele => ele);
   }
 
   // 如果换方向，是不用检测是否会跟障碍物撞到一起的

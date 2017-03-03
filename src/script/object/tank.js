@@ -33,7 +33,9 @@ class Tank extends Mover {
     CXT_ROLE.drawImage(SHIELD_IMG, 32 + shieldPic, 0, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }
 
-  hasBarrier(roadType) {
+  hasBarrier(row, col) {
+    let roadType = roadMap[row][col];
+    
     // roadType 为0表示无障碍，1为冰(要特殊处理)，剩下都不能通过
     if (roadType === 1) {
       console.log('bing');
