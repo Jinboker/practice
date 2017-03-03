@@ -3,12 +3,9 @@ import { controller } from '../control';
 import { delay, cleanCxt, doAfterPressKey } from '../comm';
 import { res } from '../data';
 
-
 const MIN_Y = 285;
 const MAX_Y = 345;
 const WHEEL_DELAY = {count: WHEEL_CHANGE_FREQUENT};
-
-// let delayNum = WHEEL_CHANGE_FREQUENT;
 
 let toTop = false;
 let frameY = CXT_H;
@@ -39,7 +36,6 @@ function chooseMode() {
     delay(WHEEL_DELAY, () => (wheelPic = (+!wheelPic) * 32));
     CXT_BG.clearRect(140, 260, 32, 120);
     CXT_BG.drawImage(playerImg, 0,  64 + wheelPic, 32, 32, 140, pointY, 32, 32);
-
     doAfterPressKey(operate);
   } else {
     inputKey['H'] ? frameY = 75 : frameY -= 3;

@@ -17,23 +17,17 @@ class Tank extends Mover {
   constructor(x, y, direction, type, index) {
     super(x, y, direction, type, index);
 
-    this.hasShield = true;
     this.shieldDuration = 200;
 
     this.bulletAlive = false;
   }
 
   shield() {
-    if (!this.hasShield) { return; }
+    if (this.shieldDuration) {return;}
 
-    if (this.shieldDuration > 0) {
-      this.shieldDuration --;
-      delay(SHIELD_DELAY, () => (shieldPic = +!shieldPic));
-      CXT_ROLE.drawImage(SHIELD_IMG, 32 + shieldPic * 32, 0, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
-    } else {
-      this.hasShield = false;
-      this.shieldDuration = 200;
-    }
+    this.shieldDuration --;
+    delay(SHIELD_DELAY, () => (shieldPic = (+!shieldPic) * 32));
+    CXT_ROLE.drawImage(SHIELD_IMG, 32 + shieldPic, 0, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }
 
   // 坦克改变方向后需要重置位置
@@ -50,7 +44,7 @@ class Tank extends Mover {
   }
 
   changeWheels() {
-    delay(WHEEL_DELAY, () => (wheelPic = +!wheelPic));
+    delay(WHEEL_DELAY, () => (wheelPic = (+!wheelPic) * 32));
   }
 
   newBullet() {

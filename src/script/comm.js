@@ -11,12 +11,12 @@ const requestAnimFrame = (() => {
     };
 })();
 
-function delay(obj, fn) {
-  let count = obj.currentCount;
+function delay(delayObj, fn) {
+  let count = delayObj.currentCount;
 
-  count ? count -= 1 : (count = obj.count) && fn();
+  count ? count -= 1 : (count = delayObj.count) && fn();
 
-  obj.currentCount = count;
+  delayObj.currentCount = count;
 }
 
 function cleanCxt(...type) {
