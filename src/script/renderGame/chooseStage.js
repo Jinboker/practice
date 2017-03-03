@@ -10,14 +10,15 @@ const MAX_STAGE = npcData.length;
 
 let process = 0;
 let halfCurtain = 0;
-let enterPlayDelay = 80;
-let halfPlayScreen = 0;
+let halfPlayScreen = 0
+let enterPlayDelay = {};
 
 let operate = {
   W() { game.stage = game.stage > 1 ? game.stage - 1 : MAX_STAGE; },
   S() { game.stage = game.stage < MAX_STAGE ? game.stage + 1 : 1; },
   H() { 
     res.audio.start.play();
+    enterPlayDelay = {count: 80};
     process = 2;
   }
 };
@@ -44,7 +45,7 @@ function chooseStage() {
       }
       break;
     case 2:
-      enterPlayDelay = delay(enterPlayDelay, 80, () => {
+      delay(enterPlayDelay, () => {
         CXT_BG.clearRect(OFFSET_X, OFFSET_Y, SCREEN_L, SCREEN_L);
         cleanCxt('misc');
         CXT_MISC.save();

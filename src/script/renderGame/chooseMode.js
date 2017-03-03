@@ -6,11 +6,13 @@ import { res } from '../data';
 
 const MIN_Y = 285;
 const MAX_Y = 345;
+const WHEEL_DELAY = {count: WHEEL_CHANGE_FREQUENT};
+
+// let delayNum = WHEEL_CHANGE_FREQUENT;
 
 let toTop = false;
 let frameY = CXT_H;
 let pointY = MIN_Y;
-let delayNum = WHEEL_CHANGE_FREQUENT;
 let wheelPic = 0;
 let playerImg = res.img.player;
 
@@ -34,10 +36,7 @@ function init() {
 
 function chooseMode() {
   if (toTop) {
-    delayNum = delay(delayNum, WHEEL_CHANGE_FREQUENT, () => {
-      wheelPic = (+!wheelPic) * 32;
-    });
-
+    delay(WHEEL_DELAY, () => (wheelPic = (+!wheelPic) * 32));
     CXT_BG.clearRect(140, 260, 32, 120);
     CXT_BG.drawImage(playerImg, 0,  64 + wheelPic, 32, 32, 140, pointY, 32, 32);
 

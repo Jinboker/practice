@@ -7,18 +7,18 @@ import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE
 const SHIELD_IMG = res.img.misc;
 const PLAY_IMG = res.img.player;
 const NPC_IMG = res.img.npc;
+const WHEEL_DELAY = {count: WHEEL_CHANGE_FREQUENT};
+const SHIELD_DELAY = {count: SHIELD_CHANGE_FREQUENT};
+
+let wheelPic = 0;
+let shieldPic = 0;
 
 class Tank extends Mover {
   constructor(x, y, direction, type, index) {
     super(x, y, direction, type, index);
 
     this.hasShield = true;
-    this.shieldPic = 0;
     this.shieldDuration = 200;
-    this.shieldDelayNum = SHIELD_CHANGE_FREQUENT;
-
-    this.wheelPic = 0;
-    this.wheelDelayNum = WHEEL_CHANGE_FREQUENT;
 
     this.bulletAlive = false;
   }
@@ -28,10 +28,8 @@ class Tank extends Mover {
 
     if (this.shieldDuration > 0) {
       this.shieldDuration --;
-      this.shieldDelayNum = delay(this.shieldDelayNum, SHIELD_CHANGE_FREQUENT, () => {
-        this.shieldPic = +! this.shieldPic;
-      });
-      CXT_ROLE.drawImage(SHIELD_IMG, 32 + this.shieldPic * 32, 0, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+      delay(SHIELD_DELAY, () => (shieldPic = +!shieldPic));
+      CXT_ROLE.drawImage(SHIELD_IMG, 32 + shieldPic * 32, 0, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
     } else {
       this.hasShield = false;
       this.shieldDuration = 200;
@@ -52,15 +50,7 @@ class Tank extends Mover {
   }
 
   changeWheels() {
-    this.wheelDelayNum = delay(this.wheelDelayNum, WHEEL_CHANGE_FREQUENT, () => {
-      this.wheelPic = +!this.wheelPic;
-    });
-  }
-
-  drawTank() {
-    let img = this.type === 'player' ? PLAY_IMG : NPC_IMG;
-    
-    CXT_ROLE.drawImage(img, this.grade * 32, DIR[this.direction] * 64 + this.wheelPic * 32, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+    delay(WHEEL_DELAY, () => (wheelPic = +!wheelPic));
   }
 
   newBullet() {
@@ -68,6 +58,12 @@ class Tank extends Mover {
 
     controller.receiveMessage('newBullet', this.x, this.y, this.direction, 'bullet', this.index, this.grade);
     this.bulletAlive = true;
+  }
+
+  drawTank() {
+    let img = this.type === 'player' ? PLAY_IMG : NPC_IMG;
+    
+    CXT_ROLE.drawImage(img, this.grade * 32, DIR[this.direction] * 64 + wheelPic * 32, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }
 }
 

@@ -43,9 +43,8 @@ class Mover {
   barrierCollision() {
     let collisionDot = this.confirmCollisionPoint();
 
-    return collisionDot.every((element) => {
-      // if (element.some(ele => ele < 0)) {return false;}
-      let [row, col] = [element[1] >> 4, element[0] >> 4];
+    return collisionDot.every((ele) => {
+      let [row, col] = [ele[1] >> 4, ele[0] >> 4];
 
       switch (roadMap[row][col]) {
         case 0: return true; break;
@@ -63,9 +62,9 @@ class Mover {
       return false;
     } else {
       return this.borderCollision[this.direction]()
-          || !this.barrierCollision();
+          || !this.barrierCollision()
+          || this.tankCollision();
     }
-    // return this.tankCollision() && this.barrierCollision(position);
   }
 
   tankCollision() {
