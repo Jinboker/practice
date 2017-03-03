@@ -11,6 +11,8 @@ const ROAD_TYPE = {
   5: 'home'
 };
 
+let [currentRow, currentCol] = [0, 0]
+
 class Bullet extends Mover {
   constructor (x, y, direction, type, index, grade) {
     super(x, y, direction, type, index);
@@ -22,6 +24,7 @@ class Bullet extends Mover {
   }
 
   init() {
+    this.grade = 2;
     let resetDirection = {
       W: [this.x + 12, this.y],
       A: [this.x, this.y + 12],
@@ -32,17 +35,21 @@ class Bullet extends Mover {
     [this.x, this.y] = resetDirection[this.direction];
   }
 
-  clearBarrier(row, col) {
-    roadMap[row][col] = 0;
-    CXT_BG.clearRect(OFFSET_X + (col << 4), OFFSET_Y + (row << 4), 16, 16);
+  clearAllBarrier() {
+    roadMap[currentRow][currentCol] = 0;
+    CXT_BG.clearRect(OFFSET_X + (currentCol << 4), OFFSET_Y + (currentRow << 4), 16, 16);
   }
 
-  brick(row, col) {
-    console.log('brick', row, col);
+  brick() {
+    if (this.grade <= 1) {
+      console.log('brick');
+    } else {
+      this.clearAllBarrier();
+    }
   }
 
-  steel(row, col) {
-    this.grade === 3 ? this.clearBarrier(row, col) : ATTACK_OVER_AUD.play();
+  steel() {
+    this.grade === 3 ? this.clearAllBarrier() : ATTACK_OVER_AUD.play();
   }
 
   home() {
@@ -54,7 +61,8 @@ class Bullet extends Mover {
 
     if (roadType <= 2) {return true;}
 
-    this[ROAD_TYPE[roadType]](row, col);
+    [currentRow, currentCol] = [row, col];
+    this[ROAD_TYPE[roadType]]();
     return false;
   }
 
