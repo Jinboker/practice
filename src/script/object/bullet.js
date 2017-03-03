@@ -25,6 +25,11 @@ class Bullet extends Mover {
     [this.x, this.y] = resetDirection[this.direction];
   }
 
+  hasBarrier(roadType) {
+    console.log(roadType);
+    return true;
+  }
+
   draw() {
     this.move();
     CXT_ROLE.drawImage(BULLET_IMG, DIR[this.direction] * 8, 0, 8, 8, this.x + OFFSET_X, this.y + OFFSET_Y, 8, 8);

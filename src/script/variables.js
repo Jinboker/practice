@@ -14,10 +14,9 @@ export const SHIELD_CHANGE_FREQUENT = 4;
 export const FIRE_MIN_FREQUENT = 15;
 
 export const DIR = { W: 0, D: 1, S: 2, A: 3 };
-
 export let state = {
   game: 'chooseMode',     // chooseMode, chooseStage, playGame, over
-  stage: '',              // changeAble, noChange
+  stage: '',              // chaneAble, noChange
   play: '',               // fight, construct
   over: ''                // nextStage, gameOver
 };

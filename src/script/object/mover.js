@@ -46,13 +46,7 @@ class Mover {
     return collisionDot.every((ele) => {
       let [row, col] = [ele[1] >> 4, ele[0] >> 4];
 
-      switch (roadMap[row][col]) {
-        case 0: return true; break;
-        // 砖块钢筋河流老家无法通过
-        case 1: case 2: case 4: case 5: return false; break;
-        // 冰路中间有相应的代码（默认就是3了）
-        default: return true; break;
-      }
+      return this.hasBarrier(roadMap[row][col]);
     });
   }
 

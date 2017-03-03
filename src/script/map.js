@@ -5,6 +5,13 @@ let roadMap = new Array(28).fill(0).map(() => {
   return new Array(28).fill(0);
 });
 
+// roadMap值的意义：
+// 0 ：无障碍
+// 1 ：砖块
+// 2 ：钢筋
+// 3: 冰路
+// 4: 河流
+// 5: 老家
 function ensureRoadMap (i, j, data) {
   switch (data) {
     // 1、2、3、4、5、17、18 brick

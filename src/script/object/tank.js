@@ -7,6 +7,7 @@ import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE
 const SHIELD_IMG = res.img.misc;
 const PLAY_IMG = res.img.player;
 const NPC_IMG = res.img.npc;
+const ATTACK_AUD = res.audio.attack;
 const WHEEL_DELAY = {count: WHEEL_CHANGE_FREQUENT};
 const SHIELD_DELAY = {count: SHIELD_CHANGE_FREQUENT};
 
@@ -31,6 +32,16 @@ class Tank extends Mover {
     CXT_ROLE.drawImage(SHIELD_IMG, 32 + shieldPic, 0, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }
 
+  hasBarrier(roadType) {
+    // roadType 为0表示无障碍能过，3为冰不能过（特殊处理），剩下都是不能通过的
+    if (roadType === 3) {
+      console.log('bing');
+      return true;
+    }
+
+    return (roadType === 0);
+  }
+
   // 坦克改变方向后需要重置位置
   resetPosition() {
     let x = this.x;
@@ -51,9 +62,10 @@ class Tank extends Mover {
   newBullet() {
     if (this.bulletAlive) {return;};
 
-    controller.receiveMessage('newBullet', this.x, this.y, this.direction, 'bullet', this.index, this.grade);
+    ATTACK_AUD.play();
     this.bulletAlive = true;
     this.fireDelay = FIRE_MIN_FREQUENT;
+    controller.receiveMessage('newBullet', this.x, this.y, this.direction, 'bullet', this.index, this.grade);
   }
 
   drawTank() {
