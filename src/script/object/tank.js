@@ -2,7 +2,7 @@ import { Mover } from './mover';
 import { res } from '../data';
 import { delay } from '../comm';
 import { controller } from '../control';
-import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT, object } from '../variables';
+import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT, FIRE_MIN_FREQUENT, object } from '../variables';
 
 const SHIELD_IMG = res.img.misc;
 const PLAY_IMG = res.img.player;
@@ -19,11 +19,12 @@ class Tank extends Mover {
 
     this.shieldDuration = 200;
 
+    this.fireDelay = 0;
     this.bulletAlive = false;
   }
 
   shield() {
-    if (this.shieldDuration) {return;}
+    if (!this.shieldDuration) {return;}
 
     this.shieldDuration --;
     delay(SHIELD_DELAY, () => (shieldPic = (+!shieldPic) * 32));
@@ -52,12 +53,13 @@ class Tank extends Mover {
 
     controller.receiveMessage('newBullet', this.x, this.y, this.direction, 'bullet', this.index, this.grade);
     this.bulletAlive = true;
+    this.fireDelay = FIRE_MIN_FREQUENT;
   }
 
   drawTank() {
     let img = this.type === 'player' ? PLAY_IMG : NPC_IMG;
     
-    CXT_ROLE.drawImage(img, this.grade * 32, DIR[this.direction] * 64 + wheelPic * 32, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+    CXT_ROLE.drawImage(img, this.grade * 32, DIR[this.direction] * 64 + wheelPic, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }
 }
 
