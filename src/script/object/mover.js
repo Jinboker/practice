@@ -36,6 +36,7 @@ class Mover {
   confirmCollisionPoint() {
     let distance = this.distanceToCenter;
 
+    // 传入中心点坐标，再通过中心点和边长去寻找碰撞点的坐标
     return collisionPoint[this.direction](this.next_x + distance, this.next_y + distance, distance);
   }
 

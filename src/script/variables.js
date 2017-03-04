@@ -43,3 +43,5 @@ export let object = {
   tank: new Array(6),
   bullet: []
 };
+
+export let brickStatus = {};

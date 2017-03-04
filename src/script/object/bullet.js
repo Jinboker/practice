@@ -1,7 +1,7 @@
 import { Mover } from './mover';
 import { res } from '../data';
 import { roadMap } from '../map';
-import { DIR, CXT_ROLE, CXT_BG, OFFSET_X, OFFSET_Y } from '../variables';
+import { DIR, CXT_ROLE, CXT_BG, OFFSET_X, OFFSET_Y, brickStatus } from '../variables';
 
 const BULLET_IMG = res.img.misc;
 const ATTACK_OVER_AUD = res.audio.attackOver;
@@ -19,12 +19,12 @@ class Bullet extends Mover {
 
     // 根据坦克的等级确定子弹的速度
     this.speed = grade ? 5 : 4;
+    this.grade = grade;
 
     this.init();
   }
 
   init() {
-    this.grade = 2;
     let resetDirection = {
       W: [this.x + 12, this.y],
       A: [this.x, this.y + 12],
@@ -40,9 +40,19 @@ class Bullet extends Mover {
     CXT_BG.clearRect(OFFSET_X + (currentCol << 4), OFFSET_Y + (currentRow << 4), 16, 16);
   }
 
+  hitBrick(index) {
+    console.log(index); 
+    return false;
+  }
+
   brick() {
+    console.log(this.grade);
     if (this.grade <= 1) {
-      console.log('brick');
+      let index = currentRow * 28 + currentCol;
+
+      return brickStatus[index]
+        ? this.hitBrick(index)
+        : (brickStatus[index] = [1, 1, 1, 1]) && this.hitBrick(index);
     } else {
       this.clearAllBarrier();
     }
@@ -50,10 +60,12 @@ class Bullet extends Mover {
 
   steel() {
     this.grade === 3 ? this.clearAllBarrier() : ATTACK_OVER_AUD.play();
+    return false;
   }
 
   home() {
     console.log('home');
+    return false;
   }
 
   hasBarrier(row, col) {
@@ -62,8 +74,7 @@ class Bullet extends Mover {
     if (roadType <= 2) {return true;}
 
     [currentRow, currentCol] = [row, col];
-    this[ROAD_TYPE[roadType]]();
-    return false;
+    return this[ROAD_TYPE[roadType]]();
   }
 
   draw() {
