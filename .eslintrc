@@ -1,4 +1,5 @@
 {
+  "parser": "babel-eslint",
   "rules": {
     "accessor-pairs": 2,
     "array-bracket-spacing": 0,

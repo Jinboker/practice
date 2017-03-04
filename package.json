@@ -10,8 +10,10 @@
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.20.0",
+    "babel-eslint": "^7.1.1",
     "babel-loader": "^6.2.10",
     "babel-preset-es2015": "^6.18.0",
+    "eslint-loader": "^1.6.3",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-babel": "^6.1.2",
@@ -21,10 +23,14 @@
     "gulp-eslint": "^3.0.1",
     "gulp-htmlmin": "^3.0.0",
     "gulp-inline-source": "^3.0.0",
+    "gulp-rollup": "^2.11.0",
     "gulp-sass": "^3.0.0",
+    "gulp-sourcemaps": "^2.4.1",
     "gulp-to-base64": "^1.0.3",
     "gulp-uglify": "^2.0.0",
     "gulp-webpack": "^1.5.0",
-    "json-loader": "^0.5.4"
+    "json-loader": "^0.5.4",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-json": "^2.1.0"
   }
 }

@@ -10,6 +10,8 @@ const autoprefixer = require('gulp-autoprefixer');
 const sass = require('gulp-sass');
 const eslint = require('gulp-eslint');
 const htmlmin = require('gulp-htmlmin');
+const rollup = require('gulp-rollup');
+const sourcemaps = require('gulp-sourcemaps');
 // const toBase64 = require('gulp-to-base64');
 
 gulp.task('connect', function () {
@@ -21,12 +23,23 @@ gulp.task('connect', function () {
 
 gulp.task('minify', function () {
   gulp.src('src/entry.js')
-    .pipe(eslint())
     .pipe(webpack(require('./webpack.config.js')))
     .pipe(uglify())
     .pipe(gulp.dest('dist'))
     .pipe(connect.reload());
 });
+
+// gulp.task('minify', function () {
+//   gulp.src('./src/**/*.js')
+//     .pipe(sourcemaps.init())
+//     .pipe(rollup({
+//       entry: './src/entry.js'
+//     }))
+//     .pipe(sourcemaps.write())
+//     .pipe(uglify())
+//     .pipe(gulp.dest('dist'))
+//     .pipe(connect.reload());
+// });
 
 gulp.task('html', function () {
   gulp.src('src/index.html')

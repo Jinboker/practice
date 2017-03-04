@@ -11,7 +11,7 @@ class Player extends Tank {
   }
 
   stopGame() {
-    console.log(1);
+    console.log('你按了H');
   }
 
   gameCtrl() {

@@ -11,7 +11,7 @@ const ROAD_TYPE = {
   5: 'home'
 };
 
-let [currentRow, currentCol] = [0, 0]
+let [currentRow, currentCol] = [0, 0];
 
 class Bullet extends Mover {
   constructor (x, y, direction, type, index, grade) {
@@ -20,6 +20,7 @@ class Bullet extends Mover {
     // 根据坦克的等级确定子弹的速度
     this.speed = grade ? 5 : 4;
     this.grade = grade;
+    this.collisionCheckIndex = 1;
 
     this.init();
   }
@@ -41,18 +42,21 @@ class Bullet extends Mover {
   }
 
   hitBrick(index) {
-    console.log(index); 
+    if (this.direction === 'W') { 
+      if (brickStatus[index][1][+!this.collisionCheckIndex]) {
+        CXT_BG.clearRect(OFFSET_X + currentCol * 16, OFFSET_Y + currentRow * 16 + 8, 16, 8);
+      }
+    }
     return false;
   }
 
-  brick() {
-    console.log(this.grade);
+  brick() { 
     if (this.grade <= 1) {
       let index = currentRow * 28 + currentCol;
 
       return brickStatus[index]
         ? this.hitBrick(index)
-        : (brickStatus[index] = [1, 1, 1, 1]) && this.hitBrick(index);
+        : (brickStatus[index] = [[1, 1], [1, 1]]) && this.hitBrick(index);
     } else {
       this.clearAllBarrier();
     }
@@ -70,6 +74,9 @@ class Bullet extends Mover {
 
   hasBarrier(row, col) {
     let roadType = roadMap[row][col];
+
+    // 子弹每次检测会循环调用hasBarrier两次，可通过此索引确定子弹具体打在哪一块砖上
+    this.collisionCheckIndex = +!this.collisionCheckIndex;
 
     if (roadType <= 2) {return true;}
 
