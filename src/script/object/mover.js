@@ -1,6 +1,8 @@
 import { TANK_WIDTH, BULLET_WIDTH, SCREEN_L, inputKey } from '../variables';
 import { controller } from '../control';
+import { res } from '../data';
 
+const ATTACK_OVER_AUD = res.audio.attackOver;
 const movePosition = {
   W: speed => [0, -speed],
   D: speed => [speed, 0],
@@ -25,7 +27,7 @@ class Mover {
     this.distanceToCenter = type !== 'bullet' ? 16 : 4;
     this.next_x = null;
     this.next_y = null;
-    this.borderCollision = {
+    this.checkBorder = {
       W: () => (this.next_y <= 0),
       A: () => (this.next_x <= 0), 
       S: () => (this.next_y >= SCREEN_L - (this.distanceToCenter << 1)),
@@ -48,12 +50,20 @@ class Mover {
       .every(ele => ele);
   }
 
+  borderCollision() {
+    let isTouchBorder = this.checkBorder[this.direction]();
+
+    isTouchBorder && (this.type === 'bullet') && ATTACK_OVER_AUD.play();
+    
+    return isTouchBorder;
+  }
+
   // 如果换方向，是不用检测是否会跟障碍物撞到一起的
   isCollision(changeDirection) {
     if (changeDirection) {
       return false;
     } else {
-      return this.borderCollision[this.direction]()
+      return this.borderCollision()
           || !this.barrierCollision()
           || this.tankCollision();
     }

@@ -46,7 +46,6 @@ function chooseStage() {
       break;
     case 2:
       delay(enterPlayDelay, () => {
-        console.log('nnnn');
         CXT_BG.clearRect(OFFSET_X, OFFSET_Y, SCREEN_L, SCREEN_L);
         cleanCxt('misc');
         CXT_MISC.save();
@@ -55,7 +54,7 @@ function chooseStage() {
         CXT_MISC.restore();
         drawMap(game.stage - 1);
         process = 3;
-      }, 1);
+      });
       break;
     case 3:
       CXT_MISC.clearRect(OFFSET_X + 208 - halfPlayScreen, OFFSET_Y, 2 * halfPlayScreen, SCREEN_L);

@@ -14,16 +14,16 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'json'
       },
-      {
-        enforce: "pre",
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: "eslint-loader",
-        options: {
-          emitError: true,
-          failOnError: true
-        }
-      },
+      // {
+      //   enforce: "pre",
+      //   test: /\.js$/,
+      //   exclude: /node_modules/,
+      //   loader: "eslint-loader",
+      //   options: {
+      //     emitError: true,
+      //     failOnError: true
+      //   }
+      // },
       {
         test: /\.js$/,
         exclude: /node_modules/,
