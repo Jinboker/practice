@@ -10,6 +10,12 @@ const ROAD_TYPE = {
   4: 'steel',
   5: 'home'
 };
+const HIT_BRICK = {
+  W() {},
+  A() {},
+  S() {},
+  D() {}
+};
 
 let [currentRow, currentCol] = [0, 0];
 
@@ -43,17 +49,30 @@ class Bullet extends Mover {
   }
 
   // 子弹等级最低时清除8个厚度的障碍，只包括砖块
-  clearSmallBarrier() {
-    CXT_BG.clearRect(OFFSET_X + (currentCol << 4), OFFSET_Y + (currentRow << 4) + 8, 16, 8);
+  clearSmallBarrier(index) {
+    CXT_BG.clearRect(OFFSET_X + (currentCol << 4), OFFSET_Y + (currentRow << 4) + 8 * index, 16, 8);
   }
 
   hitBrick(index) {
     if (this.direction === 'W') { 
-      if (brickStatus[index][1][+!this.collisionCheckIndex]) {
-        this.clearSmallBarrier();
+      if ((this.next_y - currentRow * 16) >= 8) {
+        if (brickStatus[index][1][+!this.collisionCheckIndex]) {
+          this.clearSmallBarrier(1);
+          brickStatus[index][1][+!this.collisionCheckIndex] = 0;
+          return false;
+        } else {
+          return true
+        }
+      } else {
+        if (brickStatus[index][0][+!this.collisionCheckIndex]) {
+          brickStatus[index][0][+!this.collisionCheckIndex] = 0;
+          this.clearSmallBarrier(0);
+          return false;
+        } else {
+          return true;
+        }
       }
     }
-    return false;
   }
 
   brick() { 
