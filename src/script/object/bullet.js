@@ -53,20 +53,56 @@ class Bullet extends Mover {
     CXT_BG.clearRect(OFFSET_X + (currentCol << 4), OFFSET_Y + (currentRow << 4) + 8 * index, 16, 8);
   }
 
+  clearHeng(index) {
+    CXT_BG.clearRect(OFFSET_X + (currentCol << 4) + 8 * index, OFFSET_Y + (currentRow << 4), 8, 16);
+  }
+
   hitBrick(index) {
-    if (this.direction === 'W') { 
-      if ((this.next_y - currentRow * 16) >= 8) {
-        if (brickStatus[index][1][+!this.collisionCheckIndex]) {
-          this.clearSmallBarrier(1);
-          brickStatus[index][1][+!this.collisionCheckIndex] = 0;
+    let directionNum = DIR[this.direction];
+
+    if (directionNum % 2) {
+      let colIndex = null;
+
+      if (directionNum - 1) {
+        colIndex = +(Math.abs(this.next_x - (currentCol << 4)) >= 8);
+        // A
+        if (brickStatus[index][+!this.collisionCheckIndex][colIndex]) {
+          this.clearHeng(colIndex);
+          brickStatus[index][+!this.collisionCheckIndex][colIndex] = 0;
           return false;
         } else {
-          return true
+          return true;
         }
       } else {
-        if (brickStatus[index][0][+!this.collisionCheckIndex]) {
-          brickStatus[index][0][+!this.collisionCheckIndex] = 0;
-          this.clearSmallBarrier(0);
+        colIndex = +(Math.abs(this.next_x + 8 - (currentCol << 4)) >= 8);
+        // D
+        if (brickStatus[index][+!this.collisionCheckIndex][colIndex]) {
+          this.clearHeng(colIndex);
+          brickStatus[index][+!this.collisionCheckIndex][colIndex] = 0;
+          return false;
+        } else {
+          return true;
+        }
+      }
+    } else {
+      let rowIndex = null;
+
+      if (directionNum) {
+        rowIndex = +(Math.abs(this.next_y + 8 - (currentRow << 4)) >= 8);
+        // S
+        if (brickStatus[index][rowIndex][+!this.collisionCheckIndex]) {
+          this.clearSmallBarrier(rowIndex);
+          brickStatus[index][rowIndex][+!this.collisionCheckIndex] = 0;
+          return false;
+        } else {
+          return true;
+        }
+      } else {
+        rowIndex = +(Math.abs(this.next_y - (currentRow << 4)) >= 8);
+        // W
+        if (brickStatus[index][rowIndex][+!this.collisionCheckIndex]) {
+          this.clearSmallBarrier(rowIndex);
+          brickStatus[index][rowIndex][+!this.collisionCheckIndex] = 0;
           return false;
         } else {
           return true;
