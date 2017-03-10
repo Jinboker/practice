@@ -17,7 +17,7 @@ const HIT_BRICK = {
   D() {}
 };
 
-let [currentRow, currentCol] = [0, 0];
+let currentRow, currentCol, currentRow_y, currentCol_x;
 
 class Bullet extends Mover {
   constructor (x, y, direction, type, index, grade) {
@@ -26,7 +26,7 @@ class Bullet extends Mover {
     // 根据坦克的等级确定子弹的速度
     this.speed = grade ? 5 : 4;
     this.grade = grade;
-    this.collisionCheckIndex = 1;
+    this.orderIndex = 0;
 
     this.init();
   }
@@ -45,70 +45,40 @@ class Bullet extends Mover {
   // 用来清除16厚度的障碍，包括砖块和钢筋，视子弹等级而定 
   clearBigBarrier() {
     roadMap[currentRow][currentCol] = 0;
-    CXT_BG.clearRect(OFFSET_X + (currentCol << 4), OFFSET_Y + (currentRow << 4), 16, 16);
+    CXT_BG.clearRect(OFFSET_X + currentCol_x, OFFSET_Y + currentRow_y, 16, 16);
   }
 
   // 子弹等级最低时清除8个厚度的障碍，只包括砖块
-  clearSmallBarrier(index) {
-    CXT_BG.clearRect(OFFSET_X + (currentCol << 4), OFFSET_Y + (currentRow << 4) + 8 * index, 16, 8);
-  }
+  clearSmallBarrier(index, type) {
+    let [increase_x, increase_y, range_x, range_y] = type === 'isCol' 
+      ? [currentCol_x + 8 * index, currentRow_y, 8, 16]
+      : [currentCol_x, currentRow_y + 8 * index, 16, 8];
 
-  clearHeng(index) {
-    CXT_BG.clearRect(OFFSET_X + (currentCol << 4) + 8 * index, OFFSET_Y + (currentRow << 4), 8, 16);
+    CXT_BG.clearRect(OFFSET_X + increase_x, OFFSET_Y + increase_y, range_x, range_y);
   }
 
   hitBrick(index) {
     let directionNum = DIR[this.direction];
+    let order = this.orderIndex;
+    let indexInBrick = null;
+    let firstKey, secondKey, type;
 
     if (directionNum % 2) {
-      let colIndex = null;
-
-      if (directionNum - 1) {
-        colIndex = +(Math.abs(this.next_x - (currentCol << 4)) >= 8);
-        // A
-        if (brickStatus[index][+!this.collisionCheckIndex][colIndex]) {
-          this.clearHeng(colIndex);
-          brickStatus[index][+!this.collisionCheckIndex][colIndex] = 0;
-          return false;
-        } else {
-          return true;
-        }
-      } else {
-        colIndex = +(Math.abs(this.next_x + 8 - (currentCol << 4)) >= 8);
-        // D
-        if (brickStatus[index][+!this.collisionCheckIndex][colIndex]) {
-          this.clearHeng(colIndex);
-          brickStatus[index][+!this.collisionCheckIndex][colIndex] = 0;
-          return false;
-        } else {
-          return true;
-        }
-      }
+      indexInBrick = +(Math.abs(this.next_x + (+!(directionNum - 1)) * 8 - currentCol_x) >= 8);
+      [firstKey, secondKey, type] = [order, indexInBrick, 'isCol'];
     } else {
-      let rowIndex = null;
-
-      if (directionNum) {
-        rowIndex = +(Math.abs(this.next_y + 8 - (currentRow << 4)) >= 8);
-        // S
-        if (brickStatus[index][rowIndex][+!this.collisionCheckIndex]) {
-          this.clearSmallBarrier(rowIndex);
-          brickStatus[index][rowIndex][+!this.collisionCheckIndex] = 0;
-          return false;
-        } else {
-          return true;
-        }
-      } else {
-        rowIndex = +(Math.abs(this.next_y - (currentRow << 4)) >= 8);
-        // W
-        if (brickStatus[index][rowIndex][+!this.collisionCheckIndex]) {
-          this.clearSmallBarrier(rowIndex);
-          brickStatus[index][rowIndex][+!this.collisionCheckIndex] = 0;
-          return false;
-        } else {
-          return true;
-        }
-      }
+      indexInBrick = +(Math.abs(this.next_y + (directionNum >> 1) * 8 - currentRow_y) >= 8); 
+      [firstKey, secondKey, type] = [indexInBrick, order, 'isRow'];
     }
+
+    let passAble = !brickStatus[index][firstKey][secondKey]; 
+
+    if (!passAble) {
+      this.clearSmallBarrier(indexInBrick, type);
+      brickStatus[index][firstKey][secondKey] = 0;
+    }
+    
+    return passAble;
   }
 
   brick() { 
@@ -137,13 +107,13 @@ class Bullet extends Mover {
     let roadType = roadMap[row][col];
 
     // 子弹每次检测会循环调用hasBarrier两次，可通过此索引确定子弹具体打在块的哪个部位
-    //只针对子弹等级最低的情况，因为此时子弹一次只能打掉8个像素厚的砖块
-    this.collisionCheckIndex = +!this.collisionCheckIndex
+    //只针对子弹等级最低的情况，因为此时子弹一次只能打掉8个像素厚的砖块，第一次是1，第二次是0
+    this.orderIndex = +!this.orderIndex
 
     // roadType的0， 1， 2分为代表空，冰，流，子弹可以直接通过
     if (roadType <= 2) {return true;}
 
-    [currentRow, currentCol] = [row, col];
+    [currentRow, currentCol, currentRow_y, currentCol_x] = [row, col, row << 4, col << 4];
     return this[ROAD_TYPE[roadType]]();
   }
 
