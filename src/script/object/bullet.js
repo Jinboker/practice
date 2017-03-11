@@ -5,18 +5,9 @@ import { DIR, CXT_ROLE, CXT_BG, OFFSET_X, OFFSET_Y, brickStatus } from '../varia
 
 const BULLET_IMG = res.img.misc;
 const ATTACK_OVER_AUD = res.audio.attackOver;
-const ROAD_TYPE = {
-  3: 'brick',
-  4: 'steel',
-  5: 'home'
-};
-const HIT_BRICK = {
-  W() {},
-  A() {},
-  S() {},
-  D() {}
-};
+const ROAD_TYPE = {3: 'brick', 4: 'steel', 5: 'home'};
 
+let orderIndex = 0;
 let currentRow, currentCol, currentRow_y, currentCol_x;
 
 class Bullet extends Mover {
@@ -26,7 +17,6 @@ class Bullet extends Mover {
     // 根据坦克的等级确定子弹的速度
     this.speed = grade ? 5 : 4;
     this.grade = grade;
-    this.orderIndex = 0;
 
     this.init();
   }
@@ -58,26 +48,34 @@ class Bullet extends Mover {
   }
 
   hitBrick(index) {
+    let indexInBrick, firstKey, secondKey, type;
     let directionNum = DIR[this.direction];
-    let order = this.orderIndex;
-    let indexInBrick = null;
-    let firstKey, secondKey, type;
+
+    // 子弹每次检测会循环调用hasBarrier两次，可通过此索引确定子弹具体打在块的哪个部位
+    // 只针对子弹等级最低的情况，因为此时子弹一次只能打掉8个像素厚的砖块，第一次是1，第二次是0
+    // 记住每次调用orderIndex算的都是另外一个16*16的砖块
+    orderIndex = +!orderIndex;
 
     if (directionNum % 2) {
+      // 根据方向对比子弹与砖块碰撞点的坐标之间的差值，确定子弹在砖块中的位置
       indexInBrick = +(Math.abs(this.next_x + (+!(directionNum - 1)) * 8 - currentCol_x) >= 8);
-      [firstKey, secondKey, type] = [order, indexInBrick, 'isCol'];
+      [firstKey, secondKey, type] = [orderIndex, indexInBrick, 'isCol'];
     } else {
       indexInBrick = +(Math.abs(this.next_y + (directionNum >> 1) * 8 - currentRow_y) >= 8); 
-      [firstKey, secondKey, type] = [indexInBrick, order, 'isRow'];
+      [firstKey, secondKey, type] = [indexInBrick, orderIndex, 'isRow'];
     }
 
     let passAble = !brickStatus[index][firstKey][secondKey]; 
 
     if (!passAble) {
       this.clearSmallBarrier(indexInBrick, type);
-      brickStatus[index][firstKey][secondKey] = 0;
+      if (directionNum % 2) {
+        brickStatus[index][firstKey][secondKey] = 0;
+        brickStatus[index][+!firstKey][secondKey] = 0; 
+      } else {
+        brickStatus[index][firstKey] = [0, 0];
+      }
     }
-    
     return passAble;
   }
 
@@ -105,10 +103,6 @@ class Bullet extends Mover {
 
   hasBarrier(row, col) {
     let roadType = roadMap[row][col];
-
-    // 子弹每次检测会循环调用hasBarrier两次，可通过此索引确定子弹具体打在块的哪个部位
-    //只针对子弹等级最低的情况，因为此时子弹一次只能打掉8个像素厚的砖块，第一次是1，第二次是0
-    this.orderIndex = +!this.orderIndex
 
     // roadType的0， 1， 2分为代表空，冰，流，子弹可以直接通过
     if (roadType <= 2) {return true;}
