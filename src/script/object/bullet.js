@@ -43,8 +43,12 @@ class Bullet extends Mover {
     let [increase_x, increase_y, range_x, range_y] = type === 'isCol' 
       ? [currentCol_x + 8 * index, currentRow_y, 8, 16]
       : [currentCol_x, currentRow_y + 8 * index, 16, 8];
-
-    CXT_BG.clearRect(OFFSET_X + increase_x, OFFSET_Y + increase_y, range_x, range_y);
+    
+    if (brickStatus[index] === [[0, 0], [0, 0]]) {
+      this.clearBigBarrier();
+    } else {
+      CXT_BG.clearRect(OFFSET_X + increase_x, OFFSET_Y + increase_y, range_x, range_y);
+    }
   }
 
   hitBrick(index) {
@@ -67,14 +71,20 @@ class Bullet extends Mover {
 
     let passAble = !brickStatus[index][firstKey][secondKey]; 
 
-    if (!passAble) {
-      this.clearSmallBarrier(indexInBrick, type);
+    if (passAble) {
+      let clearBrick = brickStatus[index].every(ele => {
+        return ele.every(i => (i === 0));
+      });
+
+      clearBrick && this.clearBigBarrier(); 
+    } else {
+     this.clearSmallBarrier(indexInBrick, type);
       if (directionNum % 2) {
         brickStatus[index][firstKey][secondKey] = 0;
         brickStatus[index][+!firstKey][secondKey] = 0; 
       } else {
         brickStatus[index][firstKey] = [0, 0];
-      }
+      } 
     }
     return passAble;
   }
