@@ -34,7 +34,6 @@ class Bullet extends Mover {
 
   // 用来清除16厚度的障碍，包括砖块和钢筋，视子弹等级而定 
   clearBigBarrier() {
-    console.log('nnnnnnnnn');
     roadMap[currentRow][currentCol] = 0;
     CXT_BG.clearRect(OFFSET_X + currentCol_x, OFFSET_Y + currentRow_y, 16, 16);
   }
@@ -70,9 +69,9 @@ class Bullet extends Mover {
       [firstKey, secondKey, type] = [indexInBrick, orderIndex, 'isRow'];
     }
 
-    let passAble = !brickStatus[index][firstKey][secondKey]; 
+    let passAble = brickStatus[index][firstKey][secondKey]; 
     
-    if (!passAble) {
+    if (passAble) {
       this.clearSmallBarrier(indexInBrick, type);
       if (directionNum % 2) {
         brickStatus[index][firstKey][secondKey] = 0;
@@ -80,15 +79,15 @@ class Bullet extends Mover {
       } else {
         brickStatus[index][firstKey] = [0, 0];
       }
+
+      let clearBrick = brickStatus[index].every(ele => {
+        return ele.every(i => !i);
+      });
+
+      clearBrick && this.clearBigBarrier(); 
     }
 
-    let clearBrick = brickStatus[index].every(ele => {
-      return ele.every(i => !i);
-    });
-
-    clearBrick && this.clearBigBarrier(); 
-
-    return passAble;
+    return !passAble;
   }
 
   brick() { 

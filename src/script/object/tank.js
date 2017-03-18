@@ -3,7 +3,7 @@ import { res } from '../data';
 import { delay } from '../comm';
 import { controller } from '../control';
 import { roadMap } from '../map';
-import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT, FIRE_MIN_FREQUENT, object } from '../variables';
+import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, SHIELD_CHANGE_FREQUENT, FIRE_MIN_FREQUENT, object, brickStatus } from '../variables';
 
 const SHIELD_IMG = res.img.misc;
 const PLAY_IMG = res.img.player;
@@ -35,11 +35,33 @@ class Tank extends Mover {
 
   hasBarrier(row, col) {
     let roadType = roadMap[row][col];
+    let brickStatusArr = brickStatus[row * 28 + col];
     
-    // roadType 为0表示无障碍，1为冰(要特殊处理)，剩下都不能通过
+    // roadType 为0表示无障碍，1为冰，3位砖块
     if (roadType === 1) {
       console.log('bing');
       return true;
+    }
+
+    if (roadType === 3 && brickStatusArr) {
+      let directionNum = DIR[this.direction];
+      let indexInBrick = null;
+
+      // TODO
+      if (directionNum % 2) {
+        indexInBrick = +(Math.abs(this.next_x + (+!(directionNum - 1)) * 32 - (col << 4)) >= 8);
+
+        let b = brickStatusArr[indexInBrick].every(ele => (ele === 0));
+        console.log(b);
+
+        return b;
+      } else {
+        indexInBrick = +(Math.abs(this.next_y + (directionNum >> 1) * 32 - (row << 4) >= 8));
+
+        let a = brickStatusArr[indexInBrick].every(ele => (ele === 0));
+
+        return a
+      }
     }
 
     return (roadType <= 1);
