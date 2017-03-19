@@ -46,22 +46,17 @@ class Tank extends Mover {
     if (roadType === 3 && brickStatusArr) {
       let directionNum = DIR[this.direction];
       let indexInBrick = null;
+      let passAble = null;
 
-      // TODO
       if (directionNum % 2) {
-        indexInBrick = +(Math.abs(this.next_x + (+!(directionNum - 1)) * 32 - (col << 4)) >= 8);
-
-        let b = brickStatusArr[indexInBrick].every(ele => (ele === 0));
-        console.log(b);
-
-        return b;
+        indexInBrick = (this.next_x + (+!(directionNum - 1) * 32) - (col << 4)) >> 3;
+        passAble = !brickStatusArr[1][indexInBrick] && !brickStatusArr[0][indexInBrick]; 
       } else {
-        indexInBrick = +(Math.abs(this.next_y + (directionNum >> 1) * 32 - (row << 4) >= 8));
-
-        let a = brickStatusArr[indexInBrick].every(ele => (ele === 0));
-
-        return a
+        indexInBrick = (this.next_y + (directionNum >> 1) * 32 - (row << 4)) >> 3;
+        passAble = brickStatusArr[indexInBrick].every(ele => (ele === 0));
       }
+
+      return passAble;
     }
 
     return (roadType <= 1);

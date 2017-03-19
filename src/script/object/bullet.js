@@ -62,10 +62,10 @@ class Bullet extends Mover {
 
     if (directionNum % 2) {
       // 根据方向对比子弹与砖块碰撞点的坐标之间的差值，确定子弹在砖块中的位置
-      indexInBrick = +(Math.abs(this.next_x + (+!(directionNum - 1)) * 8 - currentCol_x) >= 8);
+      indexInBrick = (this.next_x + (+!(directionNum - 1)) * 8 - currentCol_x) >> 3;
       [firstKey, secondKey, type] = [orderIndex, indexInBrick, 'isCol'];
     } else {
-      indexInBrick = +(Math.abs(this.next_y + (directionNum >> 1) * 8 - currentRow_y) >= 8);
+      indexInBrick = (this.next_y + (directionNum >> 1) * 8 - currentRow_y) >> 3;
       [firstKey, secondKey, type] = [indexInBrick, orderIndex, 'isRow'];
     }
 
