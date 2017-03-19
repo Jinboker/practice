@@ -1,6 +1,5 @@
 import { Tank } from './tank';
 import { inputKey } from '../variables';
-import { delay } from '../comm';
 
 class Player extends Tank {
   constructor(x, y, direction, type, index, grade = 0) {
@@ -11,7 +10,6 @@ class Player extends Tank {
   }
 
   stopGame() {
-    console.log('你按了H');
   }
 
   gameCtrl() {

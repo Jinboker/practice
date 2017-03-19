@@ -3,7 +3,7 @@ import { res } from '../data';
 import { delay } from '../comm';
 import { controller } from '../control';
 import { roadMap } from '../map';
-import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, FIRE_MIN_FREQUENT, object, brickStatus } from '../variables';
+import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, FIRE_MIN_FREQUENT, brickStatus } from '../variables';
 
 const SHIELD_IMG = res.img.misc;
 const PLAY_IMG = res.img.player;
@@ -36,7 +36,6 @@ class Tank extends Mover {
     
     // roadType 为0表示无障碍，1为冰，3位砖块
     if (roadType === 1) {
-      console.log('bing');
       return true;
     }
 
@@ -84,32 +83,38 @@ class Tank extends Mover {
     controller.receiveMessage('newBullet', this.x, this.y, this.direction, 'bullet', this.index, this.grade);
   }
 
-  drawShield() {
-    if (!this.shieldDuration) {return};
+  drawImgParam() {
+    return [32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32];
+  }
+
+  drawShield(drawImgParam) {
+    if (!this.shieldDuration) {return;}
 
     this.shieldDuration --;
-    CXT_ROLE.drawImage(SHIELD_IMG, 32 + this.shieldPic, 0, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+    CXT_ROLE.drawImage(SHIELD_IMG, 32 + this.shieldPic, 0, ...drawImgParam);
     delay(this.shieldDelay, () => (this.shieldPic = (+!this.shieldPic) << 5));
   }
 
-  drawBornAnimation() {
-    CXT_ROLE.drawImage(BORN_IMG, this.bornPic << 5, 64, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+  drawBornAnimation(drawImgParam) {
+    CXT_ROLE.drawImage(BORN_IMG, this.bornPic << 5, 64, ...drawImgParam);
     delay(this.bornDelay, () => {
       this.bornPic > 0 ? this.bornPic -= 1 : (this.bornPic = 4, this.bornAnimationNum -= 1);
     });
   }
 
-  drawTank() {
+  drawTank(drawImgParam) {
     let img = this.type === 'player' ? PLAY_IMG : NPC_IMG;
     
-    CXT_ROLE.drawImage(img, this.grade << 5, (DIR[this.direction] << 6) + this.wheelPic, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+    CXT_ROLE.drawImage(img, this.grade << 5, (DIR[this.direction] << 6) + this.wheelPic, ...drawImgParam);
   }
 
   // 最终暴露给外部调用的接口
   draw() {
-    this.bornAnimationNum > 0 
-      ? this.drawBornAnimation() 
-      : (this.move(), this.drawShield(), this.drawTank());
+    let drawImgParam = this.drawImgParam();
+
+    this.bornAnimationNum
+      ? this.drawBornAnimation(drawImgParam) 
+      : (this.move(), this.drawShield(drawImgParam), this.drawTank(drawImgParam));
   }
 }
 

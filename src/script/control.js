@@ -24,7 +24,7 @@ function enterStage(mode) {
  */
 function playGame(mode) {
   state.game = 'playGame';
-  state.play = mode
+  state.play = mode;
 
   mode === 'construct' && cleanCxt('bg');
 }
@@ -63,9 +63,7 @@ let controller = (() => {
     operations[msg](arg);
   };
 
-  return {
-    receiveMessage
-  }
+  return {receiveMessage};
 })();
 
-export { controller };
+export {controller};

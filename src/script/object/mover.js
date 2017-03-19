@@ -1,6 +1,6 @@
-import { TANK_WIDTH, BULLET_WIDTH, SCREEN_L, inputKey } from '../variables';
-import { controller } from '../control';
-import { res } from '../data';
+import {SCREEN_L, inputKey} from '../variables';
+import {controller} from '../control';
+import {res} from '../data';
 
 const ATTACK_OVER_AUD = res.audio.attackOver;
 const movePosition = {
@@ -93,8 +93,8 @@ class Mover {
       [this.x, this.y] = [this.next_x, this.next_y];
     } else {
       if (this.type === 'bullet') {
-       controller.receiveMessage('bulletDie', this.index); 
-       this.alive = false;
+        controller.receiveMessage('bulletDie', this.index); 
+        this.alive = false;
       } 
     }
   }

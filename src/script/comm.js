@@ -30,10 +30,8 @@ function cleanCxt(...type) {
   });
 }
 
-function doAfterPressKey (operate) {
-  if ( inputKey.hasPressed
-    && typeof operate[inputKey.pressedKey] === "function"
-  ) {
+function doAfterPressKey(operate) {
+  if (inputKey.hasPressed && typeof operate[inputKey.pressedKey] === 'function') {
     inputKey.hasPressed = false;
     operate[inputKey.pressedKey]();
   }

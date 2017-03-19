@@ -3,10 +3,7 @@ import resJson from '../asset/resource.json';
 
 let res = (() => {
   let resKey = ['img', 'audio'];
-  let res = {
-    img: {},
-    audio: {}
-  };
+  let res = {img: {}, audio: {}};
 
   resKey.forEach((n) => {
     for (let key in resJson[n]) {

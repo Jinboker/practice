@@ -3,14 +3,14 @@ import { drawMap } from '../map';
 import { controller } from '../control';
 import { doAfterPressKey, delay, cleanCxt } from '../comm';
 import { Player } from '../object/player';
-import { CXT_H, CXT_W, CXT_BG, CXT_MISC, OFFSET_X, OFFSET_Y, SCREEN_L, state, inputKey, game, object } from '../variables';
+import { CXT_H, CXT_W, CXT_BG, CXT_MISC, OFFSET_X, OFFSET_Y, SCREEN_L, state, game, object } from '../variables';
 
 const HALF_CURTAIN = CXT_H >> 1;
 const MAX_STAGE = npcData.length;
 
 let process = 0;
 let halfCurtain = 0;
-let halfPlayScreen = 0
+let halfPlayScreen = 0;
 let enterPlayDelay = {count: 0};
 
 let operate = {
@@ -24,7 +24,7 @@ let operate = {
 };
 
 function chooseStage() {
-  switch(process) {
+  switch (process) {
     case 0:
       CXT_BG.save();
       CXT_BG.fillStyle = '#666';

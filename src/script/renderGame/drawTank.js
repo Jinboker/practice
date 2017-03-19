@@ -8,4 +8,4 @@ function drawTank() {
   });
 }
 
-export { drawTank };
+export {drawTank};

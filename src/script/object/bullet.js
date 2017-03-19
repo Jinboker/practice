@@ -11,7 +11,7 @@ let orderIndex = 0;
 let currentRow, currentCol, currentRow_y, currentCol_x;
 
 class Bullet extends Mover {
-  constructor (x, y, direction, type, index, grade) {
+  constructor(x, y, direction, type, index, grade) {
     super(x, y, direction, type, index);
 
     // 根据坦克的等级确定子弹的速度
@@ -108,7 +108,6 @@ class Bullet extends Mover {
   }
 
   home() {
-    console.log('home');
     return false;
   }
 

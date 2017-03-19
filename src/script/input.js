@@ -9,7 +9,7 @@ let codeToKey = {
   74: 'J'
 };
 
-function keyDown (key) {
+function keyDown(key) {
   if (!inputKey[key]) {
     key !== 'H' && key !== 'J'
       ? inputKey.directionKey = key
@@ -21,12 +21,12 @@ function keyDown (key) {
   }
 }
 
-function keyUp (key) {
+function keyUp(key) {
   inputKey[key] = false;
 }
 
 // keyboard event
-function keyBoardInit (isPc, ...eventArray) {
+function keyBoardInit(isPc, ...eventArray) {
   eventArray.forEach((n) => {
     addEventListener(n, (ev) => {
       let key = codeToKey[ev.keyCode];
@@ -38,4 +38,4 @@ function keyBoardInit (isPc, ...eventArray) {
   });
 }
 
-export { keyBoardInit };
+export {keyBoardInit};
