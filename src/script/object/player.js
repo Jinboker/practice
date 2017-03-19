@@ -38,12 +38,6 @@ class Player extends Tank {
   moveState() {
     return this.gameCtrl();
   }
-
-  draw() {
-    this.move();
-    this.shield();
-    this.drawTank();
-  }
 }
 
-export { Player };
+export {Player};

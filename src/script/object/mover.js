@@ -100,4 +100,4 @@ class Mover {
   }
 }
 
-export { Mover };
+export {Mover};
