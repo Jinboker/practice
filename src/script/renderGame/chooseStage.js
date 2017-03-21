@@ -2,7 +2,7 @@ import {res, npcData} from '../data';
 import {drawMap} from '../map';
 import {controller} from '../control';
 import {doAfterPressKey, delay, cleanCxt} from '../comm';
-import {CXT_H, CXT_W, CXT_BG, CXT_MISC, OFFSET_X, OFFSET_Y, SCREEN_L, state, game, obj} from '../variables';
+import {CXT_H, CXT_W, CXT_BG, CXT_MISC, OFFSET_X, OFFSET_Y, SCREEN_L, state, game} from '../variables';
 
 const HALF_CURTAIN = CXT_H >> 1;
 const MAX_STAGE = npcData.length;
@@ -11,6 +11,7 @@ let process = 'unfoldCurtain';
 let halfCurtain = 0;
 let halfPlayScreen = 0;
 let enterPlayDelay = {count: 80};
+let foldCurtainAfterDelay = false;
 
 let keyOperate = {
   W() { game.stage = game.stage > 1 ? game.stage - 1 : MAX_STAGE; },
@@ -37,13 +38,7 @@ let processOperate = {
     state.stage === 'changeAble' ? doAfterPressKey(keyOperate) : process = 'foldCurtain';
   },
   foldCurtain() {
-    if (enterPlayDelay.currentCount === 0) {
-      CXT_MISC.clearRect(OFFSET_X + 208 - halfPlayScreen, OFFSET_Y, 2 * halfPlayScreen, SCREEN_L);
-
-      halfPlayScreen < 208
-        ? halfPlayScreen += 15
-        : controller.receiveMessage('playGame', 'fight');
-    } else {
+    if (!foldCurtainAfterDelay) {
       delay(enterPlayDelay, () => {
         CXT_BG.clearRect(OFFSET_X, OFFSET_Y, SCREEN_L, SCREEN_L);
         cleanCxt('misc');
@@ -52,7 +47,14 @@ let processOperate = {
         CXT_MISC.fillRect(0, 0, CXT_W, CXT_H);
         CXT_MISC.restore();
         drawMap(game.stage - 1);
+        foldCurtainAfterDelay = true;
       });
+    } else {
+      CXT_MISC.clearRect(OFFSET_X + 208 - halfPlayScreen, OFFSET_Y, 2 * halfPlayScreen, SCREEN_L);
+
+      halfPlayScreen < 208
+        ? halfPlayScreen += 15
+        : (controller.receiveMessage('playGame', 'fight'), foldCurtainAfterDelay = false);
     }
   }
 };

@@ -130,4 +130,4 @@ function drawMap(stage) {
   }
 }
 
-export { drawMap, roadMap };
+export {drawMap, roadMap};
