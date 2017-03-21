@@ -38,9 +38,10 @@ export let game = {
   stage: 1
 };
 
-export let object = {
+export let obj = {
   tank: new Array(6),
-  bullet: []
+  bullet: [],
+  explode: []
 };
 
 export let brickStatus = {};

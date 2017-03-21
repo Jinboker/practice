@@ -7,8 +7,8 @@ const BULLET_IMG = res.img.misc;
 const ATTACK_OVER_AUD = res.audio.attackOver;
 const ROAD_TYPE = {3: 'brick', 4: 'steel', 5: 'home'};
 
-let orderIndex = 0;
 let currentRow, currentCol, currentRow_y, currentCol_x;
+let orderIndex = 0;
 
 class Bullet extends Mover {
   constructor(x, y, direction, type, index, grade) {
@@ -44,11 +44,8 @@ class Bullet extends Mover {
       ? [currentCol_x + 8 * index, currentRow_y, 8, 16]
       : [currentCol_x, currentRow_y + 8 * index, 16, 8];
     
-    if (brickStatus[index] === [[0, 0], [0, 0]]) {
-      this.clearBigBarrier();
-    } else {
-      CXT_BG.clearRect(OFFSET_X + increase_x, OFFSET_Y + increase_y, range_x, range_y);
-    }
+    // TODO
+    CXT_BG.clearRect(OFFSET_X + increase_x, OFFSET_Y + increase_y, range_x, range_y);
   }
 
   hitBrick(index) {

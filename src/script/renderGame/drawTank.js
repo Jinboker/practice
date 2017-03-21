@@ -1,7 +1,7 @@
-import { object } from '../variables';
+import {obj} from '../variables';
 
 function drawTank() {
-  let tankArr = object.tank;
+  let tankArr = obj.tank;
 
   tankArr.forEach(ele => {
     ele.alive ? ele.draw() : ele = void 0;

@@ -1,6 +1,6 @@
-import { state, object } from './variables';
-import { cleanCxt } from './comm';
-import { Bullet } from './object/bullet';
+import {state, obj} from './variables';
+import {cleanCxt} from './comm';
+import {Bullet} from './object/bullet';
 
 /**
  * start new game
@@ -40,11 +40,11 @@ function thisStageOver(mode) {
 }
 
 function newBullet(param) {
-  object.bullet.push(new Bullet(...param));
+  obj.bullet.push(new Bullet(...param));
 }
 
 function bulletDie(index) {
-  object.tank[index].bulletAlive = false;
+  obj.tank[index].bulletAlive = false;
 }
 
 let controller = (() => {

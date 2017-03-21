@@ -6,11 +6,6 @@ class Npc extends Tank {
 
     this.grade = grade;
   }
-
-  draw() {
-    this.move();
-    this.drawTank();
-  }
 }
 
 export { Npc };
