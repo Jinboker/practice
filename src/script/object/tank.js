@@ -1,9 +1,9 @@
-import { Mover } from './mover';
-import { res } from '../data';
-import { delay } from '../comm';
-import { controller } from '../control';
-import { roadMap } from '../map';
-import { CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, FIRE_MIN_FREQUENT, brickStatus } from '../variables';
+import {Mover} from './mover';
+import {res} from '../data';
+import {delay} from '../comm';
+import {controller} from '../control';
+import {roadMap} from '../map';
+import {CXT_ROLE, DIR, OFFSET_X, OFFSET_Y, WHEEL_CHANGE_FREQUENT, FIRE_MIN_FREQUENT, brickStatus} from '../variables';
 
 const SHIELD_IMG = res.img.misc;
 const PLAY_IMG = res.img.player;
@@ -36,6 +36,7 @@ class Tank extends Mover {
     
     // roadType 为0表示无障碍，1为冰，3位砖块
     if (roadType === 1) {
+      // TODO
       return true;
     }
 
@@ -113,7 +114,7 @@ class Tank extends Mover {
     let drawImgParam = this.drawImgParam();
 
     this.bornAnimationNum
-      ? this.drawBornAnimation(drawImgParam) 
+      ? this.drawBornAnimation(drawImgParam)
       : (this.move(), this.drawShield(drawImgParam), this.drawTank(drawImgParam));
   }
 }

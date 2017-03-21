@@ -2,7 +2,6 @@ import {res, npcData} from '../data';
 import {drawMap} from '../map';
 import {controller} from '../control';
 import {doAfterPressKey, delay, cleanCxt} from '../comm';
-import {Player} from '../object/player';
 import {CXT_H, CXT_W, CXT_BG, CXT_MISC, OFFSET_X, OFFSET_Y, SCREEN_L, state, game, obj} from '../variables';
 
 const HALF_CURTAIN = CXT_H >> 1;
@@ -13,7 +12,6 @@ let halfCurtain = 0;
 let halfPlayScreen = 0;
 let enterPlayDelay = {count: 80};
 
-let a = true;
 let keyOperate = {
   W() { game.stage = game.stage > 1 ? game.stage - 1 : MAX_STAGE; },
   S() { game.stage = game.stage < MAX_STAGE ? game.stage + 1 : 1; },
@@ -42,12 +40,9 @@ let processOperate = {
     if (enterPlayDelay.currentCount === 0) {
       CXT_MISC.clearRect(OFFSET_X + 208 - halfPlayScreen, OFFSET_Y, 2 * halfPlayScreen, SCREEN_L);
 
-      if (halfPlayScreen < 208) {
-        halfPlayScreen += 15;
-      } else {
-        controller.receiveMessage('playGame', 'fight');
-        obj.tank[0] = new Player(128, 384, 'W', 'player', 0);
-      }
+      halfPlayScreen < 208
+        ? halfPlayScreen += 15
+        : controller.receiveMessage('playGame', 'fight');
     } else {
       delay(enterPlayDelay, () => {
         CXT_BG.clearRect(OFFSET_X, OFFSET_Y, SCREEN_L, SCREEN_L);
