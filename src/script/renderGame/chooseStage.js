@@ -11,7 +11,7 @@ let process = 'unfoldCurtain';
 let halfCurtain = 0;
 let halfPlayScreen = 0;
 let enterPlayDelay = {count: 80};
-let foldCurtainAfterDelay = false;
+let foldCurtain = false;
 
 let keyOperate = {
   W() { game.stage = game.stage > 1 ? game.stage - 1 : MAX_STAGE; },
@@ -38,7 +38,7 @@ let processOperate = {
     state.stage === 'changeAble' ? doAfterPressKey(keyOperate) : process = 'foldCurtain';
   },
   foldCurtain() {
-    if (!foldCurtainAfterDelay) {
+    if (!foldCurtain) {
       delay(enterPlayDelay, () => {
         CXT_BG.clearRect(OFFSET_X, OFFSET_Y, SCREEN_L, SCREEN_L);
         cleanCxt('misc');
@@ -47,14 +47,14 @@ let processOperate = {
         CXT_MISC.fillRect(0, 0, CXT_W, CXT_H);
         CXT_MISC.restore();
         drawMap(game.stage - 1);
-        foldCurtainAfterDelay = true;
+        foldCurtain = true;
       });
     } else {
       CXT_MISC.clearRect(OFFSET_X + 208 - halfPlayScreen, OFFSET_Y, 2 * halfPlayScreen, SCREEN_L);
 
       halfPlayScreen < 208
         ? halfPlayScreen += 15
-        : (controller.receiveMessage('playGame', 'fight'), foldCurtainAfterDelay = false);
+        : (controller.receiveMessage('playGame', 'fight'), foldCurtain = false);
     }
   }
 };

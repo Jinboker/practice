@@ -12,6 +12,8 @@ export const MAX_STAGE = 10;
 export const WHEEL_CHANGE_FREQUENT = 6;
 export const FIRE_MIN_FREQUENT = 25;
 
+export const NPC_MAX_NUM = 20;
+
 export const DIR = { W: 0, D: 1, S: 2, A: 3 };
 export let state = {
   game: 'chooseMode',     // chooseMode, chooseStage, playGame, over
@@ -35,11 +37,13 @@ export let inputKey = {
 };
 
 export let game = {
-  stage: 1
+  stage: 1,
+  playerMaxNum: 3
 };
 
 export let obj = {
-  tank: new Array(6),
+  tank: new Array(6).fill(null),
+  npcIndex: 0,
   bullet: [],
   explode: []
 };

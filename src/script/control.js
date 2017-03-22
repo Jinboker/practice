@@ -1,7 +1,6 @@
 import {state, obj} from './variables';
 import {cleanCxt} from './comm';
 import {Bullet} from './object/bullet';
-import {Player} from './object/player';
 
 /**
  * start new game
@@ -40,12 +39,6 @@ function thisStageOver(mode) {
   cleanCxt('all');
 }
 
-function newTank(type) {
-  type === 'player'
-    ? obj.tank[0] = new Player(128, 384, 'W', 'player', 0)
-    : '';
-}
-
 function newBullet(param) {
   obj.bullet.push(new Bullet(...param));
 }
@@ -61,7 +54,6 @@ let controller = (() => {
   operations.enterStage = mode => enterStage(...mode);
   operations.playGame = mode => playGame(...mode);
   operations.thisStageOver = mode => thisStageOver(...mode);
-  operations.newTank = type => newTank(...type);
   operations.newBullet = param => newBullet(param);
   operations.bulletDie = index => bulletDie(index);
 

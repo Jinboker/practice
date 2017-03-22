@@ -1,7 +1,7 @@
-import { Mover } from './mover';
-import { res } from '../data';
-import { roadMap } from '../map';
-import { DIR, CXT_ROLE, CXT_BG, OFFSET_X, OFFSET_Y, brickStatus } from '../variables';
+import {Mover} from './mover';
+import {res} from '../data';
+import {roadMap} from '../map';
+import {DIR, CXT_ROLE, CXT_BG, OFFSET_X, OFFSET_Y, brickStatus} from '../variables';
 
 const BULLET_IMG = res.img.misc;
 const ATTACK_OVER_AUD = res.audio.attackOver;
@@ -128,4 +128,4 @@ class Bullet extends Mover {
   }
 }
 
-export { Bullet };
+export {Bullet};

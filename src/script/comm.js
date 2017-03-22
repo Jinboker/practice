@@ -21,6 +21,18 @@ function delay(delayObj, fn) {
   delayObj.currentCount = count;
 }
 
+/**
+ * 延时函数
+ * @param [number] time 需要延时的时间
+ * @param [function] fn 延时到时后需要执行的函数，如果需要循环，那么fn应该返回一个需要延时的时间，否则返回一个undefined
+ * return [number] 延迟的时间，每次执行该函数后减1
+ */
+function delayTimeout(time, fn) {
+  if (typeof time !== 'number') {return void 0;}
+
+  return (time = time ? time - 1 : fn());
+}
+
 function cleanCxt(...type) {
   let typeArr = type[0] === 'all' ? ['role', 'bg', 'misc'] : type;
   let cxt = { CXT_ROLE, CXT_BG, CXT_MISC };
@@ -40,6 +52,7 @@ function doAfterPressKey(operate) {
 export {
   requestAnimFrame,
   delay,
+  delayTimeout,
   cleanCxt,
   doAfterPressKey
 };
