@@ -15,7 +15,6 @@ class Tank extends Mover {
   constructor(x, y, direction, type, index) {
     super(x, y, direction, type, index);
 
-    this.shieldDuration = 200;
     this.shieldPic = 0;
     this.shieldDelay = {count: 4};
 

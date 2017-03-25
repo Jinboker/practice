@@ -11,11 +11,12 @@ class DrawTank {
     this.setNewNpcTimeout = 30;
     this.bornNewNpc = true;
     this.npcArrIndex = 1;
+    this.npcNum = 1;
   }
 
   newTank(index) {
     obj.tank[index] = index
-      ? new Npc(0, 0, 'S', 'npc', 0)
+      ? new Npc((this.npcNum % 3) * 192, 0, 'S', 'npc', 0)
       : new Player(128, 384, 'W', 'player', 0);
   }
 
@@ -25,6 +26,7 @@ class DrawTank {
     tankArr[0] === null && this.newTank(0);
 
     this.setNewNpcTimeout = delayTimeout(this.setNewNpcTimeout, () => {
+      this.bornNewNpc = true;
       this.newTank(this.npcArrIndex);
       return void 0;
     });
@@ -34,8 +36,11 @@ class DrawTank {
         ? ele.draw()
         : (
           ele = null,
-          this.bornNewNpc && !this.setNewNpcTimeout
-          && ([this.setNewNpcTimeout, this.npcArrIndex, this.bornNewNpc] = [NEW_TANK_FREQUENCE, index, false])
+          this.bornNewNpc 
+          && !this.setNewNpcTimeout 
+          && (this.npcNum <= NPC_MAX_NUM)
+          && ([this.setNewNpcTimeout, this.npcArrIndex, this.bornNewNpc, this.npcNum] = 
+              [NEW_TANK_FREQUENCE, index, false, this.npcNum + 1])
         );
     });
   }

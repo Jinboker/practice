@@ -6,9 +6,11 @@ class Npc extends Tank {
 
     this.grade = grade;
     this.speed = 1;
+    this.shieldDuration = 0;
   }
 
   moveState() {
+    this.changeWheels();
     return [true, false];
   }
 }

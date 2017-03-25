@@ -7,6 +7,7 @@ class Player extends Tank {
 
     this.speed = 2;
     this.grade = grade;
+    this.shieldDuration = 200;
   }
 
   stopGame() {
