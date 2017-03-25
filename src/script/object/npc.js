@@ -5,6 +5,7 @@ class Npc extends Tank {
     super(x, y, direction);
 
     this.grade = grade;
+    this.speed = 1;
   }
 
   moveState() {

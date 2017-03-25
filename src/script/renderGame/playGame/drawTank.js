@@ -34,8 +34,8 @@ class DrawTank {
         ? ele.draw()
         : (
           ele = null,
-          this.bornNewNpc && ([this.setNewNpcTimeout, this.bornNewNpc, this.npcArrIndex] =
-                              [NEW_TANK_FREQUENCE, false, index])
+          this.bornNewNpc && !this.setNewNpcTimeout
+          && ([this.setNewNpcTimeout, this.npcArrIndex, this.bornNewNpc] = [NEW_TANK_FREQUENCE, index, false])
         );
     });
   }

@@ -30,7 +30,7 @@ function delay(delayObj, fn) {
 function delayTimeout(time, fn) {
   if (typeof time !== 'number') {return void 0;}
 
-  return (time = time ? time - 1 : fn());
+  return (time = time - 1 ? time - 1 : fn());
 }
 
 function cleanCxt(...type) {

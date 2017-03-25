@@ -13,7 +13,7 @@ function playGame() {
 
   drawTank.draw();
   drawBullet.draw();
-  drawExplode.draw();
+  // drawExplode.draw();
 }
 
 export {playGame};
