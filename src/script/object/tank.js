@@ -76,7 +76,7 @@ class Tank extends Mover {
   }
 
   newBullet() {
-    if (this.bulletAlive) {return;};
+    if (this.bulletAlive) {return;}
 
     ATTACK_AUD.play();
     this.bulletAlive = true;

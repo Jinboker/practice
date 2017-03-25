@@ -17,8 +17,6 @@ class Bullet extends Mover {
     // 根据坦克的等级确定子弹的速度
     this.speed = grade ? 5 : 4;
     this.grade = grade;
-
-    this.init();
   }
 
   init() {

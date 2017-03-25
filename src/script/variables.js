@@ -38,7 +38,8 @@ export let inputKey = {
 
 export let game = {
   stage: 1,
-  playerMaxNum: 3
+  playerMaxNum: 3,
+  playGameInit: true
 };
 
 export let obj = {

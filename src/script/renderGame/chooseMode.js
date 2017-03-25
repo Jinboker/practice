@@ -1,7 +1,7 @@
-import { CXT_BG, CXT_H, WHEEL_CHANGE_FREQUENT, inputKey } from '../variables';
-import { controller } from '../control';
-import { delay, cleanCxt, doAfterPressKey } from '../comm';
-import { res } from '../data';
+import {CXT_BG, CXT_H, WHEEL_CHANGE_FREQUENT, inputKey} from '../variables';
+import {controller} from '../control';
+import {delay, cleanCxt, doAfterPressKey} from '../comm';
+import {res} from '../data';
 
 const MIN_Y = 285;
 const MAX_Y = 345;

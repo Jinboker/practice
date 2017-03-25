@@ -1,4 +1,4 @@
-import { Tank } from './tank';
+import {Tank} from './tank';
 
 class Npc extends Tank {
   constructor(x, y, direction, grade = 0) {
@@ -6,6 +6,10 @@ class Npc extends Tank {
 
     this.grade = grade;
   }
+
+  moveState() {
+    return [true, false];
+  }
 }
 
-export { Npc };
+export {Npc};

@@ -40,7 +40,10 @@ function thisStageOver(mode) {
 }
 
 function newBullet(param) {
-  obj.bullet.push(new Bullet(...param));
+  let newBullet = new Bullet(...param);
+
+  newBullet.init();
+  obj.bullet.push(newBullet);
 }
 
 function bulletDie(index) {
