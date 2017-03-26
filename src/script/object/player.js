@@ -13,29 +13,34 @@ class Player extends Tank {
   stopGame() {
   }
 
-  gameCtrl() {
+  pressFuncKey() {
     let pressedFuncKey = inputKey.funcKey;
     let fireAble = !(this.fireDelay && (this.fireDelay -= 1));
 
     if (inputKey[pressedFuncKey]) {
       pressedFuncKey === 'H' ? this.stopGame() : fireAble && this.newBullet();
     }
+  }
 
-    let moveAble = false;
-    let changDirectionAble = false;
+  pressDirectionKey() {
     let pressedDirectionKey = inputKey.directionKey;
+    let couldMove = inputKey[pressedDirectionKey];
 
-    if (inputKey[pressedDirectionKey]) {
-      moveAble = true;
-      changDirectionAble = (this.direction !== pressedDirectionKey);
+    if (couldMove) {
+      this.changeDirectionAble = (this.direction !== pressedDirectionKey);
       this.changeWheels();
     }
 
-    return [moveAble, changDirectionAble];
+    return couldMove;
   }
 
-  moveState() {
-    return this.gameCtrl();
+  beMoving() {
+    this.pressFuncKey();
+    return this.pressDirectionKey();
+  }
+
+  changeDirectionAble() {
+    this.resetPosition();
   }
 }
 

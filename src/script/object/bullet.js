@@ -120,10 +120,6 @@ class Bullet extends Mover {
     this.move();
     CXT_ROLE.drawImage(BULLET_IMG, DIR[this.direction] << 3, 0, 8, 8, this.x + OFFSET_X, this.y + OFFSET_Y, 8, 8);
   }
-
-  moveState() {
-    return [true, false];
-  }
 }
 
 export {Bullet};

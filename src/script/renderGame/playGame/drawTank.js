@@ -1,7 +1,8 @@
-import {NPC_MAX_NUM, obj} from '../../variables';
+import {NPC_MAX_NUM, obj, game} from '../../variables';
 import {delayTimeout} from '../../comm';
 import {Player} from '../../object/player';
 import {Npc} from '../../object/npc';
+import {npcData} from '../../data';
 
 // 第一个npc延迟30个循环出生，后面的延迟150个循环
 const NEW_TANK_FREQUENCE = 150;
@@ -16,7 +17,7 @@ class DrawTank {
 
   newTank(index) {
     obj.tank[index] = index
-      ? new Npc((this.npcNum % 3) * 192, 0, 'S', 'npc', 0)
+      ? new Npc((this.npcNum % 3) * 192, 0, 'S', 'npc', index, npcData[game.stage - 1][this.npcNum])
       : new Player(128, 384, 'W', 'player', 0);
   }
 

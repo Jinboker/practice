@@ -20,13 +20,14 @@ class Mover {
   constructor(x, y, direction, type, index) {
     this.x = x;
     this.y = y;
+    this.next_x = null;
+    this.next_y = null;
     this.direction = direction;    // W A S D
     this.type = type;
     this.index = index;
     this.alive = true;
     this.distanceToCenter = type !== 'bullet' ? 16 : 4;
-    this.next_x = null;
-    this.next_y = null;
+    this.changeDirectionAble = false;
     this.checkBorder = {
       W: () => (this.next_y <= 0),
       A: () => (this.next_x <= 0), 
@@ -58,15 +59,10 @@ class Mover {
     return isTouchBorder;
   }
 
-  // 如果换方向，是不用检测是否会跟障碍物撞到一起的
-  isCollision(changeDirection) {
-    if (changeDirection) {
-      return false;
-    } else {
-      return this.borderCollision()
-          || !this.barrierCollision()
-          || this.tankCollision();
-    }
+  isCollision() {
+    return this.borderCollision()
+        || !this.barrierCollision()
+        || this.tankCollision();
   }
 
   tankCollision() {
@@ -80,22 +76,24 @@ class Mover {
   }
 
   move() {
-    let [moveAble, changeDirectionAble] = this.moveState();
+    if (this.type !== 'bullet' && !this.beMoving()) {return;}
 
-    if (!moveAble) {return;}
-
-    [this.next_x, this.next_y] = changeDirectionAble
-      ? this.resetPosition()
+    // 只有当type为player或者npc的时候，changeDirectionAble才可能为true
+    [this.next_x, this.next_y] = this.changeDirectionAble
+      ? this.changeDirectionAble()
       : this.toNextPosition();
     
-    if (!this.isCollision(changeDirectionAble)) {
-      changeDirectionAble && (this.direction = inputKey.directionKey);
+    // 如果换方向，是不用检测是否会跟障碍物撞到一起的
+    if (!this.changeDirectionAble && !this.isCollision()) {
+      this.changeDirectionAble && (this.type === 'player') && (this.direction = inputKey.directionKey);
       [this.x, this.y] = [this.next_x, this.next_y];
     } else {
       if (this.type === 'bullet') {
         controller.receiveMessage('bulletDie', this.index); 
         this.alive = false;
-      } 
+      } else if (this.type === 'npc') {
+        this.changeDirectionAble = true;
+      }
     }
   }
 }

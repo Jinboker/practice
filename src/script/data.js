@@ -192,4 +192,4 @@ let mapData = [
   ]
 ];
 
-export { npcData, stage_1, mapData, res };
+export {npcData, stage_1, mapData, res};
