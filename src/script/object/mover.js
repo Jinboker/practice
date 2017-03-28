@@ -26,7 +26,6 @@ class Mover {
     this.index = index;
     this.alive = true;
     this.distanceToCenter = type !== 'bullet' ? 16 : 4;
-    this.changeDirectionAble = false;
     this.checkBorder = {
       W: () => (this.next_y <= 0),
       A: () => (this.next_x <= 0), 
@@ -75,14 +74,19 @@ class Mover {
   }
 
   move() {
-    if (!this.beMoving()) {return;}
+    let isBullet = (this.type === 'bullet');
+    let [isMoving, changeDirectionAble] = isBullet
+      ? [true, false]
+      : this.confirmMoveState();
 
-    // 只有当type为player或者npc的时候，changeDirectionAble才可能为true
-    [this.next_x, this.next_y] = this.changeDirectionAble
+    if (!isMoving) {return;}
+
+    !isBullet && this.changeWheel();
+
+    [this.next_x, this.next_y] = changeDirectionAble
       ? this.changeDirection()
       : this.toNextPosition();
-    
-    // 判断是否有碰撞
+
     this.isCollision() 
       ? this.doAfterCollision() 
       : [this.x, this.y] = [this.next_x, this.next_y];
@@ -90,3 +94,4 @@ class Mover {
 }
 
 export {Mover};
+

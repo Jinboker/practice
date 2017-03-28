@@ -25,18 +25,22 @@ class Player extends Tank {
   pressDirectionKey() {
     let pressedDirectionKey = inputKey.directionKey;
     let couldMove = inputKey[pressedDirectionKey];
+    let changeDirectionAble = false;
 
     if (couldMove) {
-      this.changeDirectionAble = (this.direction !== pressedDirectionKey);
+      changeDirectionAble = (this.direction !== pressedDirectionKey);
       this.changeWheels();
     }
 
-    return couldMove;
+    return [couldMove, changeDirectionAble];
   }
 
-  beMoving() {
+  confirmMoveState() {
     this.pressFuncKey();
-    return this.pressDirectionKey();
+
+    let moveState = this.pressDirectionKey();
+
+    return moveState;
   }
 
   doAfterCollision() {

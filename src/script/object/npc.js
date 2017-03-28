@@ -10,17 +10,21 @@ class Npc extends Tank {
     this.shieldDuration = 0;
 
     this.changeDirectionDelayTimeout = 30;
+    this.changeDirectionAble = false;
   }
 
   changeDirection() {
     this.changeDirectionDelayTimeout = delayTimeout(this.changeDirectionDelayTimeout, () => {
       this.changeDirectionAble = false;
-      
     });
   }
 
   doAfterCollision() {
     this.changeDirectionAble = true;
+  }
+
+  confirmMoveState() {
+    this.changeWheels();
   }
 
   beMoving() {

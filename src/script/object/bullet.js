@@ -31,8 +31,6 @@ class Bullet extends Mover {
     [this.x, this.y] = resetDirection[this.direction];
   }
 
-  beMoving() {return true;}
-
   // 用来清除16厚度的障碍，包括砖块和钢筋，视子弹等级而定 
   clearBigBarrier() {
     roadMap[currentRow][currentCol] = 0;

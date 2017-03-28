@@ -70,7 +70,7 @@ class Tank extends Mover {
     return [x, y];
   }
 
-  changeWheels() {
+  changeWheel() {
     delay(this.wheelDelay, () => (this.wheelPic = (+!this.wheelPic) << 5));
   }
 
