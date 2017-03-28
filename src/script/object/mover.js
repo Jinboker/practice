@@ -74,18 +74,15 @@ class Mover {
     return [this.x + offsetArr[0], this.y + offsetArr[1]];
   }
 
-  confirmIsMoving() {
-
-  }
-
   move() {
-    if (this.type !== 'bullet' && !this.beMoving()) {return;}
+    if (!this.beMoving()) {return;}
 
     // 只有当type为player或者npc的时候，changeDirectionAble才可能为true
     [this.next_x, this.next_y] = this.changeDirectionAble
       ? this.changeDirection()
       : this.toNextPosition();
     
+    // 判断是否有碰撞
     this.isCollision() 
       ? this.doAfterCollision() 
       : [this.x, this.y] = [this.next_x, this.next_y];
