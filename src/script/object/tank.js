@@ -59,7 +59,7 @@ class Tank extends Mover {
   }
 
   // 坦克改变方向后需要重置位置
-  resetPosition() {
+  getPositionAfterChangeDirection() {
     let [x, y, directionNum] = [this.x, this.y, DIR[this.direction]];
 
     directionNum % 2

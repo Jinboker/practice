@@ -39,8 +39,15 @@ class Player extends Tank {
     return this.pressDirectionKey();
   }
 
-  changeDirectionAble() {
-    this.resetPosition();
+  doAfterCollision() {
+  }
+
+  changeDirection() {
+    let nextPostion = this.getPositionAfterChangeDirection();
+
+    this.direction = inputKey.directionKey;
+
+    return nextPostion;
   }
 }
 

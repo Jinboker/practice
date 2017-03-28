@@ -1,5 +1,4 @@
-import {SCREEN_L, inputKey} from '../variables';
-import {controller} from '../control';
+import {SCREEN_L} from '../variables';
 import {res} from '../data';
 
 const ATTACK_OVER_AUD = res.audio.attackOver;
@@ -75,26 +74,21 @@ class Mover {
     return [this.x + offsetArr[0], this.y + offsetArr[1]];
   }
 
+  confirmIsMoving() {
+
+  }
+
   move() {
     if (this.type !== 'bullet' && !this.beMoving()) {return;}
 
     // 只有当type为player或者npc的时候，changeDirectionAble才可能为true
     [this.next_x, this.next_y] = this.changeDirectionAble
-      ? this.changeDirectionAble()
+      ? this.changeDirection()
       : this.toNextPosition();
     
-    // 如果换方向，是不用检测是否会跟障碍物撞到一起的
-    if (!this.changeDirectionAble && !this.isCollision()) {
-      this.changeDirectionAble && (this.type === 'player') && (this.direction = inputKey.directionKey);
-      [this.x, this.y] = [this.next_x, this.next_y];
-    } else {
-      if (this.type === 'bullet') {
-        controller.receiveMessage('bulletDie', this.index); 
-        this.alive = false;
-      } else if (this.type === 'npc') {
-        this.changeDirectionAble = true;
-      }
-    }
+    this.isCollision() 
+      ? this.doAfterCollision() 
+      : [this.x, this.y] = [this.next_x, this.next_y];
   }
 }
 

@@ -1,4 +1,5 @@
 import {Tank} from './tank';
+import {delayTimeout} from '../comm';
 
 class Npc extends Tank {
   constructor(x, y, direction, type, index, grade = 0) {
@@ -12,7 +13,14 @@ class Npc extends Tank {
   }
 
   changeDirection() {
-    console.log(this.changeDirectionDelayTimeout);
+    this.changeDirectionDelayTimeout = delayTimeout(this.changeDirectionDelayTimeout, () => {
+      this.changeDirectionAble = false;
+      
+    });
+  }
+
+  doAfterCollision() {
+    this.changeDirectionAble = true;
   }
 
   beMoving() {

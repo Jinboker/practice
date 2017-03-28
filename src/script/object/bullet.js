@@ -1,6 +1,7 @@
 import {Mover} from './mover';
 import {res} from '../data';
 import {roadMap} from '../map';
+import {controller} from '../control';
 import {DIR, CXT_ROLE, CXT_BG, OFFSET_X, OFFSET_Y, brickStatus} from '../variables';
 
 const BULLET_IMG = res.img.misc;
@@ -104,6 +105,11 @@ class Bullet extends Mover {
 
   home() {
     return false;
+  }
+
+  doAfterCollision() {
+    controller.receiveMessage('bulletDie', this.index); 
+    this.alive = false;
   }
 
   hasBarrier(row, col) {
