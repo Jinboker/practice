@@ -24,12 +24,7 @@ class Npc extends Tank {
   }
 
   confirmMoveState() {
-    this.changeWheels();
-  }
-
-  beMoving() {
-    this.changeWheels();
-    return true;
+    return [true, false];
   }
 }
 

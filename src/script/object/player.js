@@ -29,7 +29,6 @@ class Player extends Tank {
 
     if (couldMove) {
       changeDirectionAble = (this.direction !== pressedDirectionKey);
-      this.changeWheels();
     }
 
     return [couldMove, changeDirectionAble];
@@ -44,6 +43,8 @@ class Player extends Tank {
   }
 
   doAfterCollision() {
+    // TODO
+    // 玩家碰到奖励
   }
 
   changeDirection() {

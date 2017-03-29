@@ -14,6 +14,7 @@ const collisionPoint = {
   S: (x, y, distance) => [[x - 16, y + distance], [x, y + distance]],
   D: (x, y, distance) => [[x + distance, y - 16], [x + distance, y]]
 };
+const allCollisionType = ['barrier', 'border', 'tank'];
 
 class Mover {
   constructor(x, y, direction, type, index) {
@@ -26,6 +27,7 @@ class Mover {
     this.index = index;
     this.alive = true;
     this.distanceToCenter = type !== 'bullet' ? 16 : 4;
+    this.collisionType = '';
     this.checkBorder = {
       W: () => (this.next_y <= 0),
       A: () => (this.next_x <= 0), 
@@ -44,9 +46,9 @@ class Mover {
   barrierCollision() {
     let collisionDot = this.confirmCollisionPoint();
 
-    return collisionDot
+    return !(collisionDot
       .map(ele => this.hasBarrier(ele[1] >> 4, ele[0] >> 4))  // 传入row和col
-      .every(ele => ele);
+      .every(ele => ele));
   }
 
   borderCollision() {
@@ -57,10 +59,20 @@ class Mover {
     return isTouchBorder;
   }
 
-  isCollision() {
-    return this.borderCollision()
-        || !this.barrierCollision()
-        || this.tankCollision();
+  isCollision(type) {
+    let isCollision = this[`${type}Collision`]();
+
+    isCollision && (this.collisionType = type);
+
+    return isCollision;
+  }
+
+  collisionInfo() {
+    let isCollision = allCollisionType
+      .map(ele => this.isCollision(ele))
+      .some(ele => ele);
+
+    return [isCollision, this.collisionType];
   }
 
   tankCollision() {
@@ -75,6 +87,8 @@ class Mover {
 
   move() {
     let isBullet = (this.type === 'bullet');
+
+    // 确定坦克下一个位置
     let [isMoving, changeDirectionAble] = isBullet
       ? [true, false]
       : this.confirmMoveState();
@@ -87,8 +101,11 @@ class Mover {
       ? this.changeDirection()
       : this.toNextPosition();
 
-    this.isCollision() 
-      ? this.doAfterCollision() 
+    // 确定是否碰撞，以及相应的处理
+    let [isCollision, collisionType] = this.collisionInfo();
+
+    isCollision 
+      ? this.doAfterCollision(collisionType) 
       : [this.x, this.y] = [this.next_x, this.next_y];
   }
 }
