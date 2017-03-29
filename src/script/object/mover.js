@@ -76,7 +76,6 @@ class Mover {
   }
 
   tankCollision() {
-    console.log(1);
     return false;
   }
 
