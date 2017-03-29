@@ -85,10 +85,7 @@ class Mover {
     return [this.x + offsetArr[0], this.y + offsetArr[1]];
   }
 
-  move() {
-    let isBullet = (this.type === 'bullet');
-
-    // 确定坦克下一个位置
+  affirmNextPosion(isBullet) {
     let [isMoving, changeDirectionAble] = isBullet
       ? [true, false]
       : this.confirmMoveState();
@@ -100,13 +97,19 @@ class Mover {
     [this.next_x, this.next_y] = changeDirectionAble
       ? this.changeDirection()
       : this.toNextPosition();
+  }
 
-    // 确定是否碰撞，以及相应的处理
+  affirmCollisionAndHandle() {
     let [isCollision, collisionType] = this.collisionInfo();
 
     isCollision 
       ? this.doAfterCollision(collisionType) 
       : [this.x, this.y] = [this.next_x, this.next_y];
+  }
+
+  move() {
+    this.affirmNextPosion((this.type === 'bullet'));   
+    this.affirmCollisionAndHandle();
   }
 }
 
