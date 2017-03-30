@@ -9,7 +9,7 @@ class Npc extends Tank {
     this.speed = 1;
     this.shieldDuration = 0;
 
-    this.changeDirectionDelayTimeout = 30;
+    this.changeDirectionDelayTimeout = 0;
     this.changeDirectionAble = false;
   }
 
@@ -20,7 +20,7 @@ class Npc extends Tank {
   }
 
   hitBarrier() {
-    console.log('mmmmmm');
+    this.changeDirectionDelayTimeout = 30;
   }
 
   doAfterCollision(collisionType) {
@@ -28,7 +28,7 @@ class Npc extends Tank {
   }
 
   confirmMoveState() {
-    return [true, false];
+    return [true, this.changeDirectionAble];
   }
 }
 

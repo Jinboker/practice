@@ -86,14 +86,16 @@ class Mover {
     return [this.x + offsetArr[0], this.y + offsetArr[1]];
   }
 
-  affirmNextPosion(isBullet) {
+  affirmMoveState(isBullet) {
     let [isMoving, changeDirectionAble] = isBullet
       ? [true, false]
       : this.confirmMoveState();
 
-    if (!isMoving) {return;}
+    return [isMoving, changeDirectionAble];
+  }
 
-    !isBullet && this.changeWheel();
+  affirmNextPosion(isMoving, changeDirectionAble) {
+    if (!isMoving) {return;}
 
     [this.next_x, this.next_y] = changeDirectionAble
       ? this.changeDirection()
@@ -110,9 +112,12 @@ class Mover {
 
   move() {
     let isBullet = (this.type === 'bullet');
+    let [isMoving, changeDirectionAble] = this.affirmMoveState(isBullet);
 
-    this.affirmNextPosion(isBullet);   
-    this.doAfterCollisionDetection();
+    !isBullet && isMoving && this.changeWheel();
+
+    this.affirmNextPosion(isMoving, changeDirectionAble);   
+    !changeDirectionAble && this.doAfterCollisionDetection();
   }
 }
 
