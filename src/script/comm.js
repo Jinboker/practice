@@ -49,10 +49,16 @@ function doAfterPressKey(operate) {
   }
 }
 
+// 单词首字母大写
+function firstUpperCase(str) {
+  return str.toLowerCase().replace(/( |^)[a-z]/g, ele => ele.toUpperCase());
+}
+
 export {
   requestAnimFrame,
   delay,
   delayTimeout,
   cleanCxt,
+  firstUpperCase,
   doAfterPressKey
 };

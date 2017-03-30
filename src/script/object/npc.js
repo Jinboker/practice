@@ -1,5 +1,5 @@
 import {Tank} from './tank';
-import {delayTimeout} from '../comm';
+import {delayTimeout, firstUpperCase} from '../comm';
 
 class Npc extends Tank {
   constructor(x, y, direction, type, index, grade = 0) {
@@ -19,8 +19,12 @@ class Npc extends Tank {
     });
   }
 
-  doAfterCollision() {
-    this.changeDirectionAble = true;
+  hitBarrier() {
+    console.log('mmmmmm');
+  }
+
+  doAfterCollision(collisionType) {
+    this[`hit${firstUpperCase(collisionType)}`]();
   }
 
   confirmMoveState() {

@@ -51,6 +51,10 @@ class Mover {
       .every(ele => ele));
   }
 
+  tankCollision() {
+    return false;
+  }
+
   borderCollision() {
     let isTouchBorder = this.checkBorder[this.direction]();
 
@@ -59,6 +63,7 @@ class Mover {
     return isTouchBorder;
   }
 
+  // 检查相应的坦克，边界等条件有没有产生碰撞
   isCollision(type) {
     let isCollision = this[`${type}Collision`]();
 
@@ -73,10 +78,6 @@ class Mover {
       .some(ele => ele);
 
     return [isCollision, this.collisionType];
-  }
-
-  tankCollision() {
-    return false;
   }
 
   toNextPosition() {
@@ -99,7 +100,7 @@ class Mover {
       : this.toNextPosition();
   }
 
-  affirmCollisionAndHandle() {
+  doAfterCollisionDetection() {
     let [isCollision, collisionType] = this.collisionInfo();
 
     isCollision 
@@ -108,8 +109,10 @@ class Mover {
   }
 
   move() {
-    this.affirmNextPosion((this.type === 'bullet'));   
-    this.affirmCollisionAndHandle();
+    let isBullet = (this.type === 'bullet');
+
+    this.affirmNextPosion(isBullet);   
+    this.doAfterCollisionDetection();
   }
 }
 
