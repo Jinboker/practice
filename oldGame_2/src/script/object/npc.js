@@ -14,9 +14,14 @@ class Npc extends Tank {
   }
 
   changeDirection() {
+    let nextPositon = [this.x, this.y];
+
     this.changeDirectionDelayTimeout = delayTimeout(this.changeDirectionDelayTimeout, () => {
       this.changeDirectionAble = false;
+      nextPositon = this.getPositionAfterChangeDirection();
     });
+
+    return nextPositon;
   }
 
   hitBarrier() {
