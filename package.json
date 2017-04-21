@@ -1,22 +1,27 @@
 {
   "name": "BattleCity",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "a NES game: BattleCity",
-  "main": "main.js",
+  "main": "index.js",
   "repository": "git@github.com:jinboker/BattleCity.git",
   "author": "jin <jinboker@gmail.com>",
-  "scripts": {},
+  "scripts": {
+    "build": "webpack"
+  },
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
     "babel-eslint": "^7.2.2",
+    "css-loader": "^0.28.0",
     "eslint": "^3.19.0",
     "eslint-loader": "^1.7.1",
     "html-webpack-plugin": "^2.28.0",
-    "json-loader": "^0.5.4",
-    "rollup": "^0.41.6",
+    "node-sass": "^4.5.2",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.16.1",
     "ts-loader": "^2.0.3",
     "typescript": "^2.2.2",
+    "url-loader": "^0.5.8",
     "webpack": "^2.4.1",
     "webpack-dev-server": "^2.4.2"
   }
