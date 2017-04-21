@@ -3,12 +3,13 @@
     "module": "es6",
     "target": "es6",
     "allowJs": true,
+    "outDir": "./dist/",
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": true,
     "removeComments": true,
-    "inlineSourceMap": true
+    "sourceMap": true
   },
   "exclude": [
       "node_modules"

@@ -1,5 +1,4 @@
-import {b} from './a/asdjf';
-
 let ad: string = 'bad';
+let c: number = 4;
 
-console.log(ad, b);
+console.log(ad, c);
