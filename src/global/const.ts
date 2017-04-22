@@ -1,6 +1,6 @@
-export const CXT_ROLE = (document.getElementById('role') as HTMLCanvasElement).getContext('2d');
-export const CXT_BG = (document.getElementById('bg') as HTMLCanvasElement).getContext('2d');
-export const CXT_MISC = (document.getElementById('misc') as HTMLCanvasElement).getContext('2d');
+export const CXT_ROLE = (document.getElementById('role') as HTMLCanvasElement).getContext('2d')!;
+export const CXT_BG = (document.getElementById('bg') as HTMLCanvasElement).getContext('2d')!;
+export const CXT_MISC = (document.getElementById('misc') as HTMLCanvasElement).getContext('2d')!;
 
 export const CXT_W = 516;
 export const CXT_H = 456;
