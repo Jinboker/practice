@@ -1,7 +1,7 @@
-//@font-face {
-  //font-family: prstart;
-  //src: url('../assets/font/prstart.ttf');
-//}
+@font-face {
+font-family: prstart;
+src: url('../../assets/font/prstart.ttf');
+}
 
 html, body, div {
   margin: 0;
@@ -26,6 +26,11 @@ body {
 
 #game {
   position: relative;
+  top: 50%;
+  width: 516px;
+  height: 456px;
+  margin: 0 auto;
+  transform: translate(0, -50%);
   background-color: black;
 
   canvas {
