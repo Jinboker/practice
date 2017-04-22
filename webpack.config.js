@@ -31,6 +31,7 @@ module.exports = {
       {
         enforce: 'pre',
         test: /\.tsx?$/,
+        exclude: /node_modules/,
         use: "source-map-loader"
       },
       {
@@ -47,8 +48,12 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
-    port: 8888
+    port: 8888,
+    inline: true,
+    colors: true
   },
+  // 不写这个可能会出现说找不到node的某些个模块
+  target: 'node',
   watch: true,
   watchOptions: {
     aggregateTimeout: 300,
