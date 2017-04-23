@@ -9,7 +9,8 @@
     "noFallthroughCasesInSwitch": true,
     "strictNullChecks": true,
     "removeComments": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "suppressImplicitAnyIndexErrors": true
   },
   "exclude": [
       "node_modules"

@@ -29,6 +29,11 @@ module.exports = {
         use: 'url-loader?limit=30000'
       },
       {
+        test: /\.json$/,
+        exclude: /node_modules/,
+        use: 'json-loader'
+      },
+      {
         enforce: 'pre',
         test: /\.tsx?$/,
         exclude: /node_modules/,
@@ -43,7 +48,7 @@ module.exports = {
   },
   devtool: 'inline-source-map',
   resolve: {
-    extensions: ['.ts', '.tsx', '.js']
+    extensions: ['.ts', '.tsx', '.js', '.json']
   },
   devServer: {
     contentBase: path.join(__dirname, "dist"),
