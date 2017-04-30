@@ -1,13 +1,13 @@
 import json from '../../assets/resource.json';
 
-let list: string[] = ['img', 'aud'];
+let list: string[] = ['img', 'audio'];
 let res: any;
 
 list.forEach(element => {
-  Object.keys(json[element]).forEach(obj => {
-    res[element][obj] = document.createElement(element);
-    res[element][obj].src = json[element][obj];
+  Object.keys(json[element]).forEach(name => {
+    res[element][name] = document.createElement(element);
+    res[element][name].src = json[element][name];
   });
-});
+})
 
 export default res;
