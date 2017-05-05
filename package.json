@@ -2,7 +2,7 @@
   "name": "BattleCity",
   "version": "0.0.0",
   "description": "a NES game: BattleCity",
-  "main": "index.js",
+  "main": "index.ts",
   "repository": "git@github.com:jinboker/BattleCity.git",
   "author": "jin <jinboker@gmail.com>",
   "scripts": {

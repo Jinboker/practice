@@ -1,10 +1,6 @@
 import '../static/css.scss';
 import init from './init';
-
-function loop() {
-  console.log(1);
-  window.requestAnimationFrame(loop);
-}
+import loop from './loop';
 
 (() => {
   init();

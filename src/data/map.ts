@@ -1,5 +1,5 @@
 // 第一关的地图数据
-export let stageOne = [
+export let firstStageData = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
   [0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0],
@@ -17,7 +17,7 @@ export let stageOne = [
 
 // 地图数据
 export const mapData = [
-  stageOne,
+  firstStageData,
   [ // 第二关
     [0, 0, 0, 6, 0, 0, 0, 6, 0, 0, 0, 0, 0],
     [0, 1, 0, 6, 0, 0, 0, 1, 0, 1, 0, 1, 0],

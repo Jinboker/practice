@@ -9,7 +9,8 @@ export const codeToKey = {
 
 export const inputParam = {
   isPressed: false,
-  pressedKey: '',
+  functionKey: '',
+  directionKey: '',
   W: false,
   A: false,
   S: false,

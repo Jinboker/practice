@@ -9,7 +9,7 @@ export const OFFSET_X = 35;
 export const OFFSET_Y = 20;
 
 export const MAX_STAGE = 10;
-export const WHEEL_CHANGE_FREQUENT = 6;
+export const WHEEL_CHANGE_FREQUENT = 5;
 export const FIRE_MIN_FREQUENT = 25;
 
 export const NPC_MAX_NUM = 20;
