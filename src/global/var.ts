@@ -18,3 +18,7 @@ export const inputParam = {
   H: false,
   J: false
 };
+
+export const gameParam = {
+  stageNum: 1
+};
