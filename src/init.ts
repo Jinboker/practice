@@ -1,7 +1,6 @@
 import { CXT_BG, CXT_MISC } from './global/const';
-import { gameParam } from './global/var';
-import ChooseMode from './gameInterface/chooseMode';
 import keyboardInit from './keyboard';
+import controller from './ctrlCenter/center';
 
 export default function gameInit() {
   CXT_BG.font = '15px prstart';
@@ -12,6 +11,6 @@ export default function gameInit() {
   CXT_MISC.fillStyle = '#000';
   CXT_MISC.textBaseline = 'top';
 
-  gameParam.renderUI = new ChooseMode();
+  controller.receiveMsg('newGame');
   keyboardInit();
 }

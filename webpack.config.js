@@ -73,6 +73,6 @@ module.exports = {
         showErrors: true
       }
     }),
-    new ExtractTextPlugin("style.scss")
+    new ExtractTextPlugin("style.css")
   ]
 };

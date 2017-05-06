@@ -14,7 +14,7 @@ listeners['enterStage'] = () => {
 };
 
 listeners['playGame'] = () => {
-  
+
 };
 
 listeners['construct'] = () => {

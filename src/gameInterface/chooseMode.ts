@@ -5,6 +5,7 @@ import res from '../data/assets';
 
 const MIN_Y = 285;
 const MAX_Y = 345;
+const UI_IMG = res.img.ui;
 const PLAYER_IMG = res.img.player;
 const changeWheel: delayOption = {
   count: WHEEL_CHANGE_FREQUENT,
@@ -40,7 +41,7 @@ export default class {
     CXT_BG.fillText('NORMAL MODE', 190, screenTopPosition + 220);
     CXT_BG.fillText('CRAZY MODE', 190, screenTopPosition + 250);
     CXT_BG.fillText('CONSTRUCTION', 190, screenTopPosition + 280);
-    CXT_BG.drawImage(res.img.ui, 0, 0, 376, 160, 70, screenTopPosition + 25, 376, 160);
+    CXT_BG.drawImage(UI_IMG, 0, 0, 376, 160, 70, screenTopPosition + 25, 376, 160);
     CXT_BG.restore();
 
     if (screenTopPosition <= 75) {
