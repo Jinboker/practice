@@ -1,4 +1,6 @@
 import { CXT_BG, CXT_MISC } from './global/const';
+import { gameParam } from './global/var';
+import ChooseMode from './gameInterface/chooseMode';
 import keyboardInit from './keyboard';
 
 export default function gameInit() {
@@ -10,6 +12,6 @@ export default function gameInit() {
   CXT_MISC.fillStyle = '#000';
   CXT_MISC.textBaseline = 'top';
 
-  console.log('mmmmm');
+  gameParam.renderUI = new ChooseMode();
   keyboardInit();
 }

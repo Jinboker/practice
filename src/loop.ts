@@ -1,6 +1,6 @@
-import renderGame from './renderGame/render';
+import { gameParam } from './global/var';
 
 export default function loop() {
-  renderGame();
+  gameParam.renderUI.draw();
   window.requestAnimationFrame(loop);
 }

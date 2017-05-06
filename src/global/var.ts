@@ -1,10 +1,11 @@
+// import ChooseMode from '../gameInterface/chooseMode';
+
 export const codeToKey = {
-  87: 'W',
-  65: 'A',
-  83: 'S',
-  68: 'D',
-  72: 'H',
-  74: 'J'
+  87: 'W', 65: 'A', 83: 'S', 68: 'D', 72: 'H', 74: 'J'
+};
+
+export const dirNum = {
+  W: 0, D: 1, S: 2, A: 3
 };
 
 export const inputParam = {
@@ -19,10 +20,12 @@ export const inputParam = {
   J: false
 };
 
+interface renderClass {
+  draw: () => void
+}
+
 export const gameParam = {
   stageNum: 1,
-  gameState: 'chooseMode', // chooseMode, chooseStage, playGame, over
-  stage: '',              // chaneAble, noChange
-  play: '',               // fight, construct
-  over: ''                // nextStage, gameOver
+  gameState: 'chooseMode',  // chooseMode, chooseStage, playGame, over, construct
+  renderUI: <renderClass>{}
 };
