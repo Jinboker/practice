@@ -9,8 +9,8 @@ listeners['newGame'] = () => {
   gameParam.renderUI = new ChooseMode();
 };
 
-listeners['enterStage'] = () => {
-  gameParam.renderUI = new ChooseStage(true);
+listeners['enterStage'] = (couldChangeStage: boolean) => {
+  gameParam.renderUI = new ChooseStage(couldChangeStage);
 };
 
 listeners['playGame'] = () => {

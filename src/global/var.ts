@@ -12,6 +12,7 @@ export const inputParam = {
   isPressed: false,
   functionKey: '',
   directionKey: '',
+  pressedKey: '',
   W: false,
   A: false,
   S: false,

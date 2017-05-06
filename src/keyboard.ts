@@ -12,6 +12,7 @@ function keyDown(key: string) {
     : inputParam.functionKey = key;
 
   inputParam.isPressed = true;
+  inputParam.pressedKey = key;
   inputParam[key] = true;
 }
 

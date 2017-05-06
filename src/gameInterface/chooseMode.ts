@@ -1,6 +1,7 @@
-import { delayTimeout, cleanCxt } from '../util/fn';
+import { delayTimeout, cleanCxt, keyboardOperate } from '../util/fn';
 import { CXT_BG, WHEEL_CHANGE_FREQUENT, CXT_H } from '../global/const';
 import { inputParam } from '../global/var';
+import controller from '../ctrlCenter/center';
 import res from '../data/assets';
 
 const MIN_Y = 285;
@@ -10,6 +11,15 @@ const PLAYER_IMG = res.img.player;
 const changeWheel: delayOption = {
   count: WHEEL_CHANGE_FREQUENT,
   amount: WHEEL_CHANGE_FREQUENT
+};
+const operate = {
+  W() { indicatorPosition = indicatorPosition > MIN_Y ? indicatorPosition - 30 : MAX_Y; },
+  S() { indicatorPosition = indicatorPosition < MAX_Y ? indicatorPosition + 30 : MIN_Y; },
+  H() {
+    (indicatorPosition - MIN_Y) / 30 === 2
+      ? controller.receiveMsg('construct')
+      : controller.receiveMsg('enterStage', true);
+  }
 };
 
 let wheelPic = 0;
@@ -27,7 +37,7 @@ export default class {
     delayTimeout(changeWheel, () => (wheelPic = (+!wheelPic) * 32));
     CXT_BG.clearRect(140, 260, 32, 120);
     CXT_BG.drawImage(PLAYER_IMG, 0, 64 + wheelPic, 32, 32, 140, indicatorPosition, 32, 32);
-    // doAfterPressKey(operate);
+    keyboardOperate(operate);
   }
 
   private drawBeforeTouchTop() {

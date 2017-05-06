@@ -1,23 +1,31 @@
 import res from '../data/assets';
-import { CXT_BG, CXT_MISC, CXT_H, CXT_W, OFFSET_X, OFFSET_Y, SCREEN_L } from '../global/const';
+import { CXT_BG, CXT_MISC, CXT_H, CXT_W, OFFSET_X, OFFSET_Y, SCREEN_L, MAX_STAGE } from '../global/const';
 import { gameParam } from '../global/var';
-import { delayTimeout, cleanCxt } from '../util/fn';
+import { delayTimeout, cleanCxt, keyboardOperate } from '../util/fn';
 import drawMap from '../map/drawMap';
+import controller from '../ctrlCenter/center';
 
 const START_AUD = res.audio.start;
 const HALF_SCREEN = CXT_H >> 1;
+const HALF_ARENA = SCREEN_L >> 1;
 
 export default class {
   private process: string;
   private enterPlay: delayOption;
   private startFoldCurtain: boolean;
   private halfMaskWidth: number;
+  private operate: operate;
 
   constructor(private couldChangeStage: boolean) {
     this.process = 'unfoldCurtain';
     this.enterPlay = { count: 80, amount: 80 };
     this.startFoldCurtain = false;
     this.halfMaskWidth = 0;
+    this.operate = {
+      W() { gameParam.stageNum = gameParam.stageNum > 1 ? gameParam.stageNum - 1 : MAX_STAGE; },
+      S() { gameParam.stageNum = gameParam.stageNum < MAX_STAGE ? gameParam.stageNum + 1 : 1; },
+      H: () => { (this.process = 'foldCurtain') && START_AUD.play(); }
+    }
   }
 
   private unfoldCurtain() {
@@ -36,18 +44,16 @@ export default class {
     CXT_MISC.clearRect(180, 210, 220, 40);
     CXT_MISC.fillText(`STAGE  ${gameParam.stageNum}`, 180, 218);
 
-    if (!this.couldChangeStage) {
-      this.process = 'foldCurtain';
-    }
+    this.couldChangeStage ? keyboardOperate(this.operate) : this.process = 'foldCurtain';
   }
 
   private foldCurtain() {
     if (this.startFoldCurtain) {
       CXT_MISC.clearRect(OFFSET_X + 208 - this.halfMaskWidth, OFFSET_Y, 2 * this.halfMaskWidth, SCREEN_L);
 
-      this.halfMaskWidth < 208
+      this.halfMaskWidth < HALF_ARENA
         ? this.halfMaskWidth += 15
-        : console.log('aaa');
+        : controller.receiveMsg('playGame');
     } else {
       delayTimeout(this.enterPlay, () => {
         CXT_BG.clearRect(OFFSET_X, OFFSET_Y, SCREEN_L, SCREEN_L);

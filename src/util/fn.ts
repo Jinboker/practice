@@ -1,4 +1,5 @@
 import { CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H } from '../global/const';
+import { inputParam } from '../global/var';
 
 /**
  * 延时函数
@@ -30,11 +31,10 @@ export function cleanCxt(...types: string[]) {
     cxt[`CXT_${ele.toUpperCase()}`].clearRect(0, 0, CXT_W, CXT_H);
   });
 }
-// function cleanCxt(...type) {
-//   let typeArr = type[0] === 'all' ? ['role', 'bg', 'misc'] : type;
-//   let cxt = { CXT_ROLE, CXT_BG, CXT_MISC };
-//
-//   typeArr.forEach((n) => {
-//     cxt[`CXT_${n.toUpperCase()}`].clearRect(0, 0, CXT_W, CXT_H);
-//   });
-// }
+
+export function keyboardOperate(operate: operate) {
+  if (inputParam.isPressed && typeof operate[inputParam.pressedKey] === 'function') {
+    inputParam.isPressed = false;
+    operate[inputParam.pressedKey]();
+  }
+}
