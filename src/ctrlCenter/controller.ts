@@ -1,33 +1,35 @@
-function newGame() {
+let listeners = {};
+
+listeners['newGame'] = () => {
+
 }
 
-function enterStage(mode: string) {
+listeners['enterStage'] = () => {
+
 }
 
-function playGame(mode: string) {
+listeners['playGame'] = () => {
+
 }
 
-function thisStageOver(mode: string) {}
+listeners['thisStageOver'] = () => {
 
-function newBullet(param: any) {}
+}
 
-function bulletDie(index: number) {}
+listeners['newBullet'] = () => {
+
+}
+
+listeners['newBullet'] = () => {
+
+}
+
+listeners['bulletDie'] = () => {
+
+}
 
 let controller = (() => {
-  let operations = {
-    newGame() {newGame();},
-    enterStage(mode: string) {enterStage(mode)},
-    playGame(mode: string) {playGame(mode);},
-    thisStageOver(mode: string) {thisStageOver(mode)},
-    newBullet(param: any) {newBullet(param)},
-    bulletDie(index: number) {bulletDie(index)}
-  };
-
-  let receiveMsg = (...arg: string[]) => {
-    let msg = Array.prototype.shift.call(arg);
-
-    operations[msg](arg);
-  };
+  let receiveMsg = <T>(topic: string, ...args: Array<T>) => listeners[topic](args);
 
   return { receiveMsg };
 })();

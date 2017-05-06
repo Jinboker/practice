@@ -20,5 +20,9 @@ export const inputParam = {
 };
 
 export const gameParam = {
-  stageNum: 1
+  stageNum: 1,
+  gameState: 'chooseMode', // chooseMode, chooseStage, playGame, over
+  stage: '',              // chaneAble, noChange
+  play: '',               // fight, construct
+  over: ''                // nextStage, gameOver
 };
