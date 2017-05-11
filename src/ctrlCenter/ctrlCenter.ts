@@ -1,20 +1,21 @@
-import { gameParam} from '../global/var';
+import { gameParam } from '../global/var';
 import ChooseMode from '../gameInterface/chooseMode';
 import ChooseStage from '../gameInterface/chooseStage';
+import PlayGame from '../gameInterface/playGame';
 
 const listeners = {};
 
 listeners['newGame'] = () => {
   gameParam.gameState = 'chooseMode';
-  gameParam.renderUI = new ChooseMode();
+  gameParam.renderContent = new ChooseMode();
 };
 
 listeners['enterStage'] = (couldChangeStage: boolean) => {
-  gameParam.renderUI = new ChooseStage(couldChangeStage);
+  gameParam.renderContent = new ChooseStage(couldChangeStage);
 };
 
 listeners['playGame'] = () => {
-
+  gameParam.renderContent = new PlayGame();
 };
 
 listeners['construct'] = () => {
@@ -39,7 +40,4 @@ function getReceiveMsg() {
   return { receiveMsg };
 }
 
-// const controller = getReceiveMsg();
-//
-// export default controller;
 export default getReceiveMsg();

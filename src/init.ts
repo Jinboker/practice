@@ -1,6 +1,6 @@
 import { CXT_BG, CXT_MISC } from './global/const';
 import keyboardInit from './keyboard';
-import controller from './ctrlCenter/center';
+import controller from './ctrlCenter/ctrlCenter';
 
 export default function gameInit() {
   CXT_BG.font = '15px prstart';

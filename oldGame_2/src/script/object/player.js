@@ -2,61 +2,58 @@ import { Tank } from './tank';
 import { inputKey } from '../variables';
 
 class Player extends Tank {
-    aaa;
+  constructor(x, y, direction, type, index, grade = 0) {
+    super(x, y, direction, type, index);
 
-    constructor(x, y, direction, type, index, grade = 0) {
-        super(x, y, direction, type, index);
+    this.speed = 2;
+    this.grade = grade;
+    this.shieldDuration = 200;
+  }
 
-        this.speed = 2;
-        this.grade = grade;
-        this.shieldDuration = 200;
+
+  stopGame() {}
+
+  pressFuncKey() {
+    let pressedFuncKey = inputKey.funcKey;
+    let fireAble = !(this.fireDelay && (this.fireDelay -= 1));
+
+    if (inputKey[pressedFuncKey]) {
+        pressedFuncKey === 'H' ? this.stopGame() : fireAble && this.newBullet();
+    }
+  }
+
+  pressDirectionKey() {
+    let pressedDirectionKey = inputKey.directionKey;
+    let couldMove = inputKey[pressedDirectionKey];
+    let changeDirectionAble = false;
+
+    if (couldMove) {
+        changeDirectionAble = (this.direction !== pressedDirectionKey);
     }
 
-    aaa() {}
+    return [couldMove, changeDirectionAble];
+  }
 
-    stopGame() {}
+  confirmMoveState() {
+    this.pressFuncKey();
 
-    pressFuncKey() {
-        let pressedFuncKey = inputKey.funcKey;
-        let fireAble = !(this.fireDelay && (this.fireDelay -= 1));
+    let moveState = this.pressDirectionKey();
 
-        if (inputKey[pressedFuncKey]) {
-            pressedFuncKey === 'H' ? this.stopGame() : fireAble && this.newBullet();
-        }
-    }
+    return moveState;
+  }
 
-    pressDirectionKey() {
-        let pressedDirectionKey = inputKey.directionKey;
-        let couldMove = inputKey[pressedDirectionKey];
-        let changeDirectionAble = false;
+  doAfterCollision() {
+    // TODO
+    // 玩家碰到奖励
+  }
 
-        if (couldMove) {
-            changeDirectionAble = (this.direction !== pressedDirectionKey);
-        }
+  changeDirection() {
+    let nextPostion = this.getPositionAfterChangeDirection();
 
-        return [couldMove, changeDirectionAble];
-    }
+    this.direction = inputKey.directionKey;
 
-    confirmMoveState() {
-        this.pressFuncKey();
-
-        let moveState = this.pressDirectionKey();
-
-        return moveState;
-    }
-
-    doAfterCollision() {
-        // TODO
-        // 玩家碰到奖励
-    }
-
-    changeDirection() {
-        let nextPostion = this.getPositionAfterChangeDirection();
-
-        this.direction = inputKey.directionKey;
-
-        return nextPostion;
-    }
+    return nextPostion;
+  }
 }
 
 export { Player };

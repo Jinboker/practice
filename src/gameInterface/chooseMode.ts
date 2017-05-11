@@ -1,7 +1,7 @@
 import { delayTimeout, cleanCxt, keyboardOperate } from '../util/fn';
 import { CXT_BG, WHEEL_CHANGE_FREQUENT, CXT_H } from '../global/const';
 import { inputParam } from '../global/var';
-import controller from '../ctrlCenter/center';
+import controller from '../ctrlCenter/ctrlCenter';
 import res from '../data/assets';
 
 const MIN_Y = 285;

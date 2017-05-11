@@ -3,7 +3,7 @@ import { CXT_BG, CXT_MISC, CXT_H, CXT_W, OFFSET_X, OFFSET_Y, SCREEN_L, MAX_STAGE
 import { gameParam } from '../global/var';
 import { delayTimeout, cleanCxt, keyboardOperate } from '../util/fn';
 import drawMap from '../map/drawMap';
-import controller from '../ctrlCenter/center';
+import controller from '../ctrlCenter/ctrlCenter';
 
 const START_AUD = res.audio.start;
 const HALF_SCREEN = CXT_H >> 1;

@@ -28,5 +28,5 @@ interface renderClass {
 export const gameParam = {
   stageNum: 1,
   gameState: 'chooseMode',  // chooseMode, chooseStage, playGame, over, construct
-  renderUI: <renderClass>{}
+  renderContent: <renderClass>{}
 };
