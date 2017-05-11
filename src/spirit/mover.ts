@@ -4,9 +4,9 @@ abstract class Mover {
   abstract y: number;
   abstract next_y: number;
   abstract direction: string;
-  abstract distanceToCenter: number;
-  abstract spiritWidth: number;
   abstract rank: number;
+  abstract distanceToCenter: number;
+  abstract speed: number;
 
   protected alive: boolean;
 
@@ -14,9 +14,8 @@ abstract class Mover {
     this.alive = true;
   }
 
-  abstract affirmNextPosition(): void;
   abstract doAfterCollision(): void;
-  abstract move(): void;
+  abstract affirmNextPosition(): void;
   abstract draw(): void;
 
   // 精灵的中心点坐标
