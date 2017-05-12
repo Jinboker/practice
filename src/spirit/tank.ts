@@ -12,6 +12,8 @@ export default class Tank extends Mover {
   // override
   public distanceToCenter: number;
   public speed: number;
+  public next_x: number;
+  public next_y: number;
 
   // 轮胎变化相关参数
   private wheelDelay: delayOption;
@@ -29,9 +31,7 @@ export default class Tank extends Mover {
 
   constructor(
     public x: number, 
-    public next_x: number, 
-    public y: number, 
-    public next_y: number,
+    public y: number,
     public direction: string,
     public type: string,
     public rank: number
@@ -39,6 +39,8 @@ export default class Tank extends Mover {
     super(type);
 
     this.distanceToCenter = 16;
+    this.next_x = x;
+    this.next_y = y;
 
     // 轮胎变化相应参数
     this.wheelPic = 0;
@@ -92,6 +94,21 @@ export default class Tank extends Mover {
       : y = Math.round(y / 16) << 4;
 
     return [x, y];
+  }
+
+  // override
+  hitBarrier() {
+
+  }
+
+  // override
+  hitTank() {
+
+  }
+
+  // override
+  hitBorder() {
+
   }
 
   // override

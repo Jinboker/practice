@@ -1,7 +1,7 @@
 import { gameParam } from '../global/var';
-import ChooseMode from '../gameInterface/chooseMode';
-import ChooseStage from '../gameInterface/chooseStage';
-import PlayGame from '../gameInterface/playGame';
+import ChooseMode from '../renderGame/chooseMode';
+import ChooseStage from '../renderGame/chooseStage';
+import PlayGame from '../renderGame/playeGame/index';
 
 const listeners = {};
 

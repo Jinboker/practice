@@ -21,12 +21,8 @@ export const inputParam = {
   J: false
 };
 
-interface renderClass {
-  draw: () => void
-}
-
 export const gameParam = {
   stageNum: 1,
   gameState: 'chooseMode',  // chooseMode, chooseStage, playGame, over, construct
-  renderContent: <renderClass>{}
+  renderContent: <renderUI>{}
 };

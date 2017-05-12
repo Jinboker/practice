@@ -9,12 +9,12 @@ export default class Bullet extends Mover {
   // override
   public distanceToCenter: number;
   public speed: number;
+  public next_x: number;
+  public next_y: number;
 
   constructor(
     public x: number,
-    public next_x: number,
     public y: number,
-    public next_y: number,
     public direction: string,
     public type: string,
     public rank: number
@@ -22,6 +22,38 @@ export default class Bullet extends Mover {
     super(type);
 
     this.speed = this.rank ? 5 : 4;
+    this.distanceToCenter = 8;
+    this.next_x = x;
+    this.next_y = y;
+
+    this.resetPosition();
+  }
+
+  // 子弹初始输入的坐标是坦克的坐标，因此需要重置一下
+  resetPosition() {
+    let reset = {
+      W: [this.x + 12, this.y],
+      A: [this.x, this.y + 12],
+      S: [this.x + 12, this.y + 24],
+      D: [this.x + 24, this.y + 12]
+    };
+
+    [this.x, this.y] = reset[this.direction];
+  }
+
+  // override
+  hitBarrier() {
+
+  }
+
+  // override
+  hitTank() {
+
+  }
+
+  // override
+  hitBorder() {
+
   }
 
   // override

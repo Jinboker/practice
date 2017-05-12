@@ -10,7 +10,6 @@ class Player extends Tank {
     this.shieldDuration = 200;
   }
 
-
   stopGame() {}
 
   pressFuncKey() {

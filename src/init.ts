@@ -1,8 +1,35 @@
 import { CXT_BG, CXT_MISC } from './global/const';
-import keyboardInit from './keyboard';
+import { inputParam, codeToKey } from './global/var';
 import controller from './ctrlCenter/ctrlCenter';
 
-export default function gameInit() {
+function keyDown(key: string) {
+  if (inputParam[key]) return;
+
+  key !== 'H' && key !== 'J'
+    ? inputParam.directionKey = key
+    : inputParam.functionKey = key;
+
+  inputParam.isPressed = true;
+  inputParam.pressedKey = key;
+  inputParam[key] = true;
+}
+
+function keyUp(key: string) {
+  inputParam[key] = false;
+}
+
+function keyBoardInit() {
+  ['keydown', 'keyup'].forEach(eventType => {
+    addEventListener(eventType, (ev: keyboardEvent) => {
+      let key: string = codeToKey[ev.keyCode];
+
+      if (typeof key === 'undefined') return;
+      ev.type === 'keydown' ? keyDown(key) : keyUp(key);
+    }, false);
+  })
+}
+
+export default function init() {
   CXT_BG.font = '15px prstart';
   CXT_BG.fillStyle = '#000';
   CXT_BG.textBaseline = 'top';
@@ -12,5 +39,5 @@ export default function gameInit() {
   CXT_MISC.textBaseline = 'top';
 
   controller.receiveMsg('newGame');
-  keyboardInit();
+  keyBoardInit();
 }
