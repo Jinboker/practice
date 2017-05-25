@@ -57,6 +57,7 @@ export default class Tank extends Mover {
     this.bornDelay = { count: 4, amount: 4 };
   }
 
+  // protected getNextPosition(): number[];
   private changeWheelPic() {
     delayTimeout(this.wheelDelay, () => (this.wheelPic = (+!this.wheelPic) << 5));
   }
@@ -85,7 +86,7 @@ export default class Tank extends Mover {
     CXT_ROLE.drawImage(img, this.rank << 5, (DIR_NUM[this.direction] << 6) + this.wheelPic, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }
 
-  private getPositionAfterChangeDirection() {
+  private changeDirection() {
     let [x, y, directionNum] = [this.x, this.y, DIR_NUM[this.direction]];
 
     directionNum % 2
@@ -118,7 +119,7 @@ export default class Tank extends Mover {
 
   // override
   affirmNextPosition() {
-
+    // [this.x, this.y] = this.getNextPosition();
   }
 
   // override

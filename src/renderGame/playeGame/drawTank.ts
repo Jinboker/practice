@@ -4,7 +4,13 @@ import Player from '../../spirit/player';
 const NEW_TANK_FREEQUENCE = 150;
 
 export default class DrawTank {
-  constructor() {
+  private player: Player;
 
+  constructor() {
+    this.player = new Player(128, 384, 'W', 'player', 0);
+  }
+
+  draw() {
+    this.player.draw();
   }
 }

@@ -15,14 +15,14 @@ export default function (stage: number) {
   }
 
   // draw map
-  for (let i = 0; i < 13; i++) {
-    for (let j = 0; j < 13; j++) {
+  [...new Array(13)].forEach((ele, i) => {
+    [...new Array(13)].forEach((ele, j) => {
       let item = mapData[stage][i][j];
 
       if (item) {
         CXT_BG.drawImage(BRICK_IMG, 32 * item, 0, 32, 32, OFFSET_X + 32 * j, OFFSET_Y + 32 * i, 32, 32);
         affirmRoadMap(i, j, item);
       }
-    }
-  }
+    })
+  });
 };

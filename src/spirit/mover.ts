@@ -1,5 +1,3 @@
-import { OFFSET_X, OFFSET_Y } from '../global/const';
-
 abstract class Mover {
   abstract x: number;
   abstract next_x: number;
@@ -21,7 +19,6 @@ abstract class Mover {
   abstract hitBorder(): void;
   abstract doAfterCollision(): void;
   abstract affirmNextPosition(): void;
-  abstract draw(): void;
 
   // 精灵的中心点坐标
   protected spiritCenterCoord(): number[] {
