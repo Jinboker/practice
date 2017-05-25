@@ -62,7 +62,7 @@ export default class Bullet extends Mover {
   }
 
   // override
-  affirmNextPosition() {
+  affirmPosition() {
 
   }
 

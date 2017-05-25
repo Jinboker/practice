@@ -33,3 +33,7 @@ interface operate {
   H?: () => void,
   J?: () => void
 }
+
+interface getPositon {
+  (speed: number): number[];
+}
