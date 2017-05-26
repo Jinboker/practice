@@ -61,7 +61,7 @@ export default class Tank extends Mover {
     this.bornDelay = { count: 4, amount: 4 };
   }
 
-  protected resetPositionIfChangeDirection() {
+  protected getPositionAfterChangeDirection(): number[] {
     let [x, y, directionNum] = [this.x, this.y, DIR_NUM[this.direction]];
 
     directionNum % 2
@@ -69,7 +69,7 @@ export default class Tank extends Mover {
       ? x = Math.round(x / 16) << 4
       : y = Math.round(y / 16) << 4;
 
-    [this.x, this.y] = [x, y];
+    return [x, y];
   }
 
   // override

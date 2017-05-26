@@ -34,6 +34,13 @@ interface operate {
   J?: () => void
 }
 
+interface isTouchBorder {
+  W: () => boolean,
+  A: () => boolean,
+  S: () => boolean,
+  D: () => boolean
+}
+
 interface getPositon {
   (speed: number): number[];
 }

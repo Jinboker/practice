@@ -28,19 +28,19 @@ abstract class Mover {
   }
 
   // 根据当前速度确定下个位置的坐标
-  protected setNextPosition() {
+  protected getNextPosition(): number[] {
     const speed = this.speed;
     let [x, y] = [this.x, this.y];
 
     switch(this.direction) {
-      case 'W': [x, y] = [x, y - speed]; break;
-      case 'A': [x, y] = [x - speed, y]; break;
-      case 'S': [x, y] = [x, y + speed]; break;
-      case 'D': [x, y] = [x + speed, y]; break;
+      case 'W': y = y - speed; break;
+      case 'A': x = x - speed; break;
+      case 'S': y = y + speed; break;
+      case 'D': x = x + speed; break;
       default: break;
     }
 
-    [this.x, this.y] = [x, y];
+    return [x, y];
   }
 }
 
