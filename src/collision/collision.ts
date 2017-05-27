@@ -7,18 +7,15 @@ abstract class Collision {
   protected distanceToCenter: number;
   protected next_x: number;
   protected next_y: number;
-  protected checkBorder: isTouchBorder;
+  protected isTouchBorder: isTouchBorder;
 
   constructor() {
-    this.checkBorder = {
+    this.isTouchBorder = {
       W: () => (this.next_y <= 0),
       A: () => (this.next_x <= 0),
       S: () => (this.next_y >= SCREEN_L - (this.distanceToCenter << 1)),
       D: () => (this.next_x >= SCREEN_L - (this.distanceToCenter << 1))
     };
-  }
-
-  protected isTouchBorder() {
   }
 }
 

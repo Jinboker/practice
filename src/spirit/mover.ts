@@ -9,9 +9,14 @@ abstract class Mover {
   abstract speed: number;
 
   protected alive: boolean;
+  protected collisionInfo: collisionInfo;
 
   constructor(public type: string) {
     this.alive = true;
+    this.collisionInfo = {
+      isCollision: false,
+      info: []
+    };
   }
 
   abstract hitBarrier(): void;

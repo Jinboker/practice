@@ -6,7 +6,7 @@ import TankCollision from '../collision/tankCollision';
 const ATTACK_AUD = res.audio.attack;
 
 export default class Player extends Tank {
-  private a: TankCollision;
+  private detectionCollision: TankCollision;
 
   constructor(
     x: number,
@@ -20,11 +20,11 @@ export default class Player extends Tank {
     this.speed = 2;
     this.couldMove = false;
 
-    this.a = new TankCollision();
+    this.detectionCollision = new TankCollision();
   }
 
   getNextPositionVal(): number[] {
-    let x = 0, y = 0;
+    let [x, y] = [this.x, this.y];
 
     // 确定是否需要移动或者改变方向
     const directionKey = inputParam.directionKey;
@@ -32,13 +32,13 @@ export default class Player extends Tank {
     this.beChangeDirection = (this.direction !== directionKey);
     if (this.beChangeDirection) {
       this.direction = directionKey;
-      [this.next_x, this.next_y] = this.getPositionAfterChangeDirection();
+      [x, y] = this.getPositionAfterChangeDirection();
     } else {
       // 确定是否能够移动
       this.couldMove = inputParam[directionKey];
       if (this.couldMove) {
         this.changeWheelPic();
-        [this.next_x, this.next_y] = this.getNextPosition();
+        [x, y] = this.getNextPosition();
       }
     }
 
@@ -48,7 +48,11 @@ export default class Player extends Tank {
   affirmPosition() {
     // 确定下一个位置的值
     [this.next_x, this.next_y] = this.getNextPositionVal();
-    [this.x, this.y] = [this.next_x, this.next_y];
-    this.a.getCollisionInfo.bind(this)();
+    // 检查当坦克移动到下个位置以后是否会产生碰撞
+    this.collisionInfo = this.detectionCollision.getCollisionInfo.bind(this)();
+    // 如果没有碰撞则确定位置
+    if (!this.collisionInfo.isCollision) {
+      [this.x, this.y] = [this.next_x, this.next_y]
+    }
   }
 }

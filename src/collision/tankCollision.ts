@@ -7,7 +7,7 @@ export default class TankCollision extends Collision {
 
   getCollisionInfo(): collisionInfo {
     return {
-      isCollision: true,
+      isCollision: false,
       info: ['aaa']
     }
   }
