@@ -18,7 +18,7 @@ interface renderUI {
 
 interface collisionInfo {
   isCollision: boolean,
-  info: string[]
+  info?: string[]
 }
 
 interface keyboardEvent extends Event {

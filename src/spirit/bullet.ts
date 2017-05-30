@@ -19,7 +19,7 @@ export default class Bullet extends Mover {
     public type: string,
     public rank: number
   ) {
-    super(type);
+    super();
 
     this.speed = this.rank ? 5 : 4;
     this.distanceToCenter = 8;

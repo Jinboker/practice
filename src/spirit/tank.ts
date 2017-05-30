@@ -39,7 +39,7 @@ export default class Tank extends Mover {
     public type: string,
     public rank: number
   ) {
-    super(type);
+    super();
 
     this.distanceToCenter = 16;
     this.next_x = x;

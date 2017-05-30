@@ -7,11 +7,12 @@ abstract class Mover {
   abstract rank: number;
   abstract distanceToCenter: number;
   abstract speed: number;
+  abstract type: string;
 
   protected alive: boolean;
   protected collisionInfo: collisionInfo;
 
-  constructor(public type: string) {
+  constructor() {
     this.alive = true;
     this.collisionInfo = {
       isCollision: false,
@@ -33,7 +34,7 @@ abstract class Mover {
   }
 
   // 根据当前速度确定下个位置的坐标
-  protected getNextPosition(): number[] {
+  protected getNextPositionIfCouldMove(): number[] {
     const speed = this.speed;
     let [x, y] = [this.x, this.y];
 
