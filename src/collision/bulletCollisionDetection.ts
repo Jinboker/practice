@@ -4,7 +4,11 @@ import res from '../data/assets';
 const ATTACK_OVER_AUD = res.audio.attackOver;
 
 export default class BulletCollision extends CollisionDetection {
-  constructor() {
+  direction: string;
+  x: number;
+  y: number;
+
+  constructor(public distanceToCenter: number) {
     super();
   }
 
@@ -30,7 +34,7 @@ export default class BulletCollision extends CollisionDetection {
     }
   }
 
-  getCollisionInfo(): collisionInfo {
+  getCollisionInfo(direction: string, x: number, y: number): collisionInfo {
     return {
       isCollision: true,
       info: ['aaa']

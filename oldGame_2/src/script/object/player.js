@@ -17,7 +17,7 @@ class Player extends Tank {
     let fireAble = !(this.fireDelay && (this.fireDelay -= 1));
 
     if (inputKey[pressedFuncKey]) {
-        pressedFuncKey === 'H' ? this.stopGame() : fireAble && this.newBullet();
+      pressedFuncKey === 'H' ? this.stopGame() : fireAble && this.newBullet();
     }
   }
 
@@ -27,7 +27,7 @@ class Player extends Tank {
     let changeDirectionAble = false;
 
     if (couldMove) {
-        changeDirectionAble = (this.direction !== pressedDirectionKey);
+      changeDirectionAble = (this.direction !== pressedDirectionKey);
     }
 
     return [couldMove, changeDirectionAble];

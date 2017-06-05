@@ -1,7 +1,9 @@
 import CollisionDetection from './collisionDetection';
+import { roadMap } from "../map/affirmRoadMap";
+import { brickStatus } from '../global/var';
+import { DIR_NUM } from '../global/const';
 
-// const allCollisionType = ['border', 'barrier', 'tank'];
-const allCollisionType = ['border'];
+const allCollisionType = ['border', 'barrier'];
 
 export default class TankCollisionDetection extends CollisionDetection {
   direction: string;
@@ -20,8 +22,45 @@ export default class TankCollisionDetection extends CollisionDetection {
     }
   }
 
+  // 获取每一个碰撞坐标点最后的碰撞信息
+  getItemBarrierCollisionInfo(row: number, col: number): [boolean, string] {
+    const roadType = roadMap[row][col];
+    const brickStatusArr = brickStatus[row * 28 + col];
+
+    // roadType 为0表示无障碍，1为冰，3为砖块
+    if (roadType === 1) {
+      // TODO
+      return [true, 'bing'];
+    }
+
+    if (roadType === 3 && brickStatusArr) {
+      const directionNum = DIR_NUM[this.direction];
+
+      let indexInBrick = 0;
+      let passAble = false;
+
+      if (directionNum % 2) {
+        indexInBrick = (this.x + (+!(directionNum - 1) * 32) - (col << 4)) >> 3;
+        passAble = !brickStatusArr[1][indexInBrick] && !brickStatusArr[0][indexInBrick];
+      } else {
+        indexInBrick = (this.y + (directionNum >> 1) * 32 - (row << 4)) >> 3;
+        // passAble = brickStatusArr[indexInBrick].every(ele => (ele === 0));
+      }
+
+      return [passAble, 'bbbb'];
+    }
+
+    return [roadType <= 1, 'aaa'];
+  }
+
   // 检测是否碰到砖块之类的障碍物
   barrierCollision() {
+    const collisionCoordinateGroup = this.getCollisionCoordinateGroupWidthBarrier();
+
+    let info = collisionCoordinateGroup.map(ele => {
+      return this.getItemBarrierCollisionInfo(ele[1] >> 4, ele[0] >> 4);
+    });
+    console.log(info);
     return {
       isCollision: false,
       info: []

@@ -26,13 +26,6 @@ abstract class Mover {
   abstract doAfterCollision(): void;
   abstract affirmPosition(): void;
 
-  // 精灵的中心点坐标
-  protected spiritCenterCoord(): number[] {
-    let distance = this.distanceToCenter;
-
-    return [this.next_x + distance, this.next_y + distance];
-  }
-
   // 根据当前速度确定下个位置的坐标
   protected getNextPositionIfCouldMove(): number[] {
     const speed = this.speed;

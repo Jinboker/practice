@@ -26,3 +26,5 @@ export const gameParam = {
   gameState: 'chooseMode',  // chooseMode, chooseStage, playGame, over, construct
   renderContent: <renderUI>{}
 };
+
+export const brickStatus = {};

@@ -23,7 +23,7 @@ export default class Player extends Tank {
     this.detectionCollision = new TankCollisionDetection(this.distanceToCenter);
   }
 
-  nextPosition(): number[] {
+  getNextPosition(): number[] {
     let [x, y] = [this.x, this.y];
 
     // 确定是否需要移动或者改变方向
@@ -47,7 +47,7 @@ export default class Player extends Tank {
 
   affirmPosition() {
     // 确定下一个位置的值
-    [this.next_x, this.next_y] = this.nextPosition();
+    [this.next_x, this.next_y] = this.getNextPosition();
     // 检查当坦克移动到下个位置以后是否会产生碰撞
     this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y);
     // 如果没有碰撞则确定位置
