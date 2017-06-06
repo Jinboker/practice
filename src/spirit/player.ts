@@ -31,8 +31,8 @@ export default class Player extends Tank {
     // 通过比对当前方向与按下的方向，判断是否需要改变方向，如果需要改变，则优先改变方向
     this.beChangeDirection = (Boolean(directionKey) && this.direction !== directionKey);
     if (this.beChangeDirection) {
-      this.direction = directionKey;
       [x, y] = this.getPositionAfterChangeDirection();
+      this.direction = directionKey;
     } else {
       // 确定是否能够移动
       this.couldMove = inputParam[directionKey];

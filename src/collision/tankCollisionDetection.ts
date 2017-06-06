@@ -30,7 +30,7 @@ export default class TankCollisionDetection extends CollisionDetection {
     // roadType 为0表示无障碍，1为冰，3为砖块
     if (roadType === 1) {
       // TODO
-      return [true, 'bing'];
+      return [false, roadType];
     }
 
     if (roadType === 3 && brickStatusArr) {
@@ -41,29 +41,29 @@ export default class TankCollisionDetection extends CollisionDetection {
 
       if (directionNum % 2) {
         indexInBrick = (this.x + (+!(directionNum - 1) * 32) - (col << 4)) >> 3;
-        passAble = brickStatusArr.every(ele => (ele[indexInBrick] === 0));
+        passAble = brickStatusArr.some(ele => (ele[indexInBrick] === 0));
       } else {
         indexInBrick = (this.y + (directionNum >> 1) * 32 - (row << 4)) >> 3;
-        passAble = brickStatusArr[indexInBrick].every(ele => (ele === 0));
+        passAble = brickStatusArr[indexInBrick].some(ele => (ele === 0));
       }
 
-      return [passAble, 'bbbb'];
+      return [passAble, roadType];
     }
 
-    return [roadType <= 1, 'aaa'];
+    return [roadType > 1, roadType];
   }
 
   // 检测是否碰到砖块之类的障碍物
   barrierCollision() {
     const collisionCoordinateGroup = this.getCollisionCoordinateGroupWidthBarrier();
+    const collisionInfoArr = collisionCoordinateGroup.map(
+      ele => this.getItemBarrierCollisionInfo(ele[1] >> 4, ele[0] >> 4)
+    );
+    const isCollision = collisionInfoArr.some(ele => ele[0]);
 
-    let info = collisionCoordinateGroup.map(ele => {
-      return this.getItemBarrierCollisionInfo(ele[1] >> 4, ele[0] >> 4);
-    });
-    console.log(info);
     return {
-      isCollision: false,
-      info: []
+      isCollision: isCollision,
+      info: ['barrier']
     }
   }
 
