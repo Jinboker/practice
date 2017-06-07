@@ -29,7 +29,4 @@ export const gameParam = {
   renderContent: <renderUI>{}
 };
 
-export const bulletArr: Bullet[] = [];
-export const tankArr: Tank[] = [];
-
 export const brickStatus = {};

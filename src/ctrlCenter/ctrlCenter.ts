@@ -1,8 +1,7 @@
-import { gameParam, bulletArr } from '../global/var';
+import { gameParam } from '../global/var';
 import ChooseMode from '../renderGame/chooseMode';
 import ChooseStage from '../renderGame/chooseStage';
 import PlayGame from '../renderGame/playeGame/index';
-import Bullet from '../spirit/bullet';
 
 const listeners = {};
 
@@ -26,16 +25,16 @@ listeners['construct'] = () => {
 listeners['over'] = () => {
 
 };
-
-listeners['newBullet'] = (bulletInfo: bulletInfo) => {
-  const {x, y, direction, id, type, rank} = bulletInfo;
-
-  bulletArr.push(new Bullet(x, y, direction, type, rank, id));
-};
-
-listeners['bulletDie'] = () => {
-
-};
+//
+// listeners['newBullet'] = (bulletInfo: bulletInfo) => {
+//   const {x, y, direction, id, type, rank} = bulletInfo;
+//
+//   bulletArr.push(new Bullet(x, y, direction, type, rank, id));
+// };
+//
+// listeners['bulletDie'] = () => {
+//
+// };
 
 function getReceiveMsg() {
   let receiveMsg = <T>(topic: string, ...args: Array<T>) => listeners[topic](...args);

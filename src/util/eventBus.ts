@@ -6,7 +6,7 @@ export default {
    * @param topic 订阅消息名
    * @param listener 消息发布时触发的回调
    */
-  on: (topic: string, listener: () => void) => {
+  on: (topic: string, listener: (...arg: any[]) => void) => {
     let topicListeners = topics[topic] = topics[topic] || [];
 
     topicListeners.push(listener);

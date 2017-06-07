@@ -37,18 +37,6 @@ abstract class Mover {
   // 根据当前速度确定下个位置的坐标
   protected getNextPositionIfCouldMove(): number[] {
     return getNextPosition[this.direction](this.x, this.y, this.speed);
-    // const speed = this.speed;
-    // let [x, y] = [this.x, this.y];
-    //
-    // switch(this.direction) {
-    //   case 'W': y = y - speed; break;
-    //   case 'A': x = x - speed; break;
-    //   case 'S': y = y + speed; break;
-    //   case 'D': x = x + speed; break;
-    //   default: break;
-    // }
-    //
-    // return [x, y];
   }
 }
 

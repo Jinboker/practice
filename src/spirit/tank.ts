@@ -2,7 +2,7 @@ import Mover from './mover';
 import { CXT_ROLE, WHEEL_CHANGE_FREQUENT, OFFSET_X, OFFSET_Y, DIR_NUM } from '../global/const';
 import { delayTimeout } from '../util/fn';
 import res from '../data/assets';
-import controller from '../ctrlCenter/ctrlCenter';
+import eventBus from '../util/eventBus';
 
 const SHIELD_IMG = res.img.misc;
 const PLAY_IMG = res.img.player;
@@ -120,8 +120,7 @@ export default class Tank extends Mover {
       rank: this.rank,
       id: this.id
     };
-
-    controller.receiveMsg('newBullet', [bulletInfo]);
+    eventBus.dispatch('new-bullet', bulletInfo);
   }
 
   // 是否生成子弹
