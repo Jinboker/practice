@@ -43,12 +43,9 @@ export default {
     while(i < listeners.length) {
       const listener = listeners[i];
 
-      if (listener === null) {
-        listeners.splice(i, 1);
-      } else {
-        listener.apply(null, args);
-        i++;
-      }
+      listener === null
+        ? listeners.splice(i, 1)
+        : ( listener.apply(null, args), i++ );
     }
 
     return this;

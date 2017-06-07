@@ -24,6 +24,7 @@ export const inputParam = {
 
 export const gameParam = {
   stageNum: 1,
+  maxStage: 20,
   npcMax: 5,
   gameState: 'chooseMode',  // chooseMode, chooseStage, playGame, over, construct
   renderContent: <renderUI>{}

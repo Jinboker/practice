@@ -5,11 +5,11 @@ export default class Npc extends Tank {
     x: number,
     y: number,
     direction: string,
-    type: string,
     rank: number
   ) {
-    super(x, y, direction, type, rank);
+    super(x, y, direction, rank);
 
     this.speed = 1;
+    this.type = 'npc';
   }
 }

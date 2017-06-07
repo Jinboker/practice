@@ -31,10 +31,6 @@ listeners['over'] = () => {
 //
 //   bulletArr.push(new Bullet(x, y, direction, type, rank, id));
 // };
-//
-// listeners['bulletDie'] = () => {
-//
-// };
 
 function getReceiveMsg() {
   let receiveMsg = <T>(topic: string, ...args: Array<T>) => listeners[topic](...args);

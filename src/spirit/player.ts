@@ -7,18 +7,20 @@ const ATTACK_AUD = res.audio.attack;
 
 export default class Player extends Tank {
   private detectionCollision: TankCollisionDetection;
+  protected shieldDuration: number;
 
   constructor(
     x: number,
     y: number,
     direction: string,
-    type: string,
     rank: number
   ) {
-    super(x, y, direction, type, rank);
+    super(x, y, direction, rank);
 
     this.speed = 2;
+    this.type = 'player';
     this.couldMove = false;
+    this.shieldDuration = 200;
 
     // 实例化坦克的碰撞检测
     this.detectionCollision = new TankCollisionDetection();

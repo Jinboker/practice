@@ -2,28 +2,23 @@ import Player from '../../spirit/player';
 import Npc from '../../spirit/npc';
 import { delayTimeout } from '../../util/fn';
 import { gameParam } from '../../global/var';
+import npcData from '../../data/npc';
 
 export default class DrawTank {
   private player: Player;
   private npc: Npc[];
   private setNewNpcDelay: delayOption;
 
-  public canBornNewNpc: boolean;
 
-  private bornNewNpc: boolean;
-  private npcArrIndex: number;
   private npcIndex: number;
 
   constructor() {
     // 玩家
-    this.player = new Player(128, 384, 'W', 'player', 0);
+    this.player = new Player(128, 384, 'W', 0);
+    // NPC
+    this.npc = [];
     // NPC出生的延迟
     this.setNewNpcDelay = { count: 30, amount: 150 };
-    // 是否可以有新的坦克出生
-    this.canBornNewNpc = true;
-    this.bornNewNpc = true;
-    // NPC出生的索引
-    this.npcArrIndex = 1;
     // 第几个NPC
     this.npcIndex = 1;
   }
@@ -31,8 +26,17 @@ export default class DrawTank {
   draw() {
     // 绘制玩家
     this.player.draw();
-    // 如果正存活的NPC数目小于约定的最大数，那么出生新的NPC
-    (this.npc.length < gameParam.npcMax) && delayTimeout(this.setNewNpcDelay, () => {
+    // 如果正存活的NPC数目小于约定的最大数，且坦克未全部出生，那么出生新的NPC
+    if ((this.npc.length < gameParam.npcMax - 1) && (this.npcIndex <= gameParam.maxStage)) {
+      delayTimeout(this.setNewNpcDelay, () => {
+        const [x, y] = [(this.npcIndex % 3) * 192, 0];
+        const rank = npcData[gameParam.stageNum - 1][this.npcIndex];
+
+        this.npc.push(new Npc(x, y, 'S', rank));
+        this.npcIndex++;
     });
+    }
+    // 绘制NPC
+    this.npc.map(ele => ele.draw());
   }
 }

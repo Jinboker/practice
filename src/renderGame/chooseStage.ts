@@ -57,7 +57,7 @@ export default class {
         : (
           controller.receiveMsg('playGame'),
           // 移除事件总线中的相关事件
-          eventBus.off('new-bullet')
+          eventBus.off(['new-bullet'])
         );
     } else {
       delayTimeout(this.enterPlay, () => {

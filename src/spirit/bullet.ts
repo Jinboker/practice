@@ -11,12 +11,13 @@ export default class Bullet extends Mover {
   public speed: number;
   public next_x: number;
   public next_y: number;
+  public type: string;
 
   constructor(
     public x: number,
     public y: number,
     public direction: string,
-    public type: string,
+    public bulletType: string,
     public rank: number,
     public id: number
   ) {
@@ -26,6 +27,7 @@ export default class Bullet extends Mover {
     this.distanceToCenter = 8;
     this.next_x = x;
     this.next_y = y;
+    this.type = 'bullet';
 
     this.resetPosition();
   }

@@ -15,6 +15,7 @@ export default class Tank extends Mover {
   public speed: number;
   public next_x: number;
   public next_y: number;
+  public type: string;
 
   // 坦克的id，主要用来匹配子弹
   protected id: number;
@@ -24,7 +25,7 @@ export default class Tank extends Mover {
   private wheelPic: number;
 
   // 防护罩相关参数
-  private shieldDuration: number;
+  protected shieldDuration: number;
   private shieldPic: number;
   private shieldDelay: delayOption;
 
@@ -44,7 +45,6 @@ export default class Tank extends Mover {
     public x: number, 
     public y: number,
     public direction: string,
-    public type: string,
     public rank: number
   ) {
     super();
@@ -62,7 +62,7 @@ export default class Tank extends Mover {
     this.wheelDelay = { count: WHEEL_CHANGE_FREQUENT, amount: WHEEL_CHANGE_FREQUENT };
 
     // 防护罩相关参数
-    this.shieldDuration = this.type === 'player' ? 200 : 0;
+    this.shieldDuration = 0;
     this.shieldPic = 0;
     this.shieldDelay = { count: 4, amount: 4 };
 
@@ -116,10 +116,11 @@ export default class Tank extends Mover {
       x: this.x,
       y: this.y,
       direction: this.direction,
-      type: this.type,
       rank: this.rank,
       id: this.id
     };
+
+    // 事件在DrawBullet类中响应
     eventBus.dispatch('new-bullet', bulletInfo);
   }
 
