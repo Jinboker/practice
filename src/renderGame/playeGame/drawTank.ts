@@ -26,7 +26,6 @@ export default class DrawTank {
     this.npcArrIndex = 1;
     // 第几个NPC
     this.npcIndex = 1;
-    // this.player = new Player(128, 384, 'W', 'player', 0);
   }
 
   draw() {

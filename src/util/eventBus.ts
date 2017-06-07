@@ -17,18 +17,20 @@ export default {
    * @param topic 消息名
    * @param listener  移除的注册函数,不传则移除全部注册
    */
-  off: (topic: string, listener: () => void) => {
-    let topicListeners = topics[topic];
+  off: (topics: string[], listener?: () => void) => {
+    topics.forEach(ele => {
+      if (!topics[ele]) return;
 
-    if (listener) {
-      const listenerIndex = topicListeners.indexOf(listener);
-      if (~listenerIndex) {
-        topicListeners[listenerIndex] = null;
+      let topicListeners = topics[ele];
+
+      if (listener) {
+        const listenerIndex = topicListeners.indexOf(listener);
+
+        ~listenerIndex && (topicListeners[listenerIndex] = null);
+      } else {
+        topicListeners.length = 0;
       }
-    } else {
-      // 清空
-      topicListeners.length = 0;
-    }
+    });
   },
 
   /**

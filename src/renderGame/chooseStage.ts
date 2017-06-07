@@ -3,6 +3,7 @@ import { CXT_BG, CXT_MISC, CXT_H, CXT_W, OFFSET_X, OFFSET_Y, SCREEN_L, MAX_STAGE
 import { gameParam } from '../global/var';
 import { delayTimeout, cleanCxt, keyboardOperate } from '../util/fn';
 import drawMap from '../map/drawMap';
+import eventBus from '../util/eventBus';
 import controller from '../ctrlCenter/ctrlCenter';
 
 const START_AUD = res.audio.start;
@@ -53,7 +54,11 @@ export default class {
 
       this.halfMaskWidth < HALF_ARENA
         ? this.halfMaskWidth += 15
-        : controller.receiveMsg('playGame');
+        : (
+          controller.receiveMsg('playGame'),
+          // 移除事件总线中的相关事件
+          eventBus.off('new-bullet')
+        );
     } else {
       delayTimeout(this.enterPlay, () => {
         CXT_BG.clearRect(OFFSET_X, OFFSET_Y, SCREEN_L, SCREEN_L);
