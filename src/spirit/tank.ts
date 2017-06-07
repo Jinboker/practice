@@ -1,8 +1,9 @@
 import Mover from './mover';
-import { CXT_ROLE, WHEEL_CHANGE_FREQUENT, OFFSET_X, OFFSET_Y, DIR_NUM } from '../global/const';
 import { delayTimeout } from '../util/fn';
 import res from '../data/assets';
 import eventBus from '../util/eventBus';
+import TankCollisionDetection from '../collision/tankCollisionDetection';
+import { CXT_ROLE, WHEEL_CHANGE_FREQUENT, OFFSET_X, OFFSET_Y, DIR_NUM } from '../global/const';
 
 const SHIELD_IMG = res.img.misc;
 const PLAY_IMG = res.img.player;
@@ -38,6 +39,7 @@ export default class Tank extends Mover {
   protected fireDelay: number;
   public bulletAlive: boolean;
 
+  protected detectionCollision: TankCollisionDetection;
   protected couldMove: boolean;
   protected beChangeDirection: boolean;
 
@@ -74,9 +76,14 @@ export default class Tank extends Mover {
     // 子弹相关
     this.fireDelay = 25;
     this.bulletAlive = false;
+
+    // 实例化坦克的碰撞检测
+    this.detectionCollision = new TankCollisionDetection();
   }
 
   protected getPositionAfterChangeDirection(): number[] {
+    this.beChangeDirection = false;
+
     let [x, y, directionNum] = [this.x, this.y, DIR_NUM[this.direction]];
 
     directionNum % 2
@@ -85,21 +92,6 @@ export default class Tank extends Mover {
       : y = Math.round(y / 16) << 4;
 
     return [x, y];
-  }
-
-  // override
-  hitBarrier() {
-
-  }
-
-  // override
-  hitTank() {
-
-  }
-
-  // override
-  hitBorder() {
-
   }
 
   // override

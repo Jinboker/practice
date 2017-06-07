@@ -28,9 +28,6 @@ abstract class Mover {
     };
   }
 
-  abstract hitBarrier(): void;
-  abstract hitTank(): void;
-  abstract hitBorder(): void;
   abstract doAfterCollision(): void;
   abstract affirmPosition(): void;
 

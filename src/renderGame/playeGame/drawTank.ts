@@ -8,8 +8,6 @@ export default class DrawTank {
   private player: Player;
   private npc: Npc[];
   private setNewNpcDelay: delayOption;
-
-
   private npcIndex: number;
 
   constructor() {
@@ -34,7 +32,7 @@ export default class DrawTank {
 
         this.npc.push(new Npc(x, y, 'S', rank));
         this.npcIndex++;
-    });
+      });
     }
     // 绘制NPC
     this.npc.map(ele => ele.draw());

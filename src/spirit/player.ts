@@ -1,12 +1,10 @@
 import Tank from './tank';
 import res from '../data/assets';
 import { inputParam } from '../global/var';
-import TankCollisionDetection from '../collision/tankCollisionDetection';
 
 const ATTACK_AUD = res.audio.attack;
 
 export default class Player extends Tank {
-  private detectionCollision: TankCollisionDetection;
   protected shieldDuration: number;
 
   constructor(
@@ -21,9 +19,6 @@ export default class Player extends Tank {
     this.type = 'player';
     this.couldMove = false;
     this.shieldDuration = 200;
-
-    // 实例化坦克的碰撞检测
-    this.detectionCollision = new TankCollisionDetection();
   }
 
   // 看是否产生子弹
@@ -39,7 +34,7 @@ export default class Player extends Tank {
     }
   }
 
-  getNextPosition(): number[] {
+  getNextPosition() {
     let [x, y] = [this.x, this.y];
 
     // 确定是否需要移动或者改变方向

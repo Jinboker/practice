@@ -67,7 +67,7 @@ export default class TankCollisionDetection extends CollisionDetection {
 
     return {
       isCollision: isCollision,
-      info: ['barrier']
+      info: ['block']
     }
   }
 

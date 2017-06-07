@@ -1,12 +1,9 @@
-import Bullet from '../spirit/bullet';
-import Tank from '../spirit/tank';
-
 export const codeToKey = {
   87: 'W', 65: 'A', 83: 'S', 68: 'D', 72: 'H', 74: 'J'
 };
 
-export const dirNum = {
-  W: 0, D: 1, S: 2, A: 3
+export enum dirNum {
+  W = 0, D = 1, S = 2, A = 3
 };
 
 export const inputParam = {
