@@ -15,7 +15,8 @@ export default class Npc extends Tank {
 
     this.speed = 1;
     this.type = 'npc';
-    this.changeDirectionDelay = { count: 0, amount: 30 };
+    this.couldMove = true;
+    this.changeDirectionDelay = { count: 30, amount: 30 };
   }
 
   // override
@@ -30,7 +31,13 @@ export default class Npc extends Tank {
   }
 
   getRandomDirection() {
-    this.direction = dirNum[Math.floor(Math.random() * 4)];
+    let direction = '';
+
+    do {
+      direction = dirNum[Math.floor(Math.random() * 4)];
+    } while (direction === this.direction);
+
+    this.direction = direction;
   }
 
   // 如果NPC碰到了障碍
