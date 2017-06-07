@@ -20,7 +20,21 @@ export default class Player extends Tank {
     this.speed = 2;
     this.couldMove = false;
 
-    this.detectionCollision = new TankCollisionDetection(this.distanceToCenter);
+    // 实例化坦克的碰撞检测
+    this.detectionCollision = new TankCollisionDetection();
+  }
+
+  // 看是否产生子弹
+  produceBullet() {
+    const funcKey = inputParam.functionKey;
+    let fireAble = !(this.fireDelay && (this.fireDelay -= 1));
+
+    if (fireAble && inputParam[funcKey] && !this.bulletAlive) {
+      ATTACK_AUD.play();
+      this.bulletAlive = true;
+      this.fireDelay = 25;
+      this.newBullet();
+    }
   }
 
   getNextPosition(): number[] {

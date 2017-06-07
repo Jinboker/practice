@@ -6,12 +6,15 @@ import { DIR_NUM } from '../global/const';
 const allCollisionType = ['border', 'barrier'];
 
 export default class TankCollisionDetection extends CollisionDetection {
+  distanceToCenter: number;
   direction: string;
   x: number;
   y: number;
 
-  constructor(public distanceToCenter: number) {
+  constructor() {
     super();
+
+    this.distanceToCenter = 16;
   }
 
   // 检查是否碰到边界
@@ -27,12 +30,13 @@ export default class TankCollisionDetection extends CollisionDetection {
     const roadType = roadMap[row][col];
     const brickStatusArr: number[][] = brickStatus[row * 28 + col];
 
-    // roadType 为0表示无障碍，1为冰，3为砖块
+    // roadType为1表示冰
     if (roadType === 1) {
       // TODO
       return [false, roadType];
     }
 
+    // roadType为3表示砖块
     if (roadType === 3 && brickStatusArr) {
       const directionNum = DIR_NUM[this.direction];
 

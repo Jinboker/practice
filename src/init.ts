@@ -38,6 +38,7 @@ export default function init() {
   CXT_MISC.fillStyle = '#000';
   CXT_MISC.textBaseline = 'top';
 
+  // 控制中心开始准备渲染游戏界面
   controller.receiveMsg('newGame');
   keyBoardInit();
 }

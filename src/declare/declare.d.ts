@@ -8,10 +8,6 @@ interface delayOption {
   amount: number
 }
 
-interface spirit {
-  draw: () => void
-}
-
 interface renderUI {
   draw: () => void
 }
@@ -41,6 +37,12 @@ interface isTouchBorder {
   D: () => boolean
 }
 
-interface getPositon {
-  (speed: number): number[];
+interface bulletInfo {
+  x: number,
+  y: number
+  direction: string,
+  type: string,
+  rank: number,
+  id: number
 }
+

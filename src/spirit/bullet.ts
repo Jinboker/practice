@@ -17,7 +17,8 @@ export default class Bullet extends Mover {
     public y: number,
     public direction: string,
     public type: string,
-    public rank: number
+    public rank: number,
+    public id: number
   ) {
     super();
 

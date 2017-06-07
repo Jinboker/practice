@@ -2,6 +2,7 @@ import Mover from './mover';
 import { CXT_ROLE, WHEEL_CHANGE_FREQUENT, OFFSET_X, OFFSET_Y, DIR_NUM } from '../global/const';
 import { delayTimeout } from '../util/fn';
 import res from '../data/assets';
+import controller from '../ctrlCenter/ctrlCenter';
 
 const SHIELD_IMG = res.img.misc;
 const PLAY_IMG = res.img.player;
@@ -14,6 +15,9 @@ export default class Tank extends Mover {
   public speed: number;
   public next_x: number;
   public next_y: number;
+
+  // 坦克的id，主要用来匹配子弹
+  protected id: number;
 
   // 轮胎变化相关参数
   private wheelDelay: delayOption;
@@ -28,6 +32,10 @@ export default class Tank extends Mover {
   private bornAnimationNum: number;
   private bornPic: number;
   private bornDelay: delayOption;
+
+  // 子弹相关
+  protected fireDelay: number;
+  public bulletAlive: boolean;
 
   protected couldMove: boolean;
   protected beChangeDirection: boolean;
@@ -46,6 +54,9 @@ export default class Tank extends Mover {
     this.next_y = y;
     this.beChangeDirection = false;
 
+    // 生成坦克ID
+    this.id = Math.ceil(new Date().getTime() * Math.random());
+
     // 轮胎变化相应参数
     this.wheelPic = 0;
     this.wheelDelay = { count: WHEEL_CHANGE_FREQUENT, amount: WHEEL_CHANGE_FREQUENT };
@@ -59,6 +70,10 @@ export default class Tank extends Mover {
     this.bornAnimationNum = 4;
     this.bornPic = 4;
     this.bornDelay = { count: 4, amount: 4 };
+
+    // 子弹相关
+    this.fireDelay = 25;
+    this.bulletAlive = false;
   }
 
   protected getPositionAfterChangeDirection(): number[] {
@@ -94,7 +109,23 @@ export default class Tank extends Mover {
 
   // override
   affirmPosition() {}
-  // this.beChangeDirection ? this.resetPositionIfChangeDirection() : this.moveToNextPosition();
+
+  // 生成子弹
+  newBullet() {
+    const bulletInfo = {
+      x: this.x,
+      y: this.y,
+      direction: this.direction,
+      type: this.type,
+      rank: this.rank,
+      id: this.id
+    };
+
+    controller.receiveMsg('newBullet', [bulletInfo]);
+  }
+
+  // 是否生成子弹
+  produceBullet() {}
 
   // 定时改变轮胎图片
   protected changeWheelPic() {
@@ -130,6 +161,7 @@ export default class Tank extends Mover {
     this.bornAnimationNum
       ? this.drawBornAnimation()
       : (
+        this.produceBullet(),
         this.affirmPosition(),
         this.drawShield(),
         this.drawTank()

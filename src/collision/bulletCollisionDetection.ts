@@ -4,12 +4,15 @@ import res from '../data/assets';
 const ATTACK_OVER_AUD = res.audio.attackOver;
 
 export default class BulletCollision extends CollisionDetection {
+  distanceToCenter: number;
   direction: string;
   x: number;
   y: number;
 
-  constructor(public distanceToCenter: number) {
+  constructor() {
     super();
+
+    this.distanceToCenter = 8;
   }
 
   // 检查是否碰到边界

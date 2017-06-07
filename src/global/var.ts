@@ -1,4 +1,5 @@
-// import ChooseMode from '../gameInterface/chooseMode';
+import Bullet from '../spirit/bullet';
+import Tank from '../spirit/tank';
 
 export const codeToKey = {
   87: 'W', 65: 'A', 83: 'S', 68: 'D', 72: 'H', 74: 'J'
@@ -23,8 +24,12 @@ export const inputParam = {
 
 export const gameParam = {
   stageNum: 1,
+  npcMax: 5,
   gameState: 'chooseMode',  // chooseMode, chooseStage, playGame, over, construct
   renderContent: <renderUI>{}
 };
+
+export const bulletArr: Bullet[] = [];
+export const tankArr: Tank[] = [];
 
 export const brickStatus = {};

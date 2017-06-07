@@ -1,3 +1,10 @@
+const getNextPosition = {
+  W: (x: number, y: number, speed: number): number[] => [x, y - speed],
+  A: (x: number, y: number, speed: number): number[] => [x - speed, y],
+  S: (x: number, y: number, speed: number): number[] => [x, y + speed],
+  D: (x: number, y: number, speed: number): number[] => [x + speed, y]
+};
+
 abstract class Mover {
   abstract x: number;
   abstract next_x: number;
@@ -9,6 +16,7 @@ abstract class Mover {
   abstract speed: number;
   abstract type: string;
 
+  protected id: number;
   protected alive: boolean;
   protected collisionInfo: collisionInfo;
 
@@ -28,18 +36,19 @@ abstract class Mover {
 
   // 根据当前速度确定下个位置的坐标
   protected getNextPositionIfCouldMove(): number[] {
-    const speed = this.speed;
-    let [x, y] = [this.x, this.y];
-
-    switch(this.direction) {
-      case 'W': y = y - speed; break;
-      case 'A': x = x - speed; break;
-      case 'S': y = y + speed; break;
-      case 'D': x = x + speed; break;
-      default: break;
-    }
-
-    return [x, y];
+    return getNextPosition[this.direction](this.x, this.y, this.speed);
+    // const speed = this.speed;
+    // let [x, y] = [this.x, this.y];
+    //
+    // switch(this.direction) {
+    //   case 'W': y = y - speed; break;
+    //   case 'A': x = x - speed; break;
+    //   case 'S': y = y + speed; break;
+    //   case 'D': x = x + speed; break;
+    //   default: break;
+    // }
+    //
+    // return [x, y];
   }
 }
 
