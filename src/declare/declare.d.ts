@@ -45,4 +45,3 @@ interface bulletInfo {
   rank: number,
   id: number
 }
-

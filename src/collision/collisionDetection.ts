@@ -1,4 +1,5 @@
 import { SCREEN_L } from '../global/const';
+import { roadType } from '../global/var';
 
 const allCollisionType = ['Border', 'Block'];
 const getCollisionCoordinateGroup = {
@@ -14,7 +15,7 @@ abstract class Collision {
   abstract x: number;
   abstract y: number;
 
-  abstract getItemBlockCollisionInfo(row: number, col: number): [boolean, string];
+  abstract getItemBlockCollisionInfo(row: number, col: number): [boolean, number];
 
   protected isTouchBorder: isTouchBorder;
 
@@ -57,17 +58,31 @@ abstract class Collision {
     }
   }
 
+  // 将由数字表示的道路转换成字符串表示
+  private getRoadTypeNumToString() {
+
+  }
+
   // 检测是否碰到砖块之类的障碍物
   protected getBlockCollisionInfo() {
     const collisionCoordinateGroup = this.getCollisionCoordinateGroupWidthBlock();
     const collisionInfoArr = collisionCoordinateGroup.map(
       ele => this.getItemBlockCollisionInfo(ele[1] >> 4, ele[0] >> 4)
     );
-    const isCollision = collisionInfoArr.some(ele => ele[0]);
+
+    // 获取要返回到函数外的碰撞相关信息
+    let _roadType = '';
+    const isCollision = collisionInfoArr.some(ele => {
+      let _isItemCollision = ele[0];
+      // 根据得到的数字反向得出当前路的类型
+      _isItemCollision && (_roadType = roadType[ele[1]]);
+
+      return _isItemCollision;
+    });
 
     return {
       isCollision: isCollision,
-      info: ['block']
+      info: ['block', _roadType]
     }
   }
 
@@ -79,7 +94,7 @@ abstract class Collision {
 
     allCollisionType.every(ele => {
       // 获取碰撞信息，如碰撞，则保存相应的信息
-      let _info = this[`get${ele}Collision`]();
+      let _info = this[`get${ele}CollisionInfo`]();
 
       _info.isCollision && (collisionInfo = _info);
       return !_info.isCollision;

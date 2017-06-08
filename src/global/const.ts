@@ -13,5 +13,3 @@ export const WHEEL_CHANGE_FREQUENT = 5;
 export const FIRE_MIN_FREQUENT = 25;
 
 export const NPC_MAX_NUM = 20;
-
-export const DIR_NUM = { W: 0, D: 1, S: 2, A: 3 };

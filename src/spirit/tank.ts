@@ -3,7 +3,8 @@ import { delayTimeout } from '../util/fn';
 import res from '../data/assets';
 import eventBus from '../util/eventBus';
 import TankCollisionDetection from '../collision/tankCollisionDetection';
-import { CXT_ROLE, WHEEL_CHANGE_FREQUENT, OFFSET_X, OFFSET_Y, DIR_NUM } from '../global/const';
+import { CXT_ROLE, WHEEL_CHANGE_FREQUENT, OFFSET_X, OFFSET_Y } from '../global/const';
+import { dirNum } from '../global/var';
 
 const SHIELD_IMG = res.img.misc;
 const PLAY_IMG = res.img.player;
@@ -84,7 +85,7 @@ export default class Tank extends Mover {
   protected getPositionAfterChangeDirection(): number[] {
     this.beChangeDirection = false;
 
-    let [x, y, directionNum] = [this.x, this.y, DIR_NUM[this.direction]];
+    let [x, y, directionNum] = [this.x, this.y, dirNum[this.direction]];
 
     directionNum % 2
       // 此处必须使用math.round进行四舍五入才能避免坦克转弯时候位置变动过大
@@ -145,7 +146,7 @@ export default class Tank extends Mover {
   private drawTank() {
     let img = this.type === 'player' ? PLAY_IMG : NPC_IMG;
 
-    CXT_ROLE.drawImage(img, this.rank << 5, (DIR_NUM[this.direction] << 6) + this.wheelPic, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+    CXT_ROLE.drawImage(img, this.rank << 5, (dirNum[this.direction] << 6) + this.wheelPic, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }
 
   // override

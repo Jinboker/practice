@@ -2,6 +2,10 @@ export const codeToKey = {
   87: 'W', 65: 'A', 83: 'S', 68: 'D', 72: 'H', 74: 'J'
 };
 
+export enum roadType {
+  pass = 0, iceRoad = 1, river = 2, brick = 3, steel = 4, home = 5
+};
+
 export enum dirNum {
   W = 0, D = 1, S = 2, A = 3
 };

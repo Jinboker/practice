@@ -1,7 +1,6 @@
 import CollisionDetection from './collisionDetection';
 import { roadMap } from "../map/affirmRoadMap";
-import {brickStatus, dirNum} from '../global/var';
-import { DIR_NUM } from '../global/const';
+import { brickStatus, dirNum } from '../global/var';
 
 export default class TankCollisionDetection extends CollisionDetection {
   distanceToCenter: number;
@@ -16,9 +15,10 @@ export default class TankCollisionDetection extends CollisionDetection {
   }
 
   // 获取每一个碰撞坐标点最后的碰撞信息
-  getItemBlockCollisionInfo(row: number, col: number): [boolean, string] {
+  getItemBlockCollisionInfo(row: number, col: number): [boolean, number] {
     const roadType = roadMap[row][col];
-    const brickStatusArr: number[][] = brickStatus[row * 28 + col];
+
+    if (roadType === 0) return [false, 0];
 
     // roadType为1表示冰
     if (roadType === 1) {
@@ -27,8 +27,10 @@ export default class TankCollisionDetection extends CollisionDetection {
     }
 
     // roadType为3表示砖块
+    const brickStatusArr: number[][] = brickStatus[row * 28 + col];
+
     if (roadType === 3 && brickStatusArr) {
-      const directionNum = DIR_NUM[this.direction];
+      const directionNum = dirNum[this.direction];
 
       let indexInBrick = 0;
       let passAble = false;
