@@ -1,5 +1,5 @@
 import { SCREEN_L } from '../global/const';
-import { roadType } from '../global/var';
+import { roadType, dirNum } from '../global/var';
 import { roadMap } from "../map/affirmRoadMap";
 
 const allCollisionType = ['Border', 'Block'];
@@ -15,6 +15,7 @@ export default class Collision {
   protected distanceToCenter: number;
   protected x: number;
   protected y: number;
+  protected dirNum: number;
   protected isTouchBorder: isTouchBorder;
 
   constructor() {
@@ -58,16 +59,14 @@ export default class Collision {
   }
 
   // 此方法会被子类重写
-  protected getInfoIfTouchBrick(row: number, col: number, index: number): boolean {
-    return true;
-  }
+  protected isTouchBrick(row: number, col: number, index: number): boolean { return true; }
 
   // 每次检测是否碰到砖块会检测两块砖，这是检测其中一次的代码
   private getItemBlockCollisionInfo(row: number, col: number, index: number): [boolean, number] {
     const roadType = roadMap[row][col];
 
     // roadType为3表示砖块，砖块因为存在子弹会打掉8*8大小的位置的问题，所以是否会碰到砖块导致不能移动需要特殊检查
-    if (roadType === 3) return [this.getInfoIfTouchBrick(row, col, index), 3];
+    if (roadType === 3) return [this.isTouchBrick(row, col, index), 3];
 
     return [roadType > 1, roadType];
   }
@@ -97,7 +96,7 @@ export default class Collision {
 
   // 分别获取每个类型的碰撞最后的碰撞信息
   public getCollisionInfo(direction: string, x: number, y: number): collisionInfo {
-    [this.direction, this.x, this.y] = [direction, x, y];
+    [this.direction, this.dirNum, this.x, this.y] = [direction, dirNum[direction], x, y];
 
     let collisionInfo = { isCollision: false };
 
