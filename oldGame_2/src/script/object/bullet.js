@@ -108,7 +108,7 @@ class Bullet extends Mover {
   }
 
   doAfterCollision() {
-    controller.receiveMessage('bulletDie', this.index); 
+    controller.receiveMessage('bulletDie', this.index);
     this.alive = false;
   }
 

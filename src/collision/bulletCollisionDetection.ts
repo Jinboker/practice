@@ -14,18 +14,13 @@ export default class BulletCollision extends CollisionDetection {
     this.distanceToCenter = 8;
   }
 
-  getItemBlockCollisionInfo(row: number, col: number): [boolean, number] {
-    const roadType = roadMap[row][col];
-    // roadType的0， 1， 2分为代表空，冰，流，子弹可以直接通过
-    if (roadType <= 2) return [true, 0];
-
-    // roadType为3表示砖块
+  // override
+  getInfoIfTouchBrick(row: number, col: number, index: number): boolean {
     const brickStatusArr: number[][] = brickStatus[row * 28 + col];
+    const directionNum = dirNum[this.direction];
+    
+    let passAble = false;
 
-    if (roadType === 3 && brickStatusArr) {
-
-    }
-
-    return [roadType < 3, roadType];
+    return passAble;
   }
 }
