@@ -1,6 +1,6 @@
 import { SCREEN_L } from '../global/const';
 
-const allCollisionType = ['border', 'barrier'];
+const allCollisionType = ['Border', 'Block'];
 const getCollisionCoordinateGroup = {
   W: (x: number, y: number, distance: number): number[][] => [[x - 16, y - distance], [x, y - distance]],
   A: (x: number, y: number, distance: number): number[][] => [[x - distance, y - 16], [x - distance, y]],
@@ -14,8 +14,7 @@ abstract class Collision {
   abstract x: number;
   abstract y: number;
 
-  abstract tankCollision(): collisionInfo;
-  abstract getItemBarrierCollisionInfo(row: number, col: number): [boolean, string];
+  abstract getItemBlockCollisionInfo(row: number, col: number): [boolean, string];
 
   protected isTouchBorder: isTouchBorder;
 
@@ -36,7 +35,7 @@ abstract class Collision {
   }
 
   // 获取当碰到砖块等障碍物的时候的碰撞点的坐标
-  protected getCollisionCoordinateGroupWidthBarrier(): number[][] {
+  protected getCollisionCoordinateGroupWidthBlock(): number[][] {
     let distance = this.distanceToCenter;
     let [x, y] = this.spiritCenterCoordinate();
 
@@ -44,18 +43,25 @@ abstract class Collision {
   }
 
   // 检查是否碰到边界
-  protected borderCollision() {
+  protected getBorderCollisionInfo() {
     return {
       isCollision: this.isTouchBorder[this.direction](),
       info: ['border']
     }
   }
+  // 检查是否碰到坦克
+  protected getTankCollisionInfo() {
+    return {
+      isCollision: false,
+      info: []
+    }
+  }
 
   // 检测是否碰到砖块之类的障碍物
-  protected barrierCollision() {
-    const collisionCoordinateGroup = this.getCollisionCoordinateGroupWidthBarrier();
+  protected getBlockCollisionInfo() {
+    const collisionCoordinateGroup = this.getCollisionCoordinateGroupWidthBlock();
     const collisionInfoArr = collisionCoordinateGroup.map(
-      ele => this.getItemBarrierCollisionInfo(ele[1] >> 4, ele[0] >> 4)
+      ele => this.getItemBlockCollisionInfo(ele[1] >> 4, ele[0] >> 4)
     );
     const isCollision = collisionInfoArr.some(ele => ele[0]);
 
@@ -66,14 +72,14 @@ abstract class Collision {
   }
 
   // 分别获取每个类型的碰撞最后的碰撞信息
-  protected getCollisionInfo(direction: string, x: number, y: number): collisionInfo {
+  public getCollisionInfo(direction: string, x: number, y: number): collisionInfo {
     [this.direction, this.x, this.y] = [direction, x, y];
 
     let collisionInfo = { isCollision: false };
 
     allCollisionType.every(ele => {
       // 获取碰撞信息，如碰撞，则保存相应的信息
-      let _info = this[`${ele}Collision`]();
+      let _info = this[`get${ele}Collision`]();
 
       _info.isCollision && (collisionInfo = _info);
       return !_info.isCollision;

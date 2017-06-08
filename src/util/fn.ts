@@ -26,6 +26,6 @@ export function keyboardOperate(operate: operate) {
 }
 
 // 单词首字母大写
-export function firstUpperCase(str: string): string {
-  return str.toLowerCase().replace(/( |^)[a-z]/g, ele => ele.toUpperCase());
-}
+// export function firstUpperCase(str: string): string {
+//   return str.toLowerCase().replace(/( |^)[a-z]/g, ele => ele.toUpperCase());
+// }

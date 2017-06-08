@@ -12,17 +12,7 @@ export default class BulletCollision extends CollisionDetection {
     this.distanceToCenter = 8;
   }
 
-  tankCollision() {
-    return {
-      isCollision: false,
-      info: []
-    }
-  }
-
-  barrierCollision() {
-    return {
-      isCollision: false,
-      info: []
-    }
+  getItemBlockCollisionInfo(row: number, col: number): [boolean, string] {
+    return [true, 'block'];
   }
 }

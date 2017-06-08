@@ -16,7 +16,7 @@ export default class TankCollisionDetection extends CollisionDetection {
   }
 
   // 获取每一个碰撞坐标点最后的碰撞信息
-  getItemBarrierCollisionInfo(row: number, col: number): [boolean, string] {
+  getItemBlockCollisionInfo(row: number, col: number): [boolean, string] {
     const roadType = roadMap[row][col];
     const brickStatusArr: number[][] = brickStatus[row * 28 + col];
 
@@ -45,14 +45,6 @@ export default class TankCollisionDetection extends CollisionDetection {
     }
 
     return [roadType > 1, roadType];
-  }
-
-  // 检测是否碰到其他坦克
-  tankCollision() {
-    return {
-      isCollision: false,
-      info: []
-    }
   }
 
   // 检测是否碰到奖励
