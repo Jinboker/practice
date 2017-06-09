@@ -1,10 +1,11 @@
 import Mover from './mover';
 import res from '../data/assets';
 import BulletCollision from '../collision/bulletCollisionDetection';
+import { CXT_ROLE, OFFSET_X, OFFSET_Y } from '../global/const';
+import { dirNum } from '../global/var';
 
 const BULLET_IMG = res.img.misc;
 const ATTACK_OVER_AUD = res.audio.attackOver;
-const ROAD_TYPE = { 3: 'brick', 4: 'steel', 5: 'home' };
 
 export default class Bullet extends Mover {
   // override
@@ -69,14 +70,18 @@ export default class Bullet extends Mover {
   affirmPosition() {
     [this.next_x, this.next_y] = this.getNextPositionIfCouldMove();
     this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y);
-    // 如果没有碰撞则确定位置
+
     if (this.collisionInfo.isCollision) {
+
     } else {
+      // 如果没有碰撞则确定位置
       [this.x, this.y] = [this.next_x, this.next_y];
     }
   }
 
   // override
   draw() {
+    this.affirmPosition();
+    CXT_ROLE.drawImage(BULLET_IMG, dirNum[this.direction] << 3, 0, 8, 8, this.x + OFFSET_X, this.y + OFFSET_Y, 8, 8);
   }
 }

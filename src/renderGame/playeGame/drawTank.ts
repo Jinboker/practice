@@ -35,6 +35,6 @@ export default class DrawTank {
       });
     }
     // 绘制NPC
-    this.npc.map(ele => ele.draw());
+    this.npc.forEach(ele => ele.draw());
   }
 }

@@ -20,6 +20,8 @@ export default class DrawBullet {
   }
 
   draw() {
+    if (!this.bulletArr.length) return;
 
+    this.bulletArr.forEach(ele => ele.draw());
   }
 }

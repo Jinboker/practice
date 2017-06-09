@@ -110,7 +110,8 @@ export default class Tank extends Mover {
       y: this.y,
       direction: this.direction,
       rank: this.rank,
-      id: this.id
+      id: this.id,
+      type: this.type
     };
 
     // 事件在DrawBullet类中响应

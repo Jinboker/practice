@@ -21,13 +21,13 @@ export default class Npc extends Tank {
 
   // override
   produceBullet() {
-    let fireAble = !(this.fireDelay && (this.fireDelay -= 1));
-
-    if (fireAble) {
-      this.bulletAlive = true;
-      this.fireDelay = 25;
-      this.newBullet();
-    }
+    // let fireAble = !(this.fireDelay && (this.fireDelay -= 1));
+    //
+    // if (fireAble) {
+    //   this.bulletAlive = true;
+    //   this.fireDelay = 25;
+    //   this.newBullet();
+    // }
   }
 
   getRandomDirection() {
