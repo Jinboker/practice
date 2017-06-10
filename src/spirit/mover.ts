@@ -16,10 +16,10 @@ abstract class Mover {
   abstract speed: number;
   abstract type: string;
 
-  protected id: number;
   protected collisionInfo: collisionInfo;
 
   public alive: boolean;
+  public id: number;
 
   constructor() {
     this.alive = true;
@@ -29,7 +29,7 @@ abstract class Mover {
     };
   }
 
-  abstract doAfterCollision(): void;
+  abstract doAfterCollision(info: string[]): void;
   abstract affirmPosition(): void;
 
   // 根据当前速度确定下个位置的坐标

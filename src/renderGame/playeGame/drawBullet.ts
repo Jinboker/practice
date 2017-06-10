@@ -20,19 +20,13 @@ export default class DrawBullet {
   }
 
   draw() {
-    let _len = this.bulletArr.length;
+    if (!this.bulletArr.length) return;
 
-    if (!_len) return;
-
-    for (let i = 0; i < _len; i++) {
+    for (let i = 0, flag = true; i < this.bulletArr.length; flag ? i++ : i) {
       const bulletObj = this.bulletArr[i];
 
       bulletObj.draw();
-      if (!bulletObj.alive) {
-        this.bulletArr.splice(i, 1);
-        i--;
-        _len--;
-      }
+      flag = bulletObj.alive || !this.bulletArr.splice(i, 1);
     }
   }
 }

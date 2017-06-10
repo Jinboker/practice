@@ -20,7 +20,7 @@ export default class Tank extends Mover {
   public type: string;
 
   // 坦克的id，主要用来匹配子弹
-  protected id: number;
+  public id: number;
 
   // 轮胎变化相关参数
   private wheelDelay: delayOption;

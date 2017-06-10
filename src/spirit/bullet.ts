@@ -48,7 +48,7 @@ export default class Bullet extends Mover {
   }
 
   // override
-  hitBarrier() {
+  hitBlock(type: string) {
 
   }
 
@@ -59,12 +59,12 @@ export default class Bullet extends Mover {
 
   // override
   hitBorder() {
-
+    (this.bulletType === 'player') && ATTACK_OVER_AUD.play();
   }
 
   // override
-  doAfterCollision() {
-
+  doAfterCollision(infoArr: string[]) {
+    this[`hit${infoArr[0]}`](infoArr[1]);
   }
 
   // override
@@ -73,6 +73,7 @@ export default class Bullet extends Mover {
     this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y);
 
     if (this.collisionInfo.isCollision) {
+      this.doAfterCollision(this.collisionInfo.info);
       // 事件注册在drawTank
       eventBus.dispatch('bullet-die', this.id, this.bulletType);
       this.alive = false;

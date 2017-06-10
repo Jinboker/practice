@@ -26,10 +26,10 @@ export default class DrawTank {
 
   event() {
     eventBus.on('bullet-die', (id: number, bulletType: string) => {
-      if (bulletType === 'player') {
-        this.player && (this.player.bulletAlive = false);
-      } else {
-      }
+      bulletType === 'player'
+        ? this.player && (this.player.bulletAlive = false)
+        : this.npc.every(
+          ele => ((ele.id === id) || !Boolean(ele.bulletAlive = false)));
     });
   }
 

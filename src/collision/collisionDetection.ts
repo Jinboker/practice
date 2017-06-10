@@ -46,7 +46,7 @@ export default class Collision {
   private getBorderCollisionInfo() {
     return {
       isCollision: this.isTouchBorder[this.direction](),
-      info: ['border']
+      info: ['Border']
     }
   }
 
@@ -90,7 +90,7 @@ export default class Collision {
 
     return {
       isCollision: isCollision,
-      info: ['block', _roadType]
+      info: ['Block', _roadType]
     }
   }
 
@@ -98,7 +98,7 @@ export default class Collision {
   public getCollisionInfo(direction: string, x: number, y: number): collisionInfo {
     [this.direction, this.dirNum, this.x, this.y] = [direction, dirNum[direction], x, y];
 
-    let collisionInfo = { isCollision: false };
+    let collisionInfo = { isCollision: false, info: [] };
 
     allCollisionType.every(ele => {
       // 获取碰撞信息，如碰撞，则保存相应的信息
