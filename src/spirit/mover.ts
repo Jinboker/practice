@@ -17,8 +17,9 @@ abstract class Mover {
   abstract type: string;
 
   protected id: number;
-  protected alive: boolean;
   protected collisionInfo: collisionInfo;
+
+  public alive: boolean;
 
   constructor() {
     this.alive = true;

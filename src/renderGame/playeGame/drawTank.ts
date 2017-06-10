@@ -3,6 +3,7 @@ import Npc from '../../spirit/npc';
 import { delayTimeout } from '../../util/fn';
 import { gameParam } from '../../global/var';
 import npcData from '../../data/npc';
+import eventBus from '../../util/eventBus';
 
 export default class DrawTank {
   private player: Player;
@@ -19,6 +20,17 @@ export default class DrawTank {
     this.setNewNpcDelay = { count: 30, amount: 150 };
     // 第几个NPC
     this.npcIndex = 1;
+
+    this.event();
+  }
+
+  event() {
+    eventBus.on('bullet-die', (id: number, bulletType: string) => {
+      if (bulletType === 'player') {
+        this.player && (this.player.bulletAlive = false);
+      } else {
+      }
+    });
   }
 
   draw() {

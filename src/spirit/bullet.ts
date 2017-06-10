@@ -3,6 +3,7 @@ import res from '../data/assets';
 import BulletCollision from '../collision/bulletCollisionDetection';
 import { CXT_ROLE, OFFSET_X, OFFSET_Y } from '../global/const';
 import { dirNum } from '../global/var';
+import eventBus from '../util/eventBus';
 
 const BULLET_IMG = res.img.misc;
 const ATTACK_OVER_AUD = res.audio.attackOver;
@@ -72,7 +73,9 @@ export default class Bullet extends Mover {
     this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y);
 
     if (this.collisionInfo.isCollision) {
-
+      // 事件注册在drawTank
+      eventBus.dispatch('bullet-die', this.id, this.bulletType);
+      this.alive = false;
     } else {
       // 如果没有碰撞则确定位置
       [this.x, this.y] = [this.next_x, this.next_y];

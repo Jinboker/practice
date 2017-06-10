@@ -20,8 +20,19 @@ export default class DrawBullet {
   }
 
   draw() {
-    if (!this.bulletArr.length) return;
+    let _len = this.bulletArr.length;
 
-    this.bulletArr.forEach(ele => ele.draw());
+    if (!_len) return;
+
+    for (let i = 0; i < _len; i++) {
+      const bulletObj = this.bulletArr[i];
+
+      bulletObj.draw();
+      if (!bulletObj.alive) {
+        this.bulletArr.splice(i, 1);
+        i--;
+        _len--;
+      }
+    }
   }
 }
