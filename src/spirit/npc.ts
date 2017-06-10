@@ -23,6 +23,7 @@ export default class Npc extends Tank {
   produceBullet() {
     let fireAble = !(this.fireDelay && (this.fireDelay -= 1));
 
+    // console.log(this.id, fireAble, !this.bulletAlive);
     if (fireAble && !this.bulletAlive) {
       this.bulletAlive = true;
       this.fireDelay = 25;

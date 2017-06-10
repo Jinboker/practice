@@ -28,8 +28,8 @@ export default class DrawTank {
     eventBus.on('bullet-die', (id: number, bulletType: string) => {
       bulletType === 'player'
         ? this.player && (this.player.bulletAlive = false)
-        : this.npc.every(
-          ele => ((ele.id === id) || !Boolean(ele.bulletAlive = false)));
+        : this.npc.every(ele =>
+          !(ele.id === id && Boolean(ele.bulletAlive = false)));
     });
   }
 
