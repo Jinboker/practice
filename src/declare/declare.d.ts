@@ -14,7 +14,14 @@ interface renderUI {
 
 interface collisionInfo {
   isCollision: boolean,
-  info: string[]
+  info: collisionInfoItem[]
+}
+
+interface collisionInfoItem {
+  isCollision: boolean,
+  roadType: number,
+  row?: number,
+  col?: number
 }
 
 interface keyboardEvent extends Event {
@@ -45,3 +52,4 @@ interface bulletInfo {
   rank: number,
   id: number
 }
+

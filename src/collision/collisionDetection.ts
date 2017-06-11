@@ -1,5 +1,5 @@
 import { SCREEN_L } from '../global/const';
-import { roadType, dirNum } from '../global/var';
+import { dirNum } from '../global/var';
 import { roadMap } from "../map/affirmRoadMap";
 
 const allCollisionType = ['Border', 'Block'];
@@ -62,36 +62,34 @@ export default class Collision {
   protected isTouchBrick(row: number, col: number, index: number): boolean { return true; }
 
   // 每次检测是否碰到砖块会检测两块砖，这是检测其中一次的代码
-  private getItemBlockCollisionInfo(row: number, col: number, index: number): [boolean, number] {
+  private getItemBlockCollisionInfo(row: number, col: number, index: number): collisionInfoItem {
     const roadType = roadMap[row][col];
 
     // roadType为3表示砖块，砖块因为存在子弹会打掉8*8大小的位置的问题，所以是否会碰到砖块导致不能移动需要特殊检查
-    if (roadType === 3) return [this.isTouchBrick(row, col, index), 3];
+    if (roadType === 3) {
+      let isCollision = this.isTouchBrick(row, col, index);
+      return { isCollision, roadType, row, col };
+    }
 
-    return [roadType > 1, roadType];
+    return { isCollision: roadType > 1, roadType, row, col }
   }
 
   // 检测是否碰到砖块之类的障碍物
-  private getBlockCollisionInfo() {
+  private getBlockCollisionInfo(): collisionInfo {
     const collisionCoordinateGroup = this.getCollisionCoordinateGroupWidthBlock();
-    const collisionInfoArr = collisionCoordinateGroup.map(
-      (ele, index) => this.getItemBlockCollisionInfo(ele[1] >> 4, ele[0] >> 4, index)
-    );
+    const collisionInfoGroup = collisionCoordinateGroup.map(
+      (ele, index) => this.getItemBlockCollisionInfo(ele[1] >> 4, ele[0] >> 4, index));
 
     // 获取要返回到函数外的碰撞相关信息
-    let _roadType = '';
-    const isCollision = collisionInfoArr.some(ele => {
-      let _isItemCollision = ele[0];
-      // 根据得到的数字反向得出当前路的类型
-      _isItemCollision && (_roadType = roadType[ele[1]]);
+    let isCollision = false;
+    let info: collisionInfoItem[] = [];
 
-      return _isItemCollision;
+    collisionInfoGroup.forEach(ele => {
+      isCollision = isCollision || ele.isCollision;
+      info.push(ele);
     });
 
-    return {
-      isCollision: isCollision,
-      info: ['Block', _roadType]
-    }
+    return { isCollision, info };
   }
 
   // 分别获取每个类型的碰撞最后的碰撞信息

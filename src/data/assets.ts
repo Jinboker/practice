@@ -1,29 +1,5 @@
 import json from '../../assets/resource.json';
 
-// interface resOption {
-//   img: {
-//     bonus: HTMLImageElement,
-//     boom: HTMLImageElement,
-//     brick: HTMLImageElement,
-//     misc: HTMLImageElement,
-//     npc: HTMLImageElement,
-//     player: HTMLImageElement,
-//     ui: HTMLImageElement
-//   },
-//   audio: {
-//     count: HTMLVideoElement,
-//     attack: HTMLVideoElement,
-//     attackOver: HTMLVideoElement,
-//     eat: HTMLVideoElement,
-//     explode: HTMLVideoElement,
-//     pause: HTMLVideoElement,
-//     start: HTMLVideoElement,
-//     bomb: HTMLVideoElement,
-//     life: HTMLVideoElement,
-//     misc: HTMLVideoElement
-//   }
-// }
-
 let res = {
   img: {
     bonus: document.createElement('img'),

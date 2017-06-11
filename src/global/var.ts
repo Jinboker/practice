@@ -3,7 +3,7 @@ export const codeToKey = {
 };
 
 export enum roadType {
-  pass = 0, iceRoad = 1, river = 2, brick = 3, steel = 4, home = 5
+  Pass = 0, IceRoad = 1, River = 2, Brick = 3, Steel = 4, Home = 5
 };
 
 export enum dirNum {

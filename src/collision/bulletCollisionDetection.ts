@@ -1,6 +1,5 @@
+import { brickStatus } from '../global/var';
 import CollisionDetection from './collisionDetection';
-import { brickStatus, dirNum } from '../global/var';
-import { roadMap } from "../map/affirmRoadMap";
 
 export default class BulletCollision extends CollisionDetection {
   constructor() {

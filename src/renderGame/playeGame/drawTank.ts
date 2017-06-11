@@ -26,6 +26,7 @@ export default class DrawTank {
 
   event() {
     eventBus.on('bullet-die', (id: number, bulletType: string) => {
+      // 如果子弹死掉，那么找出对应的坦克，将其表示相应子弹存活的标志置为假
       bulletType === 'player'
         ? this.player && (this.player.bulletAlive = false)
         : this.npc.every(ele =>

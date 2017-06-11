@@ -1,9 +1,10 @@
+import { dirNum } from '../global/var';
+import { roadMap } from '../map/affirmRoadMap';
+import { CXT_ROLE, OFFSET_X, OFFSET_Y } from '../global/const';
 import Mover from './mover';
 import res from '../data/assets';
-import BulletCollision from '../collision/bulletCollisionDetection';
-import { CXT_ROLE, OFFSET_X, OFFSET_Y } from '../global/const';
-import { dirNum } from '../global/var';
 import eventBus from '../util/eventBus';
+import BulletCollision from '../collision/bulletCollisionDetection';
 
 const BULLET_IMG = res.img.misc;
 const ATTACK_OVER_AUD = res.audio.attackOver;
@@ -47,24 +48,45 @@ export default class Bullet extends Mover {
     [this.x, this.y] = reset[this.direction];
   }
 
-  // override
-  hitBlock(type: string) {
+  // 清除一小块的障碍物
+  clearSmallBlock() {
 
   }
 
-  // override
-  hitTank() {
+  // 清除一大块的障碍物
+  clearBigBlock() {
+    roadMap
+  }
+
+  // 子弹击中砖块
+  touchBrick() {
 
   }
 
-  // override
-  hitBorder() {
+  // 子弹击中钢筋
+  touchSteel() {
+    this.rank === 3
+      ? this.clearBigBlock()
+      : (this.bulletType === 'player') && ATTACK_OVER_AUD.play();
+  }
+
+  // 子弹击中老家
+  touchHome() {
+
+  }
+
+  // 子弹击中坦克
+  touchTank() {
+  }
+
+  // 子弹击中边界
+  touchBorder() {
     (this.bulletType === 'player') && ATTACK_OVER_AUD.play();
   }
 
   // override
   doAfterCollision(infoArr: string[]) {
-    this[`hit${infoArr[0]}`](infoArr[1]);
+    this[`touch${infoArr[0] !== 'Block' ? infoArr[0] : infoArr[1]}`]();
   }
 
   // override
