@@ -1,5 +1,5 @@
 import { SCREEN_L } from '../global/const';
-import { dirNum } from '../global/var';
+import { roadType, dirNum } from '../global/var';
 import { roadMap } from "../map/affirmRoadMap";
 
 const allCollisionType = ['Border', 'Block'];
@@ -43,18 +43,18 @@ export default class Collision {
   }
 
   // 检查是否碰到边界
-  private getBorderCollisionInfo() {
+  private getBorderCollisionInfo(): collisionInfo {
     return {
       isCollision: this.isTouchBorder[this.direction](),
-      info: ['Border']
+      info: [{ collisionType: 'Border' }]
     }
   }
 
   // 检查是否碰到坦克
-  private getTankCollisionInfo() {
+  private getTankCollisionInfo(): collisionInfo {
     return {
       isCollision: false,
-      info: []
+      info: [{ collisionType: 'Tank' }]
     }
   }
 
@@ -63,15 +63,15 @@ export default class Collision {
 
   // 每次检测是否碰到砖块会检测两块砖，这是检测其中一次的代码
   private getItemBlockCollisionInfo(row: number, col: number, index: number): collisionInfoItem {
-    const roadType = roadMap[row][col];
+    const roadTypeNum = roadMap[row][col];
 
     // roadType为3表示砖块，砖块因为存在子弹会打掉8*8大小的位置的问题，所以是否会碰到砖块导致不能移动需要特殊检查
-    if (roadType === 3) {
+    if (roadTypeNum === 3) {
       let isCollision = this.isTouchBrick(row, col, index);
-      return { isCollision, roadType, row, col };
+      return { isCollision, collisionType: roadType[roadTypeNum], row, col };
     }
 
-    return { isCollision: roadType > 1, roadType, row, col }
+    return { isCollision: roadTypeNum > 1, collisionType: roadType[roadTypeNum], row, col }
   }
 
   // 检测是否碰到砖块之类的障碍物
@@ -85,7 +85,7 @@ export default class Collision {
     let info: collisionInfoItem[] = [];
 
     collisionInfoGroup.forEach(ele => {
-      isCollision = isCollision || ele.isCollision;
+      isCollision = isCollision || Boolean(ele.isCollision);
       info.push(ele);
     });
 
@@ -100,10 +100,10 @@ export default class Collision {
 
     allCollisionType.every(ele => {
       // 获取碰撞信息，如碰撞，则保存相应的信息
-      let _info = this[`get${ele}CollisionInfo`]();
+      let _collisionInfo = this[`get${ele}CollisionInfo`]();
 
-      _info.isCollision && (collisionInfo = _info);
-      return !_info.isCollision;
+      _collisionInfo.isCollision && (collisionInfo = _collisionInfo);
+      return !_collisionInfo.isCollision;
     });
 
     return collisionInfo;

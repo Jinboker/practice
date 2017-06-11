@@ -1,6 +1,6 @@
 import { dirNum } from '../global/var';
 import { roadMap } from '../map/affirmRoadMap';
-import { CXT_ROLE, OFFSET_X, OFFSET_Y } from '../global/const';
+import { CXT_BG, CXT_ROLE, OFFSET_X, OFFSET_Y } from '../global/const';
 import Mover from './mover';
 import res from '../data/assets';
 import eventBus from '../util/eventBus';
@@ -54,8 +54,9 @@ export default class Bullet extends Mover {
   }
 
   // 清除一大块的障碍物
-  clearBigBlock() {
-    roadMap
+  clearBigBlock(row: number, col: number) {
+    roadMap[row][col] = 0;
+    CXT_BG.clearRect(OFFSET_X + (col << 4), OFFSET_Y + (row << 4), 16, 16);
   }
 
   // 子弹击中砖块
@@ -64,9 +65,9 @@ export default class Bullet extends Mover {
   }
 
   // 子弹击中钢筋
-  touchSteel() {
+  touchSteel(row: number, col: number) {
     this.rank === 3
-      ? this.clearBigBlock()
+      ? this.clearBigBlock(row, col)
       : (this.bulletType === 'player') && ATTACK_OVER_AUD.play();
   }
 
@@ -85,8 +86,14 @@ export default class Bullet extends Mover {
   }
 
   // override
-  doAfterCollision(infoArr: string[]) {
-    this[`touch${infoArr[0] !== 'Block' ? infoArr[0] : infoArr[1]}`]();
+  doAfterCollision(collisionInfo: collisionInfoItem[]) {
+    collisionInfo.forEach(ele => {
+      if (typeof this[`touch${ele.collisionType}`] === 'function') {
+        ele.row
+          ? this[`touch${ele.collisionType}`](ele.row, ele.col)
+          : this[`touch${ele.collisionType}`]();
+      }
+    });
   }
 
   // override

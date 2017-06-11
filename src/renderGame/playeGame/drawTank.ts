@@ -13,7 +13,7 @@ export default class DrawTank {
 
   constructor() {
     // 玩家
-    this.player = new Player(128, 384, 'W', 0);
+    this.player = new Player(128, 384, 'W', 3);
     // NPC
     this.npc = [];
     // NPC出生的延迟

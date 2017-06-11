@@ -18,8 +18,8 @@ interface collisionInfo {
 }
 
 interface collisionInfoItem {
-  isCollision: boolean,
-  roadType: number,
+  collisionType: string,
+  isCollision?: boolean,
   row?: number,
   col?: number
 }

@@ -29,7 +29,7 @@ abstract class Mover {
     };
   }
 
-  abstract doAfterCollision(info: string[]): void;
+  abstract doAfterCollision(collisionInfo: collisionInfoItem[]): void;
   abstract affirmPosition(): void;
 
   // 根据当前速度确定下个位置的坐标
