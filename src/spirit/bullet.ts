@@ -1,4 +1,5 @@
 import { dirNum } from '../global/var';
+import { brickStatus } from '../global/var';
 import { roadMap } from '../map/affirmRoadMap';
 import { CXT_BG, CXT_ROLE, OFFSET_X, OFFSET_Y } from '../global/const';
 import Mover from './mover';
@@ -18,6 +19,7 @@ export default class Bullet extends Mover {
   public type: string;
 
   private detectionCollision: BulletCollision;
+  private dirNum: number;
 
   constructor(
     public x: number,
@@ -32,6 +34,7 @@ export default class Bullet extends Mover {
     this.speed = this.rank ? 5 : 4;
     this.distanceToCenter = 8;
     this.detectionCollision = new BulletCollision();
+    this.dirNum = dirNum[direction];
 
     this.resetPosition();
   }
@@ -49,25 +52,52 @@ export default class Bullet extends Mover {
   }
 
   // 清除一小块的障碍物
-  clearSmallBlock() {
+  clearSmallBlock(row: number, col: number, indexInBrick: number) {
+    // console.log(row, col, indexInBrick);
+    let [x, y, range_x, range_y] = this.dirNum % 2
+      ? [row + 8 * indexInBrick, col, 8, 16]
+      : [row, col + 8 * indexInBrick, 16, 8];
 
+    // TODO
+    // console.log(OFFSET_X + x, OFFSET_Y + y, range_x, range_y);
+    CXT_BG.clearRect(OFFSET_X + x, OFFSET_Y + y, range_x, range_y);
   }
 
   // 清除一大块的障碍物
   clearBigBlock(row: number, col: number) {
     roadMap[row][col] = 0;
-    CXT_BG.clearRect(OFFSET_X + (col << 4), OFFSET_Y + (row << 4), 16, 16);
+    CXT_BG.clearRect(OFFSET_X + col * 32, OFFSET_Y + row * 32, 16, 16);
+  }
+
+  // 子弹等级<= 1时击中砖块后清除砖块
+  toClearBrick(row: number, col: number, brickStatusIndex: number) {
+    let indexInBrick;
+
+    if (this.dirNum % 2) {
+    } else {
+    }
   }
 
   // 子弹击中砖块
-  touchBrick() {
+  touchBrick(collisionBlockRow: number, collisionBlockCol: number, orderIndex: number) {
+    if (this.rank <= 1) {
+      const brickStatusIndex = collisionBlockRow * 28 + collisionBlockCol;
 
+      brickStatus[brickStatusIndex]
+        ? this.toClearBrick(collisionBlockRow, collisionBlockCol, brickStatusIndex)
+        : (
+          brickStatus[brickStatusIndex] = [1, 1, 1, 1],
+          this.toClearBrick(collisionBlockRow, collisionBlockCol, brickStatusIndex)
+        );
+    } else {
+      this.clearBigBlock(collisionBlockRow, collisionBlockCol);
+    }
   }
 
   // 子弹击中钢筋
-  touchSteel(row: number, col: number) {
+  touchSteel(collisionBlockRow: number, collisionBlockCol: number) {
     this.rank === 3
-      ? this.clearBigBlock(row, col)
+      ? this.clearBigBlock(collisionBlockRow, collisionBlockCol)
       : (this.bulletType === 'player') && ATTACK_OVER_AUD.play();
   }
 
@@ -87,10 +117,10 @@ export default class Bullet extends Mover {
 
   // override
   doAfterCollision(collisionInfo: collisionInfoItem[]) {
-    collisionInfo.forEach(ele => {
+    collisionInfo.forEach((ele, index) => {
       if (typeof this[`touch${ele.collisionType}`] === 'function') {
         ele.row
-          ? this[`touch${ele.collisionType}`](ele.row, ele.col)
+          ? this[`touch${ele.collisionType}`](ele.row, ele.col, index)
           : this[`touch${ele.collisionType}`]();
       }
     });

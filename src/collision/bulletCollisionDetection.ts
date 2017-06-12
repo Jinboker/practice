@@ -21,10 +21,10 @@ export default class BulletCollision extends CollisionDetection {
 
     if (this.dirNum % 2) {
       // 根据方向对比子弹与砖块碰撞点的坐标之间的差值，确定子弹在砖块中的位置
-      indexInBrick = (this.x + (+!(this.dirNum - 1)) * 8 - row << 4) >> 3;
+      indexInBrick = (this.x + (+!(this.dirNum - 1)) * 8 - (row << 4)) >> 3;
       isTouch = Boolean(brickStatusArr[index][indexInBrick]);
     } else {
-      indexInBrick = (this.y + (this.dirNum >> 1) * 8 - col << 4) >> 3;
+      indexInBrick = (this.y + (this.dirNum >> 1) * 8 - (col << 4)) >> 3;
       isTouch = Boolean(brickStatusArr[indexInBrick][index]);
     }
 
