@@ -32,7 +32,7 @@ export default class Bullet extends Mover {
     super();
 
     this.speed = this.rank ? 5 : 4;
-    this.distanceToCenter = 8;
+    this.distanceToCenter = 4;
     this.detectionCollision = new BulletCollision();
     this.dirNum = dirNum[direction];
 
@@ -52,15 +52,15 @@ export default class Bullet extends Mover {
   }
 
   // 清除一小块的障碍物
-  clearSmallBlock(row: number, col: number, indexInBrick: number) {
-    // console.log(row, col, indexInBrick);
-    let [x, y, range_x, range_y] = this.dirNum % 2
-      ? [row + 8 * indexInBrick, col, 8, 16]
-      : [row, col + 8 * indexInBrick, 16, 8];
+  clearSmallBlock(x: number, y: number, indexInBrick: number) {
+    let rangeX, rangeY;
+
+    [x, y, rangeX, rangeY] = this.dirNum % 2
+      ? [x + 8 * indexInBrick, y, 8, 16]
+      : [x, y + 8 * indexInBrick, 16, 8];
 
     // TODO
-    // console.log(OFFSET_X + x, OFFSET_Y + y, range_x, range_y);
-    CXT_BG.clearRect(OFFSET_X + x, OFFSET_Y + y, range_x, range_y);
+    CXT_BG.clearRect(OFFSET_X + x, OFFSET_Y + y, rangeX, rangeY);
   }
 
   // 清除一大块的障碍物
@@ -70,12 +70,13 @@ export default class Bullet extends Mover {
   }
 
   // 子弹等级<= 1时击中砖块后清除砖块
-  toClearBrick(row: number, col: number, brickStatusIndex: number) {
-    let indexInBrick;
-
-    if (this.dirNum % 2) {
-    } else {
-    }
+  toClearBrick(row: number, col: number) {
+    // const [brickX, brickY] = [col >> 32, row >> 32];
+    // let indexInBrick = this.dirNum % 2
+    //   ? (this.x + (+!(this.dirNum - 1)) * 8 - brickY ) / 8
+    //   : (this.y + this.dirNum * 4 - brickX) / 8;
+    //
+    // this.clearSmallBlock(brickX, brickY, indexInBrick);
   }
 
   // 子弹击中砖块
@@ -84,10 +85,10 @@ export default class Bullet extends Mover {
       const brickStatusIndex = collisionBlockRow * 28 + collisionBlockCol;
 
       brickStatus[brickStatusIndex]
-        ? this.toClearBrick(collisionBlockRow, collisionBlockCol, brickStatusIndex)
+        ? this.toClearBrick(collisionBlockRow, collisionBlockCol)
         : (
-          brickStatus[brickStatusIndex] = [1, 1, 1, 1],
-          this.toClearBrick(collisionBlockRow, collisionBlockCol, brickStatusIndex)
+          brickStatus[brickStatusIndex] = [[1, 1], [1, 1]],
+          this.toClearBrick(collisionBlockRow, collisionBlockCol)
         );
     } else {
       this.clearBigBlock(collisionBlockRow, collisionBlockCol);

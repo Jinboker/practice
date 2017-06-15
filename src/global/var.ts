@@ -7,7 +7,7 @@ export enum roadType {
 };
 
 export enum dirNum {
-  W = 0, A = 1, S = 2, D = 3
+  W = 0, A = 3, S = 2, D = 1
 };
 
 export const inputParam = {

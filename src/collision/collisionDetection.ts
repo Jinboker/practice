@@ -20,10 +20,10 @@ export default class Collision {
 
   constructor() {
     this.isTouchBorder = {
-      W: () => (this.y < 0),
-      A: () => (this.x < 0),
-      S: () => (this.y > SCREEN_L - (this.distanceToCenter << 1)),
-      D: () => (this.x > SCREEN_L - (this.distanceToCenter << 1))
+      W: () => (this.y <= 0),
+      A: () => (this.x <= 0),
+      S: () => (this.y >= SCREEN_L - (this.distanceToCenter << 1)),
+      D: () => (this.x >= SCREEN_L - (this.distanceToCenter << 1))
     };
   }
 
