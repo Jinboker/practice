@@ -1,3 +1,7 @@
+import Player from '../spirit/player';
+import Npc from '../spirit/npc';
+import Bullet from '../spirit/bullet';
+
 export const codeToKey = {
   87: 'W', 65: 'A', 83: 'S', 68: 'D', 72: 'H', 74: 'J'
 };

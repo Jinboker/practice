@@ -29,6 +29,9 @@ export default class TankCollisionDetection extends CollisionDetection {
     return !passAble;
   }
 
+  // 是否碰到32*32的障碍
+
+
   // 检测是否碰到奖励
   private getBonusCollisionInfo(): collisionInfo {
     return {

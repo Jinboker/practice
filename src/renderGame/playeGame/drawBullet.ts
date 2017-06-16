@@ -1,11 +1,10 @@
 import eventBus from '../../util/eventBus';
 import Bullet from '../../spirit/bullet';
+import SpiritCollect from '../../spirit/spiritCollect';
 
 export default class DrawBullet {
-  private bulletArr: Bullet[];
-
   constructor() {
-    this.bulletArr = [];
+    SpiritCollect.bulletArr = [];
 
     this.event();
   }
@@ -15,18 +14,20 @@ export default class DrawBullet {
     eventBus.on('new-bullet', (bulletInfo: bulletInfo) => {
       const { x, y, direction, type, rank, id } = bulletInfo;
 
-      this.bulletArr.push(new Bullet(x, y, direction, type, rank, id));
+      SpiritCollect.bulletArr.push(new Bullet(x, y, direction, type, rank, id));
     });
   }
 
   draw() {
-    if (!this.bulletArr.length) return;
+    let bulletArr = SpiritCollect.bulletArr;
 
-    for (let i = 0, flag = true; i < this.bulletArr.length; flag ? i++ : i) {
-      const bulletObj = this.bulletArr[i];
+    if (!bulletArr.length) return;
+
+    for (let i = 0, flag = true; i < bulletArr.length; flag ? i++ : i) {
+      const bulletObj = bulletArr[i];
 
       bulletObj.draw();
-      flag = bulletObj.alive || !this.bulletArr.splice(i, 1);
+      flag = bulletObj.alive || !SpiritCollect.bulletArr.splice(i, 1);
     }
   }
 }
