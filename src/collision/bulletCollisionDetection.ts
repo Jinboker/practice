@@ -7,6 +7,7 @@ export default class BulletCollision extends CollisionDetection {
     super();
 
     this.distanceToCenter = 4;
+    this.collisionType = ['Border', 'Block', 'Tank', 'Bullet'];
   }
 
   // override
@@ -24,5 +25,21 @@ export default class BulletCollision extends CollisionDetection {
     );
 
     return isTouch;
+  }
+
+  // 检查是否碰到坦克
+  private getTankCollisionInfo(): collisionInfo {
+    return {
+      isCollision: false,
+      info: [{ collisionType: 'Tank' }]
+    }
+  }
+
+  // 检测是否碰到子弹
+  private getBulletCollisionInfo(): collisionInfo {
+    return {
+      isCollision: false,
+      info: [{ collisionType: 'Bullet' }]
+    }
   }
 }

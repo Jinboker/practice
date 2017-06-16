@@ -2,7 +2,6 @@ import { SCREEN_L } from '../global/const';
 import { roadType, dirNum } from '../global/var';
 import { roadMap } from "../map/affirmRoadMap";
 
-const allCollisionType = ['Border', 'Block'];
 const getCollisionCoordinateGroup = {
   W: (x: number, y: number, distance: number): number[][] => [[x - 16, y - distance], [x, y - distance]],
   A: (x: number, y: number, distance: number): number[][] => [[x - distance, y - 16], [x - distance, y]],
@@ -16,7 +15,9 @@ export default class Collision {
   protected x: number;
   protected y: number;
   protected dirNum: number;
+  protected type: string;
   protected isTouchBorder: isTouchBorder;
+  protected collisionType: string[];
 
   constructor() {
     this.isTouchBorder = {
@@ -47,14 +48,6 @@ export default class Collision {
     return {
       isCollision: this.isTouchBorder[this.direction](),
       info: [{ collisionType: 'Border' }]
-    }
-  }
-
-  // 检查是否碰到坦克
-  private getTankCollisionInfo(): collisionInfo {
-    return {
-      isCollision: false,
-      info: [{ collisionType: 'Tank' }]
     }
   }
 
@@ -93,12 +86,16 @@ export default class Collision {
   }
 
   // 分别获取每个类型的碰撞最后的碰撞信息
-  public getCollisionInfo(direction: string, x: number, y: number): collisionInfo {
-    [this.direction, this.dirNum, this.x, this.y] = [direction, dirNum[direction], x, y];
+  public getCollisionInfo(direction: string, x: number, y: number, type: string): collisionInfo {
+    [
+      this.direction, this.dirNum, this.x, this.y, this.type
+    ] = [
+      direction, dirNum[direction], x, y, type
+    ];
 
     let collisionInfo = { isCollision: false, info: [] };
 
-    allCollisionType.every(ele => {
+    this.collisionType.every(ele => {
       // 获取碰撞信息，如碰撞，则保存相应的信息
       let _collisionInfo = this[`get${ele}CollisionInfo`]();
 

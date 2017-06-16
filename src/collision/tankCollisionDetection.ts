@@ -6,6 +6,7 @@ export default class TankCollisionDetection extends CollisionDetection {
     super();
 
     this.distanceToCenter = 16;
+    this.collisionType = ['Border', 'Block', 'Tank', 'Bonus'];
   }
 
   // override
@@ -29,4 +30,18 @@ export default class TankCollisionDetection extends CollisionDetection {
   }
 
   // 检测是否碰到奖励
+  private getBonusCollisionInfo(): collisionInfo {
+    return {
+      isCollision: false,
+      info: [{ collisionType: 'Bonus' }]
+    }
+  }
+
+  // 检测是否碰到坦克
+  private getTankCollisionInfo(): collisionInfo {
+    return {
+      isCollision: false,
+      info: [{ collisionType: 'Tank' }]
+    }
+  }
 }

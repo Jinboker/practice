@@ -124,7 +124,7 @@ export default class Bullet extends Mover {
   // override
   affirmPosition() {
     [this.next_x, this.next_y] = this.getNextPositionIfCouldMove();
-    this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y);
+    this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y, this.bulletType);
 
     if (this.collisionInfo.isCollision) {
       this.doAfterCollision(this.collisionInfo.info);

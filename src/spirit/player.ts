@@ -60,7 +60,7 @@ export default class Player extends Tank {
     // 确定下一个位置的值
     [this.next_x, this.next_y] = this.getNextPosition();
     // 检查当坦克移动到下个位置以后是否会产生碰撞
-    this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y);
+    this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y, this.type);
     // 如果没有碰撞则确定位置
     if (!this.collisionInfo.isCollision) {
       [this.x, this.y] = [this.next_x, this.next_y]
