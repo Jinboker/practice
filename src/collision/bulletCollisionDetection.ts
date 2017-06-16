@@ -1,4 +1,5 @@
 import { brickStatus } from '../global/var';
+import { getPositionInBrick } from '../util/fn';
 import CollisionDetection from './collisionDetection';
 
 export default class BulletCollision extends CollisionDetection {
@@ -16,16 +17,12 @@ export default class BulletCollision extends CollisionDetection {
     // 如果brickStatusArr的值为undefined，那么表明砖块还是第一次被子弹撞到，直接返回true表明已经碰到砖块
     if (!brickStatusArr) return true;
 
-    let positionInBrick;
-    let isTouch = true;
-
-    if (this.dirNum % 2) {
-      positionInBrick = (this.x + (+!(this.dirNum - 1)) * 8 - col * 16) >> 3;
-      isTouch = Boolean(brickStatusArr[index][positionInBrick]);
-    } else {
-      positionInBrick = (this.y + this.dirNum * 4 - row * 16) >> 3;
-      isTouch = Boolean(brickStatusArr[positionInBrick][index]);
-    }
+    const positionInBrick = getPositionInBrick.bind(this)(row, col);
+    const isTouch = Boolean(
+      this.dirNum % 2
+        ? brickStatusArr[index][positionInBrick]
+        : brickStatusArr[positionInBrick][index]
+    );
 
     return isTouch;
   }

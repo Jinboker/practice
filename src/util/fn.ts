@@ -25,6 +25,15 @@ export function keyboardOperate(operate: operate) {
   }
 }
 
+// 确定子弹等级小于1的时候打到砖块后的位置在brickStatus中的数组的索引值
+export function getPositionInBrick(row: number, col: number) {
+  return (
+    this.dirNum % 2
+      ? (this.x + (+!(this.dirNum - 1)) * 8 - col * 16) >> 3
+      : (this.y + this.dirNum * 4 - row * 16) >> 3
+  );
+}
+
 // 单词首字母大写
 // export function firstUpperCase(str: string): string {
 //   return str.toLowerCase().replace(/( |^)[a-z]/g, ele => ele.toUpperCase());

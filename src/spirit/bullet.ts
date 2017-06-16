@@ -1,6 +1,7 @@
 import { dirNum } from '../global/var';
 import { brickStatus } from '../global/var';
 import { roadMap } from '../map/affirmRoadMap';
+import { getPositionInBrick } from '../util/fn';
 import { CXT_BG, CXT_ROLE, OFFSET_X, OFFSET_Y } from '../global/const';
 import Mover from './mover';
 import res from '../data/assets';
@@ -51,15 +52,14 @@ export default class Bullet extends Mover {
     [this.x, this.y] = reset[this.direction];
   }
 
-  // 清除一小块的障碍物
-  clearSmallBlock(x: number, y: number, indexInBrick: number) {
-    let rangeX, rangeY;
+  // 清除一小块的砖块
+  clearSmallBrick(row: number, col: number) {
+    const indexInBrick = getPositionInBrick.bind(this)(row, col);
 
-    [x, y, rangeX, rangeY] = this.dirNum % 2
-      ? [x + 8 * indexInBrick, y, 8, 16]
-      : [x, y + 8 * indexInBrick, 16, 8];
+    let [x, y, rangeX, rangeY] = this.dirNum % 2
+      ? [col * 16 + 8 * indexInBrick, row * 16, 8, 16]
+      : [col * 16, row * 16 + 8 * indexInBrick, 16, 8];
 
-    // TODO
     CXT_BG.clearRect(OFFSET_X + x, OFFSET_Y + y, rangeX, rangeY);
   }
 
@@ -69,27 +69,14 @@ export default class Bullet extends Mover {
     CXT_BG.clearRect(OFFSET_X + col * 32, OFFSET_Y + row * 32, 16, 16);
   }
 
-  // 子弹等级<= 1时击中砖块后清除砖块
-  toClearBrick(row: number, col: number) {
-    // const [brickX, brickY] = [col >> 32, row >> 32];
-    // let indexInBrick = this.dirNum % 2
-    //   ? (this.x + (+!(this.dirNum - 1)) * 8 - brickY ) / 8
-    //   : (this.y + this.dirNum * 4 - brickX) / 8;
-    //
-    // this.clearSmallBlock(brickX, brickY, indexInBrick);
-  }
-
   // 子弹击中砖块
   touchBrick(collisionBlockRow: number, collisionBlockCol: number, orderIndex: number) {
     if (this.rank <= 1) {
-      const brickStatusIndex = collisionBlockRow * 28 + collisionBlockCol;
+      // 子弹等级<= 1时击中砖块后清除砖块
+      const _index = collisionBlockRow * 28 + collisionBlockCol;
 
-      brickStatus[brickStatusIndex]
-        ? this.toClearBrick(collisionBlockRow, collisionBlockCol)
-        : (
-          brickStatus[brickStatusIndex] = [[1, 1], [1, 1]],
-          this.toClearBrick(collisionBlockRow, collisionBlockCol)
-        );
+      !brickStatus[_index] && (brickStatus[_index] = [[1, 1], [1, 1]]);
+      this.clearSmallBrick(collisionBlockRow, collisionBlockCol);
     } else {
       this.clearBigBlock(collisionBlockRow, collisionBlockCol);
     }
@@ -120,9 +107,9 @@ export default class Bullet extends Mover {
   doAfterCollision(collisionInfo: collisionInfoItem[]) {
     collisionInfo.forEach((ele, index) => {
       if (typeof this[`touch${ele.collisionType}`] === 'function') {
-        ele.row
-          ? this[`touch${ele.collisionType}`](ele.row, ele.col, index)
-          : this[`touch${ele.collisionType}`]();
+        let [row, col] = ele.row ? [ele.row, ele.col] : [null, null];
+
+        this[`touch${ele.collisionType}`](row, col, index);
       }
     });
   }
