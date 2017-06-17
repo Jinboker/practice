@@ -18,6 +18,7 @@ export default class Collision {
   protected type: string;
   protected isTouchBorder: isTouchBorder;
   protected collisionType: string[];
+  protected id: number;
 
   constructor() {
     this.isTouchBorder = {
@@ -86,11 +87,11 @@ export default class Collision {
   }
 
   // 分别获取每个类型的碰撞最后的碰撞信息
-  public getCollisionInfo(direction: string, x: number, y: number, type: string): collisionInfo {
+  public getCollisionInfo(direction: string, x: number, y: number, type: string, id: number): collisionInfo {
     [
-      this.direction, this.dirNum, this.x, this.y, this.type
+      this.direction, this.dirNum, this.x, this.y, this.type, this.id
     ] = [
-      direction, dirNum[direction], x, y, type
+      direction, dirNum[direction], x, y, type, id
     ];
 
     let collisionInfo = { isCollision: false, info: [] };

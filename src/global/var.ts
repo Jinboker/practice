@@ -35,4 +35,9 @@ export const gameParam = {
   renderContent: <renderUI>{}
 };
 
+export const spirit: spirit = {
+  tankArr: [],
+  bulletArr: []
+}
+
 export const brickStatus = {};

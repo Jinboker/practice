@@ -1,5 +1,6 @@
-import CollisionDetection from './collisionDetection';
 import { brickStatus } from '../global/var';
+import SpiritCollect from '../spirit/spiritCollect';
+import CollisionDetection from './collisionDetection';
 
 export default class TankCollisionDetection extends CollisionDetection {
   constructor() {
@@ -29,9 +30,6 @@ export default class TankCollisionDetection extends CollisionDetection {
     return !passAble;
   }
 
-  // 是否碰到32*32的障碍
-
-
   // 检测是否碰到奖励
   private getBonusCollisionInfo(): collisionInfo {
     return {
@@ -42,6 +40,15 @@ export default class TankCollisionDetection extends CollisionDetection {
 
   // 检测是否碰到坦克
   private getTankCollisionInfo(): collisionInfo {
+    // 所有坦克的集合
+    let allTank: tank[] = SpiritCollect.npcArr.map(ele => ele);
+    allTank.unshift(SpiritCollect.player);
+
+    SpiritCollect.npcArr.forEach(ele => {
+      if (ele && ele.id !== this.id) {
+
+      }
+    });
     return {
       isCollision: false,
       info: [{ collisionType: 'Tank' }]

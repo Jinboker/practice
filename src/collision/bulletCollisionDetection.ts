@@ -1,6 +1,7 @@
 import { brickStatus } from '../global/var';
 import { getPositionInBrick } from '../util/fn';
 import CollisionDetection from './collisionDetection';
+import SpiritCollect from '../spirit/spiritCollect';
 
 export default class BulletCollision extends CollisionDetection {
   constructor() {

@@ -53,3 +53,14 @@ interface bulletInfo {
   id: number
 }
 
+interface mover {
+  id: number,
+  bulletAlive: boolean,
+  draw: () => void
+}
+
+interface spirit {
+  tankArr: mover[],
+  bulletArr: mover[]
+}
+

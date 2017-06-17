@@ -69,7 +69,7 @@ export default class Npc extends Tank {
       // 确定下一个位置的值
       [this.next_x, this.next_y] = this.getNextPosition();
       // 检查当坦克移动到下个位置以后是否会产生碰撞
-      this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y, this.type);
+      this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y, this.type, this.id);
       this.couldMove = !this.collisionInfo.isCollision;
     }
 
