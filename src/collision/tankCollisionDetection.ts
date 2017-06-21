@@ -41,7 +41,7 @@ export default class TankCollisionDetection extends CollisionDetection {
   // 检测是否碰到坦克
   private getTankCollisionInfo(): collisionInfo {
     // 所有坦克的集合
-    let allTank: tank[] = SpiritCollect.npcArr.map(ele => ele);
+    let allTank: mover[] = SpiritCollect.npcArr.map(ele => ele);
     allTank.unshift(SpiritCollect.player);
 
     SpiritCollect.npcArr.forEach(ele => {

@@ -39,25 +39,39 @@ export default class DrawTank {
   }
 
   draw() {
-    // 绘制坦克
-    spirit.tankArr.forEach(ele => ele.draw());
-
-    // 绘制玩家
-    SpiritCollect.player.draw();
     // 如果正存活的NPC数目小于约定的最大数，且坦克未全部出生，那么出生新的NPC
     if (
-      SpiritCollect.npcArr.length < gameParam.npcMax - 1 &&
+      spirit.tankArr.length < gameParam.npcMax &&
       this.npcIndex <= gameParam.maxStage
     ) {
       delayTimeout(this.setNewNpcDelay, () => {
         const [x, y] = [(this.npcIndex % 3) * 192, 0];
         const rank = npcData[gameParam.stageNum - 1][this.npcIndex];
 
-        SpiritCollect.npcArr.push(new Npc(x, y, 'S', rank));
+        spirit.tankArr.push(new Npc(x, y, 'S', rank));
         this.npcIndex++;
       });
     }
-    // 绘制NPC
-    SpiritCollect.npcArr.forEach(ele => ele.draw());
+
+    // 绘制坦克
+    spirit.tankArr.forEach(ele => ele && ele.draw());
+    //
+    // // 绘制玩家
+    // SpiritCollect.player.draw();
+    // // 如果正存活的NPC数目小于约定的最大数，且坦克未全部出生，那么出生新的NPC
+    // if (
+    //   SpiritCollect.npcArr.length < gameParam.npcMax - 1 &&
+    //   this.npcIndex <= gameParam.maxStage
+    // ) {
+    //   delayTimeout(this.setNewNpcDelay, () => {
+    //     const [x, y] = [(this.npcIndex % 3) * 192, 0];
+    //     const rank = npcData[gameParam.stageNum - 1][this.npcIndex];
+    //
+    //     SpiritCollect.npcArr.push(new Npc(x, y, 'S', rank));
+    //     this.npcIndex++;
+    //   });
+    // }
+    // // 绘制NPC
+    // SpiritCollect.npcArr.forEach(ele => ele.draw());
   }
 }
