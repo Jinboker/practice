@@ -8,11 +8,11 @@ export const codeToKey = {
 
 export enum roadType {
   Pass = 0, IceRoad = 1, River = 2, Brick = 3, Steel = 4, Home = 5
-};
+}
 
 export enum dirNum {
   W = 0, A = 3, S = 2, D = 1
-};
+}
 
 export const inputParam = {
   isPressed: false,
@@ -38,6 +38,6 @@ export const gameParam = {
 export const spirit: spirit = {
   tankArr: [],
   bulletArr: []
-}
+};
 
 export const brickStatus = {};

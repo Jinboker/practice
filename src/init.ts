@@ -3,7 +3,7 @@ import { inputParam, codeToKey } from './global/var';
 import controller from './ctrlCenter/ctrlCenter';
 
 function keyDown(key: string) {
-  if (inputParam[key]) return;
+  if (inputParam[key]) { return; }
 
   key !== 'H' && key !== 'J'
     ? inputParam.directionKey = key
@@ -21,12 +21,12 @@ function keyUp(key: string) {
 function keyBoardInit() {
   ['keydown', 'keyup'].forEach(eventType => {
     addEventListener(eventType, (ev: keyboardEvent) => {
-      let key: string = codeToKey[ev.keyCode];
+      const key: string = codeToKey[ev.keyCode];
 
-      if (typeof key === 'undefined') return;
+      if (typeof key === 'undefined') { return; }
       ev.type === 'keydown' ? keyDown(key) : keyUp(key);
     }, false);
-  })
+  });
 }
 
 export default function init() {

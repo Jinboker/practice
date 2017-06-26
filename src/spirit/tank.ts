@@ -151,7 +151,7 @@ export default class Tank extends Mover {
   }
 
   // override
-  draw() {
+  public draw() {
     this.bornAnimationNum
       ? this.drawBornAnimation()
       : (

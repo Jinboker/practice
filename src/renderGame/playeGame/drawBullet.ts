@@ -9,7 +9,7 @@ export default class DrawBullet {
     this.event();
   }
 
-  event() {
+  private event() {
     // 事件在Tank类中dispatch
     eventBus.on('new-bullet', (bulletInfo: bulletInfo) => {
       const { x, y, direction, type, rank, id } = bulletInfo;
@@ -18,8 +18,8 @@ export default class DrawBullet {
     });
   }
 
-  draw() {
-    let bulletArr = SpiritCollect.bulletArr;
+  public draw() {
+    const bulletArr = SpiritCollect.bulletArr;
 
     if (!bulletArr.length) return;
 

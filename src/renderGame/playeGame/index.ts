@@ -12,7 +12,7 @@ export default class {
     this.drawBullet = new DrawBullet();
   }
 
-  draw() {
+  public draw() {
     CXT_ROLE.clearRect(OFFSET_X, OFFSET_Y, SCREEN_L, SCREEN_L);
 
     this.drawTank.draw();

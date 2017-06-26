@@ -1,5 +1,4 @@
 import { brickStatus } from '../global/var';
-import SpiritCollect from '../spirit/spiritCollect';
 import CollisionDetection from './collisionDetection';
 
 export default class TankCollisionDetection extends CollisionDetection {
@@ -11,7 +10,7 @@ export default class TankCollisionDetection extends CollisionDetection {
   }
 
   // override
-  isTouchBrick(row: number, col: number, index?: number): boolean {
+  public isTouchBrick(row: number, col: number, index?: number): boolean {
     const brickStatusArr: number[][] = brickStatus[row * 28 + col];
 
     if (!brickStatusArr) return true;
@@ -41,14 +40,14 @@ export default class TankCollisionDetection extends CollisionDetection {
   // 检测是否碰到坦克
   private getTankCollisionInfo(): collisionInfo {
     // 所有坦克的集合
-    let allTank: mover[] = SpiritCollect.npcArr.map(ele => ele);
-    allTank.unshift(SpiritCollect.player);
-
-    SpiritCollect.npcArr.forEach(ele => {
-      if (ele && ele.id !== this.id) {
-
-      }
-    });
+    // let allTank: mover[] = SpiritCollect.npcArr.map(ele => ele);
+    // allTank.unshift(SpiritCollect.player);
+    //
+    // SpiritCollect.npcArr.forEach(ele => {
+    //   if (ele && ele.id !== this.id) {
+    //
+    //   }
+    // });
     return {
       isCollision: false,
       info: [{ collisionType: 'Tank' }]

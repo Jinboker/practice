@@ -31,6 +31,7 @@ abstract class Mover {
 
   abstract doAfterCollision(collisionInfo: collisionInfoItem[]): void;
   abstract affirmPosition(): void;
+  abstract draw(): void;
 
   // 根据当前速度确定下个位置的坐标
   protected getNextPositionIfCouldMove(): number[] {

@@ -17,23 +17,14 @@ listeners['enterStage'] = (couldChangeStage: boolean) => {
 listeners['playGame'] = () => {
   gameParam.renderContent = new PlayGame();
 };
-
-listeners['construct'] = () => {
-
-};
-
-listeners['over'] = () => {
-
-};
+// listeners['construct'] = () => {
+// };
 //
-// listeners['newBullet'] = (bulletInfo: bulletInfo) => {
-//   const {x, y, direction, id, type, rank} = bulletInfo;
-//
-//   bulletArr.push(new Bullet(x, y, direction, type, rank, id));
+// listeners['over'] = () => {
 // };
 
 function getReceiveMsg() {
-  let receiveMsg = <T>(topic: string, ...args: Array<T>) => listeners[topic](...args);
+  const receiveMsg = <T>(topic: string, ...args: Array<T>) => listeners[topic](...args);
 
   return { receiveMsg };
 }

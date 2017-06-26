@@ -41,7 +41,7 @@ export default class Bullet extends Mover {
   }
 
   // 子弹初始输入的坐标是坦克的坐标，因此需要重置一下
-  resetPosition() {
+  private resetPosition() {
     let reset = {
       W: [this.x + 12, this.y],
       A: [this.x, this.y + 12],
@@ -53,7 +53,7 @@ export default class Bullet extends Mover {
   }
 
   // 清除一小块的砖块
-  clearSmallBrick(row: number, col: number) {
+  private clearSmallBrick(row: number, col: number) {
     const indexInBrick = getPositionInBrick.bind(this)(this.next_x, this.next_y, row, col);
     const brickStatusArr = brickStatus[row * 28 + col];
 
@@ -71,13 +71,13 @@ export default class Bullet extends Mover {
   }
 
   // 清除一大块的障碍物
-  clearBigBlock(row: number, col: number) {
+  private clearBigBlock(row: number, col: number) {
     roadMap[row][col] = 0;
     CXT_BG.clearRect(OFFSET_X + col * 16, OFFSET_Y + row * 16, 16, 16);
   }
 
   // 子弹击中砖块
-  touchBrick(collisionRow: number, collisionCol: number) {
+  private touchBrick(collisionRow: number, collisionCol: number) {
     if (this.rank <= 1) {
       // 子弹等级<= 1时击中砖块后清除砖块
       const _index = collisionRow * 28 + collisionCol;
@@ -90,28 +90,27 @@ export default class Bullet extends Mover {
   }
 
   // 子弹击中钢筋
-  touchSteel(collisionRow: number, collisionCol: number) {
+  private touchSteel(collisionRow: number, collisionCol: number) {
     this.rank === 3
       ? this.clearBigBlock(collisionRow, collisionCol)
       : (this.bulletType === 'player') && ATTACK_OVER_AUD.play();
   }
 
   // 子弹击中老家
-  touchHome() {
-
+  private touchHome() {
   }
 
   // 子弹击中坦克
-  touchTank() {
+  private touchTank() {
   }
 
   // 子弹击中边界
-  touchBorder() {
+  private touchBorder() {
     (this.bulletType === 'player') && ATTACK_OVER_AUD.play();
   }
 
   // override
-  doAfterCollision(collisionInfo: collisionInfoItem[]) {
+  public doAfterCollision(collisionInfo: collisionInfoItem[]) {
     collisionInfo.forEach(ele => {
       if (typeof this[`touch${ele.collisionType}`] === 'function') {
         let [row, col] = ele.row ? [ele.row, ele.col] : [null, null];
@@ -122,7 +121,7 @@ export default class Bullet extends Mover {
   }
 
   // override
-  affirmPosition() {
+  public affirmPosition() {
     [this.next_x, this.next_y] = this.getNextPositionIfCouldMove();
     this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y, this.bulletType, this.id);
 
@@ -138,7 +137,7 @@ export default class Bullet extends Mover {
   }
 
   // override
-  draw() {
+  public draw() {
     this.affirmPosition();
     CXT_ROLE.drawImage(BULLET_IMG, dirNum[this.direction] << 3, 0, 8, 8, this.x + OFFSET_X, this.y + OFFSET_Y, 8, 8);
   }
