@@ -7,15 +7,16 @@
   "author": "jin <jinboker@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "server": "webpack-dev-server",
-    "dev_1": "cross-env NODE_ENV=dev",
-    "dev": "./node_modules/.bin/webpack-dev-server --config ./webpack.config.js --open --hot --inline",
+    "dev": "webpack-dev-server --hot --inline -- NODE_ENV=dev",
     "build": "cross-env NODE_ENV=prod webpack --progress --hide-modules"
   },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-runtime": "^6.23.0",
     "clean-webpack-plugin": "^0.1.16",
     "cross-env": "^5.0.1",
     "css-loader": "^0.28.4",
