@@ -17,11 +17,11 @@ export default {
    * @param topic 消息名
    * @param listener  移除的注册函数,不传则移除全部注册
    */
-  off: (topics: string[], listener?: () => void) => {
-    topics.forEach(ele => {
-      if (!topics[ele]) return;
+  off: (topic: string[], listener?: () => void) => {
+    topic.forEach(ele => {
+      if (!topic[ele]) return;
 
-      let topicListeners = topics[ele];
+      let topicListeners = topic[ele];
 
       if (listener) {
         const listenerIndex = topicListeners.indexOf(listener);
@@ -36,11 +36,11 @@ export default {
   /**
    * 发布消息，支持链式调用
    */
-  dispatch: function (topic: string, ...args: any[]) {
+  dispatch: function(topic: string, ...args: any[]) {
     let i = 0;
     const listeners = topics[topic] || [];
 
-    while(i < listeners.length) {
+    while (i < listeners.length) {
       const listener = listeners[i];
 
       listener === null
@@ -50,4 +50,4 @@ export default {
 
     return this;
   }
-}
+};

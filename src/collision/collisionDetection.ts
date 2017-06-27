@@ -1,6 +1,6 @@
 import { SCREEN_L } from '../global/const';
 import { roadType, dirNum } from '../global/var';
-import { roadMap } from "../map/affirmRoadMap";
+import { roadMap } from '../map/affirmRoadMap';
 
 const getCollisionCoordinateGroup = {
   W: (x: number, y: number, distance: number): number[][] => [[x - 16, y - distance], [x, y - distance]],
@@ -31,15 +31,15 @@ export default class Collision {
 
   // 精灵的中心点坐标
   private spiritCenterCoordinate(): number[] {
-    let distance = this.distanceToCenter;
+    const distance = this.distanceToCenter;
 
     return [this.x + distance, this.y + distance];
   }
 
   // 获取当碰到砖块等障碍物的时候的碰撞点的坐标
   private getCollisionCoordinateGroupWidthBlock(): number[][] {
-    let distance = this.distanceToCenter;
-    let [x, y] = this.spiritCenterCoordinate();
+    const distance = this.distanceToCenter;
+    const [x, y] = this.spiritCenterCoordinate();
 
     return getCollisionCoordinateGroup[this.direction](x, y, distance);
   }
@@ -49,7 +49,7 @@ export default class Collision {
     return {
       isCollision: this.isTouchBorder[this.direction](),
       info: [{ collisionType: 'Border' }]
-    }
+    };
   }
 
   // 此方法会被子类重写
@@ -61,11 +61,11 @@ export default class Collision {
 
     // roadType为3表示砖块，砖块因为存在子弹会打掉8*8大小的位置的问题，所以是否会碰到砖块导致不能移动需要特殊检查
     if (roadTypeNum === 3) {
-      let isCollision = this.isTouchBrick(row, col, index);
+      const isCollision = this.isTouchBrick(row, col, index);
       return { isCollision, collisionType: roadType[roadTypeNum], row, col };
     }
 
-    return { isCollision: roadTypeNum > 1, collisionType: roadType[roadTypeNum], row, col }
+    return { isCollision: roadTypeNum > 1, collisionType: roadType[roadTypeNum], row, col };
   }
 
   // 检测是否碰到砖块之类的障碍物
@@ -76,7 +76,7 @@ export default class Collision {
 
     // 获取要返回到函数外的碰撞相关信息
     let isCollision = false;
-    let info: collisionInfoItem[] = [];
+    const info: collisionInfoItem[] = [];
 
     collisionInfoGroup.forEach(ele => {
       isCollision = isCollision || Boolean(ele.isCollision);
@@ -98,7 +98,7 @@ export default class Collision {
 
     this.collisionType.every(ele => {
       // 获取碰撞信息，如碰撞，则保存相应的信息
-      let _collisionInfo = this[`get${ele}CollisionInfo`]();
+      const _collisionInfo = this[`get${ele}CollisionInfo`]();
 
       _collisionInfo.isCollision && (collisionInfo = _collisionInfo);
       return !_collisionInfo.isCollision;

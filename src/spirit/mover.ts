@@ -6,15 +6,15 @@ const getNextPosition = {
 };
 
 abstract class Mover {
-  abstract x: number;
-  abstract next_x: number;
-  abstract y: number;
-  abstract next_y: number;
-  abstract direction: string;
-  abstract rank: number;
-  abstract distanceToCenter: number;
-  abstract speed: number;
-  abstract type: string;
+  protected abstract x: number;
+  protected abstract next_x: number;
+  protected abstract y: number;
+  protected abstract next_y: number;
+  protected abstract direction: string;
+  protected abstract rank: number;
+  protected abstract distanceToCenter: number;
+  protected abstract speed: number;
+  protected abstract type: string;
 
   protected collisionInfo: collisionInfo;
 
@@ -29,9 +29,9 @@ abstract class Mover {
     };
   }
 
-  abstract doAfterCollision(collisionInfo: collisionInfoItem[]): void;
-  abstract affirmPosition(): void;
-  abstract draw(): void;
+  protected abstract doAfterCollision(collisionInfo: collisionInfoItem[]): void;
+  protected abstract affirmPosition(): void;
+  protected abstract draw(): void;
 
   // 根据当前速度确定下个位置的坐标
   protected getNextPositionIfCouldMove(): number[] {
@@ -40,4 +40,3 @@ abstract class Mover {
 }
 
 export default Mover;
-

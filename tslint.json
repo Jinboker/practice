@@ -6,6 +6,12 @@
     "tslint:latest"
   ],
   "rules": {
+    // 可不可以有null
+    "no-null-keyword": false,
+    // 不会提示let转const
+    "prefer-const": false,
+    // 不能let a, b, c;
+    "one-variable-per-declaration": false,
     "object-literal-sort-keys": [
       false
     ],
@@ -13,7 +19,7 @@
       false
     ],
     // if 后面不要只写一个return
-    "curly": [true, "as-needed"],
+    "curly": [false],
     // 不要自己瞎搞些奇奇怪怪的格式
     "no-unused-expression": [
       false
@@ -21,9 +27,14 @@
     "align": [
       false
     ],
+    // 函数可以为空
+    "no-empty": false,
+    // "array" enforces use of T[] for all types T.
+    // "generic" enforces use of Array<T> for all types T.
+    // "array-simple" enforces use of T[] if T is a simple type (primitive or type reference).
     "array-type": [
       true,
-      "generic"
+      "array-simple"
     ],
     "arrow-parens": false,
     "eofline": false,
@@ -86,9 +97,10 @@
       true,
       "always"
     ],
+
     "brace-style": [
       true,
-      "stroustrup",
+      "1tbs",
       {
         "allowSingleLine": true
       }

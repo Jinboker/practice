@@ -20,8 +20,8 @@ export default class Npc extends Tank {
   }
 
   // override
-  produceBullet() {
-    let fireAble = !(this.fireDelay && (this.fireDelay -= 1));
+  public produceBullet() {
+    const fireAble = !(this.fireDelay && (this.fireDelay -= 1));
 
     if (fireAble && !this.bulletAlive) {
       this.bulletAlive = true;
@@ -30,7 +30,7 @@ export default class Npc extends Tank {
     }
   }
 
-  getRandomDirection() {
+  private getRandomDirection() {
     let direction = '';
 
     do {
@@ -41,28 +41,25 @@ export default class Npc extends Tank {
   }
 
   // 如果NPC碰到了障碍
-  touchBarrier() {
+  private touchBarrier() {
     delayTimeout(this.changeDirectionDelay, () => {
       this.couldMove = true;
       this.beChangeDirection = true;
     });
   }
 
-  getNextPosition() {
-    let x, y;
+  private getNextPosition() {
+    const [x, y] = this.beChangeDirection
+      ? this.getPositionAfterChangeDirection()
+      : this.getNextPositionIfCouldMove();
 
-    if (this.beChangeDirection) {
-      [x, y] = this.getPositionAfterChangeDirection();
-      this.getRandomDirection();
-    } else {
-      [x, y] = this.getNextPositionIfCouldMove();
-    }
+    this.beChangeDirection && this.getRandomDirection();
 
     return [x, y];
   }
 
   // override
-  affirmPosition() {
+  protected affirmPosition() {
     this.changeWheelPic();
 
     if (this.couldMove) {

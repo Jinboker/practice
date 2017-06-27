@@ -9,7 +9,7 @@ const roadMap = new Array(28).fill(0).map(() => {
 // 3: 砖块
 // 4: 钢筋
 // 5: 老家
-function affirmRoadMap (i: number, j: number, data: number) {
+function affirmRoadMap(i: number, j: number, data: number) {
   switch (data) {
     // 1、2、3、4、5、17、18 砖
     case 1:

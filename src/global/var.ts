@@ -32,7 +32,7 @@ export const gameParam = {
   maxStage: 20,
   npcMax: 5,
   gameState: 'chooseMode',  // chooseMode, chooseStage, playGame, over, construct
-  renderContent: <renderUI>{}
+  renderContent: {}
 };
 
 export const spirit: spirit = {

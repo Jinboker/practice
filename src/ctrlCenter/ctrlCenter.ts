@@ -24,7 +24,7 @@ listeners['playGame'] = () => {
 // };
 
 function getReceiveMsg() {
-  const receiveMsg = <T>(topic: string, ...args: Array<T>) => listeners[topic](...args);
+  const receiveMsg = <T>(topic: string, ...args: T[]) => listeners[topic](...args);
 
   return { receiveMsg };
 }

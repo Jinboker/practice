@@ -1,7 +1,6 @@
 import { brickStatus } from '../global/var';
 import { getPositionInBrick } from '../util/fn';
 import CollisionDetection from './collisionDetection';
-import SpiritCollect from '../spirit/spiritCollect';
 
 export default class BulletCollision extends CollisionDetection {
   constructor() {
@@ -12,7 +11,7 @@ export default class BulletCollision extends CollisionDetection {
   }
 
   // override
-  isTouchBrick(row: number, col: number, index: number): boolean {
+  private isTouchBrick(row: number, col: number, index: number): boolean {
     const brickStatusArr: number[][] = brickStatus[row * 28 + col];
 
     // 如果brickStatusArr的值为undefined，那么表明砖块还是第一次被子弹撞到，直接返回true表明已经碰到砖块
@@ -33,7 +32,7 @@ export default class BulletCollision extends CollisionDetection {
     return {
       isCollision: false,
       info: [{ collisionType: 'Tank' }]
-    }
+    };
   }
 
   // 检测是否碰到子弹
@@ -41,6 +40,6 @@ export default class BulletCollision extends CollisionDetection {
     return {
       isCollision: false,
       info: [{ collisionType: 'Bullet' }]
-    }
+    };
   }
 }

@@ -42,7 +42,7 @@ export default class Bullet extends Mover {
 
   // 子弹初始输入的坐标是坦克的坐标，因此需要重置一下
   private resetPosition() {
-    let reset = {
+    const reset = {
       W: [this.x + 12, this.y],
       A: [this.x, this.y + 12],
       S: [this.x + 12, this.y + 24],
@@ -113,7 +113,7 @@ export default class Bullet extends Mover {
   public doAfterCollision(collisionInfo: collisionInfoItem[]) {
     collisionInfo.forEach(ele => {
       if (typeof this[`touch${ele.collisionType}`] === 'function') {
-        let [row, col] = ele.row ? [ele.row, ele.col] : [null, null];
+        const [row, col] = ele.row ? [ele.row, ele.col] : [void 0, void 0];
 
         this[`touch${ele.collisionType}`](row, col);
       }

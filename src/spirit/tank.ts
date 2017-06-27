@@ -45,7 +45,7 @@ export default class Tank extends Mover {
   protected beChangeDirection: boolean;
 
   constructor(
-    public x: number, 
+    public x: number,
     public y: number,
     public direction: string,
     public rank: number
@@ -85,7 +85,8 @@ export default class Tank extends Mover {
   protected getPositionAfterChangeDirection(): number[] {
     this.beChangeDirection = false;
 
-    let [x, y, directionNum] = [this.x, this.y, dirNum[this.direction]];
+    const directionNum = dirNum[this.direction];
+    let [x, y] = [this.x, this.y];
 
     directionNum % 2
       // 此处必须使用math.round进行四舍五入才能避免坦克转弯时候位置变动过大
@@ -96,15 +97,14 @@ export default class Tank extends Mover {
   }
 
   // override
-  doAfterCollision() {
-
+  protected doAfterCollision() {
   }
 
   // override
-  affirmPosition() {}
+  protected affirmPosition() {}
 
   // 生成子弹
-  newBullet() {
+  private newBullet() {
     const bulletInfo = {
       x: this.x,
       y: this.y,
@@ -119,7 +119,7 @@ export default class Tank extends Mover {
   }
 
   // 是否生成子弹
-  produceBullet() {}
+  protected produceBullet() {}
 
   // 定时改变轮胎图片
   protected changeWheelPic() {
@@ -145,7 +145,7 @@ export default class Tank extends Mover {
 
   // 绘制坦克
   private drawTank() {
-    let img = this.type === 'player' ? PLAY_IMG : NPC_IMG;
+    const img = this.type === 'player' ? PLAY_IMG : NPC_IMG;
 
     CXT_ROLE.drawImage(img, this.rank << 5, (dirNum[this.direction] << 6) + this.wheelPic, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }

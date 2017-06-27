@@ -26,7 +26,7 @@ export default class {
       W() { gameParam.stageNum = gameParam.stageNum > 1 ? gameParam.stageNum - 1 : MAX_STAGE; },
       S() { gameParam.stageNum = gameParam.stageNum < MAX_STAGE ? gameParam.stageNum + 1 : 1; },
       H: () => { (this.process = 'foldCurtain') && START_AUD.play(); }
-    }
+    };
   }
 
   private unfoldCurtain() {

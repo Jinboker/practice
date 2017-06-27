@@ -34,7 +34,7 @@ export default class TankCollisionDetection extends CollisionDetection {
     return {
       isCollision: false,
       info: [{ collisionType: 'Bonus' }]
-    }
+    };
   }
 
   // 检测是否碰到坦克
@@ -51,6 +51,6 @@ export default class TankCollisionDetection extends CollisionDetection {
     return {
       isCollision: false,
       info: [{ collisionType: 'Tank' }]
-    }
+    };
   }
 }
