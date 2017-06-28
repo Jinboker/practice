@@ -11,7 +11,7 @@ export default class BulletCollision extends CollisionDetection {
   }
 
   // override
-  private isTouchBrick(row: number, col: number, index: number): boolean {
+  protected isTouchBrick(row: number, col: number, index: number): boolean {
     const brickStatusArr: number[][] = brickStatus[row * 28 + col];
 
     // 如果brickStatusArr的值为undefined，那么表明砖块还是第一次被子弹撞到，直接返回true表明已经碰到砖块
@@ -28,7 +28,7 @@ export default class BulletCollision extends CollisionDetection {
   }
 
   // 检查是否碰到坦克
-  private getTankCollisionInfo(): collisionInfo {
+  private getTankCollisionInfo(): CollisionInfo {
     return {
       isCollision: false,
       info: [{ collisionType: 'Tank' }]
@@ -36,7 +36,7 @@ export default class BulletCollision extends CollisionDetection {
   }
 
   // 检测是否碰到子弹
-  private getBulletCollisionInfo(): collisionInfo {
+  private getBulletCollisionInfo(): CollisionInfo {
     return {
       isCollision: false,
       info: [{ collisionType: 'Bullet' }]

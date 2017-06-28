@@ -1,25 +1,26 @@
 import eventBus from '../../util/eventBus';
 import Bullet from '../../spirit/bullet';
-import SpiritCollect from '../../spirit/spiritCollect';
+import { spirit } from '../../global/var';
 
 export default class DrawBullet {
   constructor() {
-    SpiritCollect.bulletArr = [];
+    spirit.bulletArr = [];
 
     this.event();
   }
 
   private event() {
     // 事件在Tank类中dispatch
-    eventBus.on('new-bullet', (bulletInfo: bulletInfo) => {
+    eventBus.on('new-bullet', (bulletInfo: BulletInfo) => {
       const { x, y, direction, type, rank, id } = bulletInfo;
+      let a: Mover = new Bullet(x, y, direction, rank, type, id);
 
-      SpiritCollect.bulletArr.push(new Bullet(x, y, direction, type, rank, id));
+      spirit.bulletArr.push(new Bullet(x, y, direction, rank, type, id));
     });
   }
 
   public draw() {
-    const bulletArr = SpiritCollect.bulletArr;
+    const bulletArr = spirit.bulletArr;
 
     if (!bulletArr.length) return;
 
@@ -27,7 +28,7 @@ export default class DrawBullet {
       const bulletObj = bulletArr[i];
 
       bulletObj.draw();
-      flag = bulletObj.alive || !SpiritCollect.bulletArr.splice(i, 1);
+      flag = bulletObj.alive || !spirit.bulletArr.splice(i, 1);
     }
   }
 }

@@ -24,11 +24,12 @@ export default {
       let topicListeners = topic[ele];
 
       if (listener) {
-        const listenerIndex = topicListeners.indexOf(listener);
+        let listenerIndex = topicListeners.indexOf(listener.name);
 
         ~listenerIndex && (topicListeners[listenerIndex] = null);
       } else {
-        topicListeners.length = 0;
+        topicListeners = null;
+        // topicListeners.length = 0;
       }
     });
   },
@@ -38,10 +39,10 @@ export default {
    */
   dispatch: function(topic: string, ...args: any[]) {
     let i = 0;
-    const listeners = topics[topic] || [];
+    let listeners = topics[topic] || [];
 
     while (i < listeners.length) {
-      const listener = listeners[i];
+      let listener = listeners[i];
 
       listener === null
         ? listeners.splice(i, 1)

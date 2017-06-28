@@ -23,18 +23,18 @@ export default class Tank extends Mover {
   public id: number;
 
   // 轮胎变化相关参数
-  private wheelDelay: delayOption;
+  private wheelDelay: DelayOption;
   private wheelPic: number;
 
   // 防护罩相关参数
   protected shieldDuration: number;
   private shieldPic: number;
-  private shieldDelay: delayOption;
+  private shieldDelay: DelayOption;
 
   // 出生动画相关参数
   private bornAnimationNum: number;
   private bornPic: number;
-  private bornDelay: delayOption;
+  private bornDelay: DelayOption;
 
   // 子弹相关
   protected fireDelay: number;
@@ -104,7 +104,7 @@ export default class Tank extends Mover {
   protected affirmPosition() {}
 
   // 生成子弹
-  private newBullet() {
+  protected newBullet() {
     const bulletInfo = {
       x: this.x,
       y: this.y,

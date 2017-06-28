@@ -20,7 +20,7 @@ function keyUp(key: string) {
 
 function keyBoardInit() {
   ['keydown', 'keyup'].forEach(eventType => {
-    addEventListener(eventType, (ev: keyboardEvent) => {
+    addEventListener(eventType, (ev: KeyboardEvent) => {
       const key: string = codeToKey[ev.keyCode];
 
       if (typeof key === 'undefined') return;

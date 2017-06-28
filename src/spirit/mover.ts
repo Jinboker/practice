@@ -16,7 +16,7 @@ abstract class Mover {
   protected abstract speed: number;
   protected abstract type: string;
 
-  protected collisionInfo: collisionInfo;
+  protected collisionInfo: CollisionInfo;
 
   public alive: boolean;
   public id: number;
@@ -29,7 +29,7 @@ abstract class Mover {
     };
   }
 
-  protected abstract doAfterCollision(collisionInfo: collisionInfoItem[]): void;
+  protected abstract doAfterCollision(collisionInfo: CollisionInfoItem[]): void;
   protected abstract affirmPosition(): void;
   protected abstract draw(): void;
 

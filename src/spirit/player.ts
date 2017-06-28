@@ -22,7 +22,7 @@ export default class Player extends Tank {
   }
 
   // 看是否产生子弹
-  produceBullet() {
+  protected produceBullet() {
     const funcKey = inputParam.functionKey;
     let fireAble = !(this.fireDelay && (this.fireDelay -= 1));
 
@@ -34,7 +34,7 @@ export default class Player extends Tank {
     }
   }
 
-  getNextPosition() {
+  private getNextPosition() {
     let [x, y] = [this.x, this.y];
 
     // 确定是否需要移动或者改变方向
@@ -56,14 +56,14 @@ export default class Player extends Tank {
     return [x, y];
   }
 
-  affirmPosition() {
+  protected affirmPosition() {
     // 确定下一个位置的值
     [this.next_x, this.next_y] = this.getNextPosition();
     // 检查当坦克移动到下个位置以后是否会产生碰撞
     this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y, this.type, this.id);
     // 如果没有碰撞则确定位置
     if (!this.collisionInfo.isCollision) {
-      [this.x, this.y] = [this.next_x, this.next_y]
+      [this.x, this.y] = [this.next_x, this.next_y];
     }
   }
 }

@@ -12,10 +12,10 @@ const HALF_ARENA = SCREEN_L >> 1;
 
 export default class {
   private process: string;
-  private enterPlay: delayOption;
+  private enterPlay: DelayOption;
   private startFoldCurtain: boolean;
   private halfMaskWidth: number;
-  private operate: operate;
+  private operate: Operate;
 
   constructor(private couldChangeStage: boolean) {
     this.process = 'unfoldCurtain';

@@ -16,7 +16,7 @@ export default class Collision {
   protected y: number;
   protected dirNum: number;
   protected type: string;
-  protected isTouchBorder: isTouchBorder;
+  protected isTouchBorder: IsTouchBorder;
   protected collisionType: string[];
   protected id: number;
 
@@ -45,7 +45,7 @@ export default class Collision {
   }
 
   // 检查是否碰到边界
-  private getBorderCollisionInfo(): collisionInfo {
+  private getBorderCollisionInfo(): CollisionInfo {
     return {
       isCollision: this.isTouchBorder[this.direction](),
       info: [{ collisionType: 'Border' }]
@@ -56,7 +56,7 @@ export default class Collision {
   protected isTouchBrick(row: number, col: number, index: number): boolean { return true; }
 
   // 每次检测是否碰到砖块会检测两块砖，这是检测其中一次的代码
-  private getItemBlockCollisionInfo(row: number, col: number, index: number): collisionInfoItem {
+  private getItemBlockCollisionInfo(row: number, col: number, index: number): CollisionInfoItem {
     const roadTypeNum = roadMap[row][col];
 
     // roadType为3表示砖块，砖块因为存在子弹会打掉8*8大小的位置的问题，所以是否会碰到砖块导致不能移动需要特殊检查
@@ -69,14 +69,14 @@ export default class Collision {
   }
 
   // 检测是否碰到砖块之类的障碍物
-  private getBlockCollisionInfo(): collisionInfo {
+  private getBlockCollisionInfo(): CollisionInfo {
     const collisionCoordinateGroup = this.getCollisionCoordinateGroupWidthBlock();
     const collisionInfoGroup = collisionCoordinateGroup.map(
       (ele, index) => this.getItemBlockCollisionInfo(ele[1] >> 4, ele[0] >> 4, index));
 
     // 获取要返回到函数外的碰撞相关信息
     let isCollision = false;
-    const info: collisionInfoItem[] = [];
+    const info: CollisionInfoItem[] = [];
 
     collisionInfoGroup.forEach(ele => {
       isCollision = isCollision || Boolean(ele.isCollision);
@@ -87,7 +87,7 @@ export default class Collision {
   }
 
   // 分别获取每个类型的碰撞最后的碰撞信息
-  public getCollisionInfo(direction: string, x: number, y: number, type: string, id: number): collisionInfo {
+  public getCollisionInfo(direction: string, x: number, y: number, type: string, id: number): CollisionInfo {
     [
       this.direction, this.dirNum, this.x, this.y, this.type, this.id
     ] = [

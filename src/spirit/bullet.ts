@@ -13,21 +13,20 @@ const ATTACK_OVER_AUD = res.audio.attackOver;
 
 export default class Bullet extends Mover {
   // override
-  public distanceToCenter: number;
-  public speed: number;
-  public next_x: number;
-  public next_y: number;
-  public type: string;
-
-  private detectionCollision: BulletCollision;
   private dirNum: number;
+  private detectionCollision: BulletCollision;
+  protected type: string;
+  protected distanceToCenter: number;
+  protected next_x: number;
+  protected next_y: number;
+  protected speed: number;
 
   constructor(
-    public x: number,
-    public y: number,
-    public direction: string,
-    public bulletType: string,
-    public rank: number,
+    protected x: number,
+    protected y: number,
+    protected direction: string,
+    protected rank: number,
+    private bulletType: string,
     public id: number
   ) {
     super();
@@ -110,7 +109,7 @@ export default class Bullet extends Mover {
   }
 
   // override
-  public doAfterCollision(collisionInfo: collisionInfoItem[]) {
+  protected doAfterCollision(collisionInfo: CollisionInfoItem[]) {
     collisionInfo.forEach(ele => {
       if (typeof this[`touch${ele.collisionType}`] === 'function') {
         const [row, col] = ele.row ? [ele.row, ele.col] : [void 0, void 0];
@@ -121,7 +120,7 @@ export default class Bullet extends Mover {
   }
 
   // override
-  public affirmPosition() {
+  protected affirmPosition() {
     [this.next_x, this.next_y] = this.getNextPositionIfCouldMove();
     this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y, this.bulletType, this.id);
 

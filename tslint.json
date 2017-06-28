@@ -49,7 +49,6 @@
       false
     ],
     "no-bitwise": false,
-    "no-null-keyword": true,
     "object-literal-shorthand": false,
     "one-line": [
       false
@@ -64,7 +63,8 @@
     ],
     "semicolon": [
       true,
-      "always"
+      "always",
+      "ignore-interfaces"
     ],
     "trailing-comma": [
       true,

@@ -8,7 +8,7 @@ const MIN_Y = 285;
 const MAX_Y = 345;
 const UI_IMG = res.img.ui;
 const PLAYER_IMG = res.img.player;
-const changeWheel: delayOption = {
+const changeWheel: DelayOption = {
   count: WHEEL_CHANGE_FREQUENT,
   amount: WHEEL_CHANGE_FREQUENT
 };

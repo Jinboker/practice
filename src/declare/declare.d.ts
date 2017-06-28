@@ -1,34 +1,30 @@
-declare module "*.json" {
+declare module '*.json' {
   const value: any;
   export default value;
 }
 
-interface delayOption {
+interface DelayOption {
   count: number,
   amount: number
 }
 
-interface renderUI {
-  draw: () => void
-}
-
-interface collisionInfo {
+interface CollisionInfo {
   isCollision: boolean,
-  info: collisionInfoItem[]
+  info: CollisionInfoItem[]
 }
 
-interface collisionInfoItem {
+interface CollisionInfoItem {
   collisionType: string,
   isCollision?: boolean,
   row?: number,
   col?: number
 }
 
-interface keyboardEvent extends Event {
+interface KeyboardEvent extends Event {
   keyCode: number
 }
 
-interface operate {
+interface Operate {
   W?: () => void,
   A?: () => void,
   S?: () => void,
@@ -37,30 +33,31 @@ interface operate {
   J?: () => void
 }
 
-interface isTouchBorder {
+interface IsTouchBorder {
   W: () => boolean,
   A: () => boolean,
   S: () => boolean,
   D: () => boolean
 }
 
-interface bulletInfo {
+interface BulletInfo {
   x: number,
-  y: number
+  y: number,
   direction: string,
   type: string,
   rank: number,
   id: number
 }
 
-interface mover {
+interface Mover {
   id: number,
-  bulletAlive: boolean,
+  bulletAlive?: boolean,
+  alive: boolean,
   draw: () => void
 }
 
-interface spirit {
-  tankArr: mover[],
-  bulletArr: mover[]
+interface Spirit {
+  tankArr: Mover[],
+  bulletArr: Mover[]
 }
 

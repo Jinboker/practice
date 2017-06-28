@@ -6,12 +6,12 @@ import { delayTimeout } from '../../util/fn';
 import { gameParam, spirit } from '../../global/var';
 
 export default class DrawTank {
-  private setNewNpcDelay: delayOption;
+  private setNewNpcDelay: DelayOption;
   private npcIndex: number;
 
   constructor() {
     // 玩家
-    // spirit.tankArr[0] = new Player(128, 384, 'W', 0);
+    spirit.tankArr[0] = new Player(128, 384, 'W', 0);
     // SpiritCollect.player = new Player(128, 384, 'W', 0);
     // // NPC
     // SpiritCollect.npcArr = [];
@@ -28,7 +28,9 @@ export default class DrawTank {
       // 如果子弹死掉，那么找出对应的坦克，将其表示相应子弹存活的标志置为假
       bulletType === 'player'
         ? spirit.tankArr[0] && (spirit.tankArr[0].bulletAlive = false)
-        : spirit.tankArr.every((ele, index) => index === 0 || !(ele.id === id && Boolean(ele.bulletAlive = false)));
+        : spirit.tankArr.every((ele, index) => {
+          return index === 0 || !(ele.id === id && Boolean(ele.bulletAlive = false));
+        });
       // bulletType === 'player'
       //   ? SpiritCollect.player && (SpiritCollect.player.bulletAlive = false)
       //   : SpiritCollect.npcArr.every(ele =>

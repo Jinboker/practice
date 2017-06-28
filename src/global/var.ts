@@ -32,10 +32,12 @@ export const gameParam = {
   maxStage: 20,
   npcMax: 5,
   gameState: 'chooseMode',  // chooseMode, chooseStage, playGame, over, construct
-  renderContent: {}
+  renderContent: {
+    draw() {}
+  }
 };
 
-export const spirit: spirit = {
+export const spirit: Spirit = {
   tankArr: [],
   bulletArr: []
 };

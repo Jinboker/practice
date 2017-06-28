@@ -3,7 +3,7 @@ import { delayTimeout } from '../util/fn';
 import { dirNum } from '../global/var';
 
 export default class Npc extends Tank {
-  private changeDirectionDelay: delayOption;
+  private changeDirectionDelay: DelayOption;
 
   constructor(
     x: number,

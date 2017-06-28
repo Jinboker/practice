@@ -30,7 +30,7 @@ export default class TankCollisionDetection extends CollisionDetection {
   }
 
   // 检测是否碰到奖励
-  private getBonusCollisionInfo(): collisionInfo {
+  private getBonusCollisionInfo(): CollisionInfo {
     return {
       isCollision: false,
       info: [{ collisionType: 'Bonus' }]
@@ -38,7 +38,7 @@ export default class TankCollisionDetection extends CollisionDetection {
   }
 
   // 检测是否碰到坦克
-  private getTankCollisionInfo(): collisionInfo {
+  private getTankCollisionInfo(): CollisionInfo {
     // 所有坦克的集合
     // let allTank: mover[] = SpiritCollect.npcArr.map(ele => ele);
     // allTank.unshift(SpiritCollect.player);
