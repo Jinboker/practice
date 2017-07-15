@@ -42,8 +42,7 @@ export default class TankCollisionDetection extends CollisionDetection {
     let _dirNum = dirNum[this.direction];
 
     const isCollision = spirit.tankArr.some(ele => {
-      if (!ele) return false;
-      if (ele.id === this.id) return false;
+      if (!ele || ele.id === this.id) return false;
 
       const distanceX = Math.abs(this.x - ele.x);
       const distanceY = Math.abs(this.y - ele.y);

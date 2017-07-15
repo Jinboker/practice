@@ -1,6 +1,13 @@
-import { brickStatus } from '../global/var';
+import { brickStatus, spirit } from '../global/var';
 import { getPositionInBrick } from '../util/fn';
 import CollisionDetection from './collisionDetection';
+
+const isBulletHitTank = {
+  W: (x: number, y: number) => (y < 32 && y > 0 && x > -8 && x < 32),
+  A: (x: number, y: number) => (x < 32 && x > 0 && y > -8 && y < 32),
+  S: (x: number, y: number) => (y > -8 && y < 0 && x > -8 && x < 32),
+  D: (x: number, y: number) => (x > -8 && x < 0 && y > -8 && y < 32)
+};
 
 export default class BulletCollision extends CollisionDetection {
   constructor() {
@@ -29,8 +36,22 @@ export default class BulletCollision extends CollisionDetection {
 
   // 检查是否碰到坦克
   private getTankCollisionInfo(): CollisionInfo {
+    const tankArr = spirit.tankArr;
+    const collisionTankArr = this.type === 'npc'
+      ? tankArr.slice(0, 1)
+      : tankArr.slice(1);
+
+    const isCollision = collisionTankArr.some(ele => {
+      if (!ele || ele.id === this.id) return false;
+
+      const distanceX = Math.abs(this.x - ele.x);
+      const distanceY = Math.abs(this.y - ele.y);
+
+      return isBulletHitTank[this.direction](distanceX, distanceY);
+    });
+
     return {
-      isCollision: false,
+      isCollision,
       info: [{ collisionType: 'Tank' }]
     };
   }
