@@ -196,6 +196,7 @@ class TankObj extends MoverObj {
 			if ((this.iIndex === i) || !aTankArr[i].bBorned) { continue; }
 			let xVal = Math.abs(this.x - aTankArr[i].x),
 				yVal = Math.abs(this.y - aTankArr[i].y);
+
 			if (this.iDir % 2) {
 				if (xVal < 32 && xVal > 26 && yVal < 32) { return false; }
 			} else {

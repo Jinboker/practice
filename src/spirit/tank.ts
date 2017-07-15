@@ -13,11 +13,11 @@ const BORN_IMG = res.img.bonus;
 
 export default class Tank extends Mover {
   // override
-  public distanceToCenter: number;
-  public speed: number;
-  public next_x: number;
-  public next_y: number;
-  public type: string;
+  protected distanceToCenter: number;
+  protected speed: number;
+  protected next_x: number;
+  protected next_y: number;
+  protected type: string;
 
   // 坦克的id，主要用来匹配子弹
   public id: number;
@@ -97,8 +97,7 @@ export default class Tank extends Mover {
   }
 
   // override
-  protected doAfterCollision() {
-  }
+  protected doAfterCollision() {}
 
   // override
   protected affirmPosition() {}

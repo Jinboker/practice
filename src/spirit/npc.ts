@@ -49,11 +49,13 @@ export default class Npc extends Tank {
   }
 
   private getNextPosition() {
-    const [x, y] = this.beChangeDirection
-      ? this.getPositionAfterChangeDirection()
-      : this.getNextPositionIfCouldMove();
-
-    this.beChangeDirection && this.getRandomDirection();
+    let x, y;
+    if (this.beChangeDirection) {
+      [x, y] = this.getPositionAfterChangeDirection();
+      this.getRandomDirection();
+    } else {
+      [x, y] = this.getNextPositionIfCouldMove();
+    }
 
     return [x, y];
   }

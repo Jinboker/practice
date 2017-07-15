@@ -1,7 +1,7 @@
-import res from '../data/assets';
-import { CXT_BG, CXT_MISC, CXT_H, CXT_W, OFFSET_X, OFFSET_Y, SCREEN_L, MAX_STAGE } from '../global/const';
 import { gameParam } from '../global/var';
 import { delayTimeout, cleanCxt, keyboardOperate } from '../util/fn';
+import { CXT_BG, CXT_MISC, CXT_H, CXT_W, OFFSET_X, OFFSET_Y, SCREEN_L, MAX_STAGE } from '../global/const';
+import res from '../data/assets';
 import drawMap from '../map/drawMap';
 import eventBus from '../util/eventBus';
 import controller from '../ctrlCenter/ctrlCenter';

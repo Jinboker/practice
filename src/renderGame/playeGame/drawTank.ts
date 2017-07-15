@@ -12,9 +12,6 @@ export default class DrawTank {
   constructor() {
     // 玩家
     spirit.tankArr[0] = new Player(128, 384, 'W', 0);
-    // SpiritCollect.player = new Player(128, 384, 'W', 0);
-    // // NPC
-    // SpiritCollect.npcArr = [];
     // NPC出生的延迟
     this.setNewNpcDelay = { count: 30, amount: 150 };
     // 第几个NPC
@@ -31,10 +28,6 @@ export default class DrawTank {
         : spirit.tankArr.every((ele, index) => {
           return index === 0 || !(ele.id === id && Boolean(ele.bulletAlive = false));
         });
-      // bulletType === 'player'
-      //   ? SpiritCollect.player && (SpiritCollect.player.bulletAlive = false)
-      //   : SpiritCollect.npcArr.every(ele =>
-      //     !(ele.id === id && Boolean(ele.bulletAlive = false)));
     });
   }
 

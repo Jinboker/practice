@@ -22,9 +22,9 @@ export default class Bullet extends Mover {
   protected speed: number;
 
   constructor(
-    protected x: number,
-    protected y: number,
-    protected direction: string,
+    public x: number,
+    public y: number,
+    public direction: string,
     protected rank: number,
     private bulletType: string,
     public id: number

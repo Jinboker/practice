@@ -13,7 +13,6 @@ export default class DrawBullet {
     // 事件在Tank类中dispatch
     eventBus.on('new-bullet', (bulletInfo: BulletInfo) => {
       const { x, y, direction, type, rank, id } = bulletInfo;
-      let a: Mover = new Bullet(x, y, direction, rank, type, id);
 
       spirit.bulletArr.push(new Bullet(x, y, direction, rank, type, id));
     });

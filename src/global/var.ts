@@ -1,7 +1,3 @@
-import Player from '../spirit/player';
-import Npc from '../spirit/npc';
-import Bullet from '../spirit/bullet';
-
 export const codeToKey = {
   87: 'W', 65: 'A', 83: 'S', 68: 'D', 72: 'H', 74: 'J'
 };
@@ -11,7 +7,7 @@ export enum roadType {
 }
 
 export enum dirNum {
-  W = 0, A = 3, S = 2, D = 1
+  W = 0, D = 1, S = 2, A = 3
 }
 
 export const inputParam = {

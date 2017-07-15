@@ -7,7 +7,7 @@
   "author": "jin <jinboker@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --hot --inline -- NODE_ENV=dev",
+    "dev": "webpack-dev-server --hot --inline",
     "build": "cross-env NODE_ENV=prod webpack --progress --hide-modules"
   },
   "devDependencies": {

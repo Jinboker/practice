@@ -20,10 +20,6 @@ interface CollisionInfoItem {
   col?: number
 }
 
-interface KeyboardEvent extends Event {
-  keyCode: number
-}
-
 interface Operate {
   W?: () => void,
   A?: () => void,
@@ -50,6 +46,8 @@ interface BulletInfo {
 }
 
 interface Mover {
+  x: number,
+  y: number,
   id: number,
   bulletAlive?: boolean,
   alive: boolean,

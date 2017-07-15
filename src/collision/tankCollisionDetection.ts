@@ -1,4 +1,4 @@
-import { brickStatus } from '../global/var';
+import { brickStatus, spirit, dirNum } from '../global/var';
 import CollisionDetection from './collisionDetection';
 
 export default class TankCollisionDetection extends CollisionDetection {
@@ -39,17 +39,22 @@ export default class TankCollisionDetection extends CollisionDetection {
 
   // 检测是否碰到坦克
   private getTankCollisionInfo(): CollisionInfo {
-    // 所有坦克的集合
-    // let allTank: mover[] = SpiritCollect.npcArr.map(ele => ele);
-    // allTank.unshift(SpiritCollect.player);
-    //
-    // SpiritCollect.npcArr.forEach(ele => {
-    //   if (ele && ele.id !== this.id) {
-    //
-    //   }
-    // });
+    let _dirNum = dirNum[this.direction];
+
+    const isCollision = spirit.tankArr.some(ele => {
+      if (!ele) return false;
+      if (ele.id === this.id) return false;
+
+      const distanceX = Math.abs(this.x - ele.x);
+      const distanceY = Math.abs(this.y - ele.y);
+
+      return _dirNum % 2
+        ? distanceX < 32 && distanceX > 26 && distanceY < 32
+        : distanceY < 32 && distanceY > 26 && distanceX < 32;
+    });
+
     return {
-      isCollision: false,
+      isCollision,
       info: [{ collisionType: 'Tank' }]
     };
   }

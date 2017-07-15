@@ -6,20 +6,19 @@ const getNextPosition = {
 };
 
 abstract class Mover {
-  protected abstract x: number;
+  public abstract x: number;
+  public abstract y: number;
+  public alive: boolean;
+  public id: number;
+
   protected abstract next_x: number;
-  protected abstract y: number;
   protected abstract next_y: number;
   protected abstract direction: string;
   protected abstract rank: number;
   protected abstract distanceToCenter: number;
   protected abstract speed: number;
   protected abstract type: string;
-
   protected collisionInfo: CollisionInfo;
-
-  public alive: boolean;
-  public id: number;
 
   constructor() {
     this.alive = true;
