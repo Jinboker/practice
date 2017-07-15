@@ -38,8 +38,7 @@ export default class BulletCollision extends CollisionDetection {
   private getTankCollisionInfo(): CollisionInfo {
     const tankArr = spirit.tankArr;
     const collisionTankArr = this.type === 'npc'
-      ? tankArr.slice(0, 1)
-      : tankArr.slice(1);
+      ? tankArr.slice(0, 1) : tankArr.slice(1);
 
     const isCollision = collisionTankArr.some(ele => {
       if (!ele || ele.id === this.id) return false;
@@ -58,8 +57,24 @@ export default class BulletCollision extends CollisionDetection {
 
   // 检测是否碰到子弹
   private getBulletCollisionInfo(): CollisionInfo {
+    let isCollision = false;
+
+    if (this.type === 'player') {
+      const collisionBulletArr = spirit.bulletArr.slice(1);
+
+      isCollision = collisionBulletArr.some(ele => {
+        if (!ele || !ele.alive || ele.id === this.id) return false;
+
+        const _beCollision = (Math.abs(this.x - ele.x) <= 8 && Math.abs(this.y - ele.y) <= 8);
+
+        _beCollision && (ele.alive = false);
+
+        return _beCollision;
+      });
+    }
+
     return {
-      isCollision: false,
+      isCollision,
       info: [{ collisionType: 'Bullet' }]
     };
   }

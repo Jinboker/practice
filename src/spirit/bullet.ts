@@ -122,6 +122,7 @@ export default class Bullet extends Mover {
   // override
   protected affirmPosition() {
     [this.next_x, this.next_y] = this.getNextPositionIfCouldMove();
+    // 获取子弹碰撞的相关信息
     this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y, this.bulletType, this.id);
 
     if (this.collisionInfo.isCollision) {
