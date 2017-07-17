@@ -6,6 +6,7 @@
     "tslint:latest"
   ],
   "rules": {
+    "no-shadowed-variable": false,
     // 可不可以有null
     "no-null-keyword": false,
     // 不会提示let转const

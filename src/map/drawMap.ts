@@ -1,7 +1,7 @@
-import { CXT_BG, OFFSET_X, OFFSET_Y } from '../global/const';
+import { CXT_BG, OFFSET_X, OFFSET_Y } from '../global';
 import { affirmRoadMap } from './affirmRoadMap';
 import res from '../data/assets';
-import { mapData } from '../data/map';
+import mapData from '../data/map';
 
 const BRICK_IMG = res.img.brick;
 

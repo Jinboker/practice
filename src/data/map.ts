@@ -16,7 +16,7 @@ export let firstStageData = [
 ];
 
 // 地图数据
-export const mapData = [
+export default [
   firstStageData,
   [ // 第二关
     [0, 0, 0, 6, 0, 0, 0, 6, 0, 0, 0, 0, 0],

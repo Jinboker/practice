@@ -1,10 +1,9 @@
 import Mover from './mover';
-import { delayTimeout } from '../util/fn';
 import res from '../data/assets';
 import eventBus from '../util/eventBus';
-import TankCollisionDetection from '../collision/tankCollisionDetection';
-import { CXT_ROLE, WHEEL_CHANGE_FREQUENT, OFFSET_X, OFFSET_Y } from '../global/const';
-import { dirNum } from '../global/var';
+import TankCollisionCheck from '../checkCollision/tankCollisionCheck';
+import { delayTimeout } from '../util/fn';
+import { CXT_ROLE, OFFSET_X, OFFSET_Y, directionNum } from '../global';
 
 const SHIELD_IMG = res.img.misc;
 const PLAY_IMG = res.img.player;
@@ -15,11 +14,10 @@ export default class Tank extends Mover {
   // override
   protected distanceToCenter: number;
   protected speed: number;
-  protected next_x: number;
-  protected next_y: number;
+  protected nextX: number;
+  protected nextY: number;
   protected type: string;
 
-  // 坦克的id，主要用来匹配子弹
   public id: number;
 
   // 轮胎变化相关参数
@@ -40,9 +38,14 @@ export default class Tank extends Mover {
   protected fireDelay: number;
   public bulletAlive: boolean;
 
-  protected detectionCollision: TankCollisionDetection;
+  // 是否可以移动
   protected couldMove: boolean;
+
+  // 是否需要转弯
   protected beChangeDirection: boolean;
+
+  // 碰撞检测
+  protected collisionCheck: TankCollisionCheck;
 
   constructor(
     public x: number,
@@ -53,8 +56,8 @@ export default class Tank extends Mover {
     super();
 
     this.distanceToCenter = 16;
-    this.next_x = x;
-    this.next_y = y;
+    this.nextX = x;
+    this.nextY = y;
     this.beChangeDirection = false;
 
     // 生成坦克ID
@@ -62,7 +65,7 @@ export default class Tank extends Mover {
 
     // 轮胎变化相应参数
     this.wheelPic = 0;
-    this.wheelDelay = { count: WHEEL_CHANGE_FREQUENT, amount: WHEEL_CHANGE_FREQUENT };
+    this.wheelDelay = { count: 5, amount: 5 };
 
     // 防护罩相关参数
     this.shieldDuration = 0;
@@ -79,16 +82,20 @@ export default class Tank extends Mover {
     this.bulletAlive = false;
 
     // 实例化坦克的碰撞检测
-    this.detectionCollision = new TankCollisionDetection();
+    this.collisionCheck = new TankCollisionCheck();
   }
 
-  protected getPositionAfterChangeDirection(): number[] {
+  /**
+   * 如果坦克需要转弯，那么获取转弯后的坐标
+   * @returns {[number,number]} 坐标
+   */
+  protected getCoordAfterChangeDirection(): number[] {
     this.beChangeDirection = false;
 
-    const directionNum = dirNum[this.direction];
+    const dirNum = directionNum[this.direction];
     let [x, y] = [this.x, this.y];
 
-    directionNum % 2
+    dirNum % 2
       // 此处必须使用math.round进行四舍五入才能避免坦克转弯时候位置变动过大
       ? x = Math.round(x / 16) << 4
       : y = Math.round(y / 16) << 4;
@@ -96,36 +103,33 @@ export default class Tank extends Mover {
     return [x, y];
   }
 
-  // override
-  protected doAfterCollision() {}
-
-  // override
-  protected affirmPosition() {}
-
-  // 生成子弹
-  protected newBullet() {
-    const bulletInfo = {
-      x: this.x,
-      y: this.y,
-      direction: this.direction,
-      rank: this.rank,
-      id: this.id,
-      type: this.type
-    };
+  /**
+   * 生成新的子弹
+   */
+  protected produceNewBullet() {
+    const { x, y, direction, rank, id, type } = this;
+    const bulletInfo = { x, y, direction, rank, id, type };
 
     // 事件在DrawBullet类中响应
     eventBus.dispatch('new-bullet', bulletInfo);
   }
 
-  // 是否生成子弹
-  protected produceBullet() {}
+  /**
+   * 被子类重写
+   * 检查是否需要生成新的子弹
+   */
+  protected whetherProduceBullet() {}
 
-  // 定时改变轮胎图片
+  /**
+   * 每5次游戏渲染循环改变一次轮胎的图片
+   */
   protected changeWheelPic() {
     delayTimeout(this.wheelDelay, () => (this.wheelPic = (+!this.wheelPic) << 5));
   }
 
-  // 绘制防护罩
+  /**
+   * 绘制防护罩
+   */
   private drawShield() {
     if (!this.shieldDuration) return;
 
@@ -134,7 +138,9 @@ export default class Tank extends Mover {
     delayTimeout(this.shieldDelay, () => (this.shieldPic = (+!this.shieldPic) << 5));
   }
 
-  // 绘制出生动画
+  /**
+   * 绘制出生动画
+   */
   private drawBornAnimation() {
     CXT_ROLE.drawImage(BORN_IMG, this.bornPic << 5, 64, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
     delayTimeout(this.bornDelay, () => {
@@ -142,22 +148,32 @@ export default class Tank extends Mover {
     });
   }
 
-  // 绘制坦克
+  /**
+   * 绘制坦克
+   */
   private drawTank() {
     const img = this.type === 'player' ? PLAY_IMG : NPC_IMG;
 
-    CXT_ROLE.drawImage(img, this.rank << 5, (dirNum[this.direction] << 6) + this.wheelPic, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+    CXT_ROLE.drawImage(img, this.rank << 5, (directionNum[this.direction] << 6) + this.wheelPic, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }
 
-  // override
-  public draw() {
+  /**
+   * 被子类重写
+   * 确定坦克在本次渲染循环结束后的最终位置
+   */
+  protected affirmFinalCoord() {}
+
+  /**
+   * 渲染精灵
+   */
+  public renderSpirit() {
     this.bornAnimationNum
       ? this.drawBornAnimation()
       : (
-        this.produceBullet(),
-        this.affirmPosition(),
+        this.whetherProduceBullet(),
+        this.affirmFinalCoord(),
         this.drawShield(),
         this.drawTank()
-      );
+    );
   }
 }

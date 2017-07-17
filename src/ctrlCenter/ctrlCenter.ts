@@ -1,27 +1,27 @@
-import { gameParam } from '../global/var';
+import RenderGame from '../renderGame';
 import ChooseMode from '../renderGame/chooseMode';
 import ChooseStage from '../renderGame/chooseStage';
-import PlayGame from '../renderGame/playeGame/index';
+import PlayGame from '../renderGame/playGame/index';
 
 const listeners = {};
 
 listeners['newGame'] = () => {
-  gameParam.gameState = 'chooseMode';
-  gameParam.renderContent = new ChooseMode();
+  RenderGame.renderContent = new ChooseMode();
 };
 
 listeners['enterStage'] = (couldChangeStage: boolean) => {
-  gameParam.renderContent = new ChooseStage(couldChangeStage);
+  RenderGame.renderContent = new ChooseStage(couldChangeStage);
 };
 
 listeners['playGame'] = () => {
-  gameParam.renderContent = new PlayGame();
+  RenderGame.renderContent = new PlayGame();
 };
-// listeners['construct'] = () => {
-// };
-//
-// listeners['over'] = () => {
-// };
+
+listeners['construct'] = () => {
+};
+
+listeners['over'] = () => {
+};
 
 function getReceiveMsg() {
   const receiveMsg = <T>(topic: string, ...args: T[]) => listeners[topic](...args);

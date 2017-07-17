@@ -1,4 +1,4 @@
-const getNextPosition = {
+const nextCoord = {
   W: (x: number, y: number, speed: number): number[] => [x, y - speed],
   A: (x: number, y: number, speed: number): number[] => [x - speed, y],
   S: (x: number, y: number, speed: number): number[] => [x, y + speed],
@@ -8,33 +8,30 @@ const getNextPosition = {
 abstract class Mover {
   public abstract x: number;
   public abstract y: number;
-  public alive: boolean;
-  public id: number;
+  public abstract id: number;
 
-  protected abstract next_x: number;
-  protected abstract next_y: number;
+  protected abstract nextX: number;
+  protected abstract nextY: number;
   protected abstract direction: string;
   protected abstract rank: number;
   protected abstract distanceToCenter: number;
   protected abstract speed: number;
   protected abstract type: string;
-  protected collisionInfo: CollisionInfo;
+
+  // 确定最终的坐标
+  protected abstract affirmFinalCoord(): void;
+  // 渲染精灵
+  public abstract renderSpirit(): void;
+
+  public alive: boolean;
 
   constructor() {
     this.alive = true;
-    this.collisionInfo = {
-      isCollision: false,
-      info: []
-    };
   }
 
-  protected abstract doAfterCollision(collisionInfo: CollisionInfoItem[]): void;
-  protected abstract affirmPosition(): void;
-  protected abstract draw(): void;
-
-  // 根据当前速度确定下个位置的坐标
-  protected getNextPositionIfCouldMove(): number[] {
-    return getNextPosition[this.direction](this.x, this.y, this.speed);
+  // 如果可以移动，那么根据速度确定下一个移动到的坐标点
+  protected getCoordMoveTo(): number[] {
+    return nextCoord[this.direction](this.x, this.y, this.speed);
   }
 }
 

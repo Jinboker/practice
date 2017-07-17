@@ -1,17 +1,13 @@
-import { delayTimeout, cleanCxt, keyboardOperate } from '../util/fn';
-import { CXT_BG, WHEEL_CHANGE_FREQUENT, CXT_H } from '../global/const';
-import { inputParam } from '../global/var';
-import controller from '../ctrlCenter/ctrlCenter';
 import res from '../data/assets';
+import controller from '../ctrlCenter/ctrlCenter';
+import { CXT_BG, CXT_H, inputParam } from '../global';
+import { delayTimeout, cleanCxt, keyboardOperate } from '../util/fn';
 
 const MIN_Y = 285;
 const MAX_Y = 345;
 const UI_IMG = res.img.ui;
 const PLAYER_IMG = res.img.player;
-const changeWheel: DelayOption = {
-  count: WHEEL_CHANGE_FREQUENT,
-  amount: WHEEL_CHANGE_FREQUENT
-};
+const changeWheel: DelayOption = { count: 5, amount: 5 };
 const operate = {
   W() { indicatorPosition = indicatorPosition > MIN_Y ? indicatorPosition - 30 : MAX_Y; },
   S() { indicatorPosition = indicatorPosition < MAX_Y ? indicatorPosition + 30 : MIN_Y; },

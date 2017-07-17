@@ -1,5 +1,4 @@
-import { CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H } from '../global/const';
-import { inputParam } from '../global/var';
+import { CXT_ROLE, CXT_BG, CXT_MISC, CXT_W, CXT_H, inputParam } from '../global';
 
 // 延时函数
 export function delayTimeout(option: DelayOption, fn: () => void) {
@@ -11,7 +10,7 @@ export function delayTimeout(option: DelayOption, fn: () => void) {
 
 // 清除画布
 export function cleanCxt(...types: string[]) {
-  let typeArr = types[0] === 'all' ? ['role', 'bg', 'misc'] : types;
+  const typeArr = types[0] === 'all' ? ['role', 'bg', 'misc'] : types;
   const cxt = { CXT_ROLE, CXT_BG, CXT_MISC };
 
   typeArr.forEach(ele => cxt[`CXT_${ele.toUpperCase()}`].clearRect(0, 0, CXT_W, CXT_H));
