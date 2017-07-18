@@ -90,6 +90,13 @@ export default class CollisionCheck {
   }
 
   /**
+   * 会被子类重写
+   * 检查是否碰到坦克
+   * @returns {[{isCollision: boolean}]}
+   */
+  protected checkTouchTank(): CollisionInfo[] { return [{ isCollision: false }]; }
+
+  /**
    * 获取最后的碰撞信息
    * @param params
    * @returns {CollisionInfo[]} 返回一个数组，之所以这里需要返回数组是因为检查barrier的时候，可能出现一边碰到钢筋一边碰到砖块这种类似的情况

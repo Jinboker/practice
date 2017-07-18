@@ -80,26 +80,28 @@ export default class Npc extends Tank {
   protected affirmFinalCoord() {
     this.changeWheelPic();
 
-    if (this.couldMoveForward) {
-      // 确定下一个位置的值
-      [this.nextX, this.nextY] = this.getNextCoord();
-
-      if (this.beChangeDirection) {
-        this.beChangeDirection = false;
-        [this.x, this.y] = [this.nextX, this.nextY];
-      } else {
-        const { direction, nextX, nextY } = this;
-        const collisionParams = { direction, nextX, nextY };
-        // 获取碰撞信息
-        const collisionInfoGroup = this.collisionCheck.getCollisionInfo(collisionParams);
-        // 如果下一个可能运动到的位置不会产生碰撞，那么直接运动到下个位置
-        const isCollision = collisionInfoGroup.some(ele => ele.isCollision);
-
-        !isCollision && ([this.x, this.y] = [this.nextX, this.nextY]);
-        this.couldMoveForward = !isCollision;
-      }
-    } else {
+    // 如果不能继续向前移动，那么等待一定时间后改变方向
+    if (!this.couldMoveForward) {
       this.delayToChangeDirection();
+      return;
+    }
+
+    // 确定下一个位置的值
+    [this.nextX, this.nextY] = this.getNextCoord();
+
+    if (this.beChangeDirection) {
+      this.beChangeDirection = false;
+      [this.x, this.y] = [this.nextX, this.nextY];
+    } else {
+      const { direction, nextX, nextY } = this;
+      const collisionParams = { direction, nextX, nextY };
+      // 获取碰撞信息
+      const collisionInfoGroup = this.collisionCheck.getCollisionInfo(collisionParams);
+      // 如果下一个可能运动到的位置不会产生碰撞，那么直接运动到下个位置
+      const isCollision = collisionInfoGroup.some(ele => ele.isCollision);
+
+      !isCollision && ([this.x, this.y] = [this.nextX, this.nextY]);
+      this.couldMoveForward = !isCollision;
     }
   }
 }

@@ -9,7 +9,7 @@ export default class TankCollisionCheck extends CollisionCheck {
     super(type, id);
 
     this.distanceToCenter = 16;
-    this.checkTypeCollection = ['Border', 'Barrier'];
+    this.checkTypeCollection = ['Border', 'Barrier', 'Tank'];
   }
 
   /**
@@ -36,5 +36,25 @@ export default class TankCollisionCheck extends CollisionCheck {
     }
 
     return !passAble;
+  }
+
+  /**
+   * @override
+   * 检查是否碰到坦克
+   * @returns {[{isCollision: boolean}]}
+   */
+  protected checkTouchTank(): CollisionInfo[] {
+    const isCollision = spiritCollection.tankArr.some(ele => {
+      if (!ele || ele.id === this.id) return false;
+
+      const distanceX = Math.abs(this.nextX - ele.x);
+      const distanceY = Math.abs(this.nextY - ele.y);
+
+      return directionNum[this.direction] % 2
+        ? distanceX < 32 && distanceX > 26 && distanceY < 32
+        : distanceY < 32 && distanceY > 26 && distanceX < 32;
+    });
+
+    return [{ isCollision }];
   }
 }
