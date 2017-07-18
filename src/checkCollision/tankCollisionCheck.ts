@@ -2,8 +2,11 @@ import CollisionCheck from './collisionCheck';
 import { brickStatus, spiritCollection, directionNum } from '../global';
 
 export default class TankCollisionCheck extends CollisionCheck {
-  constructor() {
-    super();
+  constructor(
+    protected type: string,
+    protected id: number
+  ) {
+    super(type, id);
 
     this.distanceToCenter = 16;
     this.checkTypeCollection = ['Border', 'Barrier'];

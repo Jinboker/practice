@@ -63,7 +63,5 @@ interface CollisionInfo {
 interface CollisionParams {
   direction: string,
   nextX: number,
-  nextY: number,
-  type: string,
-  id: number
+  nextY: number
 }

@@ -20,12 +20,15 @@ export default class CollisionCheck {
   protected direction: string;
   protected nextX: number;
   protected nextY: number;
-  protected type: string;
-  protected id: number;
   protected distanceToCenter: number;
   protected directionNum: number;
   // 需要检查的碰撞的类型的数组集合
   protected checkTypeCollection: string[];
+
+  constructor(
+    protected type: string,
+    protected id: number
+  ) {}
 
   /**
    * 根据精灵中心的坐标，算出精灵(32*32的格子)在roadMap(表示16*16格子的坐标数组)数据中需要去计算的碰撞坐标

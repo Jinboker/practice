@@ -1,6 +1,6 @@
 import Player from '../../spirit/player';
-// import Npc from '../../spirit/npc';
-// import npcData from '../../data/npc';
+import Npc from '../../spirit/npc';
+import npcData from '../../data/npc';
 import eventBus from '../../util/eventBus';
 import { delayTimeout } from '../../util/fn';
 import { gameParam, spiritCollection } from '../../global';
@@ -29,18 +29,18 @@ export default class DrawTank {
 
   public draw() {
     // 如果正存活的NPC数目小于约定的最大数，且坦克未全部出生，那么出生新的NPC
-    // if (
-    //   spirit.tankArr.length < gameParam.npcMax &&
-    //   this.npcIndex <= gameParam.maxStage
-    // ) {
-    //   delayTimeout(this.setNewNpcDelay, () => {
-    //     const [x, y] = [(this.npcIndex % 3) * 192, 0];
-    //     const rank = npcData[gameParam.stageNum - 1][this.npcIndex];
-    //
-    //     spirit.tankArr.push(new Npc(x, y, 'S', rank));
-    //     this.npcIndex++;
-    //   });
-    // }
+    if (
+      spiritCollection.tankArr.length < gameParam.npcMax &&
+      this.npcIndex <= gameParam.maxStage
+    ) {
+      delayTimeout(this.setNewNpcDelay, () => {
+        const [x, y] = [(this.npcIndex % 3) * 192, 0];
+        const rank = npcData[gameParam.stageNum - 1][this.npcIndex];
+
+        spiritCollection.tankArr.push(new Npc(x, y, 'S', rank));
+        this.npcIndex++;
+      });
+    }
     // 绘制坦克
     spiritCollection.tankArr.forEach(ele => ele && ele.renderSpirit());
   }

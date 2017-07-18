@@ -17,7 +17,6 @@ export default class Player extends Tank {
 
     this.speed = 2;
     this.type = 'player';
-    this.couldMove = false;
     this.shieldDuration = 200;
   }
 
@@ -38,29 +37,28 @@ export default class Player extends Tank {
   }
 
   /**
-   * 判断按键按下的情况，确定坦克在移动，转弯及不移动的情况下，下一个的坐标
-   * @returns {[number,number,boolean]} 坐标和是否转换方向
+   * 判断按键按下的情况，确定坦克是否需要转弯和下一个的位置
+   * @returns {[number,number]}
    */
-  private getNextCoord(): [number, number, boolean] {
+  private getNextCoord(): [number, number] {
     let [x, y] = [this.x, this.y];
 
     // 通过比对当前方向与按下的方向，判断是否需要改变方向，如果需要改变，则优先改变方向
     const directionKey = inputParam.directionKey;
-    const beChangeDirection = (Boolean(directionKey) && this.direction !== directionKey);
+    this.beChangeDirection = (Boolean(directionKey) && this.direction !== directionKey);
 
-    if (beChangeDirection) {
+    if (this.beChangeDirection) {
       [x, y] = this.getCoordAfterChangeDirection();
       this.direction = directionKey;
     } else {
-      // 确定是否能够移动
-      this.couldMove = inputParam[directionKey];
-      if (this.couldMove) {
+      // 如果移动按键按下，则移动
+      if (inputParam[directionKey]) {
         this.changeWheelPic();
         [x, y] = this.getCoordMoveTo();
       }
     }
 
-    return [x, y, beChangeDirection];
+    return [x, y];
   }
 
   /**
@@ -69,15 +67,14 @@ export default class Player extends Tank {
    */
   protected affirmFinalCoord() {
     // 确定下一个坐标和是否转换方向
-    let beChangeDirection;
-    [this.nextX, this.nextY, beChangeDirection] = this.getNextCoord();
+    [this.nextX, this.nextY] = this.getNextCoord();
 
-    if (beChangeDirection) {
+    if (this.beChangeDirection) {
       [this.x, this.y] = [this.nextX, this.nextY];
     } else {
       // 对下一个坐标进行碰撞检测
-      const { direction, nextX, nextY, type, id } = this;
-      const collisionParams = { direction, nextX, nextY, type, id };
+      const { direction, nextX, nextY } = this;
+      const collisionParams = { direction, nextX, nextY };
       // 获取碰撞信息
       const collisionInfoGroup = this.collisionCheck.getCollisionInfo(collisionParams);
       // 如果下一个可能运动到的位置不会产生碰撞，那么直接运动到下个位置

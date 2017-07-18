@@ -38,11 +38,14 @@ export default class Tank extends Mover {
   protected fireDelay: number;
   public bulletAlive: boolean;
 
-  // 是否可以移动
-  protected couldMove: boolean;
+  // 完全停止任何动作
+  protected stop: boolean;
 
   // 碰撞检测
   protected collisionCheck: TankCollisionCheck;
+
+  // 是否需要改变方向
+  protected beChangeDirection: boolean;
 
   constructor(
     public x: number,
@@ -52,6 +55,7 @@ export default class Tank extends Mover {
   ) {
     super();
 
+    this.beChangeDirection = false;
     this.distanceToCenter = 16;
     this.nextX = x;
     this.nextY = y;
@@ -78,7 +82,7 @@ export default class Tank extends Mover {
     this.bulletAlive = false;
 
     // 实例化坦克的碰撞检测
-    this.collisionCheck = new TankCollisionCheck();
+    this.collisionCheck = new TankCollisionCheck(this.type, this.id);
   }
 
   /**
