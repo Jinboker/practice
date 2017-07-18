@@ -39,16 +39,16 @@ export default class Player extends Tank {
 
   /**
    * 判断按键按下的情况，确定坦克在移动，转弯及不移动的情况下，下一个的坐标
-   * @returns {[number,number]} 坐标
+   * @returns {[number,number,boolean]} 坐标和是否转换方向
    */
-  private getNextCoord() {
+  private getNextCoord(): [number, number, boolean] {
     let [x, y] = [this.x, this.y];
 
     // 通过比对当前方向与按下的方向，判断是否需要改变方向，如果需要改变，则优先改变方向
     const directionKey = inputParam.directionKey;
-    this.beChangeDirection = (Boolean(directionKey) && this.direction !== directionKey);
+    const beChangeDirection = (Boolean(directionKey) && this.direction !== directionKey);
 
-    if (this.beChangeDirection) {
+    if (beChangeDirection) {
       [x, y] = this.getCoordAfterChangeDirection();
       this.direction = directionKey;
     } else {
@@ -60,7 +60,7 @@ export default class Player extends Tank {
       }
     }
 
-    return [x, y];
+    return [x, y, beChangeDirection];
   }
 
   /**
@@ -68,17 +68,22 @@ export default class Player extends Tank {
    * 确定坦克在本次渲染循环结束后的最终位置
    */
   protected affirmFinalCoord() {
-    // 确定下一个坐标
-    [this.nextX, this.nextY] = this.getNextCoord();
+    // 确定下一个坐标和是否转换方向
+    let beChangeDirection;
+    [this.nextX, this.nextY, beChangeDirection] = this.getNextCoord();
 
-    // 对下一个坐标进行碰撞检测
-    const { direction, nextX, nextY, type, id } = this;
-    const collisionParams = { direction, nextX, nextY, type, id };
-    // 获取碰撞信息
-    const collisionInfoGroup = this.collisionCheck.getCollisionInfo(collisionParams);
-    // 如果下一个可能运动到的位置不会产生碰撞，那么直接运动到下个位置
-    const isCollision = collisionInfoGroup.some(ele => ele.isCollision);
+    if (beChangeDirection) {
+      [this.x, this.y] = [this.nextX, this.nextY];
+    } else {
+      // 对下一个坐标进行碰撞检测
+      const { direction, nextX, nextY, type, id } = this;
+      const collisionParams = { direction, nextX, nextY, type, id };
+      // 获取碰撞信息
+      const collisionInfoGroup = this.collisionCheck.getCollisionInfo(collisionParams);
+      // 如果下一个可能运动到的位置不会产生碰撞，那么直接运动到下个位置
+      const isCollision = collisionInfoGroup.some(ele => ele.isCollision);
 
-    !isCollision && ([this.x, this.y] = [this.nextX, this.nextY]);
+      !isCollision && ([this.x, this.y] = [this.nextX, this.nextY]);
+    }
   }
 }

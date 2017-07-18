@@ -41,9 +41,6 @@ export default class Tank extends Mover {
   // 是否可以移动
   protected couldMove: boolean;
 
-  // 是否需要转弯
-  protected beChangeDirection: boolean;
-
   // 碰撞检测
   protected collisionCheck: TankCollisionCheck;
 
@@ -58,7 +55,6 @@ export default class Tank extends Mover {
     this.distanceToCenter = 16;
     this.nextX = x;
     this.nextY = y;
-    this.beChangeDirection = false;
 
     // 生成坦克ID
     this.id = Math.ceil(new Date().getTime() * Math.random());
@@ -90,12 +86,9 @@ export default class Tank extends Mover {
    * @returns {[number,number]} 坐标
    */
   protected getCoordAfterChangeDirection(): number[] {
-    this.beChangeDirection = false;
-
-    const dirNum = directionNum[this.direction];
     let [x, y] = [this.x, this.y];
 
-    dirNum % 2
+    directionNum[this.direction] % 2
       // 此处必须使用math.round进行四舍五入才能避免坦克转弯时候位置变动过大
       ? x = Math.round(x / 16) << 4
       : y = Math.round(y / 16) << 4;
