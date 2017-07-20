@@ -105,6 +105,7 @@ export default class CollisionCheck {
   public getCollisionInfo(params: CollisionParams): CollisionInfo[] {
     // 将传入的参数赋值绑定到class相应的实例属性上
     Object.keys(params).forEach(ele => (this[ele] = params[ele]));
+    this.directionNum = directionNum[this.direction];
 
     let collisionInfoArr: CollisionInfo[] = [{ isCollision: false }];
 

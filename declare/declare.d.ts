@@ -56,7 +56,8 @@ interface CollisionInfo {
   isCollision: boolean,
   collisionType?: string,
   row?: number,
-  col?: number
+  col?: number,
+  id?: number
 }
 
 // 碰撞检测的参数
@@ -64,4 +65,13 @@ interface CollisionParams {
   direction: string,
   nextX: number,
   nextY: number
+}
+
+// 子弹在砖块中的位置信息
+interface PositionInBrickInfo {
+  x: number,
+  y: number,
+  row: number,
+  col: number,
+  directionNum: number
 }

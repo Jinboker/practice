@@ -1,5 +1,5 @@
 import CollisionCheck from './collisionCheck';
-import { brickStatus, spiritCollection, directionNum } from '../global';
+import { brickStatus, spiritCollection } from '../global';
 
 export default class TankCollisionCheck extends CollisionCheck {
   constructor(
@@ -25,7 +25,7 @@ export default class TankCollisionCheck extends CollisionCheck {
 
     let indexInBrick = 0;
     let passAble = false;
-    let dirNum = directionNum[this.direction];
+    let dirNum = this.directionNum;
 
     if (dirNum % 2) {
       indexInBrick = (this.nextX + (+!(dirNum - 1) * 32) - (col << 4)) >> 3;
@@ -50,7 +50,7 @@ export default class TankCollisionCheck extends CollisionCheck {
       const distanceX = Math.abs(this.nextX - ele.x);
       const distanceY = Math.abs(this.nextY - ele.y);
 
-      return directionNum[this.direction] % 2
+      return this.directionNum % 2
         ? distanceX < 32 && distanceX > 26 && distanceY < 32
         : distanceY < 32 && distanceY > 26 && distanceX < 32;
     });

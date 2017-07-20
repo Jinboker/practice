@@ -25,11 +25,13 @@ export function keyboardOperate(operate: Operate) {
 }
 
 // 确定子弹等级小于1的时候打到砖块后的位置在brickStatus中的数组的索引值
-export function getPositionInBrick(x: number, y: number, row: number, col: number) {
+export function getPositionInBrick(positionParams: PositionInBrickInfo) {
+  const { x, y, row, col, directionNum } = positionParams;
+
   return (
-    this.dirNum % 2
-      ? (x + (+!(this.dirNum - 1)) * 8 - col * 16) >> 3
-      : (y + this.dirNum * 4 - row * 16) >> 3
+    directionNum % 2
+      ? (x + (+!(directionNum - 1)) * 8 - col * 16) >> 3
+      : (y + directionNum * 4 - row * 16) >> 3
   );
 }
 

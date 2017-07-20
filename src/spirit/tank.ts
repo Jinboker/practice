@@ -17,7 +17,6 @@ export default class Tank extends Mover {
   protected nextX: number;
   protected nextY: number;
   protected type: string;
-
   public id: number;
 
   // 轮胎变化相关参数
