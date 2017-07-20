@@ -15,7 +15,6 @@ export default class Bullet extends Mover {
   protected speed: number;
   protected nextX: number;
   protected nextY: number;
-  protected type: string;
 
   // 碰撞检测
   private collisionCheck: BulletCollisionCheck;
@@ -26,7 +25,7 @@ export default class Bullet extends Mover {
     public y: number,
     public direction: string,
     protected rank: number,
-    private bulletType: string,
+    protected type: string,
     public id: number
   ) {
     super();
@@ -87,7 +86,11 @@ export default class Bullet extends Mover {
     CXT_BG.clearRect(OFFSET_X + col * 16, OFFSET_Y + row * 16, 16, 16);
   }
 
-  // 子弹击中砖块
+  /**
+   * 子弹击中砖块后的操作
+   * @param {number} collisionRow 击中的坐标的行
+   * @param {number} collisionCol 击中的坐标的列
+   */
   private hitBrick(collisionRow: number, collisionCol: number) {
     if (this.rank <= 1) {
       // 子弹等级<= 1时击中砖块后清除砖块
@@ -100,14 +103,17 @@ export default class Bullet extends Mover {
     }
   }
 
-  // 子弹击中钢筋
+  /**
+   * 子弹击中钢筋后的操作
+   * @param {number} collisionRow 击中的坐标的行
+   * @param {number} collisionCol 击中的坐标的列
+   */
   private hitSteel(collisionRow: number, collisionCol: number) {
     this.rank === 3
       ? this.clearBigBlock(collisionRow, collisionCol)
-      : (this.bulletType === 'player') && ATTACK_OVER_AUD.play();
+      : (this.type === 'player') && ATTACK_OVER_AUD.play();
   }
 
-  // 子弹击中老家
   private hitHome() {
   }
 
@@ -115,9 +121,11 @@ export default class Bullet extends Mover {
   private hitTank() {
   }
 
-  // 子弹击中边界
+  /**
+   * 子弹击中边界后的操作
+   */
   private hitBorder() {
-    (this.bulletType === 'player') && ATTACK_OVER_AUD.play();
+    (this.type === 'player') && ATTACK_OVER_AUD.play();
   }
 
   // 子弹击中其他子弹

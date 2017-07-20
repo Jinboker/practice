@@ -34,8 +34,3 @@ export function getPositionInBrick(positionParams: PositionInBrickInfo) {
       : (y + directionNum * 4 - row * 16) >> 3
   );
 }
-
-// 单词首字母大写
-// export function firstUpperCase(str: string): string {
-//   return str.toLowerCase().replace(/( |^)[a-z]/g, ele => ele.toUpperCase());
-// }

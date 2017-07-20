@@ -20,6 +20,9 @@ export default class DrawTank {
     this.event();
   }
 
+  /**
+   * 坦克的相关事件
+   */
   private event() {
     eventBus.on('bullet-die', (bulletId: number) => {
       spiritCollection.tankArr.find(ele =>
@@ -27,6 +30,9 @@ export default class DrawTank {
     });
   }
 
+  /**
+   * 绘制所有的坦克
+   */
   public draw() {
     // 如果正存活的NPC数目小于约定的最大数，且坦克未全部出生，那么出生新的NPC
     if (

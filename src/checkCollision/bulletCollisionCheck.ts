@@ -17,9 +17,15 @@ export default class BulletCollisionCheck extends CollisionCheck {
     super(type, id);
 
     this.distanceToCenter = 4;
-    this.checkTypeCollection = ['Border', 'Barrier'];
+    this.checkTypeCollection = ['Border', 'Barrier', 'Bullet'];
   }
 
+  /**
+   * @override
+   * 检查是否碰到了砖块
+   * @param 参数同getTouchItemBarrierCollisionInfo方法
+   * @returns {boolean} 是否碰到了砖块
+   */
   protected isTouchBrick(row: number, col: number, index: number): boolean {
     const brickStatusArr: number[][] = brickStatus[row * 28 + col];
 
@@ -34,5 +40,33 @@ export default class BulletCollisionCheck extends CollisionCheck {
         ? brickStatusArr[index][positionInBrick]
         : brickStatusArr[positionInBrick][index]
     );
+  }
+
+  /**
+   * 检查玩家的子弹是否碰到了NPC的子弹
+   * @returns {CollisionInfo[]}
+   */
+  protected checkTouchBullet(): CollisionInfo[] {
+    let collisionInfo = { isCollision: false, collisionType: 'Bullet' };
+
+    if (this.type === 'npc') return [collisionInfo];
+
+    const bulletArr = spiritCollection.bulletArr.concat();
+    let playerBulletIndex = bulletArr.findIndex(ele => (ele.id === this.id));
+
+    if (~playerBulletIndex) {
+      bulletArr.splice(playerBulletIndex, 1);
+      collisionInfo.isCollision = bulletArr.some(ele => {
+        if (!ele || !ele.alive) return false;
+
+        const _isCollision = Math.abs(this.nextX - ele.x) <= 8 && Math.abs(this.nextY - ele.y) <= 8;
+
+        _isCollision && (collisionInfo['id'] = ele.id);
+
+        return _isCollision;
+      });
+    }
+
+    return [collisionInfo];
   }
 }
