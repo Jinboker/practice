@@ -25,8 +25,8 @@ interface DelayOption {
   amount: number
 }
 
-// 精灵
-interface Spirit {
+// 可以运动的坦克或者子弹
+interface Mover {
   x: number,
   y: number,
   id: number,
@@ -35,10 +35,17 @@ interface Spirit {
   renderSpirit: () => void
 }
 
+// 爆炸
+interface Boom {
+  alive: boolean,
+  renderExplode: () => void
+}
+
 // 精灵集合
 interface SpiritCollection {
-  tankArr: Spirit[],
-  bulletArr: Spirit[]
+  tankArr: Mover[],
+  bulletArr: Mover[],
+  explodeArr: Boom[]
 }
 
 // 新产生子弹的时候需要传递给子弹类的相关信息

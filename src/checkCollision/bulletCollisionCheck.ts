@@ -17,7 +17,7 @@ export default class BulletCollisionCheck extends CollisionCheck {
     super(type, id);
 
     this.distanceToCenter = 4;
-    this.checkTypeCollection = ['Border', 'Barrier', 'Bullet'];
+    this.checkTypeCollection = ['Border', 'Tank', 'Barrier', 'Bullet'];
   }
 
   /**
@@ -42,6 +42,28 @@ export default class BulletCollisionCheck extends CollisionCheck {
     );
   }
 
+  protected checkTouchTank(): CollisionInfo[] {
+    const collisionInfo = { isCollision: false, collisionType: 'Tank' };
+    const tankArr = spiritCollection.tankArr;
+    // 根据子弹的类型确定当前子弹需要对玩家还是NPC的坦克进行碰撞检测
+    const collisionTankArr = this.type === 'npc'
+      ? tankArr.slice(0, 1) : tankArr.slice(1);
+
+    collisionInfo.isCollision = collisionTankArr.some(ele => {
+      if (!ele || ele.id === this.id) return false;
+
+      const distanceX = Math.abs(this.nextX - ele.x);
+      const distanceY = Math.abs(this.nextY - ele.y);
+
+      const _isCollision = isBulletHitTank[this.direction](distanceX, distanceY);
+
+      _isCollision && (collisionInfo['id'] = ele.id);
+
+      return _isCollision;
+    });
+
+    return [collisionInfo];
+  }
   /**
    * 检查玩家的子弹是否碰到了NPC的子弹
    * @returns {CollisionInfo[]}

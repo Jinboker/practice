@@ -41,13 +41,14 @@ export const inputParam = {
 export const gameParam = {
   stageNum: 1,
   maxStage: 10,
-  npcMax: 5
-  // ui: 'chooseMode'  // chooseMode, chooseStage, playGame, over, construct
+  aliveNpcMax: 5,
+  npcNumMax: 20
 };
 
 export const spiritCollection: SpiritCollection = {
   tankArr: [],
-  bulletArr: []
+  bulletArr: [],
+  explodeArr: []
 };
 
 export const brickStatus = {};

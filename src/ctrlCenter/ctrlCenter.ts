@@ -1,7 +1,8 @@
 import RenderGame from '../renderGame';
 import ChooseMode from '../renderGame/chooseMode';
-import ChooseStage from '../renderGame/chooseStage';
 import PlayGame from '../renderGame/playGame/index';
+import ChooseStage from '../renderGame/chooseStage';
+import { spiritCollection } from '../global';
 
 const listeners = {};
 
@@ -21,6 +22,11 @@ listeners['construct'] = () => {
 };
 
 listeners['over'] = () => {
+};
+
+listeners['bullet-die'] = (bulletId: number) => {
+  spiritCollection.tankArr.find(ele =>
+    (ele && ele.id === bulletId && Boolean(ele.bulletAlive = false)));
 };
 
 function getReceiveMsg() {

@@ -1,6 +1,7 @@
 import Mover from './mover';
 import res from '../data/assets';
 import eventBus from '../util/eventBus';
+import controller from '../ctrlCenter/ctrlCenter';
 import BulletCollisionCheck from '../checkCollision/bulletCollisionCheck';
 import { roadMap } from '../map/affirmRoadMap';
 import { getPositionInBrick } from '../util/fn';
@@ -118,7 +119,13 @@ export default class Bullet extends Mover {
   }
 
   // 子弹击中坦克
-  private hitTank() {
+  private hitTank(tankId: number) {
+    let dieTankIndex = spiritCollection.tankArr.findIndex(ele => (ele.id === tankId));
+
+    if (!~dieTankIndex) return;
+
+    // 时间响应在drawTank.ts
+    eventBus.dispatch('tank-die', dieTankIndex);
   }
 
   /**
@@ -130,8 +137,7 @@ export default class Bullet extends Mover {
 
   // 子弹击中其他子弹
   private hitBullet(bulletId: number) {
-    // 事件注册在drawTank
-    eventBus.dispatch('bullet-die', bulletId);
+    controller.receiveMsg('bullet-die', bulletId);
     // NPC的子弹挂掉
     spiritCollection.bulletArr.find(ele =>
       (ele.id === bulletId && Boolean(ele.alive = false)));
@@ -146,8 +152,7 @@ export default class Bullet extends Mover {
       // 如果是撞到了砖块或者钢筋
       if (collisionType === 'Brick' || collisionType === 'Steel') {
         this[`hit${collisionType}`](ele.row, ele.col);
-        // 如果子弹是玩家，且撞到了其他的子弹
-      } else if (collisionType === 'Bullet' && this.type === 'player') {
+      } else if (collisionType === 'Bullet' || collisionType === 'Tank') {
         this[`hit${collisionType}`](ele.id);
       } else {
         this[`hit${collisionType}`]();
@@ -170,10 +175,9 @@ export default class Bullet extends Mover {
     const isCollision = collisionInfoGroup.some(ele => ele.isCollision);
 
     if (isCollision) {
-      this.doAfterCollision(collisionInfoGroup);
-      // 事件注册在drawTank
-      eventBus.dispatch('bullet-die', this.id);
       this.alive = false;
+      controller.receiveMsg('bullet-die', this.id);
+      this.doAfterCollision(collisionInfoGroup);
     } else {
       [this.x, this.y] = [this.nextX, this.nextY];
     }
