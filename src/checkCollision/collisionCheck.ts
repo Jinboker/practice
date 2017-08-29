@@ -80,7 +80,7 @@ export default class CollisionCheck {
 
   /**
    * 检查是否碰到边界
-   * @returns {[{isCollision: any, collisionType: string}]}
+   * @returns {[{isCollision: boolean, collisionType: string}]}
    */
   private checkTouchBorder(): CollisionInfo[] {
     const isCollision = isTouchBorder[this.direction](this.nextX, this.nextY, this.distanceToCenter);

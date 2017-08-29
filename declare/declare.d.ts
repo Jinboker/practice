@@ -64,7 +64,8 @@ interface CollisionInfo {
   collisionType?: string,
   row?: number,
   col?: number,
-  id?: number
+  id?: number,
+  tankCoord?: number[],
 }
 
 // 碰撞检测的参数

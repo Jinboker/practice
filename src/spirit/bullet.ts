@@ -119,13 +119,13 @@ export default class Bullet extends Mover {
   }
 
   // 子弹击中坦克
-  private hitTank(tankId: number) {
+  private hitTank(tankId: number, tankCoord: number[]) {
     let dieTankIndex = spiritCollection.tankArr.findIndex(ele => (ele.id === tankId));
 
     if (!~dieTankIndex) return;
 
     // 时间响应在drawTank.ts
-    eventBus.dispatch('tank-die', dieTankIndex);
+    eventBus.dispatch('tank-die', dieTankIndex, tankCoord);
   }
 
   /**
@@ -152,7 +152,9 @@ export default class Bullet extends Mover {
       // 如果是撞到了砖块或者钢筋
       if (collisionType === 'Brick' || collisionType === 'Steel') {
         this[`hit${collisionType}`](ele.row, ele.col);
-      } else if (collisionType === 'Bullet' || collisionType === 'Tank') {
+      } else if (collisionType === 'Tank') {
+        this[`hit${collisionType}`](ele.id, ele.tankCoord);
+      } else if (collisionType === 'Bullet') {
         this[`hit${collisionType}`](ele.id);
       } else {
         this[`hit${collisionType}`]();

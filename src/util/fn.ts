@@ -34,3 +34,7 @@ export function getPositionInBrick(positionParams: PositionInBrickInfo) {
       : (y + directionNum * 4 - row * 16) >> 3
   );
 }
+
+export function affirmCenterCoord(coords: number[], distance: number) {
+  return coords.map(ele => ele + distance);
+}

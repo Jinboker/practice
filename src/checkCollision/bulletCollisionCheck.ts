@@ -52,18 +52,24 @@ export default class BulletCollisionCheck extends CollisionCheck {
     collisionInfo.isCollision = collisionTankArr.some(ele => {
       if (!ele || ele.id === this.id) return false;
 
-      const distanceX = Math.abs(this.nextX - ele.x);
-      const distanceY = Math.abs(this.nextY - ele.y);
+      const { x, y } = ele;
+      const distanceX = Math.abs(this.nextX - x);
+      const distanceY = Math.abs(this.nextY - y);
 
       const _isCollision = isBulletHitTank[this.direction](distanceX, distanceY);
 
-      _isCollision && (collisionInfo['id'] = ele.id);
+      if (_isCollision) {
+        collisionInfo['id'] = ele.id;
+        collisionInfo['tankCoord'] = [x, y];
+      }
+      // _isCollision && (collisionInfo['id'] = ele.id);
 
       return _isCollision;
     });
 
     return [collisionInfo];
   }
+
   /**
    * 检查玩家的子弹是否碰到了NPC的子弹
    * @returns {CollisionInfo[]}
