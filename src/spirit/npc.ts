@@ -93,8 +93,8 @@ export default class Npc extends Tank {
       this.beChangeDirection = false;
       [this.x, this.y] = [this.nextX, this.nextY];
     } else {
-      const { direction, nextX, nextY } = this;
-      const collisionParams = { direction, nextX, nextY };
+      const { direction, nextX, nextY, rank } = this;
+      const collisionParams = { direction, nextX, nextY, rank };
       // 获取碰撞信息
       const collisionInfoGroup = this.collisionCheck.getCollisionInfo(collisionParams);
       // 如果下一个可能运动到的位置不会产生碰撞，那么直接运动到下个位置

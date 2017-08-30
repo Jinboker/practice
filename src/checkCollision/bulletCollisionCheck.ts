@@ -1,4 +1,5 @@
 import CollisionCheck from './collisionCheck';
+import DoAfterBulletCollision from '../doAfterCollision/doAfterBulletCollision';
 import { getPositionInBrick } from '../util/fn';
 import { brickStatus, spiritCollection, directionNum } from '../global';
 
@@ -11,10 +12,10 @@ const isBulletHitTank = {
 
 export default class BulletCollisionCheck extends CollisionCheck {
   constructor(
-    protected type: string,
+    protected identity: string,
     protected id: number
   ) {
-    super(type, id);
+    super(identity, id);
 
     this.distanceToCenter = 4;
     this.checkTypeCollection = ['Border', 'Tank', 'Barrier', 'Bullet'];
@@ -46,7 +47,7 @@ export default class BulletCollisionCheck extends CollisionCheck {
     const collisionInfo = { isCollision: false, collisionType: 'Tank' };
     const tankArr = spiritCollection.tankArr;
     // 根据子弹的类型确定当前子弹需要对玩家还是NPC的坦克进行碰撞检测
-    const collisionTankArr = this.type === 'npc'
+    const collisionTankArr = this.identity === 'npcBullet'
       ? tankArr.slice(0, 1) : tankArr.slice(1);
 
     collisionInfo.isCollision = collisionTankArr.some(ele => {
@@ -58,10 +59,8 @@ export default class BulletCollisionCheck extends CollisionCheck {
 
       const _isCollision = isBulletHitTank[this.direction](distanceX, distanceY);
 
-      if (_isCollision) {
-        collisionInfo['id'] = ele.id;
-        collisionInfo['tankCoord'] = [x, y];
-      }
+      // 如果子弹碰到坦克了，那么执行相应的操作
+      _isCollision && DoAfterBulletCollision.hitTank(ele.id, [x, y]);
 
       return _isCollision;
     });
@@ -76,7 +75,7 @@ export default class BulletCollisionCheck extends CollisionCheck {
   protected checkTouchBullet(): CollisionInfo[] {
     let collisionInfo = { isCollision: false, collisionType: 'Bullet' };
 
-    if (this.type === 'npc') return [collisionInfo];
+    if (this.identity === 'npcBullet') return [collisionInfo];
 
     const bulletArr = spiritCollection.bulletArr.concat();
     let playerBulletIndex = bulletArr.findIndex(ele => (ele.id === this.id));

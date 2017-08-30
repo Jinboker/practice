@@ -81,7 +81,7 @@ export default class Tank extends Mover {
     this.bulletAlive = false;
 
     // 实例化坦克的碰撞检测
-    this.collisionCheck = new TankCollisionCheck(this.type, this.id);
+    this.collisionCheck = new TankCollisionCheck(`${this.type}Tank`, this.id);
   }
 
   /**

@@ -1,5 +1,6 @@
-import { roadType, directionNum, SCREEN_L } from '../global';
+import DoAfterBulletCollision from '../doAfterCollision/doAfterBulletCollision';
 import { roadMap } from '../map/affirmRoadMap';
+import { roadType, directionNum, SCREEN_L } from '../global';
 
 // 根据方向判断当前坐标是否已经碰到了游戏的边框
 const isTouchBorder = {
@@ -20,13 +21,14 @@ export default class CollisionCheck {
   protected direction: string;
   protected nextX: number;
   protected nextY: number;
+  protected rank: number;
   protected distanceToCenter: number;
   protected directionNum: number;
   // 需要检查的碰撞的类型的数组集合
   protected checkTypeCollection: string[];
 
   constructor(
-    protected type: string,
+    protected identity: string,
     protected id: number
   ) {}
 
@@ -85,6 +87,13 @@ export default class CollisionCheck {
   private checkTouchBorder(): CollisionInfo[] {
     const isCollision = isTouchBorder[this.direction](this.nextX, this.nextY, this.distanceToCenter);
     const info = { isCollision, collisionType: 'Border' };
+
+    if (isCollision) {
+      // 如果子弹碰到了边界，那么执行相应的操作
+      if (~this.identity.indexOf('Bullet')) {
+        DoAfterBulletCollision.hitBorder(this.identity);
+      }
+    }
 
     return [info];
   }

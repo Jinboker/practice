@@ -16,6 +16,11 @@ export default class DrawBullet {
 
       spiritCollection.bulletArr.push(new Bullet(x, y, direction, rank, type, id));
     });
+
+    eventBus.on('bullet-die', (bulletId: number) => {
+      spiritCollection.bulletArr.find(ele =>
+        (ele.id === bulletId && Boolean(ele.alive = false)));
+    });
   }
 
   public draw() {

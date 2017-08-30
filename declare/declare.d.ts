@@ -64,15 +64,15 @@ interface CollisionInfo {
   collisionType?: string,
   row?: number,
   col?: number,
-  id?: number,
-  tankCoord?: number[],
+  id?: number
 }
 
 // 碰撞检测的参数
 interface CollisionParams {
   direction: string,
   nextX: number,
-  nextY: number
+  nextY: number,
+  rank: number
 }
 
 // 子弹在砖块中的位置信息
@@ -82,4 +82,14 @@ interface PositionInBrickInfo {
   row: number,
   col: number,
   directionNum: number
+}
+
+// 子弹击中砖块后，清除对应砖块的图像时候需要的参数
+interface ClearBrickParams {
+  directionNum: number,
+  nextX: number,
+  nextY: number,
+  rank: number,
+  row: number,
+  col: number
 }

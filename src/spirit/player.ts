@@ -73,8 +73,8 @@ export default class Player extends Tank {
       [this.x, this.y] = [this.nextX, this.nextY];
     } else {
       // 对下一个坐标进行碰撞检测
-      const { direction, nextX, nextY } = this;
-      const collisionParams = { direction, nextX, nextY };
+      const { direction, nextX, nextY, rank } = this;
+      const collisionParams = { direction, nextX, nextY, rank };
       // 获取碰撞信息
       const collisionInfoGroup = this.collisionCheck.getCollisionInfo(collisionParams);
       // 如果下一个可能运动到的位置不会产生碰撞，那么直接运动到下个位置
