@@ -1,7 +1,7 @@
 import eventBus from '../../util/eventBus';
 import Explode from '../../spirit/explode';
 import { affirmCenterCoord } from '../../util/fn';
-import { gameParam, spiritCollection } from '../../global';
+import { spiritCollection } from '../../global';
 
 export default class DrawExplode {
   constructor() {
@@ -11,9 +11,9 @@ export default class DrawExplode {
 
   private event() {
     // 事件在Bullet类中dispatch
-    eventBus.on('new-explode', (tankCoord: number[]) => {
-      const [x, y] = affirmCenterCoord(tankCoord, 16);
-      spiritCollection.explodeArr.push(new Explode(x, y, 'big'));
+    eventBus.on('new-explode', (coord: number[], type: string) => {
+      const [x, y] = affirmCenterCoord(coord, type === 'big' ? 16 : 4);
+      spiritCollection.explodeArr.push(new Explode(x, y, type));
     });
   }
 

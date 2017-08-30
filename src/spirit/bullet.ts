@@ -9,6 +9,7 @@ import { CXT_ROLE, CXT_BG, OFFSET_X, OFFSET_Y, directionNum, spiritCollection, b
 
 const BULLET_IMG = res.img.misc;
 const ATTACK_OVER_AUD = res.audio.attackOver;
+const EXPLODE_AUD = res.audio.explode;
 
 export default class Bullet extends Mover {
   // override
@@ -127,7 +128,8 @@ export default class Bullet extends Mover {
     // 事件响应在drawTank.ts
     eventBus.dispatch('tank-die', dieTankIndex);
     // 事件响应在drawExplode.ts
-    eventBus.dispatch('new-explode', tankCoord);
+    eventBus.dispatch('new-explode', tankCoord, 'big');
+    EXPLODE_AUD.play();
   }
 
   /**
@@ -146,7 +148,7 @@ export default class Bullet extends Mover {
   }
 
   private doAfterCollision(collisionInfo: CollisionInfo[]) {
-    collisionInfo.forEach(ele => {
+    collisionInfo.forEach((ele, index) => {
       let collisionType = ele.collisionType;
 
       if (typeof this[`hit${collisionType}`] !== 'function') return;
@@ -154,6 +156,13 @@ export default class Bullet extends Mover {
       // 如果是撞到了砖块或者钢筋
       if (collisionType === 'Brick' || collisionType === 'Steel') {
         this[`hit${collisionType}`](ele.row, ele.col);
+        // 事件响应在drawExplode类
+        console.log(collisionType);
+        if (!index) {
+          eventBus.dispatch('new-explode', [this.nextX, this.nextY], 'small');
+          console.log(1, 2);
+        }
+        // !index && eventBus.dispatch('new-explode', [this.nextX, this.nextY], 'small');
       } else if (collisionType === 'Tank') {
         this[`hit${collisionType}`](ele.id, ele.tankCoord);
       } else if (collisionType === 'Bullet') {

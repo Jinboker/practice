@@ -38,7 +38,7 @@ export default class Explode {
   public renderExplode() {
     let { x, y, range, picX, picY } = this;
 
-    CXT_MISC.drawImage(BOOM_IMG, picX, picY, range, range, x, y, range, range);
+    CXT_MISC.drawImage(BOOM_IMG, picX + 64 * this.picPosition, picY, range, range, x, y, range, range);
 
     delayTimeout(this.picDelay, () => {
       this.picPosition++;

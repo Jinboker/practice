@@ -1,7 +1,7 @@
 import DrawTank from './drawTank';
 import DrawBullet from './drawBullet';
 import DrawExplode from './drawExplode';
-import { SCREEN_L, OFFSET_X, OFFSET_Y, CXT_ROLE } from '../../global';
+import { cleanCxt } from '../../util/fn';
 
 export default class {
   private drawType: string[];
@@ -17,7 +17,7 @@ export default class {
   }
 
   public draw() {
-    CXT_ROLE.clearRect(OFFSET_X, OFFSET_Y, SCREEN_L, SCREEN_L);
+    cleanCxt('role', 'misc');
 
     this.drawType.forEach(ele => this[ele].draw());
   }
