@@ -1,6 +1,6 @@
 import res from '../data/assets';
 import { delayTimeout } from '../util/fn';
-import { CXT_ROLE, OFFSET_X, OFFSET_Y } from '../global';
+import { CXT_MISC, OFFSET_X, OFFSET_Y } from '../global';
 
 const BOOM_IMG = res.img.boom;
 
@@ -31,16 +31,14 @@ export default class Explode {
       ? [32, 16, 16, 2]
       : [64, 128, 0, 3];
 
-    this.x = this.centerX + this.range / 2 + OFFSET_X;
-    this.y = this.centerY + this.range / 2 + OFFSET_Y;
+    this.x = this.centerX - this.range / 2 + OFFSET_X;
+    this.y = this.centerY - this.range / 2 + OFFSET_Y;
   }
 
   public renderExplode() {
-    if (!this.alive) return;
-
     let { x, y, range, picX, picY } = this;
 
-    CXT_ROLE.drawImage(BOOM_IMG, picX, picY, range, range, x, y, range, range);
+    CXT_MISC.drawImage(BOOM_IMG, picX, picY, range, range, x, y, range, range);
 
     delayTimeout(this.picDelay, () => {
       this.picPosition++;

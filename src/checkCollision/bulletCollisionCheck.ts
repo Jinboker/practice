@@ -62,7 +62,6 @@ export default class BulletCollisionCheck extends CollisionCheck {
         collisionInfo['id'] = ele.id;
         collisionInfo['tankCoord'] = [x, y];
       }
-      // _isCollision && (collisionInfo['id'] = ele.id);
 
       return _isCollision;
     });

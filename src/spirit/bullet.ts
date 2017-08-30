@@ -124,8 +124,10 @@ export default class Bullet extends Mover {
 
     if (!~dieTankIndex) return;
 
-    // 时间响应在drawTank.ts
-    eventBus.dispatch('tank-die', dieTankIndex, tankCoord);
+    // 事件响应在drawTank.ts
+    eventBus.dispatch('tank-die', dieTankIndex);
+    // 事件响应在drawExplode.ts
+    eventBus.dispatch('new-explode', tankCoord);
   }
 
   /**

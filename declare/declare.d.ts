@@ -36,7 +36,7 @@ interface Mover {
 }
 
 // 爆炸
-interface Boom {
+interface Explode {
   alive: boolean,
   renderExplode: () => void
 }
@@ -45,7 +45,7 @@ interface Boom {
 interface SpiritCollection {
   tankArr: Mover[],
   bulletArr: Mover[],
-  explodeArr: Boom[]
+  explodeArr: Explode[]
 }
 
 // 新产生子弹的时候需要传递给子弹类的相关信息

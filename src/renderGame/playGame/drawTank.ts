@@ -1,9 +1,8 @@
 import Npc from '../../spirit/npc';
 import npcData from '../../data/npc';
 import Player from '../../spirit/player';
-import Explode from '../../spirit/Explode';
 import eventBus from '../../util/eventBus';
-import { delayTimeout, affirmCenterCoord } from '../../util/fn';
+import { delayTimeout } from '../../util/fn';
 import { gameParam, spiritCollection } from '../../global';
 
 export default class DrawTank {
@@ -30,14 +29,11 @@ export default class DrawTank {
         (ele && ele.id === bulletId && Boolean(ele.bulletAlive = false)));
     });
 
-    eventBus.on('tank-die', (index: number, tankCoord: number[]) => {
+    eventBus.on('tank-die', (index: number) => {
       const tankArr = spiritCollection.tankArr;
       index
         ? tankArr.splice(index, 1)
         : tankArr[0] = new Player(128, 384, 'W', 0);
-
-      const [x, y] = affirmCenterCoord(tankCoord, 16);
-      spiritCollection.explodeArr.push(new Explode(x, y, 'big'));
     });
   }
 
