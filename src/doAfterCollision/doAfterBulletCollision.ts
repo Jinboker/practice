@@ -12,9 +12,9 @@ export default class DoAfterCollision {
     (identity === 'playerBullet') && ATTACK_OVER_AUD.play();
   }
 
-  public static hitBorder(identity: string) {
+  public static hitBorder(coord: number[], identity: string) {
     DoAfterCollision.playAttackOverAud(identity);
-    // TODO这里将要产生一个爆炸
+    DoAfterCollision.produceExplode(coord, 'small');
   }
 
   public static hitHome() {
@@ -29,10 +29,9 @@ export default class DoAfterCollision {
     if (!~dieTankIndex) return;
 
     EXPLODE_AUD.play();
+    DoAfterCollision.produceExplode(tankCoord, 'big');
     // 事件响应在drawTank.ts
     eventBus.dispatch('tank-die', dieTankIndex);
-    // 事件响应在drawExplode.ts
-    eventBus.dispatch('new-explode', tankCoord, 'big');
   }
 
   private static clearSmallBarrier(directionNum: number, nextX: number, nextY: number, row: number, col: number) {
@@ -57,7 +56,9 @@ export default class DoAfterCollision {
     CXT_BG.clearRect(OFFSET_X + col * 16, OFFSET_Y + row * 16, 16, 16);
   }
 
-  public static hitSteel(rank: number, row: number, col: number, identity: string) {
+  public static hitSteel(params: ClearSteelParams) {
+    const { rank, row, col, identity } = params;
+
     rank === 3
       ? DoAfterCollision.clearBigBarrier(row, col)
       : DoAfterCollision.playAttackOverAud(identity);
@@ -75,5 +76,10 @@ export default class DoAfterCollision {
     } else {
       DoAfterCollision.clearBigBarrier(row, col);
     }
+  }
+
+  public static produceExplode(coord: number[], type: string) {
+    // 事件响应在drawExplode.ts
+    eventBus.dispatch('new-explode', coord, type);
   }
 }

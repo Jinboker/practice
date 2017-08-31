@@ -93,3 +93,7 @@ interface ClearBrickParams {
   row: number,
   col: number
 }
+
+interface ClearSteelParams extends ClearBrickParams {
+  identity: string;
+}

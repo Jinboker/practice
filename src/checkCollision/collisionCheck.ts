@@ -1,3 +1,4 @@
+import eventBus from '../util/eventBus';
 import DoAfterBulletCollision from '../doAfterCollision/doAfterBulletCollision';
 import { roadMap } from '../map/affirmRoadMap';
 import { roadType, directionNum, SCREEN_L } from '../global';
@@ -26,11 +27,14 @@ export default class CollisionCheck {
   protected directionNum: number;
   // 需要检查的碰撞的类型的数组集合
   protected checkTypeCollection: string[];
+  protected isBullet: boolean;
 
   constructor(
     protected identity: string,
     protected id: number
-  ) {}
+  ) {
+    this.isBullet = Boolean(~this.identity.indexOf('Bullet'));
+  }
 
   /**
    * 根据精灵中心的坐标，算出精灵(32*32的格子)在roadMap(表示16*16格子的坐标数组)数据中需要去计算的碰撞坐标
@@ -59,14 +63,29 @@ export default class CollisionCheck {
    */
   private getTouchItemBarrierCollisionInfo(row: number, col: number, index: number): CollisionInfo {
     const roadTypeNum = roadMap[row][col];
+    const _roadType = roadType[roadTypeNum];
+    let isCollision = roadTypeNum > 1;
 
     // roadType为3表示砖块，砖块因为存在子弹会打掉8*8大小的位置的问题，所以是否会碰到砖块导致不能移动需要特殊检查
-    if (roadTypeNum === 3) {
-      const isCollision = this.isTouchBrick(row, col, index);
-      return { isCollision, collisionType: roadType[roadTypeNum], row, col };
+    (roadTypeNum === 3) && (isCollision = this.isTouchBrick(row, col, index));
+
+    if (isCollision) {
+      if (~this.identity.indexOf('Bullet')) {
+        const { rank, nextX, nextY, directionNum, identity } = this;
+        const clearBlockParams = { rank, nextX, nextY, directionNum, row, col };
+        const b = { rank, nextX, nextY, directionNum, row, col, identity };
+
+        if (_roadType === 'Steel') {
+          DoAfterBulletCollision.hitSteel(b);
+        }
+
+        if (_roadType === 'Brick') {
+          DoAfterBulletCollision.hitBrick(clearBlockParams);
+        }
+      }
     }
 
-    return { isCollision: roadTypeNum > 1, collisionType: roadType[roadTypeNum], row, col };
+    return { isCollision, collisionType: _roadType, row, col };
   }
 
   /**
@@ -74,10 +93,16 @@ export default class CollisionCheck {
    * @returns {[{isCollision: boolean, collisionType: string}]}
    */
   private checkTouchBarrier(): CollisionInfo[] {
-    return (
+    let a =
       this.getCollisionCoordGroupWidthBarrier()
-        .map((ele, index) => this.getTouchItemBarrierCollisionInfo(ele[1] >> 4, ele[0] >> 4, index))
-    );
+        .map((ele, index) => this.getTouchItemBarrierCollisionInfo(ele[1] >> 4, ele[0] >> 4, index));
+
+    const isCollision = a.some(ele => ele.isCollision);
+
+    if (isCollision && this.isBullet) {
+      DoAfterBulletCollision.produceExplode([this.nextX, this.nextY], 'small');
+    }
+    return [{ isCollision }];
   }
 
   /**
@@ -90,8 +115,8 @@ export default class CollisionCheck {
 
     if (isCollision) {
       // 如果子弹碰到了边界，那么执行相应的操作
-      if (~this.identity.indexOf('Bullet')) {
-        DoAfterBulletCollision.hitBorder(this.identity);
+      if (this.isBullet) {
+        DoAfterBulletCollision.hitBorder([this.nextX, this.nextY], this.identity);
       }
     }
 
