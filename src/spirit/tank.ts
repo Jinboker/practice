@@ -29,7 +29,7 @@ export default class Tank extends Mover {
   private shieldDelay: DelayOption;
 
   // 出生动画相关参数
-  private bornAnimationNum: number;
+  public bornAnimationNum: number;
   private bornPic: number;
   private bornDelay: DelayOption;
 

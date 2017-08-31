@@ -51,7 +51,7 @@ export default class BulletCollisionCheck extends CollisionCheck {
       ? tankArr.slice(0, 1) : tankArr.slice(1);
 
     collisionInfo.isCollision = collisionTankArr.some(ele => {
-      if (!ele || ele.id === this.id) return false;
+      if (!ele || ele.id === this.id || ele.bornAnimationNum) return false;
 
       const { x, y } = ele;
       const distanceX = Math.abs(this.nextX - x);

@@ -31,6 +31,7 @@ interface Mover {
   y: number,
   id: number,
   alive: boolean,
+  bornAnimationNum?: number,
   bulletAlive?: boolean,
   renderSpirit: () => void
 }

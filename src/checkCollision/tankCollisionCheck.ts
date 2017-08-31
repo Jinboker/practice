@@ -45,7 +45,7 @@ export default class TankCollisionCheck extends CollisionCheck {
    */
   protected checkTouchTank(): CollisionInfo[] {
     const isCollision = spiritCollection.tankArr.some(ele => {
-      if (!ele || ele.id === this.id) return false;
+      if (!ele || ele.id === this.id || ele.bornAnimationNum) return false;
 
       const distanceX = Math.abs(this.nextX - ele.x);
       const distanceY = Math.abs(this.nextY - ele.y);
