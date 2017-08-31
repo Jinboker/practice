@@ -150,7 +150,7 @@ export default class Tank extends Mover {
   private drawTank() {
     const img = this.type === 'player' ? PLAY_IMG : NPC_IMG;
 
-    CXT_ROLE.drawImage(img, this.rank << 5, (directionNum[this.direction] << 6) + this.wheelPic, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
+    CXT_ROLE.drawImage(img, this.rank * 32, directionNum[this.direction] * 64 + this.wheelPic, 32, 32, this.x + OFFSET_X, this.y + OFFSET_Y, 32, 32);
   }
 
   /**

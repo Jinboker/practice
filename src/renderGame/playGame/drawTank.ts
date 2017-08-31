@@ -2,6 +2,7 @@ import Npc from '../../spirit/npc';
 import npcData from '../../data/npc';
 import Player from '../../spirit/player';
 import eventBus from '../../util/eventBus';
+import { inputParam } from '../../global';
 import { delayTimeout } from '../../util/fn';
 import { gameParam, spiritCollection } from '../../global';
 
@@ -31,9 +32,14 @@ export default class DrawTank {
 
     eventBus.on('tank-die', (index: number) => {
       const tankArr = spiritCollection.tankArr;
-      index
-        ? tankArr.splice(index, 1)
-        : tankArr[0] = new Player(128, 384, 'W', 0);
+
+      tankArr.splice(index, 1);
+
+      if (!index) {
+        tankArr.unshift(new Player(128, 384, 'W', 0));
+        // 玩家坦克死掉以后必须要重置该参数，不然刷新后会保持死亡前的方向
+        inputParam.directionKey = '';
+      }
     });
   }
 

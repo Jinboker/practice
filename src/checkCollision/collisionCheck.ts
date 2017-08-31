@@ -1,4 +1,3 @@
-import eventBus from '../util/eventBus';
 import DoAfterBulletCollision from '../doAfterCollision/doAfterBulletCollision';
 import { roadMap } from '../map/affirmRoadMap';
 import { roadType, directionNum, SCREEN_L } from '../global';
