@@ -16,6 +16,7 @@ declare module '*.json' {
 
 // 渲染界面
 interface Render {
+  state?: string,
   draw: () => void
 }
 
@@ -25,15 +26,20 @@ interface DelayOption {
   amount: number
 }
 
-// 可以运动的坦克或者子弹
+// 运动对象
 interface Mover {
   x: number,
   y: number,
   id: number,
   alive: boolean,
-  bornAnimationNum?: number,
-  bulletAlive?: boolean,
   renderSpirit: () => void
+}
+
+// 坦克
+interface Tank extends Mover{
+  stop: boolean,
+  bornAnimationNum: number,
+  bulletAlive: boolean
 }
 
 // 爆炸
@@ -44,7 +50,7 @@ interface Explode {
 
 // 精灵集合
 interface SpiritCollection {
-  tankArr: Mover[],
+  tankArr: Tank[],
   bulletArr: Mover[],
   explodeArr: Explode[]
 }

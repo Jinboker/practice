@@ -25,6 +25,8 @@ export default class Player extends Tank {
    * 检查按键按下的情况，看是否需要产生子弹
    */
   protected whetherProduceBullet() {
+    if (this.stop) return;
+
     const funcKey = inputParam.functionKey;
     let fireAble = !(this.fireDelay && (this.fireDelay -= 1));
 
@@ -66,6 +68,8 @@ export default class Player extends Tank {
    * 确定坦克在本次渲染循环结束后的最终位置
    */
   protected affirmFinalCoord() {
+    if (this.stop) return;
+
     // 确定下一个坐标和是否转换方向
     [this.nextX, this.nextY] = this.getNextCoord();
 

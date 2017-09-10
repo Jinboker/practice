@@ -76,10 +76,16 @@ export default class CollisionCheck {
 
         if (_roadType === 'Steel') {
           DoAfterBulletCollision.hitSteel(b);
+          !index && DoAfterBulletCollision.produceExplode([this.nextX, this.nextY], 'small');
         }
 
         if (_roadType === 'Brick') {
           DoAfterBulletCollision.hitBrick(clearBlockParams);
+          !index && DoAfterBulletCollision.produceExplode([this.nextX, this.nextY], 'small');
+        }
+
+        if (_roadType === 'Home') {
+          DoAfterBulletCollision.hitHome();
         }
       }
     }
@@ -98,9 +104,9 @@ export default class CollisionCheck {
 
     const isCollision = a.some(ele => ele.isCollision);
 
-    if (isCollision && this.isBullet) {
-      DoAfterBulletCollision.produceExplode([this.nextX, this.nextY], 'small');
-    }
+    // if (isCollision && this.isBullet) {
+    //   DoAfterBulletCollision.produceExplode([this.nextX, this.nextY], 'small');
+    // }
     return [{ isCollision }];
   }
 

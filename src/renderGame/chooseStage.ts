@@ -54,10 +54,10 @@ export default class {
       this.halfMaskWidth < HALF_ARENA
         ? this.halfMaskWidth += 15
         : (
-        controller.receiveMsg('playGame'),
+          controller.receiveMsg('playGame', 'new'),
           // 移除事件总线中的相关事件
           eventBus.off(['new-bullet'])
-      );
+        );
     } else {
       delayTimeout(this.enterPlay, () => {
         CXT_BG.clearRect(OFFSET_X, OFFSET_Y, SCREEN_L, SCREEN_L);

@@ -27,6 +27,8 @@ export default class Npc extends Tank {
    * 如果NPC之前发出的子弹挂了，产生新的子弹
    */
   protected whetherProduceBullet() {
+    if (this.stop) return;
+
     const fireAble = !(this.fireDelay && (this.fireDelay -= 1));
 
     if (fireAble && !this.bulletAlive) {
@@ -78,6 +80,8 @@ export default class Npc extends Tank {
    * 确定坦克在本次渲染循环结束后的最终位置
    */
   protected affirmFinalCoord() {
+    if (this.stop) return;
+
     this.changeWheelPic();
 
     // 如果不能继续向前移动，那么等待一定时间后改变方向

@@ -38,7 +38,7 @@ export default class Tank extends Mover {
   public bulletAlive: boolean;
 
   // 完全停止任何动作
-  protected stop: boolean;
+  public stop: boolean;
 
   // 碰撞检测
   protected collisionCheck: TankCollisionCheck;
@@ -58,6 +58,7 @@ export default class Tank extends Mover {
     this.distanceToCenter = 16;
     this.nextX = x;
     this.nextY = y;
+    this.stop = false;
 
     // 生成坦克ID
     this.id = Math.ceil(new Date().getTime() * Math.random());

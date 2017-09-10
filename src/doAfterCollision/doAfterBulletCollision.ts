@@ -1,5 +1,6 @@
 import res from '../data/assets';
 import eventBus from '../util/eventBus';
+import controller from '../ctrlCenter/ctrlCenter';
 import { roadMap } from '../map/affirmRoadMap';
 import { getPositionInBrick } from '../util/fn';
 import { CXT_BG, OFFSET_X, OFFSET_Y, spiritCollection, brickStatus } from '../global';
@@ -18,6 +19,9 @@ export default class DoAfterCollision {
   }
 
   public static hitHome() {
+    const player = spiritCollection.tankArr[0];
+    player.stop = true;
+    controller.receiveMsg('playGame', 'over');
   }
 
   public static hitBullet(bulletId: number) {
