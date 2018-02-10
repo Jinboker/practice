@@ -17,7 +17,7 @@ body {
   overflow: hidden;
 }
 
-#game {
+div {
   position: relative;
   top: 50%;
   width: 516px;
