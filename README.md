@@ -6,16 +6,8 @@ The original version of the code is in
 
 [TO PLAY](http://jinboker.github.io/BattleCity/battle-city/);
 
-UP: W
-
-RIGHT: D
-
-DOWN: S
-
-LEFT: A
-
-OPTION_A: H
-
-OPTION_B: J
+| ⇧     | ⇨    |  ⇩  | ⇦  | A | B |
+| ---   | ----  | ---- | --- | --- | --- |
+| W     | D    |   S   |  A | H | J |
 
 ![游戏截图](/game.png)
