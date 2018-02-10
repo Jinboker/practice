@@ -1,13 +1,15 @@
-.cache
-
 .DS_Store
+node_modules/
+admin/dist/
+client/dist/
+npm-debug.log
+selenium-debug.log
+test/unit/coverage
+test/e2e/reports
+.idea/
+server/configs/private.js
+client/config/private.js
+admin/config/private.js
+prod.json
 
-.idea
-
-build
-
-dist
-
-node_modules
-
-.vscode
+dist/

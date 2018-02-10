@@ -1,0 +1,40 @@
+@font-face {
+  font-family: prstart;
+  src: url('./assets/font/prstart.ttf');
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 15px;
+  font-family: prstart;
+  background-color: #e6e6e6;
+  overflow: hidden;
+}
+
+#game {
+  position: relative;
+  top: 50%;
+  width: 516px;
+  height: 456px;
+  margin: 0 auto;
+  transform: translate(0, -50%);
+  background-color: black;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: transparent;
+}
+
+#role {
+  z-index: -1;
+}

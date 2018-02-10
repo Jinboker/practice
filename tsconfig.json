@@ -1,18 +1,32 @@
 {
   "compilerOptions": {
-    "module": "es6",
-    "target": "es6",
-    "allowJs": true,
-    "outDir": "./dist/",
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "strictNullChecks": true,
-    "removeComments": true,
+    "outDir": "build/dist",
+    "module": "esnext",
+    "target": "es2015",
+    "lib": ["es2015", "es2016", "es2017", "dom"],
     "sourceMap": true,
-    "suppressImplicitAnyIndexErrors": true
+    "allowJs": true,
+    "moduleResolution": "node",
+    "rootDir": "src",
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "importHelpers": true,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "allowSyntheticDefaultImports": true,
+    "noUnusedLocals": true,
+    "baseUrl": ".",
+    "paths": {
+      "~src/*": [".src/*"],
+      "~assets/*": ["./src/assets/*"]
+    }
   },
   "exclude": [
-      "node_modules"
+    "node_modules",
+    "dist",
+    "oldGame",
+    "webpack.config.js"
   ]
 }

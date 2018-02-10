@@ -1,29 +1,33 @@
 const path = require('path');
+const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanPlugin = require("clean-webpack-plugin");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-//设置输入和输出根目录
-const ROOT_PATH = path.resolve(__dirname);
-const DEV_PATH = path.resolve(ROOT_PATH, 'dev');
-const BUILD_PATH = path.resolve(ROOT_PATH, 'dist');
+const appDirectory = fs.realpathSync(process.cwd());
+const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
+const appSrc = resolveApp('src');
 
 //获取环境
 const env = process.env.NODE_ENV;
+const isDev = env === 'development';
 
-module.exports = {
-  entry: './src/index.ts',
+const config = {
+  devtool: isDev ? 'cheap-module-eval-source-map' : false,
+  entry: resolveApp('src/index.ts'),
   output: {
-    path: env === 'prod' ? BUILD_PATH : DEV_PATH,
-    filename: 'bundle.js?[hash]'
+    filename: `static/js/bundle${isDev ? '' : '.[chunkhash:8]'}.js`,
+    path: path.resolve(__dirname, 'dist')
   },
-  devtool: env === 'prod' ? false : 'cheap-module-eval-source-map',
-  devServer: {
-    contentBase: ROOT_PATH,
-    port: 8888
+  resolve: {
+    extensions: ['.ts', '.js', '.css'],
+    alias: {
+      '~src': appSrc,
+      '~assets': path.resolve(appSrc, 'assets')
+    }
   },
   module: {
+    strictExportPresence: true,
     rules: [
       {
         test: /\.ts$/,
@@ -31,70 +35,77 @@ module.exports = {
         loader: 'tslint-loader'
       },
       {
-        test: /\.ts(x?)$/,
-        exclude: /node_modules/,
-        use: ['babel-loader', 'ts-loader']
-      },
-      {
-        'test': /\.(jsx?)$/,
-        use: 'babel-loader',
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.scss$/,
-        exclude: /node_modules/,
-        use: ExtractTextPlugin.extract({
-          fallback: "style-loader",
-          use: [{
-            loader: "css-loader",
+        oneOf: [
+          {
+            test: /\.(png|ttf)\??.*$/,
+            loader: 'url-loader',
             options: {
-              minimize: env === 'prod'
+              limit: 10240,
+              name: 'static/media/[name].[hash:8].[ext]',
             }
-          }, {
-            loader: "sass-loader"
-          }]
-        })
-      },
-      {
-        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
-        exclude: /node_modules/,
-        use: 'url-loader?limit=30000'
+          },
+          {
+            test: /\.ts$/,
+            include: appSrc,
+            loader: require.resolve('ts-loader')
+          },
+          {
+            test: /\.css$/,
+            use: [
+              require.resolve('style-loader'),
+              {
+                loader: require.resolve('css-loader'),
+                options: {
+                  importLoaders: 1,
+                }
+              }
+            ]
+          }
+        ]
       }
     ]
   },
-  resolve: {
-    extensions: ['.json', '.ts', '.js', '.css', '.scss', '.sass'],
-    alias: {
-      'static': path.resolve(__dirname, './static'),
-      'src': path.resolve(__dirname, './src')
-    }
-  },
-  plugins: [ new ExtractTextPlugin("style.css?[contenthash]") ]
+  plugins: []
 };
 
-if (env === 'prod') {
-  module.exports.plugins = (module.exports.plugins || []).concat([
+if (isDev) {
+  config.devServer = {
+    contentBase: appDirectory,
+    port: 9000,
+    open: true
+  };
+  config.plugins.push(
     new HtmlWebpackPlugin({
-      template: './index.html',
+      title: 'battle-city'
+    })
+  )
+} else {
+  config.plugins.push(
+    new HtmlWebpackPlugin({
+      title: 'battle-city',
       minify: {
-        removeComments: true,
         collapseWhitespace: true,
         showErrors: true
       }
     }),
-    new CleanPlugin([BUILD_PATH]),
+    new CleanWebpackPlugin([resolveApp('dist')]),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
-        drop_console: true
+        comparisons: false,
+        drop_console: true,
+        reduce_vars: true
       },
-      comments: false,
-      beautify: false,
-      sourceMap: false
-    })
-  ]);
-} else {
-  module.exports.plugins = (module.exports.plugins || []).concat([
-    new HtmlWebpackPlugin({template: './index.html'})
-  ]);
+      mangle: {
+        safari10: true,
+      },
+      output: {
+        comments: false,
+        ascii_only: true,
+      },
+      sourceMap: false,
+    }),
+  );
 }
+
+module.exports = config;
