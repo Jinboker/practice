@@ -11,7 +11,6 @@ html, body {
 }
 
 body {
-  font-size: 15px;
   font-family: prstart;
   background-color: #e6e6e6;
   overflow: hidden;
@@ -35,6 +34,3 @@ canvas {
   background-color: transparent;
 }
 
-#role {
-  z-index: -1;
-}
