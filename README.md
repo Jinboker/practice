@@ -1,5 +1,9 @@
-* BattleCity：坦克大战(重构中)
+### The code is being refactored
 
-旧版代码放在oldGame文件夹内，游戏地址：[http://jinboker.github.io/BattleCity/battle-city/](http://jinboker.github.io/BattleCity/battle-city/);
+
+The original version of the code is in
+ folder oldGame;
+
+[TO PLAY](http://jinboker.github.io/BattleCity/battle-city/);
 
 ![游戏截图](/game.png)

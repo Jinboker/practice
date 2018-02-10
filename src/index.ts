@@ -1,4 +1,6 @@
-import boomPng from '~assets/img/boom.png';
 import './index.css';
+import initElement from './init/initElement';
 
-console.log(boomPng);
+window.onload = (): void => {
+  initElement();
+};

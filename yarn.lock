@@ -4173,11 +4173,11 @@ tslint-loader@^3.5.3:
     rimraf "^2.4.4"
     semver "^5.3.0"
 
-tslint-microsoft-contrib@^5.0.2:
-  version "5.0.2"
-  resolved "http://registry.npm.taobao.org/tslint-microsoft-contrib/download/tslint-microsoft-contrib-5.0.2.tgz#ecc2a797f777a12f0066944cec0c81a9e7c59ee9"
+tslint-react@^3.4.0:
+  version "3.4.0"
+  resolved "http://registry.npm.taobao.org/tslint-react/download/tslint-react-3.4.0.tgz#12ed3fc7063f3df988370206736b50acbce07e59"
   dependencies:
-    tsutils "^2.12.1"
+    tsutils "^2.13.1"
 
 tslint@^5.9.1:
   version "5.9.1"
@@ -4196,7 +4196,7 @@ tslint@^5.9.1:
     tslib "^1.8.0"
     tsutils "^2.12.1"
 
-tsutils@^2.12.1:
+tsutils@^2.12.1, tsutils@^2.13.1:
   version "2.21.0"
   resolved "http://registry.npm.taobao.org/tsutils/download/tsutils-2.21.0.tgz#43466a2283a0abce64e2209bc732ad72f8a04fab"
   dependencies:
