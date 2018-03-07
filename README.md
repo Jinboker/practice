@@ -1,8 +1,7 @@
-### The code is being refactored
+### Refactoring
 
-
-The original version of the code is in
- folder oldGame;
+The original version of this game is in
+ folder: oldGame;
 
 [TO PLAY](http://jinboker.github.io/BattleCity/battle-city/);
 
