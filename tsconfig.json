@@ -19,8 +19,8 @@
     "noUnusedLocals": true,
     "baseUrl": ".",
     "paths": {
-      "~src/*": [".src/*"],
-      "~assets/*": ["./src/assets/*"]
+      "^src/*": [".src/*"],
+      "^assets/*": ["./src/assets/*"]
     }
   },
   "exclude": [

@@ -26,7 +26,8 @@
     "webpack-dev-server": "^2.11.1"
   },
   "devDependencies": {
-    "@types/webpack": "^3.8.5",
+    "@types/webpack": "^4.0.0",
+    "@types/webpack-env": "^1.13.5",
     "clean-webpack-plugin": "^0.1.18"
   }
 }

@@ -22,8 +22,8 @@ const config = {
   resolve: {
     extensions: ['.ts', '.js', '.css'],
     alias: {
-      '~src': appSrc,
-      '~assets': path.resolve(appSrc, 'assets')
+      '^src': appSrc,
+      '^assets': path.resolve(appSrc, 'assets')
     }
   },
   module: {
@@ -37,10 +37,10 @@ const config = {
       {
         oneOf: [
           {
-            test: /\.(png|ttf)\??.*$/,
+            test: /\.(png|ttf|mp3)\??.*$/,
             loader: 'url-loader',
             options: {
-              limit: 10240,
+              limit: 80 * 1024,
               name: 'static/media/[name].[hash:8].[ext]',
             }
           },
