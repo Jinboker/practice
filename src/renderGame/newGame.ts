@@ -9,8 +9,8 @@ const UI = pics.ui as HTMLImageElement;
 const pointerMaxY = 345;
 const pointerMinY = 285;
 const operate = {
-  W() { animateTopY = animateTopY > pointerMinY ? animateTopY - 30 : pointerMaxY; },
-  S() { animateTopY = animateTopY < pointerMaxY ? animateTopY + 30 : pointerMinY; },
+  W() { pointerY = pointerY > pointerMinY ? pointerY - 30 : pointerMaxY; },
+  S() { pointerY = pointerY < pointerMaxY ? pointerY + 30 : pointerMinY; },
   H() {
     console.log('jjjj');
     // (animateTopY - MIN_Y) / 30 === 2
@@ -21,7 +21,7 @@ const operate = {
 
 let wheelPic = 0;
 let pointerY = pointerMinY;
-let animateTopY = HEIGHT;s
+let animateTopY = HEIGHT;
 
 class NewGame {
   private isTouchTop = false;
