@@ -1,19 +1,19 @@
-import { keyNum, keyBoardState } from '../var';
+import { keyNum, keyBoard } from '../var';
 
 const handleKeyDown = (key: string) => {
-  keyBoardState[key] = false;
+  keyBoard[key] = false;
 };
 
 const handleKeyUp = (key: string) => {
-  if (keyBoardState[key]) { return; }
+  if (keyBoard[key]) { return; }
 
   key !== 'J' && key !== 'H'
-    ? keyBoardState.directKey = key
-    : keyBoardState.fnKey = key;
+    ? keyBoard.directKey = key
+    : keyBoard.fnKey = key;
 
-  keyBoardState.isPressed = true;
-  keyBoardState.pressedKey = key;
-  keyBoardState[key] = true;
+  keyBoard.isPressed = true;
+  keyBoard.pressedKey = key;
+  keyBoard[key] = true;
 };
 
 export default function () {

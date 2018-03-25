@@ -1,8 +1,8 @@
 const createElement = (element: string) => document.createElement(element);
 
-let cxtRole;
-let cxtBg;
-let cxtMisc;
+let cxtRole: CanvasRenderingContext2D;
+let cxtBg: CanvasRenderingContext2D;
+let cxtMisc: CanvasRenderingContext2D;
 
 export default function () {
   const wrap = createElement('div');
@@ -19,7 +19,7 @@ export default function () {
       element.height = 456;
       wrap.appendChild(element);
 
-      return element.getContext('2d');
+      return element.getContext('2d') as CanvasRenderingContext2D;
     });
 
   cxtBg.font = '15px prstart';
