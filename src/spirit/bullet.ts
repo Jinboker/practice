@@ -1,5 +1,6 @@
 import Mover from './mover';
 import res from '../data/assets';
+import BulletCollision from '../collision/bulletCollisionDetection';
 
 const BULLET_IMG = res.img.misc;
 const ATTACK_OVER_AUD = res.audio.attackOver;
@@ -13,6 +14,8 @@ export default class Bullet extends Mover {
   public next_y: number;
   public type: string;
 
+  private detectionCollision: BulletCollision;
+
   constructor(
     public x: number,
     public y: number,
@@ -25,9 +28,7 @@ export default class Bullet extends Mover {
 
     this.speed = this.rank ? 5 : 4;
     this.distanceToCenter = 8;
-    this.next_x = x;
-    this.next_y = y;
-    this.type = 'bullet';
+    this.detectionCollision = new BulletCollision();
 
     this.resetPosition();
   }
@@ -66,11 +67,16 @@ export default class Bullet extends Mover {
 
   // override
   affirmPosition() {
-
+    [this.next_x, this.next_y] = this.getNextPositionIfCouldMove();
+    this.collisionInfo = this.detectionCollision.getCollisionInfo(this.direction, this.next_x, this.next_y);
+    // 如果没有碰撞则确定位置
+    if (this.collisionInfo.isCollision) {
+    } else {
+      [this.x, this.y] = [this.next_x, this.next_y];
+    }
   }
 
   // override
   draw() {
-
   }
 }

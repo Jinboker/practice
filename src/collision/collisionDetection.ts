@@ -1,5 +1,6 @@
 import { SCREEN_L } from '../global/const';
 
+const allCollisionType = ['border', 'barrier'];
 const getCollisionCoordinateGroup = {
   W: (x: number, y: number, distance: number): number[][] => [[x - 16, y - distance], [x, y - distance]],
   A: (x: number, y: number, distance: number): number[][] => [[x - distance, y - 16], [x - distance, y]],
@@ -13,10 +14,8 @@ abstract class Collision {
   abstract x: number;
   abstract y: number;
 
-  abstract getCollisionInfo(direction: string, x: number, y: number): collisionInfo;
-  abstract borderCollision(): collisionInfo;
   abstract tankCollision(): collisionInfo;
-  abstract barrierCollision(): collisionInfo;
+  abstract getItemBarrierCollisionInfo(row: number, col: number): [boolean, string];
 
   protected isTouchBorder: isTouchBorder;
 
@@ -42,6 +41,45 @@ abstract class Collision {
     let [x, y] = this.spiritCenterCoordinate();
 
     return getCollisionCoordinateGroup[this.direction](x, y, distance);
+  }
+
+  // 检查是否碰到边界
+  protected borderCollision() {
+    return {
+      isCollision: this.isTouchBorder[this.direction](),
+      info: ['border']
+    }
+  }
+
+  // 检测是否碰到砖块之类的障碍物
+  protected barrierCollision() {
+    const collisionCoordinateGroup = this.getCollisionCoordinateGroupWidthBarrier();
+    const collisionInfoArr = collisionCoordinateGroup.map(
+      ele => this.getItemBarrierCollisionInfo(ele[1] >> 4, ele[0] >> 4)
+    );
+    const isCollision = collisionInfoArr.some(ele => ele[0]);
+
+    return {
+      isCollision: isCollision,
+      info: ['block']
+    }
+  }
+
+  // 分别获取每个类型的碰撞最后的碰撞信息
+  protected getCollisionInfo(direction: string, x: number, y: number): collisionInfo {
+    [this.direction, this.x, this.y] = [direction, x, y];
+
+    let collisionInfo = { isCollision: false };
+
+    allCollisionType.every(ele => {
+      // 获取碰撞信息，如碰撞，则保存相应的信息
+      let _info = this[`${ele}Collision`]();
+
+      _info.isCollision && (collisionInfo = _info);
+      return !_info.isCollision;
+    });
+
+    return collisionInfo;
   }
 }
 
