@@ -1,10 +1,15 @@
-import './index.css';
-import initElement from './init/initElement';
-import initKeyboardEvent from './init/initKeyboardEvent';
-import startGame from './init/startGame';
+import './style/index.css'
 
-window.onload = (): void => {
-  initElement();
-  initKeyboardEvent();
-  startGame();
-};
+// load game config
+import './config'
+
+// initial game resource
+import './initialGame'
+
+import { audio } from './global'
+
+audio.start.play()
+
+const a = 'bac'
+
+console.log(a, 'm')

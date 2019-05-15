@@ -5,22 +5,23 @@
     "target": "es2015",
     "lib": ["es2015", "es2016", "es2017", "dom"],
     "sourceMap": true,
-    "allowJs": true,
     "moduleResolution": "node",
-    "rootDir": "src",
+    "experimentalDecorators": true,
     "noFallthroughCasesInSwitch": true,
     "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
     "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "importHelpers": true,
+    "noImplicitThis": false,
     "strictNullChecks": true,
+    "importHelpers": true,
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
     "noUnusedLocals": true,
-    "baseUrl": ".",
+    "removeComments": false,
+    "declaration": true,
+    "baseUrl": "./",
     "paths": {
-      "^src/*": [".src/*"],
-      "^assets/*": ["./src/assets/*"]
+      "src": ["src"]
     }
   },
   "exclude": [

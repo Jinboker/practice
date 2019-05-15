@@ -1,79 +1,56 @@
 const path = require('path');
-const fs = require('fs');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const appDirectory = fs.realpathSync(process.cwd());
-const resolveApp = relativePath => path.resolve(appDirectory, relativePath);
-const appSrc = resolveApp('src');
-
-//获取环境
-const env = process.env.NODE_ENV;
-const isDev = env === 'development';
+const env = process.env.NODE_ENV || 'production';
 
 const config = {
-  devtool: isDev ? 'cheap-module-eval-source-map' : false,
-  entry: resolveApp('src/index.ts'),
+  mode: env,
+  entry: './src/index.ts',
   output: {
-    filename: `static/js/bundle${isDev ? '' : '.[chunkhash:8]'}.js`,
-    path: path.resolve(__dirname, 'dist')
-  },
-  resolve: {
-    extensions: ['.ts', '.js', '.css'],
-    alias: {
-      '^src': appSrc,
-      '^assets': path.resolve(appSrc, 'assets')
-    }
+    filename: `index${env === 'development' ? '' : '.[chunkhash:8]'}.js`,
   },
   module: {
-    strictExportPresence: true,
     rules: [
       {
-        test: /\.ts$/,
-        enforce: 'pre',
-        loader: 'tslint-loader'
+        test: /\.(png|ttf|mp3)\??.*$/,
+        loader: 'url-loader',
+        options: {
+          limit: 80 * 1024,
+          name: 'assets/[name].[hash:8].[ext]',
+        },
+        exclude: /node_modules/
       },
       {
-        oneOf: [
-          {
-            test: /\.(png|ttf|mp3)\??.*$/,
-            loader: 'url-loader',
-            options: {
-              limit: 80 * 1024,
-              name: 'static/media/[name].[hash:8].[ext]',
-            }
-          },
-          {
-            test: /\.ts$/,
-            include: appSrc,
-            loader: require.resolve('ts-loader')
-          },
-          {
-            test: /\.css$/,
-            use: [
-              require.resolve('style-loader'),
-              {
-                loader: require.resolve('css-loader'),
-                options: {
-                  importLoaders: 1,
-                }
-              }
-            ]
-          }
-        ]
+        test: /\.css$/,
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader' }
+        ],
+        exclude: /node_modules/
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/
       }
     ]
+  },
+  resolve: {
+    extensions: [ '.ts', '.js' ],
+    alias: {
+      'src': path.resolve(__dirname, 'src'),
+    }
   },
   plugins: []
 };
 
-if (isDev) {
+if (env === 'development') {
   config.devServer = {
-    contentBase: appDirectory,
-    port: 9000,
-    open: true
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 9000
   };
+
   config.plugins.push(
     new HtmlWebpackPlugin({
       title: 'battle-city'
@@ -87,25 +64,8 @@ if (isDev) {
         collapseWhitespace: true,
         showErrors: true
       }
-    }),
-    new CleanWebpackPlugin([resolveApp('dist')]),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        comparisons: false,
-        drop_console: true,
-        reduce_vars: true
-      },
-      mangle: {
-        safari10: true,
-      },
-      output: {
-        comments: false,
-        ascii_only: true,
-      },
-      sourceMap: false,
-    }),
-  );
+    })
+  )
 }
 
 module.exports = config;
