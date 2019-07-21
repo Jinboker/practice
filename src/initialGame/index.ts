@@ -1,2 +1,2 @@
-import './canvas'
-import './keyboardEvent'
+export { initialDom } from './canvas'
+export { initialKeyboard } from './keyboardEvent'

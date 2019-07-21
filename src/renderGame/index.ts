@@ -5,8 +5,8 @@ export interface ModuleRenderer {
 class Renderer {
   private list: ModuleRenderer[]
 
-  public register(moduleRenderer: typeof ModuleRenderer) {
-    this.list.push(new moduleRenderer())
+  public register(moduleRenderer: ModuleRenderer) {
+    this.list.push(moduleRenderer)
   }
 }
 

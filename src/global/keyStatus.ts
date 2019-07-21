@@ -18,12 +18,10 @@ type IKeyStatus = {
   pressedKey: undefined | IKey
 }
 
-const keyStatus: IKeyStatus = {
+export const keyStatus: IKeyStatus = {
   up: false,
   down: false,
   left: false,
   right: false,
   pressedKey: undefined
 }
-
-export default keyStatus

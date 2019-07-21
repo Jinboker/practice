@@ -1,7 +1,7 @@
 import { ctx } from '../global'
 import { screen } from '../constant'
 
-(function () {
+export function initialDom() {
   const root = document.createElement('div')
 
   ;
@@ -21,4 +21,4 @@ import { screen } from '../constant'
   })
 
   document.body.insertBefore(root, document.body.firstChild)
-})()
+}

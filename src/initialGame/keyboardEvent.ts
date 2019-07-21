@@ -12,7 +12,7 @@ const handleKeyUp = (key: IKey) => {
   keyStatus[key] = true
 }
 
-(function () {
+export function initialKeyboard() {
   ['keydown', 'keyup'].forEach(item => {
     addEventListener(item, (ev: KeyboardEvent) => {
       const key = keyMap[ev.keyCode] as IKey
@@ -26,4 +26,4 @@ const handleKeyUp = (key: IKey) => {
       }
     })
   }, false)
-})()
+}
