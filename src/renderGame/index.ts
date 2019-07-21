@@ -1,15 +1,21 @@
-export interface ModuleRenderer {
+export interface IModuleRenderer {
   render: () => void
+}
+type IRenderer = {
+  selectGameMode: IModuleRenderer | null;
 }
 
 class Renderer {
-  private list: ModuleRenderer[]
+  private rendererGroup: IRenderer
 
-  public register(moduleRenderer: ModuleRenderer) {
-    this.list.push(moduleRenderer)
+  mountRenderer<T extends IModuleRenderer>(rendererName: string, moduleRenderer: T) {
+    this.rendererGroup[rendererName] = moduleRenderer
   }
+
+  removeRenderer(rendererName: string) {
+    this.rendererGroup[rendererName] = name
+  }
+
 }
 
-const renderer = new Renderer()
-
-export { renderer }
+export const renderer = new Renderer()

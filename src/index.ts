@@ -1,7 +1,14 @@
 import './style/index.css'
-import { initialKeyboard, initialDom } from './initialGame'
+import { render } from './render'
+import { initialKeyboard, initialCanvas } from './initialGame'
+
+function renderLoop() {
+  render()
+  window.requestAnimationFrame(renderLoop)
+}
 
 window.onload = () => {
-  initialDom()
+  initialCanvas()
   initialKeyboard()
+  renderLoop()
 }

@@ -1,7 +1,7 @@
 import { ctx } from '../global'
 import { screen } from '../constant'
 
-export function initialDom() {
+export function initialCanvas() {
   const root = document.createElement('div')
 
   ;
@@ -21,4 +21,18 @@ export function initialDom() {
   })
 
   document.body.insertBefore(root, document.body.firstChild)
+
+  /**
+   * initial canvas setting
+   */
+  const bgCtx = ctx.bg!
+  const otherCtx = ctx.other!
+
+  bgCtx.font = '15px prstart'
+  bgCtx.fillStyle = '#000'
+  bgCtx.textBaseline = 'top'
+
+  otherCtx.font = '20px prstart'
+  otherCtx.fillStyle = '#000'
+  otherCtx.textBaseline = 'top'
 }

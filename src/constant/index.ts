@@ -1,5 +1,8 @@
 export const enum direction {
-  up, right, down, left
+  up, 
+  right, 
+  down, 
+  left
 }
 
 export const screen = {

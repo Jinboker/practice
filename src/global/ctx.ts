@@ -1,11 +1,11 @@
-type ICtx = {
+export type ICtx = {
   role?: CanvasRenderingContext2D;
   bg?: CanvasRenderingContext2D;
   other?: CanvasRenderingContext2D;
 }
 
-export default {
+export const ctx: ICtx = {
   role: undefined,
   bg: undefined,
   other: undefined
-} as ICtx
+}
