@@ -2,8 +2,8 @@ import { screen } from 'src/constant'
 import { img, ctx, keyStatus } from 'src/global'
 import { clearCanvas, delayLoop, tuple } from 'src/utils'
 
-const MIN_Y = 285
 const minTopOffset = 75
+const baseIndicatorPosition = 285
 const modes = tuple('single', 'double', 'construct')
 
 type SelectedMode = typeof modes[number]
@@ -13,7 +13,7 @@ export class SelectMode {
   /**
    * 选择模式的指示器的位置
    */
-  private indicatorY: number = MIN_Y
+  private indicatorY: number = baseIndicatorPosition
   /**
    * 动画距离canvas顶部的距离
    */
