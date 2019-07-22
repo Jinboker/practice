@@ -1,1 +1,1 @@
-type IKey = 'up' | 'down' | 'left' | 'right';
+type IKey = 'up' | 'down' | 'left' | 'right' | 'A' | 'B'

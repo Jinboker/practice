@@ -21,3 +21,5 @@ export function delayLoop(count: number) {
     }
   }
 }
+
+export const tuple = <T extends string[]>(...args: T) => args;

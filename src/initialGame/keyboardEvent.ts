@@ -1,5 +1,5 @@
 import { keyStatus } from '../global'
-import { keyMap } from '../config'
+import { keyCode } from '../constant'
 
 const handleKeyDown = (key: IKey) => {
   keyStatus[key] = false
@@ -15,7 +15,7 @@ const handleKeyUp = (key: IKey) => {
 export function initialKeyboard() {
   ['keydown', 'keyup'].forEach(item => {
     addEventListener(item, (ev: KeyboardEvent) => {
-      const key = keyMap[ev.keyCode] as IKey
+      const key = keyCode[ev.keyCode] as IKey
 
       if (!key || !(key in keyStatus)) return
 
