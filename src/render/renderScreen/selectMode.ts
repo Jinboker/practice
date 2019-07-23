@@ -2,6 +2,8 @@ import { screen } from 'src/constant'
 import { img, ctx, keyStatus } from 'src/global'
 import { clearCanvas, delayLoop, tuple } from 'src/utils'
 
+import { renderScreen } from '.';
+
 const minTopOffset = 75
 const baseIndicatorPosition = 285
 const modes = tuple('single', 'double', 'construct')
@@ -40,7 +42,7 @@ export class SelectMode {
     }
 
     if (pressedKey === 'A') {
-      console.log('进入对应的模式')
+      renderScreen.setScreenViewType('selectStage', true)
     }
 
     keyStatus[pressedKey] = false

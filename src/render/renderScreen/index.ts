@@ -1,22 +1,23 @@
 import { SelectMode } from './SelectMode'
 
-export type IScreenViewType = 'selectMode' | 'selectState'
+export type IScreenViewType = 'selectMode' | 'selectStage' | 'playing' | 'over'
 
 class RenderScreen {
-  private screenType: IScreenViewType = 'selectMode'
   private renderer: any = new SelectMode()
 
-  setScreenType(type: IScreenViewType) {
-    this.screenType = type
+  screenViewType: IScreenViewType = 'selectMode'
 
-    this.setRenderType()
-  }
-
-  setRenderType() {
-    const type = this.screenType
+  setScreenViewType(type: 'selectMode' | 'playing' | 'over')
+  setScreenViewType(type: 'selectStage', couldChangeState: boolean)
+  setScreenViewType(type: IScreenViewType, payload?: boolean) {
+    this.screenViewType = type
 
     if (type === 'selectMode') {
       this.renderer = new SelectMode()
+    }
+
+    if (type === 'selectStage') {
+      //
     }
   }
 
