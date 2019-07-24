@@ -1,5 +1,4 @@
-import { ctx } from '../global'
-import { screen } from '../constant'
+import { ctx, screen } from '../global'
 
 export function initialCanvas() {
   const root = document.createElement('div')

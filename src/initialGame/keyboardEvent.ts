@@ -1,5 +1,4 @@
-import { keyStatus } from '../global'
-import { keyCode } from '../constant'
+import { keyStatus, keyCode } from '../global'
 
 const handleKeyDown = (key: IKey) => {
   keyStatus[key] = false

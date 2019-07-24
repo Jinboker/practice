@@ -1,8 +1,7 @@
-import { screen } from 'src/constant'
-import { img, ctx, keyStatus } from 'src/global'
+import { imgs, ctx, keyStatus, screen } from 'src/global'
 import { clearCanvas, delayLoop, tuple } from 'src/utils'
 
-import { renderScreen } from '.';
+import { renderScreen } from '.'
 
 const minTopOffset = 75
 const baseIndicatorPosition = 285
@@ -60,7 +59,7 @@ export class SelectMode {
 
     bgCtx.clearRect(140, 260, 32, 120)
     bgCtx.drawImage(
-      img.player, 0, 64 + this.tankWheelFlag * 32, 32, 32, 140, this.indicatorY + modeIndex * 30, 32, 32
+      imgs.player, 0, 64 + this.tankWheelFlag * 32, 32, 32, 140, this.indicatorY + modeIndex * 30, 32, 32
     )
 
     this.operateListener()
@@ -86,7 +85,7 @@ export class SelectMode {
     bgCtx.fillText('NORMAL MODE', 190, this.topOffset + 220)
     bgCtx.fillText('CRAZY MODE', 190, this.topOffset + 250)
     bgCtx.fillText('CONSTRUCTION', 190, this.topOffset + 280)
-    bgCtx.drawImage(img.ui, 0, 0, 376, 160, 70, this.topOffset + 25, 376, 160)
+    bgCtx.drawImage(imgs.ui, 0, 0, 376, 160, 70, this.topOffset + 25, 376, 160)
     bgCtx.restore()
   }
 

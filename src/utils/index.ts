@@ -1,5 +1,4 @@
-import { screen } from 'src/constant'
-import { ctx, ICtx } from 'src/global'
+import { ctx, ICtx, screen } from 'src/global'
 
 export function clearCanvas(cleanType?: Array<keyof ICtx>) {
   const cleanArr = !cleanType ? Object.keys(ctx) : cleanType

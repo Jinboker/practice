@@ -1,5 +1,5 @@
-// export { ctx, ICtx } from './ctx'
 export * from './ctx'
-export { default as audio } from './audios'
-export { default as img } from './img'
+export * from './constant'
+export { imgs } from './imgs'
+export { audios } from './audios'
 export { keyStatus } from './keyStatus'
