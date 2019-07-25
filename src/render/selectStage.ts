@@ -1,10 +1,13 @@
 import { ctx, screen } from 'src/global'
+import { clearCanvas, delayLoop } from '../utils'
 
 const halfScreenHeight = screen.height >> 1
 
 export class SelectStage {
   private slidingMaskWidth: number = 0
   private process: 'maskingScreen' | 'waitForSelect' | 'clearScreen' = 'maskingScreen'
+  private delayClearMask = delayLoop(80)
+  private startClearMask: boolean = false
 
   constructor(
     private couldSelectStage: boolean
@@ -27,6 +30,39 @@ export class SelectStage {
     }
   }
 
+  /**
+   * 等待选择关卡，如果不选择直接按A键，那么进入下一个步骤
+   */
+  waitForSelect() {
+    //
+  }
+
+  clearScreenMask() {
+    const bgCtx = ctx.bg!
+    const otherCtx = ctx.other!
+
+    if (!this.startClearMask) {
+      this.delayClearMask(() => {
+        const { gameView, height, width } = screen
+        const { xOffset, yOffset, len } = gameView
+
+        bgCtx.clearRect(xOffset, yOffset, len, len)
+
+        clearCanvas(['other'])
+
+        otherCtx.save()
+        otherCtx.fillStyle = '#666'
+        otherCtx.fillRect(0, 0, width, height)
+        otherCtx.restore()
+
+        this.startClearMask = true
+        this.slidingMaskWidth = 0
+      })
+    } else {
+      //
+    }
+  }
+
   render() {
     const process = this.process
 
@@ -35,8 +71,10 @@ export class SelectStage {
         this.renderMaskingScreen()
         break
       case 'waitForSelect':
+        this.waitForSelect()
         break
       case 'clearScreen':
+        this.clearScreenMask()
         break
       default: break
     }

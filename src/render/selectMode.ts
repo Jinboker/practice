@@ -1,7 +1,7 @@
 import { imgs, ctx, keyStatus, screen } from 'src/global'
 import { clearCanvas, delayLoop, tuple } from 'src/utils'
 
-import { renderScreen } from '.'
+import { renderer } from '.'
 
 const minTopOffset = 75
 const baseIndicatorPosition = 285
@@ -41,7 +41,7 @@ export class SelectMode {
     }
 
     if (pressedKey === 'A') {
-      renderScreen.setScreenViewType('selectStage', true)
+      renderer.setScreenViewType('selectStage', true)
     }
 
     keyStatus[pressedKey] = false

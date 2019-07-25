@@ -1,9 +1,9 @@
-import './style/index.css'
-import { render } from './render'
+import './index.css'
+import { renderer } from './render'
 import { initialKeyboard, initialCanvas } from './initialGame'
 
 function renderLoop() {
-  render()
+  renderer.render()
   window.requestAnimationFrame(renderLoop)
 }
 
