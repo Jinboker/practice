@@ -1,7 +1,11 @@
 import { ctx, screen } from 'src/global'
 import { clearCanvas, delayLoop } from '../utils'
 
-const halfScreenHeight = screen.height >> 1
+const { height, width, gameView } = screen
+const { xOffset, yOffset, len } = gameView
+
+const halfScreenHeight = height >> 1
+const halfGameView = len >> 1
 
 export class SelectStage {
   private slidingMaskWidth: number = 0
@@ -27,6 +31,7 @@ export class SelectStage {
       this.slidingMaskWidth += 15
     } else {
       this.process = this.couldSelectStage ? 'waitForSelect' : 'clearScreen'
+      this.process = 'clearScreen'
     }
   }
 
@@ -43,9 +48,6 @@ export class SelectStage {
 
     if (!this.startClearMask) {
       this.delayClearMask(() => {
-        const { gameView, height, width } = screen
-        const { xOffset, yOffset, len } = gameView
-
         bgCtx.clearRect(xOffset, yOffset, len, len)
 
         clearCanvas(['other'])
@@ -59,7 +61,13 @@ export class SelectStage {
         this.slidingMaskWidth = 0
       })
     } else {
-      //
+      otherCtx.clearRect(xOffset + halfGameView - this.slidingMaskWidth, yOffset, 2 * this.slidingMaskWidth, len)
+
+      if (this.slidingMaskWidth < halfGameView) {
+        this.slidingMaskWidth += 15
+      } else {
+        //
+      }
     }
   }
 
