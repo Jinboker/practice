@@ -2,21 +2,19 @@
 const requireMusicContext = require.context('../assets/audio', true, /^\.\/.*\.mp3$/)
 const audioBase64 = requireMusicContext.keys().map(requireMusicContext)
 
-const audioArr = [
+import { tuple } from 'src/utils'
+
+const audioArr = tuple(
   'attack', 'attackOver', 'bomb', 'count', 'eat', 'explode', 'life', 'misc', 'over', 'pause', 'start'
-]
+)
 
 type Audios = {
   [k in (typeof audioArr)[number]]: HTMLAudioElement;
 }
 
-const audios: Audios = {}
+export const audios = audioArr.reduce((prev, cur, index) => {
+  prev[cur] = document.createElement('audio')
+  prev[cur].src = audioBase64[index]
 
-audioArr.forEach((key, index) => {
-  audios[key] = document.createElement('audio')
-  audios[key].src = audioBase64[index]
-})
-
-export {
-  audios
-}
+  return prev
+}, {} as Audios)

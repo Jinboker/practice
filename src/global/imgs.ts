@@ -2,19 +2,17 @@
 const requirePicContext = require.context('../assets/img', true, /^\.\/.*\.png$/)
 const picBase64 = requirePicContext.keys().map(requirePicContext)
 
-const imgArr = ['bonus', 'boom', 'brick', 'enemy', 'misc', 'player', 'ui']
+import { tuple } from 'src/utils'
+
+const imgArr = tuple('bonus', 'boom', 'brick', 'enemy', 'misc', 'player', 'ui')
 
 type Pics = {
   [k in (typeof imgArr)[number]]: HTMLImageElement;
 }
 
-const imgs: Pics = {}
+export const imgs = imgArr.reduce((prev, cur, index) => {
+  prev[cur] = document.createElement('img')
+  prev[cur].src = picBase64[index]
 
-imgArr.forEach((key, index) => {
-  imgs[key] = document.createElement('img')
-  imgs[key].src = picBase64[index]
-})
-
-export {
-  imgs
-}
+  return prev
+}, {} as Pics)
