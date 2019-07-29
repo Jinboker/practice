@@ -1,5 +1,8 @@
 import { ctx, ICtx, screen } from 'src/global'
 
+export { eventBus } from './eventBus'
+export { uniqueId } from './uniqueId'
+
 export function clearCanvas(cleanType?: Array<keyof ICtx>) {
   const cleanArr = !cleanType ? Object.keys(ctx) : cleanType
 
@@ -21,4 +24,4 @@ export function delayLoop(count: number) {
   }
 }
 
-export const tuple = <T extends string[]>(...args: T) => args;
+export const tuple = <T extends string[]>(...args: T) => args

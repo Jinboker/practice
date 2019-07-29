@@ -1,14 +1,16 @@
 import './index.css'
-import { renderer } from './render'
-import { initialKeyboard, initialCanvas } from './initialGame'
+import { renderingBus } from './renderingBus'
+import { initialKeyboard, initialCanvas, initialRenderGame } from './initialGame'
 
 function renderLoop() {
-  renderer.render()
+  renderingBus.render()
   window.requestAnimationFrame(renderLoop)
 }
 
 window.onload = () => {
   initialCanvas()
   initialKeyboard()
+  initialRenderGame()
+
   renderLoop()
 }

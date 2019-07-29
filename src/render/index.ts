@@ -1,5 +1,5 @@
-import { SelectMode } from './SelectMode'
-import { SelectStage } from './SelectStage'
+import { SelectMode } from './selectMode'
+import { SelectStage } from './selectStage'
 
 export type IScreenViewType = 'selectMode' | 'selectStage' | 'playing' | 'over'
 
