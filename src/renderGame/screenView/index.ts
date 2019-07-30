@@ -1,8 +1,9 @@
 import { SelectMode } from './selectMode'
 
 type Fn = () => void
-type ScreenView = {
-  type: 'selectMode' | 'selectStage' | 'playing' | 'over',
+export type ScreenViewType = 'selectMode' | 'selectStage' | 'playing' | 'over'
+export type ScreenView = {
+  type: ScreenViewType,
   renderSelectMode: Fn,
 }
 

@@ -1,6 +1,6 @@
 import { imgs, ctx, keyStatus, screen } from 'src/global'
 import { clearCanvas, delayLoop, tuple } from 'src/utils'
-import { Renderer } from '../Renderer'
+import { ScreenRenderer } from './ScreenRenderer'
 
 const minTopOffset = 75
 const baseIndicatorPosition = 285
@@ -8,7 +8,7 @@ const modes = tuple('single', 'double', 'construct')
 
 type SelectedMode = typeof modes[number]
 
-export class SelectMode extends Renderer {
+export class SelectMode extends ScreenRenderer {
   private tankWheelFlag: number = 0
   /**
    * 选择模式的指示器的位置
@@ -22,7 +22,7 @@ export class SelectMode extends Renderer {
   private delayChangeTankWheelFlag = delayLoop(5)
 
   constructor() {
-    super()
+    super('selectMode')
   }
 
   operateListener() {
@@ -98,5 +98,7 @@ export class SelectMode extends Renderer {
     } else {
       this.renderBeforeTouchTop()
     }
+
+    this.checkForDestroy()
   }
 }

@@ -18,7 +18,7 @@ export abstract class Renderer {
     renderingBus.registerRenderer(this.id, this.render.bind(this))
   }
 
-  removeRenderer() {
+  remove() {
     renderingBus.removeRenderer(this.id)
   }
 
