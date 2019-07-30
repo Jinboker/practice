@@ -1,8 +1,8 @@
 /**
  * 初始化渲染游戏
  */
-import { screenView } from 'src/renderGame'
+import { core } from 'src/core'
 
 export function initialRenderGame() {
-  screenView.renderSelectMode()
+  core.renderScreen('selectMode')
 }

@@ -7,9 +7,7 @@ type RendererList = Array<{
   renderer: Fn
 }>
 
-const getIndex = (id: string, list: RendererList) => {
-  return list.findIndex(item => item.id === id)
-}
+const getIndex = (id: string, list: RendererList) => list.findIndex(item => item.id === id)
 
 class RenderingBus {
   private rendererList: RendererList = []

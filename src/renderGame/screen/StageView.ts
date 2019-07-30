@@ -8,7 +8,7 @@ const { xOffset, yOffset, len } = gameView
 const halfScreenHeight = height >> 1
 const halfGameView = len >> 1
 
-export class SelectStage extends ScreenRenderer {
+export class StageView extends ScreenRenderer {
   private slidingMaskWidth: number = 0
   private process: 'maskingScreen' | 'waitForSelect' | 'clearScreen' = 'maskingScreen'
   private delayClearMask = delayLoop(80)
@@ -17,7 +17,7 @@ export class SelectStage extends ScreenRenderer {
   constructor(
     private couldSelectStage: boolean
   ) {
-    super('selectStage')
+    super('stageView')
   }
 
   // 入场动画，蒙层上下运动遮住画布
