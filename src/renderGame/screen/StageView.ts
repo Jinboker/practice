@@ -1,4 +1,4 @@
-import { ctx, screen } from 'src/global'
+import { ctx, screen, audios } from 'src/global'
 import { clearCanvas, delayLoop } from 'src/utils'
 import { ScreenRenderer } from './ScreenRenderer'
 import { core } from 'src/core'
@@ -34,8 +34,7 @@ export class StageView extends ScreenRenderer {
     if (this.slidingMaskWidth <= halfScreenHeight) {
       this.slidingMaskWidth += 15
     } else {
-      this.process = this.couldSelectStage ? 'waitForSelect' : 'clearScreen'
-      this.process = 'clearScreen'
+      this.process = 'waitForSelect'
     }
   }
 
@@ -43,7 +42,20 @@ export class StageView extends ScreenRenderer {
    * 等待选择关卡，如果不选择直接按A键，那么进入下一个步骤
    */
   waitForSelect() {
-    //
+    const otherCtx = ctx.other!
+
+    otherCtx.clearRect(180, 210, 220, 40)
+    otherCtx.fillText(`STAGE  ${core.getStage()}`, 180, 218)
+
+    if (this.couldSelectStage) {
+      this.process = 'clearScreen'
+
+      audios.start.play()
+    } else {
+      this.process = 'clearScreen'
+
+      audios.start.play()
+    }
   }
 
   clearScreenMask() {
