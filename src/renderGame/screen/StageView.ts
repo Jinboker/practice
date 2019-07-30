@@ -1,13 +1,15 @@
-import { ctx, screen, audios } from 'src/global'
+import { ctx, screen, audios, keyStatus } from 'src/global'
 import { clearCanvas, delayLoop } from 'src/utils'
 import { ScreenRenderer } from './ScreenRenderer'
 import { core } from 'src/core'
+import { stageMap } from 'src/config'
 
 const { height, width, gameView } = screen
 const { xOffset, yOffset, len } = gameView
 
 const halfScreenHeight = height >> 1
 const halfGameView = len >> 1
+const maxStage = stageMap.length
 
 export class StageView extends ScreenRenderer {
   private slidingMaskWidth: number = 0
@@ -38,6 +40,41 @@ export class StageView extends ScreenRenderer {
     }
   }
 
+  operateListener() {
+    const pressedKey = keyStatus.pressedKey
+
+    if (!pressedKey) {
+      return
+    }
+
+    let stageNum = core.getStage()
+
+    if (pressedKey === 'up') {
+      stageNum = stageNum > 1 ? stageNum  - 1 : maxStage
+    }
+
+    if (pressedKey === 'down') {
+      stageNum = stageNum < maxStage ? stageNum + 1 : 1
+    }
+
+    if (stageNum !== core.getStage()) {
+      core.setStage(stageNum)
+    }
+
+    if (pressedKey === 'A') {
+      this.enterClearScreenMode()
+    }
+
+    keyStatus[pressedKey] = false
+    keyStatus.pressedKey = void 0
+  }
+
+  enterClearScreenMode() {
+    this.process = 'clearScreen'
+
+    audios.start.play()
+  }
+
   /**
    * 等待选择关卡，如果不选择直接按A键，那么进入下一个步骤
    */
@@ -48,13 +85,9 @@ export class StageView extends ScreenRenderer {
     otherCtx.fillText(`STAGE  ${core.getStage()}`, 180, 218)
 
     if (this.couldSelectStage) {
-      this.process = 'clearScreen'
-
-      audios.start.play()
+      this.operateListener()
     } else {
-      this.process = 'clearScreen'
-
-      audios.start.play()
+      this.enterClearScreenMode()
     }
   }
 
