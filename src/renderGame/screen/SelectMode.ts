@@ -1,6 +1,7 @@
 import { imgs, ctx, keyStatus, screen } from 'src/global'
 import { clearCanvas, delayLoop, tuple } from 'src/utils'
 import { ScreenRenderer } from './ScreenRenderer'
+import { core } from 'src/core'
 
 const minTopOffset = 75
 const baseIndicatorPosition = 285
@@ -44,7 +45,10 @@ export class SelectMode extends ScreenRenderer {
     }
 
     if (pressedKey === 'A') {
-      // renderer.setScreenViewType('selectStage', true)
+      /**
+       * 进入渲染关卡的界面
+       */
+      core.renderScreen('stageView', true)
     }
 
     keyStatus[pressedKey] = false

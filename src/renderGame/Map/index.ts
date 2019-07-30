@@ -3,11 +3,16 @@
  */
 import { stageMap } from 'src/config'
 import { Renderer } from '../Renderer'
+import { delayLoop } from 'src/utils'
 import { ctx, imgs, screen } from 'src/global'
 
-const bgCtx = ctx.bg!
 const { brick } = imgs
 const { yOffset, xOffset } = screen.gameView
+
+type RiverAreaList = Array<{
+  row: number;
+  col: number;
+}>
 
 export class RenderMap extends Renderer {
   /**
@@ -18,6 +23,12 @@ export class RenderMap extends Renderer {
    * ??? 为什么是 28 * 28 的格子来着？忘了
    */
   private roadMap = new Array(28).fill(0).map(() => new Array(28).fill(0))
+  /**
+   * 当前河流的地图坐标，河流需要在固定的循环后改变图片
+   */
+  private riverAreaList: RiverAreaList = []
+  private changeRiverDelay = delayLoop(40)
+  private riverImgFlag: number = 0
 
   /**
    * 根据坐标擦除地图
@@ -38,17 +49,31 @@ export class RenderMap extends Renderer {
    * 渲染初始化地图，地图后面大部分只会被擦掉，因此不用进行重复渲染
    */
   initialMap() {
-    const mapConfig = stageMap[this.stage]
+    const bgCtx = ctx.bg!
+    const mapConfig = stageMap[this.stage - 1]
 
     new Array(13).fill(null).forEach((_, row) => {
       new Array(13).fill(null).forEach((__, col) => {
         const mapItemType = mapConfig[row][col]
 
+        let type
+        /**
+         * 如果mapItemType为13或者14，表明是河流，那么全部处理成13位置的图，保持显示效果一致
+         * 还需要将这个位置推入河流的坐标list，在固定次数的循环后将13 和 14 位置的图进行对调更换
+         */
+        if (mapItemType === 13 || mapItemType === 14) {
+          type = 13
+
+          this.riverAreaList.push({ row, col })
+        } else {
+          type = mapItemType
+        }
+
         /**
          * 渲染地图，顺便将地图数据进行解析，获取对应格子的坦克和子弹的路径地图
          */
         if (mapItemType) {
-          bgCtx.drawImage(brick, 32 * mapItemType, 0, 32, 32, xOffset + 32 * col, yOffset + 32 * row, 32, 32)
+          bgCtx.drawImage(brick, 32 * type, 0, 32, 32, xOffset + 32 * col, yOffset + 32 * row, 32, 32)
 
           console.log(this.roadMap)
         }
@@ -60,10 +85,30 @@ export class RenderMap extends Renderer {
    * 渲染河流
    */
   renderRiver() {
-    //
+    const riverAreaList = this.riverAreaList
+
+    if (!riverAreaList.length) {
+      return
+    }
+
+    const bgCtx = ctx.bg!
+
+    this.changeRiverDelay(() => {
+      riverAreaList.forEach(item => {
+        const { row, col } = item
+
+        bgCtx.drawImage(
+          brick, 32 * (13 + this.riverImgFlag), 0, 32, 32, xOffset + 32 * col, yOffset + 32 * row, 32, 32
+        )
+      })
+
+      this.riverImgFlag = +!this.riverImgFlag
+    })
   }
 
   render(): void {
+    this.renderRiver()
+
     const screenType = Renderer.getScreenType()
 
     if (screenType !== 'stageView' && screenType !== 'playing') {

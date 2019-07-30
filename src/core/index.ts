@@ -13,7 +13,7 @@ class Core {
   /**
    * 当前关卡
    */
-  private stage: number = 1
+  private stage: number = 5
   /**
    * 当前屏幕的渲染模式
    * 1、selectMode 选择游戏模式

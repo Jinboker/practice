@@ -1,6 +1,7 @@
 import { ctx, screen } from 'src/global'
 import { clearCanvas, delayLoop } from 'src/utils'
 import { ScreenRenderer } from './ScreenRenderer'
+import { core } from 'src/core'
 
 const { height, width, gameView } = screen
 const { xOffset, yOffset, len } = gameView
@@ -59,6 +60,11 @@ export class StageView extends ScreenRenderer {
         otherCtx.fillStyle = '#666'
         otherCtx.fillRect(0, 0, width, height)
         otherCtx.restore()
+
+        /**
+         * 开始渲染地图
+         */
+        core.renderMap()
 
         this.startClearMask = true
         this.slidingMaskWidth = 0
