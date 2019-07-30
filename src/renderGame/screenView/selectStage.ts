@@ -1,5 +1,6 @@
 import { ctx, screen } from 'src/global'
-import { clearCanvas, delayLoop } from '../utils'
+import { clearCanvas, delayLoop } from 'src/utils'
+import { ScreenRenderer } from './ScreenRenderer'
 
 const { height, width, gameView } = screen
 const { xOffset, yOffset, len } = gameView
@@ -7,7 +8,7 @@ const { xOffset, yOffset, len } = gameView
 const halfScreenHeight = height >> 1
 const halfGameView = len >> 1
 
-export class SelectStage {
+export class SelectStage extends ScreenRenderer {
   private slidingMaskWidth: number = 0
   private process: 'maskingScreen' | 'waitForSelect' | 'clearScreen' = 'maskingScreen'
   private delayClearMask = delayLoop(80)
@@ -15,7 +16,9 @@ export class SelectStage {
 
   constructor(
     private couldSelectStage: boolean
-  ) {}
+  ) {
+    super('selectStage')
+  }
 
   // 入场动画，蒙层上下运动遮住画布
   renderMaskingScreen() {
@@ -86,5 +89,7 @@ export class SelectStage {
         break
       default: break
     }
+
+    this.checkForDestroy()
   }
 }
