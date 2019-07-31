@@ -1,5 +1,5 @@
 /**
- * 游戏核心数据
+ * 游戏核心控制器
  */
 import {
   SelectMode,

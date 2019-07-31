@@ -10,10 +10,11 @@ import { renderingBus } from 'src/renderingBus'
 
 /**
  * 操作执行的函数，
- * 如果返回false，那么表明该操作在按键下次被按下之前，只会执行一次(有一些操作比如暂停，不能因为键盘一直不松开而一致执行下去)
+ * 如果不返回值，默认该操作在按键下次被按下之前，只会执行一次
+ * 如果返回TRUE，那么除非松开按键，或者按下另外一个同类型的按键，那么该操作会一直执行下去
  */
-type Operate = {
-  [K in Key]: () => (void | false)
+export type Operate = {
+  [K in Key]?: () => (void | true)
 }
 
 export abstract class Renderer {
@@ -41,7 +42,7 @@ export abstract class Renderer {
   }
 
   executeOperate() {
-    if (!this.operate) {
+    if (!this.operate || !Object.keys(this.operate).length) {
       return
     }
 
@@ -55,9 +56,9 @@ export abstract class Renderer {
           return
         }
 
-        const result = fn!()
+        const result = fn!.call(this)
 
-        if (result === false) {
+        if (!result) {
           pressedKey[name] = ''
         }
       })

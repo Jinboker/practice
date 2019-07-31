@@ -1,7 +1,7 @@
 import { tuple } from 'src/utils'
 import { keyCode, Key, pressedKey, directionKey, funcKey } from '../global'
 
-const handleKeyDown = (key) => {
+const handleKeyDown = key => {
   if (directionKey.includes(key)) {
     pressedKey.direction = key
   }

@@ -1,8 +1,9 @@
-import { ctx, screen, audios, keyStatus } from 'src/global'
+import { ctx, screen, audios } from 'src/global'
 import { clearCanvas, delayLoop } from 'src/utils'
 import { ScreenRenderer } from './ScreenRenderer'
 import { core } from 'src/core'
 import { stageMap } from 'src/config'
+import { Operate } from '../Renderer'
 
 const { height, width, gameView } = screen
 const { xOffset, yOffset, len } = gameView
@@ -16,6 +17,7 @@ export class StageView extends ScreenRenderer {
   private process: 'maskingScreen' | 'waitForSelect' | 'clearScreen' = 'maskingScreen'
   private delayClearMask = delayLoop(80)
   private startClearMask: boolean = false
+  protected operate: Operate = {}
 
   constructor(
     private couldSelectStage: boolean
@@ -40,35 +42,6 @@ export class StageView extends ScreenRenderer {
     }
   }
 
-  operateListener() {
-    const pressedKey = keyStatus.pressedKey
-
-    if (!pressedKey) {
-      return
-    }
-
-    let stageNum = core.getStage()
-
-    if (pressedKey === 'up') {
-      stageNum = stageNum > 1 ? stageNum  - 1 : maxStage
-    }
-
-    if (pressedKey === 'down') {
-      stageNum = stageNum < maxStage ? stageNum + 1 : 1
-    }
-
-    if (stageNum !== core.getStage()) {
-      core.setStage(stageNum)
-    }
-
-    if (pressedKey === 'A') {
-      this.enterClearScreenMode()
-    }
-
-    keyStatus[pressedKey] = false
-    keyStatus.pressedKey = void 0
-  }
-
   enterClearScreenMode() {
     this.process = 'clearScreen'
 
@@ -85,7 +58,27 @@ export class StageView extends ScreenRenderer {
     otherCtx.fillText(`STAGE  ${core.getStage()}`, 180, 218)
 
     if (this.couldSelectStage) {
-      this.operateListener()
+      if (!Object.keys(this.operate).length) {
+        this.operate = {
+          up() {
+            let stageNum = core.getStage()
+
+            stageNum = stageNum > 1 ? stageNum  - 1 : maxStage
+
+            core.setStage(stageNum)
+          },
+          down() {
+            let stageNum = core.getStage()
+
+            stageNum = stageNum < maxStage ? stageNum + 1 : 1
+
+            core.setStage(stageNum)
+          },
+          A() {
+            this.enterClearScreenMode()
+          }
+        }
+      }
     } else {
       this.enterClearScreenMode()
     }
