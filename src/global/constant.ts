@@ -1,11 +1,11 @@
-export const enum direction {
+export const enum DIRECTION {
   up,
   right,
   down,
   left
 }
 
-export const screen = {
+export const SCREEN = {
   width: 516,
   height: 456,
   gameView: {
@@ -15,7 +15,7 @@ export const screen = {
   }
 }
 
-export enum keyCode {
+export enum KEY_CODE {
   // W
   up = 87,
   // S

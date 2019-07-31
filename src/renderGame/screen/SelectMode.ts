@@ -1,4 +1,4 @@
-import { imgs, ctx, screen } from 'src/global'
+import { imgs, ctx, SCREEN } from 'src/global'
 import { clearCanvas, delayLoop, tuple } from 'src/utils'
 import { ScreenRenderer } from './ScreenRenderer'
 import { core } from 'src/core'
@@ -21,7 +21,7 @@ export class SelectMode extends ScreenRenderer {
   /**
    * 动画距离canvas顶部的距离
    */
-  private topOffset: number = screen.height
+  private topOffset: number = SCREEN.height
   private selectedMode: SelectedMode = 'single'
   private delayChangeTankWheelFlag = delayLoop(5)
 

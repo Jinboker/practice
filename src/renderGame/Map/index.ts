@@ -4,10 +4,10 @@
 import { stageMap } from 'src/config'
 import { Renderer } from '../Renderer'
 import { delayLoop } from 'src/utils'
-import { ctx, imgs, screen } from 'src/global'
+import { ctx, imgs, SCREEN } from 'src/global'
 
 const { brick } = imgs
-const { yOffset, xOffset } = screen.gameView
+const { yOffset, xOffset } = SCREEN.gameView
 
 type RiverAreaList = Array<{
   row: number;

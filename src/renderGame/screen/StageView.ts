@@ -1,11 +1,11 @@
-import { ctx, screen, audios } from 'src/global'
+import { ctx, SCREEN, audios } from 'src/global'
 import { clearCanvas, delayLoop } from 'src/utils'
 import { ScreenRenderer } from './ScreenRenderer'
 import { core } from 'src/core'
 import { stageMap } from 'src/config'
 import { Operate } from '../Renderer'
 
-const { height, width, gameView } = screen
+const { height, width, gameView } = SCREEN
 const { xOffset, yOffset, len } = gameView
 
 const halfScreenHeight = height >> 1
@@ -31,8 +31,8 @@ export class StageView extends ScreenRenderer {
 
     bgCtx.save()
     bgCtx.fillStyle = '#666'
-    bgCtx.fillRect(0, 0, screen.width, this.slidingMaskWidth)
-    bgCtx.fillRect(0, screen.height - this.slidingMaskWidth, screen.width, this.slidingMaskWidth)
+    bgCtx.fillRect(0, 0, SCREEN.width, this.slidingMaskWidth)
+    bgCtx.fillRect(0, SCREEN.height - this.slidingMaskWidth, SCREEN.width, this.slidingMaskWidth)
     bgCtx.restore()
 
     if (this.slidingMaskWidth <= halfScreenHeight) {

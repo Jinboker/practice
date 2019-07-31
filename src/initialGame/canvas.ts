@@ -1,4 +1,4 @@
-import { ctx, screen } from '../global'
+import { ctx, SCREEN } from '../global'
 
 export function initialCanvas() {
   const root = document.createElement('div')
@@ -11,8 +11,8 @@ export function initialCanvas() {
       ele.style.zIndex = '-1'
     }
 
-    ele.width = screen.width
-    ele.height = screen.height
+    ele.width = SCREEN.width
+    ele.height = SCREEN.height
 
     root.appendChild(ele)
 

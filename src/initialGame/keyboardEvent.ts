@@ -1,5 +1,5 @@
 import { tuple } from 'src/utils'
-import { keyCode, Key, pressedKey, directionKey, funcKey } from '../global'
+import { KEY_CODE, Key, pressedKey, directionKey, funcKey } from '../global'
 
 const handleKeyDown = key => {
   if (directionKey.includes(key)) {
@@ -12,7 +12,7 @@ const handleKeyDown = key => {
 }
 
 const handleKeyUp = (key: Key) => {
-  tuple('direction', 'func').forEach(name => {
+  tuple('DIRECTION', 'func').forEach(name => {
     if (pressedKey[name] === key) {
       pressedKey[name] = ''
     }
@@ -22,7 +22,7 @@ const handleKeyUp = (key: Key) => {
 export function initialKeyboard() {
   ['keydown', 'keyup'].forEach(item => {
     addEventListener(item, (ev: KeyboardEvent) => {
-      const key = keyCode[ev.keyCode] as Key
+      const key = KEY_CODE[ev.keyCode] as Key
 
       if (!key) {
         return

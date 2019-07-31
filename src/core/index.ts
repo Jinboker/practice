@@ -13,7 +13,7 @@ class Core {
   /**
    * 当前关卡
    */
-  private stage: number = 5
+  private stage: number = 1
   /**
    * 当前屏幕的渲染模式
    * 1、selectMode 选择游戏模式
@@ -22,6 +22,18 @@ class Core {
    * 4、summary 游戏结束的结算界面
    */
   private screenViewType: ScreenViewType
+  /**
+   * todo 当出现game over字幕的时候，按下暂停按键需要处理
+   */
+  private isStop: boolean = false
+
+  getIsStop() {
+    return this.isStop
+  }
+
+  setIsStop(isStop: boolean) {
+    this.isStop = isStop
+  }
 
   getStage() {
     return this.stage
