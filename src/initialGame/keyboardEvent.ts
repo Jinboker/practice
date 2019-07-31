@@ -1,22 +1,32 @@
-import { keyStatus, keyCode } from '../global'
+import { tuple } from 'src/utils'
+import { keyCode, Key, pressedKey, directionKey, funcKey } from '../global'
 
-const handleKeyDown = (key: IKey) => {
-  keyStatus[key] = false
+const handleKeyDown = (key) => {
+  if (directionKey.includes(key)) {
+    pressedKey.direction = key
+  }
+
+  if (funcKey.includes(key)) {
+    pressedKey.func = key
+  }
 }
 
-const handleKeyUp = (key: IKey) => {
-  if (keyStatus[key]) return
-
-  keyStatus.pressedKey = key
-  keyStatus[key] = true
+const handleKeyUp = (key: Key) => {
+  tuple('direction', 'func').forEach(name => {
+    if (pressedKey[name] === key) {
+      pressedKey[name] = ''
+    }
+  })
 }
 
 export function initialKeyboard() {
   ['keydown', 'keyup'].forEach(item => {
     addEventListener(item, (ev: KeyboardEvent) => {
-      const key = keyCode[ev.keyCode] as IKey
+      const key = keyCode[ev.keyCode] as Key
 
-      if (!key || !(key in keyStatus)) return
+      if (!key) {
+        return
+      }
 
       if (ev.type === 'keydown') {
         handleKeyDown(key)

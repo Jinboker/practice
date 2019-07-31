@@ -18,15 +18,6 @@ class RenderingBus {
     })
   }
 
-  updateRenderer(id: string, renderer: Fn) {
-    const { rendererList } = this
-    const index = getIndex(id, rendererList)
-
-    if (~index) {
-      rendererList[index].renderer = renderer
-    }
-  }
-
   removeRenderer(id: string) {
     const { rendererList } = this
     const index = getIndex(id, rendererList)
