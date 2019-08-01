@@ -113,7 +113,10 @@ export class StageView extends ScreenRenderer {
       if (this.slidingMaskWidth < halfGameView) {
         this.slidingMaskWidth += 15
       } else {
-        //
+        /**
+         * 进入游戏界面
+         */
+        core.renderScreen('playing')
       }
     }
   }
@@ -133,7 +136,5 @@ export class StageView extends ScreenRenderer {
         break
       default: break
     }
-
-    this.checkForDestroy()
   }
 }

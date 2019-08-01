@@ -1,17 +1,16 @@
-import { Mover } from './Mover'
+import { Mover } from '../Mover'
 import { ctx, imgs, SCREEN } from 'src/global'
 import { delayLoop } from 'src/utils'
 
 const { bonus, misc } = imgs
 const { xOffset, yOffset } = SCREEN.gameView
+export const initialBornAnimation = {
+  picFlag: 4,
+  loopNum: 4,
+  delay: delayLoop(4)
+}
 
 export abstract class Tank extends Mover {
-  // 出生动画相关
-  private bornAnimation = {
-    picFlag: 4,
-    loopNum: 4,
-    delay: delayLoop(4)
-  }
   // 防护罩相关
   private shield = {
     // 当坦克为玩家的时候，一出生就拥有200个循环的护盾
@@ -19,6 +18,8 @@ export abstract class Tank extends Mover {
     picPosition: 0,
     delay: delayLoop(4)
   }
+  // 出生动画相关
+  protected bornAnimation = initialBornAnimation
   // 轮胎变化相关
   protected wheel = {
     picFlag: 0,
@@ -32,14 +33,21 @@ export abstract class Tank extends Mover {
   }
 
   /**
+   * 转换方向
+   */
+  changeDirection() {
+    //
+  }
+
+  /**
    * 渲染坦克的出生动画
    */
   private renderBornAnimation() {
-    const otherCtx = ctx.other!
+    const roleCtx = ctx.role!
     const bornAnimation = this.bornAnimation
     const { picFlag, delay } = bornAnimation
 
-    otherCtx.drawImage(bonus, picFlag << 5, 64, 32, 32, this.x + xOffset, this.y + yOffset, 32, 32)
+    roleCtx.drawImage(bonus, picFlag << 5, 64, 32, 32, this.x + xOffset, this.y + yOffset, 32, 32)
 
     delay(() => {
       if (picFlag > 0) {
@@ -83,17 +91,13 @@ export abstract class Tank extends Mover {
       this.renderBornAnimation()
     } else {
       const wheel = this.wheel
-      
+
       this.renderTank()
       this.renderShield()
 
       wheel.delay(() => {
         wheel.picFlag = +!wheel.picFlag
       })
-    }
-
-    if (this.checkForDestroy()) {
-      this.destroy()
     }
   }
 }

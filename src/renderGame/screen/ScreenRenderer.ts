@@ -9,14 +9,9 @@ export abstract class ScreenRenderer extends Renderer {
     super()
   }
 
-  /**
-   * 每次render的时候需要调用这个函数，用来检查当前屏幕内容是否需要被销毁
-   */
-  checkForDestroy() {
+  canDestroy() {
     const screenType = Renderer.getScreenType()
 
-    if (screenType !== this.type) {
-      this.destroy()
-    }
+    return screenType !== this.type
   }
 }

@@ -101,7 +101,5 @@ export class SelectMode extends ScreenRenderer {
 
   render() {
     this.isTouchTop ? this.renderAfterTouchTop() : this.renderBeforeTouchTop()
-
-    this.checkForDestroy()
   }
 }

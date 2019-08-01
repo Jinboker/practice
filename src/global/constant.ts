@@ -1,4 +1,5 @@
-export const enum DIRECTION {
+export type Direction = 'up' | 'right' | 'down' | 'left'
+export enum DIRECTION {
   up,
   right,
   down,

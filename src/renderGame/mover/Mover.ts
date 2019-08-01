@@ -1,5 +1,5 @@
 import { Renderer } from '../Renderer'
-import { DIRECTION } from 'src/global'
+import { Direction } from 'src/global'
 
 export abstract class Mover extends Renderer {
   protected abstract x: number
@@ -7,8 +7,8 @@ export abstract class Mover extends Renderer {
   // 移动速度
   protected abstract speed: number
   // 当前方向
-  protected abstract direction: DIRECTION
+  protected abstract direction: Direction
 
-  // 检查是否需要被销毁
-  protected abstract checkForDestroy(): boolean
+  // 移动
+  protected abstract move(): boolean
 }

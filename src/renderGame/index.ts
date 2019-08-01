@@ -1,3 +1,5 @@
 export { SelectMode } from './screen/SelectMode'
 export { StageView } from './screen/StageView'
-export { RenderMap } from './Map'
+export { Playing } from './screen/Playing'
+export { RenderMap } from './map'
+export { Player } from './mover/tank/Player'

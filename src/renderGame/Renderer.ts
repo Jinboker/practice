@@ -14,7 +14,7 @@ import { renderingBus } from 'src/renderingBus'
  * 如果返回TRUE，那么除非松开按键，或者按下另外一个同类型的按键，那么该操作会一直执行下去
  */
 export type Operate = {
-  [K in Key]?: () => (void | true)
+  [K in Key]?: () => boolean | void
 }
 
 export abstract class Renderer {
@@ -34,7 +34,7 @@ export abstract class Renderer {
     /**
      * 将当前渲染器的render函数注册到渲染总线上
      */
-    renderingBus.registerRenderer(this.id, this.renderWithOperate.bind(this))
+    renderingBus.registerRenderer(this.id, this.renderer.bind(this))
   }
 
   destroy() {
@@ -66,12 +66,18 @@ export abstract class Renderer {
   }
 
   /**
-   * 渲染的时候一起跑一下对应的操作
+   * 渲染器
    */
-  renderWithOperate() {
+  renderer() {
     this.render()
     this.executeOperate()
+
+    if (this.canDestroy()) {
+      this.destroy()
+    }
   }
+
+  abstract canDestroy(): boolean
 
   /**
    * 每个渲染器的渲染函数

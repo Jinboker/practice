@@ -5,6 +5,7 @@ import { stageMap } from 'src/config'
 import { Renderer } from '../Renderer'
 import { delayLoop } from 'src/utils'
 import { ctx, imgs, SCREEN } from 'src/global'
+import { core } from '../../core'
 
 const { brick } = imgs
 const { yOffset, xOffset } = SCREEN.gameView
@@ -74,8 +75,6 @@ export class RenderMap extends Renderer {
          */
         if (mapItemType) {
           bgCtx.drawImage(brick, 32 * type, 0, 32, 32, xOffset + 32 * col, yOffset + 32 * row, 32, 32)
-
-          console.log(this.roadMap)
         }
       })
     })
@@ -91,6 +90,7 @@ export class RenderMap extends Renderer {
       return
     }
 
+    console.log(this.roadMap)
     const bgCtx = ctx.bg!
 
     this.changeRiverDelay(() => {
@@ -104,6 +104,10 @@ export class RenderMap extends Renderer {
 
       this.riverImgFlag = +!this.riverImgFlag
     })
+  }
+
+  canDestroy() {
+    return core.getScreenViewType() !== 'playing'
   }
 
   render(): void {

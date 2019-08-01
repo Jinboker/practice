@@ -5,6 +5,7 @@ import {
   SelectMode,
   StageView,
   RenderMap,
+  Playing,
 } from 'src/renderGame'
 
 export type ScreenViewType = 'selectMode' | 'stageView' | 'playing' | 'summary'
@@ -68,6 +69,7 @@ class Core {
         new StageView(payload!)
         break
       case 'playing':
+        new Playing()
         break
       case 'summary':
         break
