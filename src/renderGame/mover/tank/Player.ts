@@ -9,11 +9,17 @@ const { xOffset, yOffset } = SCREEN.gameView
 export class Player extends Tank {
   protected x: number
   protected y: number
+  protected nextX: number
+  protected nextY: number
   protected direction: Direction = 'up'
   private rank: number = 0
   protected speed: number = 2
   protected operate = {
-    B: this.handleFireOperate
+    B: this.handleFireOperate,
+    up: this.moveOperate('up'),
+    down: this.moveOperate('down'),
+    right: this.moveOperate('right'),
+    left: this.moveOperate('left')
   }
 
   constructor() {
@@ -22,14 +28,27 @@ export class Player extends Tank {
     this.setInitial()
   }
 
+  moveOperate(direction: Direction) {
+    return () => {
+      if (direction !== this.direction) {
+        [this.x, this.y] = this.getNextPositionAfterChangeDirection()
+        this.direction = direction
+      } else {
+        [this.x, this.y] = this.getNextPositionByCurrentDirection()
+      }
+      
+      return true
+    }
+  }
+
   // 判断坦克是否是正在走出生的动画中
   checkIsBorning() {
     return Boolean(this.bornAnimation.loopNum)
   }
 
   setInitial() {
-    this.x = 128
-    this.y = 384
+    [this.nextX, this.nextY] = [this.x, this.y] = [128, 384]
+
     this.rank = 0
     this.direction = 'up'
   }

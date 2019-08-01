@@ -1,5 +1,5 @@
 import { Mover } from '../Mover'
-import { ctx, imgs, SCREEN } from 'src/global'
+import { ctx, imgs, SCREEN, DIRECTION } from 'src/global'
 import { delayLoop } from 'src/utils'
 
 const { bonus, misc } = imgs
@@ -33,10 +33,16 @@ export abstract class Tank extends Mover {
   }
 
   /**
-   * 转换方向
+   * 获取坦克转换方向后的位置
+   * 注：坦克转换方向后需要对位置手动进行调整，防止因为位置不准导致无法通过通道之类的问题
    */
-  changeDirection() {
-    //
+  protected getNextPositionAfterChangeDirection() {
+    let { x, y } = this
+
+    // 此处必须使用math.round进行四舍五入才能避免坦克转弯时候位置变动过大
+    return DIRECTION[this.direction] % 2
+      ? [Math.round(x / 16) << 4, y]
+      : [x, Math.round(y / 16) << 4]
   }
 
   /**
@@ -100,6 +106,11 @@ export abstract class Tank extends Mover {
     } else {
       this.renderTank()
       this.renderShield()
+
+      // 如果是npc，那么轮胎一直变化，而玩家必须要键盘按下才变化
+      if (this.tankType === 'npc') {
+        this.changeWheel()
+      }
     }
   }
 }
