@@ -81,6 +81,14 @@ export abstract class Tank extends Mover {
     })
   }
 
+  protected changeWheel() {
+    const wheel = this.wheel
+
+    wheel.delay(() => {
+      wheel.picFlag = +!wheel.picFlag
+    })
+  }
+
   /**
    * 渲染坦克
    */
@@ -90,14 +98,8 @@ export abstract class Tank extends Mover {
     if (this.bornAnimation.loopNum) {
       this.renderBornAnimation()
     } else {
-      const wheel = this.wheel
-
       this.renderTank()
       this.renderShield()
-
-      wheel.delay(() => {
-        wheel.picFlag = +!wheel.picFlag
-      })
     }
   }
 }
