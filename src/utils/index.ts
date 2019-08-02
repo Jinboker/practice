@@ -1,7 +1,6 @@
 import { ctx, ICtx, SCREEN } from 'src/global'
 
-export { eventBus } from './eventBus'
-export { uniqueId } from './uniqueId'
+export const tuple = <T extends string[]>(...args: T) => args
 
 export function clearCanvas(cleanType?: Array<keyof ICtx>) {
   const cleanArr = !cleanType ? Object.keys(ctx) : cleanType
@@ -24,4 +23,21 @@ export function delayLoop(count: number) {
   }
 }
 
-export const tuple = <T extends string[]>(...args: T) => args
+export function getArrItemById(arr: { id: string }[], id: string) {
+  return arr.find(item => item.id === id)
+}
+
+const idCounter = {}
+export function uniqueId(prefix: string = '$uniqueId$') {
+  if (!idCounter[prefix]) {
+    idCounter[prefix] = 0
+  }
+
+  const id = ++idCounter[prefix]
+
+  if (prefix === '$uniqueId$') {
+    return `${id}`
+  }
+
+  return `${prefix + id}`
+}

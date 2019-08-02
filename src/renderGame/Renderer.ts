@@ -28,8 +28,8 @@ export abstract class Renderer {
     return core.getScreenViewType()
   }
 
-  protected constructor(type?: string) {
-    this.id = uniqueId(type || '')
+  protected constructor() {
+    this.id = uniqueId()
 
     /**
      * 将当前渲染器的render函数注册到渲染总线上

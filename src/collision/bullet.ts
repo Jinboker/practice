@@ -14,8 +14,10 @@
 export type BulletCollisionInfo = {
   id: string,
   type: 'player' | 'npc',
-  x: number,
-  y: number,
+  vertex: {
+    min: [number, number],
+    max: [number, number]
+  }
 }
 
 export enum bulletCollisionStatus {

@@ -12,7 +12,7 @@ const handleKeyDown = key => {
 }
 
 const handleKeyUp = (key: Key) => {
-  tuple('DIRECTION', 'func').forEach(name => {
+  tuple('direction', 'func').forEach(name => {
     if (pressedKey[name] === key) {
       pressedKey[name] = ''
     }

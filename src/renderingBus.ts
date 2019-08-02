@@ -1,6 +1,8 @@
 /**
  * 渲染总线，所有的渲染器都会被注册到渲染总线上进行统一渲染
  */
+import { tankCollision } from 'src/collision'
+
 type Fn = () => void
 type RendererList = Array<{
   id: string;
@@ -31,6 +33,8 @@ class RenderingBus {
     this.rendererList.forEach(item => {
       item.renderer()
     })
+
+    tankCollision.checkCollision()
   }
 }
 

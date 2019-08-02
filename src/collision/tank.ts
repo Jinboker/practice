@@ -7,19 +7,103 @@
  * 4、碰到了奖励
  * 5、todo 疯狂模式坦克碰到坦克就死？  坦克
  */
+import { getArrItemById } from 'src/utils'
 
 // 坦克进行碰撞检查需要的信息
 export type TankCollisionInfo = {
   id: string,
   type: 'player' | 'npc',
   x: number,
-  y: number,
+  y: number
+}
+
+export type TankCollisionResult = TankCollisionInfo & {
+  result: keyof typeof tankCollisionStatus
 }
 
 export enum tankCollisionStatus {
   pass,
-  notPass,
+  barrier,
   ice,
   bonus,
   tank,
 }
+
+type CheckMethod = () => keyof typeof tankCollisionStatus
+
+interface TankCollisionInterface {
+  checkTouchBorder: CheckMethod,
+  checkTouchOtherTank: CheckMethod,
+  checkTouchBonus: CheckMethod,
+  checkTouchBarrierInMap: CheckMethod
+}
+
+class TankCollision implements TankCollisionInterface {
+  private collisionInfos: TankCollisionInfo[] = []
+  private collisionResult: TankCollisionResult[] = []
+
+  private checkMethod = {
+    checkTouchBorder: this.checkTouchBorder,
+    checkTouchOtherTank: this.checkTouchOtherTank,
+    checkTouchBonus: this.checkTouchBonus,
+    checkTouchBarrierInMap: this.checkTouchBarrierInMap
+  }
+
+  setCollisionInfo(info: TankCollisionInfo) {
+    this.collisionInfos.push(info)
+  }
+
+  // 检查是否碰到了边界
+  checkTouchBorder() {
+    return 'pass' as 'pass'
+  }
+
+  // 检查是否碰到了其他坦克
+  checkTouchOtherTank() {
+    return 'pass' as 'pass'
+  }
+
+  // 检查是否碰到了奖励
+  checkTouchBonus() {
+    return 'pass' as 'pass'
+  }
+
+  // 检查是否碰到了地图上的障碍物
+  checkTouchBarrierInMap() {
+    return 'pass' as 'pass'
+  }
+
+  /**
+   * 开始进行碰撞检测，对于坦克的碰撞主要检测下面几种：
+   * 1、是否碰到边界
+   * 2、是否碰到其他坦克
+   * 3、是否碰到了奖励
+   * 4、是否碰到了地图上的障碍物
+   *
+   * 只有当上面的检查全部通过以后，坦克才能运动到下一个坐标
+   */
+  checkCollision() {
+    this.collisionResult = []
+
+    this.collisionInfos.forEach((item, index) => {
+      Object.values(this.checkMethod).every(checkMethod => {
+        const result: ReturnType<CheckMethod> = checkMethod.call(this)
+        const canPass = result === 'pass'
+
+        if (!canPass) {
+          this.collisionResult.push({ ...item, result });
+        }
+
+        return canPass
+      })
+    })
+
+    this.collisionInfos = []
+  }
+
+  getCollisionResult(id: string) {
+    return getArrItemById(this.collisionResult, id)
+  }
+}
+
+export const tankCollision = new TankCollision()
