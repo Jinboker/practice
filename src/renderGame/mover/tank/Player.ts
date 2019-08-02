@@ -30,19 +30,23 @@ export class Player extends Tank {
 
   moveOperate(direction: Direction) {
     return () => {
+      if (this.checkIsAborning()) {
+        return true
+      }
+      
       if (direction !== this.direction) {
         [this.x, this.y] = this.getNextPositionAfterChangeDirection()
         this.direction = direction
       } else {
         [this.x, this.y] = this.getNextPositionByCurrentDirection()
       }
-      
+
       return true
     }
   }
 
   // 判断坦克是否是正在走出生的动画中
-  checkIsBorning() {
+  checkIsAborning() {
     return Boolean(this.bornAnimation.loopNum)
   }
 

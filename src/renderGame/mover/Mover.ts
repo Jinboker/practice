@@ -1,6 +1,10 @@
 import { Renderer } from '../Renderer'
 import { Direction } from 'src/global'
 
+/**
+ * todo
+ * 每个移动对象都先存储一下下一个位置，下次render之前先把下一个位置拿出来做碰撞检查，检查通过后才允许将坐标写入
+ */
 export abstract class Mover extends Renderer {
   // 当前移动对象的坐标
   protected abstract x: number
