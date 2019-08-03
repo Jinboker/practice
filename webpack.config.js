@@ -6,6 +6,7 @@ const env = process.env.NODE_ENV || 'production';
 const config = {
   mode: env,
   entry: './src/index.ts',
+  devtool: 'inline-source-map',
   output: {
     filename: `index${env === 'development' ? '' : '.[chunkhash:8]'}.js`,
   },

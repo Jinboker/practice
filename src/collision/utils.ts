@@ -24,10 +24,10 @@ export function getVertex(x: number, y: number) {
  */
 export function touchBorder(x: number, y: number, size: number, direction: Direction) {
   const checkMap: { [k in Direction]: () => boolean } = {
-    up: () => y <= 0,
-    down: () => y >= len - (size << 1),
-    left: () => x <= 0,
-    right: () => x >= len - (size << 1)
+    up: () => y < 0,
+    down: () => y > len - size,
+    left: () => x < 0,
+    right: () => x > len - size
   }
 
   return checkMap[direction]()

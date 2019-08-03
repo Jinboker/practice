@@ -33,6 +33,9 @@ export class Player extends Tank {
         return true
       }
 
+      // 玩家在运动的时候改变轮胎
+      this.changeWheel()
+
       // 写入碰撞信息
       const [x, y] = direction !== this.direction
         ? this.getNextPositionAfterChangeDirection()

@@ -23,10 +23,6 @@ export function delayLoop(count: number) {
   }
 }
 
-export function getArrItemById<T extends { id: string }>(arr: T[], id: string) {
-  return arr.find(item => item.id === id)
-}
-
 const idCounter = {}
 export function uniqueId(prefix: string = '$uniqueId$') {
   if (!idCounter[prefix]) {

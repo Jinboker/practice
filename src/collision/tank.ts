@@ -7,7 +7,6 @@
  * 4、碰到了奖励
  * 5、todo 疯狂模式坦克碰到坦克就死？  坦克
  */
-import { getArrItemById } from 'src/utils'
 import { Direction } from '../global'
 import { touchBorder } from './utils'
 
@@ -26,7 +25,7 @@ export type TankCollisionResult = TankCollisionInfo & {
 
 export enum tankCollisionStatus {
   pass,
-  doNotPass,
+  noPass,
   ice,
   bonus,
   tank,
@@ -61,7 +60,7 @@ class TankCollision implements TankCollisionInterface {
     const { direction, x, y } = info
 
     if (touchBorder(x, y, 32, direction)) {
-      return 'doNotPass' as 'doNotPass'
+      return 'noPass' as 'noPass'
     }
 
     return 'pass' as 'pass'
@@ -83,7 +82,7 @@ class TankCollision implements TankCollisionInterface {
   }
 
   /**
-   * 开始进行碰撞检测，对于坦克的碰撞主要检测下面几种：
+   * 每次渲染总线中的渲染函数跑完以后，开始对下一次的坐标进行碰撞检查，对于坦克的碰撞主要检测下面几种：
    * 1、是否碰到边界
    * 2、是否碰到其他坦克
    * 3、是否碰到了奖励
@@ -97,13 +96,10 @@ class TankCollision implements TankCollisionInterface {
     this.collisionInfos.forEach((item, index) => {
       Object.values(this.checkMethod).every(checkMethod => {
         const result: ReturnType<CheckMethod> = checkMethod.call(this, item)
-        const canPass = result === 'pass'
 
-        if (!canPass) {
-          this.collisionResult.push({ ...item, result })
-        }
+        this.collisionResult.push({ ...item, result })
 
-        return canPass
+        return result === 'pass'
       })
     })
 
@@ -111,7 +107,7 @@ class TankCollision implements TankCollisionInterface {
   }
 
   getCollisionResult(id: string) {
-    return getArrItemById<TankCollisionResult>(this.collisionResult, id)
+    return this.collisionResult.find(item => item.id === id)
   }
 }
 
