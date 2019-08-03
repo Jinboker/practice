@@ -18,7 +18,7 @@ export type Operate = {
 }
 
 export abstract class Renderer {
-  private readonly id: string
+  protected readonly id: string
   protected operate: Operate
 
   /**

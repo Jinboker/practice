@@ -1,6 +1,7 @@
 import { Mover } from '../Mover'
 import { ctx, imgs, SCREEN, DIRECTION } from 'src/global'
 import { delayLoop } from 'src/utils'
+import { tankCollision } from 'src/collision'
 
 const { bonus, misc } = imgs
 const { xOffset, yOffset } = SCREEN.gameView
@@ -104,6 +105,15 @@ export abstract class Tank extends Mover {
     if (this.bornAnimation.loopNum) {
       this.renderBornAnimation()
     } else {
+      // 每次渲染之前，先去拿碰撞检测结果
+      const collisionResult = tankCollision.getCollisionResult(this.id!)
+
+      if (collisionResult && collisionResult.result === 'pass') {
+        ['x', 'y', 'direction'].forEach(key => {
+          this[key] = collisionResult[key]
+        })
+      }
+
       this.renderTank()
       this.renderShield()
 

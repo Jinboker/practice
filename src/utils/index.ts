@@ -23,7 +23,7 @@ export function delayLoop(count: number) {
   }
 }
 
-export function getArrItemById(arr: { id: string }[], id: string) {
+export function getArrItemById<T extends { id: string }>(arr: T[], id: string) {
   return arr.find(item => item.id === id)
 }
 

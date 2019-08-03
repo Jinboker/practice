@@ -8,11 +8,14 @@
  * 5、todo 疯狂模式坦克碰到坦克就死？  坦克
  */
 import { getArrItemById } from 'src/utils'
+import { Direction } from '../global'
+import { touchBorder } from './utils'
 
 // 坦克进行碰撞检查需要的信息
 export type TankCollisionInfo = {
   id: string,
   type: 'player' | 'npc',
+  direction: Direction,
   x: number,
   y: number
 }
@@ -23,13 +26,13 @@ export type TankCollisionResult = TankCollisionInfo & {
 
 export enum tankCollisionStatus {
   pass,
-  barrier,
+  doNotPass,
   ice,
   bonus,
   tank,
 }
 
-type CheckMethod = () => keyof typeof tankCollisionStatus
+type CheckMethod = (info: TankCollisionInfo) => keyof typeof tankCollisionStatus
 
 interface TankCollisionInterface {
   checkTouchBorder: CheckMethod,
@@ -54,22 +57,28 @@ class TankCollision implements TankCollisionInterface {
   }
 
   // 检查是否碰到了边界
-  checkTouchBorder() {
+  checkTouchBorder(info: TankCollisionInfo) {
+    const { direction, x, y } = info
+
+    if (touchBorder(x, y, 32, direction)) {
+      return 'doNotPass' as 'doNotPass'
+    }
+
     return 'pass' as 'pass'
   }
 
   // 检查是否碰到了其他坦克
-  checkTouchOtherTank() {
+  checkTouchOtherTank(info: TankCollisionInfo) {
     return 'pass' as 'pass'
   }
 
   // 检查是否碰到了奖励
-  checkTouchBonus() {
+  checkTouchBonus(info: TankCollisionInfo) {
     return 'pass' as 'pass'
   }
 
   // 检查是否碰到了地图上的障碍物
-  checkTouchBarrierInMap() {
+  checkTouchBarrierInMap(info: TankCollisionInfo) {
     return 'pass' as 'pass'
   }
 
@@ -87,11 +96,11 @@ class TankCollision implements TankCollisionInterface {
 
     this.collisionInfos.forEach((item, index) => {
       Object.values(this.checkMethod).every(checkMethod => {
-        const result: ReturnType<CheckMethod> = checkMethod.call(this)
+        const result: ReturnType<CheckMethod> = checkMethod.call(this, item)
         const canPass = result === 'pass'
 
         if (!canPass) {
-          this.collisionResult.push({ ...item, result });
+          this.collisionResult.push({ ...item, result })
         }
 
         return canPass
@@ -102,7 +111,7 @@ class TankCollision implements TankCollisionInterface {
   }
 
   getCollisionResult(id: string) {
-    return getArrItemById(this.collisionResult, id)
+    return getArrItemById<TankCollisionResult>(this.collisionResult, id)
   }
 }
 

@@ -10,10 +10,6 @@ export abstract class Mover extends Renderer {
   protected abstract x: number
   protected abstract y: number
 
-  // 先计算出移动对象的下一个坐标，然后拿这个坐标进行碰撞检查，通过后会将这个坐标写入到x、y
-  protected abstract nextX: number
-  protected abstract nextY: number
-
   // 移动速度
   protected abstract speed: number
   // 当前方向

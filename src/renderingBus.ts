@@ -34,6 +34,7 @@ class RenderingBus {
       item.renderer()
     })
 
+    // 坦克的碰撞检查
     tankCollision.checkCollision()
   }
 }

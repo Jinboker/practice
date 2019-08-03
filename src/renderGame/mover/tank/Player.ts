@@ -2,6 +2,7 @@ import { Tank } from './Tank'
 import { core } from 'src/core'
 import { ctx, Direction, SCREEN, DIRECTION } from 'src/global'
 import { imgs } from 'src/global'
+import { tankCollision } from 'src/collision'
 
 const { player } = imgs
 const { xOffset, yOffset } = SCREEN.gameView
@@ -9,8 +10,6 @@ const { xOffset, yOffset } = SCREEN.gameView
 export class Player extends Tank {
   protected x: number
   protected y: number
-  protected nextX: number
-  protected nextY: number
   protected direction: Direction = 'up'
   private rank: number = 0
   protected speed: number = 2
@@ -33,13 +32,15 @@ export class Player extends Tank {
       if (this.checkIsAborning()) {
         return true
       }
-      
-      if (direction !== this.direction) {
-        [this.x, this.y] = this.getNextPositionAfterChangeDirection()
-        this.direction = direction
-      } else {
-        [this.x, this.y] = this.getNextPositionByCurrentDirection()
-      }
+
+      // 写入碰撞信息
+      const [x, y] = direction !== this.direction
+        ? this.getNextPositionAfterChangeDirection()
+        : this.getNextPositionByCurrentDirection()
+
+      tankCollision.setCollisionInfo({
+        x, y, direction, id: this.id, type: 'player'
+      })
 
       return true
     }
@@ -51,8 +52,8 @@ export class Player extends Tank {
   }
 
   setInitial() {
-    [this.nextX, this.nextY] = [this.x, this.y] = [128, 384]
-
+    this.x = 128
+    this.y = 384
     this.rank = 0
     this.direction = 'up'
   }
