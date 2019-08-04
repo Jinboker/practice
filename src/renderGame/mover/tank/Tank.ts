@@ -4,11 +4,6 @@ import { delayLoop } from 'src/utils'
 
 const { bonus, misc } = imgs
 const { xOffset, yOffset } = SCREEN.gameView
-export const initialBornAnimation = {
-  picFlag: 4,
-  loopNum: 4,
-  delay: delayLoop(4)
-}
 
 export abstract class Tank extends Mover {
   // 防护罩相关
@@ -19,7 +14,11 @@ export abstract class Tank extends Mover {
     delay: delayLoop(4)
   }
   // 出生动画相关
-  protected bornAnimation = initialBornAnimation
+  protected bornAnimation = {
+    picFlag: 4,
+    loopNum: 4,
+    delay: delayLoop(4)
+  }
   // 轮胎变化相关
   protected wheel = {
     picFlag: 0,
