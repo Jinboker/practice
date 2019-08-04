@@ -22,7 +22,8 @@ export abstract class Tank extends Mover {
   // 轮胎变化相关
   protected wheel = {
     picFlag: 0,
-    delay: delayLoop(5)
+    // todo 不同的速度下，轮胎变化的速度也不同
+    delay: delayLoop(10)
   }
 
   protected constructor(
