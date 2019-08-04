@@ -5,7 +5,7 @@ import { stageMap } from 'src/config'
 import { Renderer } from '../Renderer'
 import { delayLoop } from 'src/utils'
 import { ctx, imgs, SCREEN } from 'src/global'
-import { core } from '../../core'
+import { core } from 'src/core'
 
 const { brick } = imgs
 const { yOffset, xOffset } = SCREEN.gameView

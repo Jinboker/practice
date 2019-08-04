@@ -1,8 +1,7 @@
 import { Tank } from './Tank'
 import { core } from 'src/core'
-import { ctx, Direction, SCREEN, DIRECTION } from 'src/global'
-import { imgs } from 'src/global'
 import { tankCollision } from 'src/collision'
+import { ctx, Direction, SCREEN, DIRECTION, imgs } from 'src/global'
 
 const { player } = imgs
 const { xOffset, yOffset } = SCREEN.gameView
@@ -10,9 +9,8 @@ const { xOffset, yOffset } = SCREEN.gameView
 export class Player extends Tank {
   protected x: number
   protected y: number
-  protected direction: Direction = 'up'
-  private rank: number = 0
   protected speed: number = 2
+  protected direction: Direction = 'up'
   protected operate = {
     B: this.handleFireOperate,
     up: this.moveOperate('up'),
@@ -20,6 +18,8 @@ export class Player extends Tank {
     right: this.moveOperate('right'),
     left: this.moveOperate('left')
   }
+
+  private rank: number = 0
 
   constructor() {
     super('player')
@@ -36,14 +36,7 @@ export class Player extends Tank {
       // 玩家在运动的时候改变轮胎
       this.changeWheel()
 
-      // 写入碰撞信息
-      const [x, y] = direction !== this.direction
-        ? this.getNextPositionAfterChangeDirection()
-        : this.getNextPositionByCurrentDirection()
-
-      tankCollision.setCollisionInfo({
-        x, y, direction, id: this.id, type: 'player'
-      })
+      this.setNextCollisionPosition(direction)
 
       return true
     }
@@ -65,11 +58,26 @@ export class Player extends Tank {
    * 处理开火的操作
    */
   handleFireOperate() {
-    if (core.getIsStop()) {
+    if (core.isStop) {
       return true
     }
 
     return true
+  }
+
+  /**
+   * 这里传入一个方向主要是玩家在操作的时候，下一步的方向可能跟当前方向不一致
+   * @param direction
+   */
+  protected setNextCollisionPosition(direction: Direction) {
+    // 写入碰撞信息
+    const [x, y] = direction !== this.direction
+      ? this.getNextPositionAfterChangeDirection()
+      : this.getNextPositionByCurrentDirection()
+
+    tankCollision.setCollisionInfo({
+      x, y, direction, id: this.id, type: 'player'
+    })
   }
 
   canDestroy() {
@@ -93,7 +101,17 @@ export class Player extends Tank {
     )
   }
 
-  protected move(): boolean {
-    return false
+  protected renderAfterBorn() {
+    // 每次渲染之前，先去拿碰撞检测结果
+    const collisionResult = tankCollision.getCollisionResult(this.id!)
+
+    if (collisionResult && collisionResult.result === 'pass') {
+      ['x', 'y', 'direction'].forEach(key => {
+        this[key] = collisionResult[key]
+      })
+    }
+
+    this.renderShield()
+    this.renderTank()
   }
 }

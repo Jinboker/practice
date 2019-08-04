@@ -1,12 +1,5 @@
-/**
- * 游戏核心控制器
- */
-import {
-  SelectMode,
-  StageView,
-  RenderMap,
-  Playing,
-} from 'src/renderGame'
+import { RenderMap } from 'src/renderGame/map'
+import { Playing, SelectMode, StageView } from '../renderGame'
 
 export type ScreenViewType = 'selectMode' | 'stageView' | 'playing' | 'summary'
 
@@ -24,24 +17,23 @@ class Core {
    */
   private screenViewType: ScreenViewType
   /**
+   * 已经出生过的npc的个数
+   */
+  public hasBornNpcNum: number = 0
+  /**
    * todo 当出现game over字幕的时候，按下暂停按键需要处理
    */
-  private isStop: boolean = false
-
-  getIsStop() {
-    return this.isStop
-  }
-
-  setIsStop(isStop: boolean) {
-    this.isStop = isStop
-  }
+  public isStop: boolean = false
 
   getStage() {
     return this.stage
   }
 
-  setStage(stage: number) {
-    this.stage = stage
+  setStage(stageNum: number) {
+    this.stage = stageNum
+
+    // 每次重置stage的时候跟着重置一些参数
+    this.hasBornNpcNum = 0
   }
 
   getScreenViewType() {

@@ -6,7 +6,7 @@ import { ScreenRenderer } from './ScreenRenderer'
 export class Playing extends ScreenRenderer {
   protected operate = {
     A() {
-      core.setIsStop(!core.getIsStop())
+      core.isStop = !core.isStop
     }
   }
 

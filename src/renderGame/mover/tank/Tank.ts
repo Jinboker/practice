@@ -1,7 +1,6 @@
 import { Mover } from '../Mover'
 import { ctx, imgs, SCREEN, DIRECTION } from 'src/global'
 import { delayLoop } from 'src/utils'
-import { tankCollision } from 'src/collision'
 
 const { bonus, misc } = imgs
 const { xOffset, yOffset } = SCREEN.gameView
@@ -33,6 +32,8 @@ export abstract class Tank extends Mover {
     super()
   }
 
+  protected abstract renderAfterBorn(): void
+
   /**
    * 获取坦克转换方向后的位置
    * 注：坦克转换方向后需要对位置手动进行调整，防止因为位置不准导致无法通过通道之类的问题
@@ -49,7 +50,7 @@ export abstract class Tank extends Mover {
   /**
    * 渲染坦克的出生动画
    */
-  private renderBornAnimation() {
+  protected renderBornAnimation() {
     const roleCtx = ctx.role!
     const bornAnimation = this.bornAnimation
     const { picFlag, delay } = bornAnimation
@@ -69,7 +70,7 @@ export abstract class Tank extends Mover {
   /**
    * 渲染防护罩
    */
-  private renderShield() {
+  protected renderShield() {
     const shield = this.shield
     const { duration, delay, picPosition } = shield
 
@@ -96,31 +97,11 @@ export abstract class Tank extends Mover {
     })
   }
 
-  /**
-   * 渲染坦克
-   */
-  protected abstract renderTank(): void
-
-  render(): void {
+  render() {
     if (this.bornAnimation.loopNum) {
       this.renderBornAnimation()
     } else {
-      // 每次渲染之前，先去拿碰撞检测结果
-      const collisionResult = tankCollision.getCollisionResult(this.id!)
-
-      if (collisionResult && collisionResult.result === 'pass') {
-        ['x', 'y', 'direction'].forEach(key => {
-          this[key] = collisionResult[key]
-        })
-      }
-
-      this.renderTank()
-      this.renderShield()
-
-      // 如果是npc，那么轮胎一直变化，而玩家必须要键盘按下才变化
-      if (this.tankType === 'npc') {
-        this.changeWheel()
-      }
+      this.renderAfterBorn()
     }
   }
 }
