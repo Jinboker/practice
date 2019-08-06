@@ -19,9 +19,13 @@ export abstract class Mover extends Renderer {
    * 设置下一个碰撞检测的位置的点，设置的点会在每次渲染总线渲染完毕后进行碰撞检测，
    * 下次对应的移动对象开始渲染的时候，会拿到检测结果报告，做对应的处理
    *
-   * 这里不同的是，玩家这个函数会在键盘按下后进行执行，而npc会一直保持执行
+   * @param direction
+   * @param type
+   * @param canChangeDirection
    */
-  protected abstract setNextCollisionPosition(direction: Direction): void
+  protected abstract setNextCollisionPosition(
+    direction: Direction, type: 'npc' | 'player', canChangeDirection: boolean
+  ): void
 
   /**
    * 获取当前方向的下一个位置

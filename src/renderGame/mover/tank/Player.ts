@@ -36,7 +36,11 @@ export class Player extends Tank {
       // 玩家在运动的时候改变轮胎
       this.changeWheel()
 
-      this.setNextCollisionPosition(direction)
+      this.setNextCollisionPosition(
+        direction,
+        'player',
+        this.direction === direction
+      )
 
       return true
     }
@@ -63,21 +67,6 @@ export class Player extends Tank {
     }
 
     return true
-  }
-
-  /**
-   * 这里传入一个方向主要是玩家在操作的时候，下一步的方向可能跟当前方向不一致
-   * @param direction
-   */
-  protected setNextCollisionPosition(direction: Direction) {
-    // 写入碰撞信息
-    const [x, y] = direction !== this.direction
-      ? this.getNextPositionAfterChangeDirection()
-      : this.getNextPositionByCurrentDirection()
-
-    tankCollision.setCollisionInfo({
-      x, y, direction, id: this.id, type: 'player'
-    })
   }
 
   canDestroy() {

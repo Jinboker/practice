@@ -1,6 +1,7 @@
 import { Mover } from '../Mover'
-import { ctx, imgs, SCREEN, DIRECTION } from 'src/global'
+import { ctx, imgs, SCREEN, DIRECTION, Direction } from 'src/global'
 import { delayLoop } from 'src/utils'
+import { tankCollision } from '../../../collision'
 
 const { bonus, misc } = imgs
 const { xOffset, yOffset } = SCREEN.gameView
@@ -45,6 +46,19 @@ export abstract class Tank extends Mover {
     return DIRECTION[this.direction] % 2
       ? [Math.round(x / 16) << 4, y]
       : [x, Math.round(y / 16) << 4]
+  }
+
+  protected setNextCollisionPosition(
+    direction: Direction,  type: 'npc' | 'player', canChangeDirection: boolean = false
+  ) {
+    // 写入碰撞信息
+    const [x, y] = canChangeDirection
+      ? this.getNextPositionAfterChangeDirection()
+      : this.getNextPositionByCurrentDirection()
+
+    tankCollision.setCollisionInfo({
+      x, y, direction, id: this.id, type
+    })
   }
 
   /**
