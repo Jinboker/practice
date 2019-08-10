@@ -104,7 +104,7 @@ export class NPC extends Tank {
       return
     }
 
-    if (result === 'noPass') {
+    if (['noPass', 'npc', 'player'].includes(result)) {
       this.waitingForChangeDirection = true
       return
     }

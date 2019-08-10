@@ -29,7 +29,7 @@ export class NpcQueue extends Renderer {
     const hasBornNpcNum = core.hasBornNpcNum
 
     // 当前存在的坦克数目小于三个且已经出生过的坦克总数小于当前关卡npc的总数
-    if (NpcQueue.aliveNpcNum < 3 && hasBornNpcNum <= curNpcMap.length) {
+    if (NpcQueue.aliveNpcNum < 8 && hasBornNpcNum <= curNpcMap.length) {
     // if (NpcQueue.aliveNpcNum === 0 && hasBornNpcNum <= curNpcMap.length) {
       this.bornDelay(() => {
         const x = (hasBornNpcNum % 3) * 192
