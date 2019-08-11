@@ -2,7 +2,8 @@ import { Tank } from '../Tank'
 import { tankCollision } from 'src/collision'
 import { delayLoop } from 'src/utils'
 import { ctx, DIRECTION, Direction, imgs, SCREEN } from 'src/global'
-import { TankCollisionResult } from '../../../../collision/tank'
+import { TankCollisionResult } from 'src/collision/tank'
+import { MoverInfo } from '../../Mover'
 
 const { enemy } = imgs
 const { xOffset, yOffset } = SCREEN.gameView
@@ -16,28 +17,30 @@ export class NPC extends Tank {
   private hasChangedDirection: Direction[] = []
   private waitingForChangeDirection: boolean = false
   private changeDirectionDelay = delayLoop(30)
-  protected direction: Direction = 'down'
+
+  protected nextPosition: Omit<MoverInfo, 'speed'>
 
   constructor(
-    protected x: number,
-    protected y: number,
-    protected speed: number,
+    protected info: MoverInfo,
     private npcType: number
   ) {
     super('npc')
+
+    this.nextPosition = info
   }
 
   renderTank(): void {
+    const info = this.info
     const roleCtx = ctx.role!
 
     roleCtx.drawImage(
       enemy,
       this.npcType * 32,
-      DIRECTION[this.direction] * 64 + this.wheel.picFlag * 32,
+      DIRECTION[this.info.direction] * 64 + this.wheel.picFlag * 32,
       32,
       32,
-      this.x + xOffset,
-      this.y + yOffset,
+      info.x + xOffset,
+      info.y + yOffset,
       32,
       32
     )
@@ -53,7 +56,7 @@ export class NPC extends Tank {
 
     // 所有的方向都测试过了，都无法通过，那么直接写死成当前方向的反方向，毕竟反方向是确定可以通过的，目前只是可能是被其他坦克堵住路了
     if (this.hasChangedDirection.length === 3) {
-      const directionNum = DIRECTION[this.direction]
+      const directionNum = DIRECTION[this.info.direction]
       const reverseDirectionNum = directionNum % 2 ? (+!directionNum) * 2 : (+!(directionNum - 1)) * 2 + 1
 
       direction = DIRECTION[reverseDirectionNum]
@@ -61,12 +64,12 @@ export class NPC extends Tank {
       do {
         direction = DIRECTION[Math.floor(Math.random() * 4)]
         // 如果随机出来的方向跟当前方向一致或者已经确定无法通过，那么继续随机
-      } while (direction === this.direction || this.hasChangedDirection.includes(direction))
+      } while (direction === direction || this.hasChangedDirection.includes(direction))
 
       this.hasChangedDirection.push(direction)
     }
 
-    this.setNextCollisionPosition(direction, 'npc')
+    // this.setNextCollisionPosition(direction, 'npc')
 
     this.waitingForChangeDirection = false
   }
@@ -76,15 +79,21 @@ export class NPC extends Tank {
       // 如果是第一次开始改变方向，那么需要进行30次的延时
       // 如果this.hasChangedDirection.length > 0，那么证明已经测试过一个方向无法通过了，因此不进行延时继续获取下一个方向
       if (!this.hasChangedDirection.length) {
-        this.changeDirectionDelay(this.testNextPositionAfterChangeDirection.bind(this))
+        this.changeDirectionDelay(
+          this.testNextPositionAfterChangeDirection.bind(this),
+          () => {
+            // this.setNextCollisionPosition(this.direction, 'npc')
+          }
+        )
       } else {
         this.testNextPositionAfterChangeDirection()
       }
+
       return
     }
 
     if (!collisionResult) {
-      this.setNextCollisionPosition(this.direction, 'npc')
+      // this.setNextCollisionPosition(this.direction, 'npc')
       return
     }
 
@@ -100,7 +109,7 @@ export class NPC extends Tank {
       this.hasChangedDirection = []
       this.waitingForChangeDirection = false
 
-      this.setNextCollisionPosition(this.direction, 'npc')
+      // this.setNextCollisionPosition(this.direction, 'npc')
       return
     }
 
@@ -118,5 +127,13 @@ export class NPC extends Tank {
     this.changeWheel()
     this.renderShield()
     this.renderTank()
+  }
+
+  render() {
+    if (this.bornAnimation.loopNum) {
+      this.renderBornAnimation()
+    } else {
+      this.renderAfterBorn()
+    }
   }
 }

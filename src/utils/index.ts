@@ -13,12 +13,14 @@ export function clearCanvas(cleanType?: Array<keyof ICtx>) {
 export function delayLoop(count: number) {
   let curCount = 0
 
-  return function (cb: Function) {
+  return function (cb: Function, doInEachLoop?: Function) {
     if (curCount >= count) {
       curCount = 0
       cb()
     } else {
       curCount += 1
+
+      doInEachLoop && doInEachLoop()
     }
   }
 }

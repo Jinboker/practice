@@ -34,7 +34,10 @@ export class NpcQueue extends Renderer {
       this.bornDelay(() => {
         const x = (hasBornNpcNum % 3) * 192
 
-        new NPC(x, 0, 4, curNpcMap[hasBornNpcNum])
+        new NPC(
+          { x, y: 0, direction: 'down', speed: 2 },
+          curNpcMap[hasBornNpcNum]
+        )
 
         NpcQueue.aliveNpcNum++
         core.hasBornNpcNum++

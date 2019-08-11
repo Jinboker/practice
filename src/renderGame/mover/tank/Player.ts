@@ -2,15 +2,22 @@ import { Tank } from './Tank'
 import { core } from 'src/core'
 import { tankCollision } from 'src/collision'
 import { ctx, Direction, SCREEN, DIRECTION, imgs } from 'src/global'
+import { MoverInfo } from '../Mover'
 
 const { player } = imgs
 const { xOffset, yOffset } = SCREEN.gameView
 
+const defaultInfo = {
+  x: 128,
+  y: 384,
+  direction: 'up' as 'up',
+  speed: 2
+}
+
 export class Player extends Tank {
-  protected x: number
-  protected y: number
-  protected speed: number = 2
-  protected direction: Direction = 'up'
+  protected info: MoverInfo
+  protected nextPosition: Omit<MoverInfo, 'speed'>
+
   protected operate = {
     B: this.handleFireOperate,
     up: this.moveOperate('up'),
@@ -24,7 +31,8 @@ export class Player extends Tank {
   constructor() {
     super('player')
 
-    this.setInitial()
+    this.info = defaultInfo
+    this.nextPosition = defaultInfo
   }
 
   moveOperate(direction: Direction) {
@@ -36,11 +44,9 @@ export class Player extends Tank {
       // 玩家在运动的时候改变轮胎
       this.changeWheel()
 
-      this.setNextCollisionPosition(
-        direction,
-        'player',
-        this.direction === direction
-      )
+      const [x, y] = this.getNextPosition(direction)
+
+      this.nextPosition = { x, y, direction }
 
       return true
     }
@@ -49,13 +55,6 @@ export class Player extends Tank {
   // 判断坦克是否是正在走出生的动画中
   checkIsAborning() {
     return Boolean(this.bornAnimation.loopNum)
-  }
-
-  setInitial() {
-    this.x = 128
-    this.y = 384
-    this.rank = 0
-    this.direction = 'up'
   }
 
   /**
@@ -75,32 +74,37 @@ export class Player extends Tank {
   }
 
   renderTank(): void {
+    const info = this.info
     const roleCtx = ctx.role!
 
     roleCtx.drawImage(
       player,
       this.rank * 32,
-      DIRECTION[this.direction] * 64 + this.wheel.picFlag * 32,
+      DIRECTION[info.direction] * 64 + this.wheel.picFlag * 32,
       32,
       32,
-      this.x + xOffset,
-      this.y + yOffset,
+      info.x + xOffset,
+      info.y + yOffset,
       32,
       32
     )
   }
 
-  protected renderAfterBorn() {
-    // 每次渲染之前，先去拿碰撞检测结果
-    const collisionResult = tankCollision.getCollisionResult(this.id!)
+  render() {
+    if (this.bornAnimation.loopNum) {
+      this.renderBornAnimation()
+    } else {
+      // 每次渲染之前，先去拿上一次循环的设置的碰撞检测的结果
+      const collisionResult = tankCollision.getCollisionResult(this.id!)
 
-    if (collisionResult && collisionResult.result === 'pass') {
-      ['x', 'y', 'direction'].forEach(key => {
-        this[key] = collisionResult[key]
-      })
+      if (collisionResult && collisionResult.result === 'pass') {
+        ['x', 'y', 'direction'].forEach(key => {
+          this.info[key] = collisionResult[key]
+        })
+      }
+
+      this.renderShield()
+      this.renderTank()
     }
-
-    this.renderShield()
-    this.renderTank()
   }
 }

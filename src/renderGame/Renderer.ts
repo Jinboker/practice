@@ -70,6 +70,7 @@ export abstract class Renderer {
    */
   renderer() {
     this.render()
+    // 操作一定要在渲染之后进行处理，不然会影响到渲染时候的坐标
     this.executeOperate()
 
     if (this.canDestroy()) {

@@ -1,5 +1,5 @@
 import { core } from 'src/core'
-import { Player, NpcQueue } from '..'
+import { Player } from '..'
 import { clearCanvas } from 'src/utils'
 import { ScreenRenderer } from './ScreenRenderer'
 
@@ -14,7 +14,7 @@ export class Playing extends ScreenRenderer {
     super('playing')
 
     new Player()
-    new NpcQueue()
+    // new NpcQueue()
   }
 
   render() {
