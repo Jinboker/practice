@@ -30,8 +30,7 @@ export enum tankCollisionStatus {
   noPass,
   ice,
   bonus,
-  npc,
-  player
+  tank,
 }
 
 class TankCollision {
@@ -43,11 +42,9 @@ class TankCollision {
     const yDifference = Math.abs(curInfo.y - nextInfo.y)
 
     if (DIRECTION[curInfo.direction] % 2) {
-      // return xDifference < 32 && xDifference > 26 && yDifference < 32
-      return xDifference < 32 && yDifference < 32
+      return xDifference < 32 && xDifference > 26 && yDifference < 32
     } else {
-      // return yDifference < 32 && yDifference > 26 && xDifference < 32
-      return yDifference < 32 && xDifference < 32
+      return yDifference < 32 && yDifference > 26 && xDifference < 32
     }
   }
 
@@ -76,55 +73,23 @@ class TankCollision {
     collisionInfos.forEach((info, index) => {
       const { direction, x, y, id } = info
 
-      /**
-       * 检查是否碰到了其他坦克(这个检查的优先级最高)
-       *
-       * 检查从当前坦克起后面所有距离在碰撞范围内的坦克
-       */
-      // for (let i = index + 1; i < collisionInfos.length; i++) {
-      //   const nextInfo = collisionInfos[i]
-      //
-      //   // 如果没有下一个坦克去检查了，break掉
-      //   if (!nextInfo) {
-      //     break
-      //   }
-      //
-      //   // 如果距离过长，后面的也不用继续检查了
-      //   if (Math.abs(x - nextInfo.x) + Math.abs(y - nextInfo.y) >= 64) {
-      //     break
-      //   }
-      //
-      //   if (TankCollision.checkDifferenceBetweenTank(collisionInfos[index], nextInfo)) {
-      //     /**
-      //      * player记录的肯定是碰到npc的记录，但npc要优先记录碰到player的记录
-      //      */
-      //     const resultType = [type, nextInfo.type].includes('player') ? 'player' : 'npc'
-      //
-      //     ;
-      //     [index, i].forEach(item => {
-      //       const collisionInfo = collisionInfos[item]
-      //       const _id = collisionInfo.id
-      //
-      //       if (this.collisionResult[_id]) {
-      //         if (collisionInfo.type === 'npc' && resultType === 'player') {
-      //           this.collisionResult[_id].result = 'player'
-      //         }
-      //       } else {
-      //         this.collisionResult[_id] = { ...collisionInfo, result: resultType }
-      //       }
-      //     })
-      //   }
-      // }
-      //
-      // // 含有坦克碰撞结果
-      // if (this.collisionResult[id]) {
-      //   return
-      // }
-      // 检查是否碰到了其他坦克
-
       // 检查是否碰到了边界
       if (touchBorder(x, y, 32, direction)) {
         this.collisionResult[id] = { ...info, result: 'noPass' }
+        return
+      }
+
+      // 含有坦克碰撞结果
+      if (
+        collisionInfos.some((item) => {
+          if (item.id === id) {
+            return false
+          }
+
+          return TankCollision.checkDifferenceBetweenTank(info, item)
+        })
+      ) {
+        this.collisionResult[id] = { ...info, result: 'tank' }
         return
       }
 

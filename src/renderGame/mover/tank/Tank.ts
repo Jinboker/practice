@@ -1,7 +1,7 @@
 import { Mover } from '../Mover'
-import { ctx, imgs, SCREEN, DIRECTION, Direction } from 'src/global'
 import { delayLoop } from 'src/utils'
-import { tankCollision } from '../../../collision'
+import { tankCollision } from 'src/collision'
+import { ctx, imgs, SCREEN, DIRECTION, Direction } from 'src/global'
 
 const { bonus, misc } = imgs
 const { xOffset, yOffset } = SCREEN.gameView
@@ -108,17 +108,20 @@ export abstract class Tank extends Mover {
     })
   }
 
+  // @override
   renderer() {
     this.render()
     // 操作一定要在渲染之后进行处理，不然会影响到渲染时候的坐标
     this.executeOperate()
 
-    // 讲对应的数据写入碰撞检查队列
-    const { x, y, direction } = this.nextPosition
+    if (!this.bornAnimation.loopNum) {
+      // 将对应的数据写入碰撞检查队列
+      const { x, y, direction } = this.nextPosition
 
-    tankCollision.setCollisionInfo({
-      x, y, id: this.id, type: 'player', direction
-    })
+      tankCollision.setCollisionInfo({
+        x, y, id: this.id, type: this.tankType, direction
+      })
+    }
 
     if (this.canDestroy()) {
       this.destroy()
