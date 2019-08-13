@@ -21,8 +21,9 @@ export type TankCollisionInfo = {
   distanceToOrigin?: number,
 }
 
+type Result = keyof typeof tankCollisionStatus
 export type TankCollisionResult = TankCollisionInfo & {
-  result: keyof typeof tankCollisionStatus
+  result: Result
 }
 
 export enum tankCollisionStatus {
@@ -31,13 +32,15 @@ export enum tankCollisionStatus {
   ice,
   bonus,
   tank,
+  // 碰撞结果为npc只给玩家使用，在困难模式下，玩家只要检查与npc碰撞，那么玩家死亡
+  npc,
 }
 
 class TankCollision {
-  private collisionInfos: TankCollisionInfo[] = []
+  private collisionInfos: Record<string, TankCollisionInfo> = {}
   private collisionResult: Record<string, TankCollisionResult> = {}
 
-  static checkDifferenceBetweenTank(curInfo: TankCollisionInfo, nextInfo: TankCollisionInfo) {
+  static detectTankOverlap(curInfo: TankCollisionInfo, nextInfo: TankCollisionInfo) {
     const xDifference = Math.abs(curInfo.x - nextInfo.x)
     const yDifference = Math.abs(curInfo.y - nextInfo.y)
 
@@ -49,7 +52,17 @@ class TankCollision {
   }
 
   setCollisionInfo(info: TankCollisionInfo) {
-    this.collisionInfos.push(info)
+    this.collisionInfos[info.id] = info
+  }
+
+  setCollisionResult(id: string, result: Result) {
+    if (this.collisionResult[id]) {
+      this.collisionResult[id].result = result
+    } else {
+      this.collisionResult[id] = {
+        ...this.collisionInfos[id], result
+      }
+    }
   }
 
   /**
@@ -64,40 +77,37 @@ class TankCollision {
   checkCollision() {
     this.collisionResult = {}
 
-    /**
-     * 错误定位，x和y可能为负数
-     */
-    // 将加入的数据按照x y之和的大小进行排序，这样在检查坦克碰撞的时候，如果两个坦克之间的距离已经过大以后，后面的就不用继续检查了
-    const collisionInfos = this.collisionInfos.sort((cur, prev) => cur.x + cur.y <= prev.x + prev.y ? 0 : 1)
+    const collisionInfos = Object.values(this.collisionInfos)
 
     collisionInfos.forEach((info, index) => {
       const { direction, x, y, id } = info
 
       // 检查是否碰到了边界
       if (touchBorder(x, y, 32, direction)) {
-        this.collisionResult[id] = { ...info, result: 'noPass' }
+        this.setCollisionResult(id, 'noPass')
         return
       }
 
-      // 含有坦克碰撞结果
+      // 检查是否有坦克碰撞
       if (
-        collisionInfos.some((item) => {
+        collisionInfos.some(item => {
           if (item.id === id) {
             return false
           }
 
-          return TankCollision.checkDifferenceBetweenTank(info, item)
+          return TankCollision.detectTankOverlap(info, item)
         })
       ) {
-        this.collisionResult[id] = { ...info, result: 'tank' }
+        this.setCollisionResult(id, 'tank')
         return
       }
 
       // 检查是否碰到了奖励
-      this.collisionResult[id] = { ...info, result: 'pass' }
+
+      this.setCollisionResult(id, 'pass')
     })
 
-    this.collisionInfos = []
+    this.collisionInfos = {}
   }
 
   getCollisionResult(id: string) {
