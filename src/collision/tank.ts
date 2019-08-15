@@ -32,8 +32,6 @@ export enum tankCollisionStatus {
   ice,
   bonus,
   tank,
-  // 碰撞结果为npc只给玩家使用，在困难模式下，玩家只要检查与npc碰撞，那么玩家死亡
-  npc,
 }
 
 class TankCollision {
@@ -79,7 +77,7 @@ class TankCollision {
 
     const collisionInfos = Object.values(this.collisionInfos)
 
-    collisionInfos.forEach((info, index) => {
+    collisionInfos.forEach(info => {
       const { direction, x, y, id } = info
 
       // 检查是否碰到了边界
