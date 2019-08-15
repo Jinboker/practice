@@ -6,6 +6,7 @@ import { Renderer } from '../Renderer'
 import { delayLoop } from 'src/utils'
 import { ctx, imgs, SCREEN } from 'src/global'
 import { core } from 'src/core'
+import { roadMapItemMapper } from './roadMapItemMapper'
 
 const { brick } = imgs
 const { yOffset, xOffset } = SCREEN.gameView
@@ -20,10 +21,8 @@ export class RenderMap extends Renderer {
    * 配置好的map只能表明一个 16 * 16的格子
    * 不过在游戏中，比如一个砖块，当玩家的子弹是最低级的时候，一次最多只能清空一个 8 * 16 区域，且比如草丛，除了视图上以外没有任何区别
    * 因此，地图数据无法直接用于判断坦克或者子弹能否通过，需要进行二次解析生成对应的roadMap
-   *
-   * ??? 为什么是 28 * 28 的格子来着？忘了
    */
-  private roadMap = new Array(28).fill(0).map(() => new Array(28).fill(0))
+  private roadMap = new Array(26).fill(0).map(() => new Array(26).fill(0))
   /**
    * 当前河流的地图坐标，河流需要在固定的循环后改变图片
    */
@@ -75,6 +74,10 @@ export class RenderMap extends Renderer {
          */
         if (mapItemType) {
           bgCtx.drawImage(brick, 32 * type, 0, 32, 32, xOffset + 32 * col, yOffset + 32 * row, 32, 32)
+
+          new Array(4).fill(null).forEach((___, index) => {
+            this.roadMap[2 * row + (+(index > 1))][2 * col + index % 2] = roadMapItemMapper[mapItemType][index]
+          })
         }
       })
     })

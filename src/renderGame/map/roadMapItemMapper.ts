@@ -12,8 +12,8 @@ export const roadMapItemMapper = {
   3: [empty, brick, empty, brick],
   4: [empty, empty, brick, brick],
   5: [brick, empty, brick, empty],
-  17: [empty, empty, empty, brick],
-  18: [empty, empty, brick, empty],
+  17: [empty, empty, brick, empty],
+  18: [empty, empty, empty, brick],
 
   // steel
   6: [steel, steel, steel, steel],
@@ -21,8 +21,8 @@ export const roadMapItemMapper = {
   8: [empty, steel, empty, steel],
   9: [empty, empty, steel, steel],
   10: [steel, empty, steel, empty],
-  19: [empty, empty, empty, steel],
-  20: [empty, empty, steel, empty],
+  19: [empty, empty, steel, empty],
+  20: [empty, empty, empty, steel],
 
   // ice
   12: [ice, ice, ice, ice],
